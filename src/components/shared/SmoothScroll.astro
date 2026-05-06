@@ -1,0 +1,21 @@
+---
+/**
+ * Initialisiert Lenis-Smooth-Scroll (mit GSAP-Ticker-Hook).
+ * Wird in BaseLayout eingebunden, kann pro Seite via `smoothScroll={false}` deaktiviert werden.
+ *
+ * View-Transitions-aware: Re-Init nach Astro-Navigation, Cleanup beim Swap.
+ */
+---
+
+<script>
+  import { initLenis, destroyLenis } from '@lib/lenis';
+
+  const init = () => initLenis();
+  const teardown = () => destroyLenis();
+
+  init();
+
+  // Astro View-Transitions Lifecycle
+  document.addEventListener('astro:page-load', init);
+  document.addEventListener('astro:before-swap', teardown);
+</script>

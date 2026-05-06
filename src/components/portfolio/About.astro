@@ -1,0 +1,394 @@
+---
+import SplitText from '@components/shared/SplitText.astro';
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+
+interface Props {
+  /** Wenn true: kleine Portraits nebeneinander für Footer-Bereich */
+  compact?: boolean;
+}
+
+const { compact = false }: Props = Astro.props;
+
+const team = [
+  {
+    initials: 'AB',
+    name: 'Alex Beckmann',
+    role: 'Design & Development',
+    location: 'Lüdenscheid',
+    bio: 'Editorial Design, Typografie, Art Direction und Frontend Engineering — alles aus einer Hand. Vorher 6 Jahre Senior Designer bei einer Agentur in Düsseldorf. Sammelt alte Schriften und schlechtes Restaurant-Branding.',
+    accentColor: '#FF4D1C',
+    links: [
+      { label: 'Mail', href: 'mailto:alex@studio.de' },
+      { label: 'Linkedin', href: 'https://linkedin.com' },
+    ],
+  },
+] as const;
+---
+
+<section class:list={['about', { 'about--compact': compact }]} aria-labelledby="about-title">
+  <div class="about__inner">
+    {compact ? (
+      <header class="about__header about__header--compact">
+        <span class="about__eyebrow">
+          <span class="dash" aria-hidden="true"></span>
+          Studio · Wer ich bin
+        </span>
+        <SplitText
+          as="h2"
+          by="words"
+          stagger={0.05}
+          class="about__title about__title--compact"
+          id="about-title"
+        >
+          Ein Kopf, ein Studio.
+        </SplitText>
+      </header>
+    ) : (
+      <header class="about__header">
+        <span class="about__eyebrow">
+          <span class="dash" aria-hidden="true"></span>
+          Studio
+        </span>
+
+        <SplitText
+          as="h2"
+          by="words"
+          stagger={0.05}
+          class="about__title"
+          id="about-title"
+        >
+          Ein Kopf.
+        </SplitText>
+
+        <p class="about__manifest">
+          Solo-Studio, voller Einsatz. Du sprichst direkt mit dem Designer
+          und Entwickler, der deine Site auch baut. Keine Telefonschleife,
+          kein Junior der Junior überwacht — direkter Draht, volle Verantwortung.
+        </p>
+      </header>
+    )}
+
+    <div class="about__grid-wrap">
+      <RevealOnScroll class="about__grid" stagger={0.15} y={40} start="top 92%">
+        {
+          team.map((person) => (
+            <article class="person-card" data-cursor-hover>
+              <div
+                class="person-card__portrait"
+                style={`--portrait-accent: ${person.accentColor};`}
+                aria-hidden="true"
+              >
+                <span class="person-card__initials">{person.initials}</span>
+                {!compact && (
+                  <span class="person-card__location mono-label">
+                    {person.location}
+                  </span>
+                )}
+              </div>
+
+              <div class="person-card__body">
+                <header class="person-card__heading">
+                  <h3 class="person-card__name">{person.name}</h3>
+                  <span class="person-card__role">
+                    {compact ? `${person.role} · ${person.location}` : person.role}
+                  </span>
+                </header>
+
+                {!compact && <p class="person-card__bio">{person.bio}</p>}
+
+                <ul class="person-card__links">
+                  {person.links.map((link) => (
+                    <li>
+                      <a href={link.href} class="person-card__link">
+                        <span>{link.label}</span>
+                        <span aria-hidden="true">↗</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))
+        }
+      </RevealOnScroll>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    position: relative;
+    padding-block: var(--space-8);
+    padding-inline: var(--container-pad);
+  }
+
+  .about__inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+  }
+
+  .about__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+    max-width: 60rem;
+  }
+
+  .about__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-muted);
+  }
+
+  .dash {
+    display: inline-block;
+    width: 2.5rem;
+    height: 1px;
+    background-color: currentColor;
+  }
+
+  .about__title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+  }
+
+  .about__manifest {
+    font-size: var(--text-lg);
+    line-height: 1.5;
+    max-width: 56ch;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+  }
+
+  .about__grid-wrap :global(.about__grid) {
+    display: grid;
+    grid-template-columns: minmax(0, 640px);
+    gap: clamp(1.5rem, 3vw, 3rem);
+  }
+
+  /* ===== Compact-Variante (für Footer-Bereich) =========================== */
+  .about--compact {
+    padding-block: var(--space-6);
+    border-top: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+  }
+
+  .about--compact .about__header--compact {
+    margin-bottom: var(--space-4);
+  }
+
+  .about--compact .about__title--compact {
+    font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .about--compact .about__grid-wrap :global(.about__grid) {
+    grid-template-columns: minmax(0, 420px);
+    gap: clamp(1rem, 2vw, 1.75rem);
+  }
+
+  .about--compact .person-card {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1rem;
+    border: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+    border-radius: var(--radius-lg);
+    background-color: color-mix(in srgb, var(--color-text) 3%, var(--color-bg));
+    transition: border-color 0.4s var(--ease-out-expo),
+      transform 0.4s var(--ease-out-expo);
+  }
+
+  .about--compact .person-card:hover {
+    border-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+    transform: translateY(-3px);
+  }
+
+  .about--compact .person-card__portrait {
+    flex-shrink: 0;
+    width: clamp(72px, 8vw, 96px);
+    height: clamp(72px, 8vw, 96px);
+    aspect-ratio: 1 / 1;
+    border-radius: 9999px;
+  }
+
+  .about--compact .person-card__initials {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+  }
+
+  .about--compact .person-card__body {
+    flex: 1;
+    min-width: 0;
+    gap: 0.5rem;
+  }
+
+  .about--compact .person-card__name {
+    font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  }
+
+  .about--compact .person-card__role {
+    font-size: 10px;
+  }
+
+  .about--compact .person-card__links {
+    margin-top: 0.25rem;
+  }
+
+  .about--compact .person-card__link {
+    padding: 0.25rem 0.55rem;
+    font-size: 10px;
+  }
+
+  .person-card {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    cursor: none;
+  }
+
+  @media (max-width: 640px) {
+    .person-card {
+      flex-direction: column;
+    }
+  }
+
+  .person-card__portrait {
+    position: relative;
+    flex-shrink: 0;
+    width: clamp(200px, 28vw, 340px);
+    aspect-ratio: 3 / 4;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background:
+      radial-gradient(
+        circle at 70% 30%,
+        var(--portrait-accent) 0%,
+        transparent 50%
+      ),
+      linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--color-text) 8%, var(--color-bg)) 0%,
+        color-mix(in srgb, var(--color-text) 2%, var(--color-bg)) 100%
+      );
+    border: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+    isolation: isolate;
+    transition: transform 0.6s var(--ease-out-expo);
+  }
+
+  .person-card:hover .person-card__portrait {
+    transform: scale(1.01) translateY(-4px);
+  }
+
+  /* Subtle Noise/Texture-Overlay über dem Portrait */
+  .person-card__portrait::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: 0.12;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  .person-card__initials {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 10vw, 9rem);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: color-mix(in srgb, var(--color-text) 90%, transparent);
+    transition: transform 0.6s var(--ease-out-expo),
+      letter-spacing 0.6s var(--ease-out-expo);
+  }
+
+  .person-card:hover .person-card__initials {
+    letter-spacing: -0.07em;
+  }
+
+  .person-card__location {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 1.25rem;
+    color: color-mix(in srgb, var(--color-text) 60%, transparent);
+  }
+
+  .person-card__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .person-card__heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .person-card__name {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+  }
+
+  .person-card__role {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+  }
+
+  .person-card__bio {
+    font-size: var(--text-base);
+    line-height: 1.5;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+    max-width: 50ch;
+  }
+
+  .person-card__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .person-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    border: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+    transition: color 0.3s var(--ease-out-expo),
+      border-color 0.3s var(--ease-out-expo);
+  }
+
+  .person-card__link:hover {
+    color: var(--color-text);
+    border-color: var(--color-accent);
+  }
+</style>

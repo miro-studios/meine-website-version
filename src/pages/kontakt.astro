@@ -1,0 +1,84 @@
+---
+import PortfolioLayout from '@layouts/PortfolioLayout.astro';
+import Contact from '@components/portfolio/Contact.astro';
+import Footer from '@components/portfolio/Footer.astro';
+import SplitText from '@components/shared/SplitText.astro';
+---
+
+<PortfolioLayout
+  title="Kontakt — Webdev Studio Lüdenscheid"
+  description="Schreib uns für eine kostenlose Erstberatung. Wir antworten innerhalb von 48 Stunden."
+  active="kontakt"
+>
+  <main>
+    <section class="kontakt-hero" aria-labelledby="kontakt-hero-title">
+      <span class="kontakt-hero__eyebrow">
+        <span class="dash" aria-hidden="true"></span>
+        Kontakt
+      </span>
+
+      <SplitText
+        as="h1"
+        by="words"
+        stagger={0.05}
+        class="kontakt-hero__headline"
+        id="kontakt-hero-title"
+      >
+        Schreib uns.
+      </SplitText>
+
+      <p class="kontakt-hero__copy">
+        Erstberatung kostenlos, unverbindlich, ohne Sales-Theater.
+        Wir antworten innerhalb von 48 Stunden — meistens schneller.
+      </p>
+    </section>
+
+    <Contact />
+    <Footer />
+  </main>
+</PortfolioLayout>
+
+<style>
+  .kontakt-hero {
+    padding-block: clamp(8rem, 18vh, 12rem) var(--space-4);
+    padding-inline: var(--container-pad);
+    max-width: var(--container-max);
+    margin-inline: auto;
+  }
+
+  .kontakt-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-muted);
+    margin-bottom: var(--space-3);
+  }
+
+  .dash {
+    display: inline-block;
+    width: 2.5rem;
+    height: 1px;
+    background-color: currentColor;
+  }
+
+  .kontakt-hero__headline {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 12vw, 12rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+    font-style: italic;
+  }
+
+  .kontakt-hero__copy {
+    margin-top: var(--space-4);
+    font-size: var(--text-lg);
+    line-height: 1.5;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+    max-width: 50ch;
+  }
+</style>

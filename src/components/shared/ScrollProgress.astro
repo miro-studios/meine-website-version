@@ -1,0 +1,76 @@
+---
+interface Props {
+  position?: 'top' | 'bottom';
+  height?: string;
+  color?: string;
+  class?: string;
+}
+
+const {
+  position = 'top',
+  height = '2px',
+  color = 'var(--color-accent)',
+  class: className = '',
+} = Astro.props;
+---
+
+<div
+  class:list={['scroll-progress', `scroll-progress--${position}`, className]}
+  data-scroll-progress
+  style={`--height: ${height}; --bar-color: ${color};`}
+  aria-hidden="true"
+>
+  <div class="scroll-progress__bar" data-scroll-progress-bar></div>
+</div>
+
+<style>
+  .scroll-progress {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: var(--height);
+    background-color: color-mix(in srgb, var(--color-text) 8%, transparent);
+    z-index: var(--z-header);
+    pointer-events: none;
+  }
+
+  .scroll-progress--top {
+    top: 0;
+  }
+
+  .scroll-progress--bottom {
+    bottom: 0;
+  }
+
+  .scroll-progress__bar {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bar-color);
+    transform: scaleX(0);
+    transform-origin: left center;
+    will-change: transform;
+  }
+</style>
+
+<script>
+  import { scrollProgress } from '@lib/animations';
+
+  let cleanup: (() => void) | null = null;
+
+  const start = () => {
+    cleanup?.();
+    const bar = document.querySelector<HTMLElement>(
+      '[data-scroll-progress-bar]',
+    );
+    if (bar) cleanup = scrollProgress(bar);
+  };
+
+  const stop = () => {
+    cleanup?.();
+    cleanup = null;
+  };
+
+  start();
+  document.addEventListener('astro:page-load', start);
+  document.addEventListener('astro:before-swap', stop);
+</script>

@@ -1,0 +1,382 @@
+---
+import SplitText from '@components/shared/SplitText.astro';
+
+const steps = [
+  {
+    index: '01',
+    title: 'Briefing & Recherche',
+    duration: '~1 Woche',
+    description:
+      'Wir hören zu und schauen genau hin: Branche, Wettbewerb, Tonalität, Zielgruppe. Am Ende steht ein Brief, der alle weiteren Entscheidungen trägt.',
+    bullets: [
+      'Workshop vor Ort oder via Call',
+      'Wettbewerbs-Analyse',
+      'Content-Audit',
+      'Tonality & Visual References',
+    ],
+  },
+  {
+    index: '02',
+    title: 'Konzept & Design',
+    duration: '~2 Wochen',
+    description:
+      'Wir entwerfen die gestalterische Handschrift. Typografie, Farbsystem, Hierarchie — bevor eine Zeile Code geschrieben wird.',
+    bullets: [
+      'Moodboards & Direction',
+      'Typografie & Farbsystem',
+      'Hi-Fi Mockups in Figma',
+      'Design-Reviews',
+    ],
+  },
+  {
+    index: '03',
+    title: 'Build & Animation',
+    duration: '~3 Wochen',
+    description:
+      'Astro-Setup, Component-Architektur, Smooth Scroll, Page Transitions. Hier entsteht das, was Menschen am Bildschirm spüren.',
+    bullets: [
+      'Astro + Tailwind + GSAP',
+      'Smooth Scroll & Mikro-Animationen',
+      'Custom Cursor, Magnetic CTAs',
+      'CMS-Integration falls nötig',
+    ],
+  },
+  {
+    index: '04',
+    title: 'Launch & Übergabe',
+    duration: '~1 Woche',
+    description:
+      'Performance-Tuning, Lighthouse 90+, Cloudflare-Deploy. Plus eine kompakte Anleitung, falls du selbst pflegen willst.',
+    bullets: [
+      'Performance & SEO Audit',
+      'Cloudflare Pages Deploy',
+      'Übergabe-Dokumentation',
+      'Optional: Wartungsvertrag',
+    ],
+  },
+] as const;
+---
+
+<section class="process" data-process aria-labelledby="process-title">
+  <div class="process__viewport">
+    <header class="process__header">
+      <span class="process__eyebrow">
+        <span class="dash" aria-hidden="true"></span>
+        Prozess / 04 Schritte
+      </span>
+
+      <SplitText
+        as="h2"
+        by="words"
+        stagger={0.05}
+        class="process__title"
+        id="process-title"
+      >
+        So arbeiten wir.
+      </SplitText>
+
+      <div class="process__indicator" aria-hidden="true">
+        <div class="process__indicator-track">
+          <div class="process__indicator-bar" data-process-bar></div>
+        </div>
+        <span class="mono-label" data-process-counter>01 / 04</span>
+      </div>
+    </header>
+
+    <div class="process__track" data-process-track>
+      {
+        steps.map((step) => (
+          <article class="process__step">
+            <div class="process__step-meta">
+              <span class="process__step-index">{step.index}</span>
+              <span class="process__step-duration">{step.duration}</span>
+            </div>
+
+            <h3 class="process__step-title">{step.title}</h3>
+
+            <p class="process__step-description">{step.description}</p>
+
+            <ul class="process__step-bullets">
+              {step.bullets.map((b) => (
+                <li>
+                  <span class="bullet-dot" aria-hidden="true">·</span>
+                  {b}
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .process {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    /* Hintergrund: leicht dunkler als bg, damit die Section "abgesetzt" wirkt */
+    background-color: color-mix(in srgb, var(--color-text) 4%, var(--color-bg));
+  }
+
+  .process__viewport {
+    position: relative;
+    height: 100vh;
+    min-height: 700px;
+    display: flex;
+    flex-direction: column;
+    padding-block: clamp(4rem, 8vh, 6rem) var(--space-6);
+    padding-inline: var(--container-pad);
+    max-width: var(--container-max);
+    margin-inline: auto;
+  }
+
+  .process__header {
+    flex-shrink: 0;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    column-gap: var(--space-4);
+    row-gap: 0.75rem;
+    align-items: end;
+    margin-bottom: var(--space-4);
+  }
+
+  .process__eyebrow {
+    grid-column: 1 / -1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-muted);
+  }
+
+  .dash {
+    display: inline-block;
+    width: 2.5rem;
+    height: 1px;
+    background-color: currentColor;
+  }
+
+  .process__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .process__indicator {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+    min-width: 12rem;
+  }
+
+  .process__indicator-track {
+    width: 100%;
+    height: 2px;
+    background-color: color-mix(in srgb, var(--color-text) 12%, transparent);
+    overflow: hidden;
+  }
+
+  .process__indicator-bar {
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-accent);
+    transform: scaleX(0.25);
+    transform-origin: left center;
+    transition: transform 0.3s var(--ease-out-expo);
+  }
+
+  .process__track {
+    flex: 1;
+    display: flex;
+    gap: clamp(1.5rem, 3vw, 3rem);
+    will-change: transform;
+    align-items: stretch;
+  }
+
+  .process__step {
+    flex: 0 0 min(80vw, 36rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    border: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+    border-radius: var(--radius-lg);
+    background-color: color-mix(in srgb, var(--color-text) 2%, transparent);
+    transition: border-color 0.4s var(--ease-out-expo);
+  }
+
+  .process__step:hover {
+    border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+  }
+
+  .process__step-meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .process__step-index {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    line-height: 1;
+    color: var(--color-accent);
+  }
+
+  .process__step-duration {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+  }
+
+  .process__step-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+  }
+
+  .process__step-description {
+    font-size: var(--text-base);
+    line-height: 1.5;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+  }
+
+  .process__step-bullets {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: auto;
+  }
+
+  .process__step-bullets li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.05em;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+  }
+
+  .bullet-dot {
+    color: var(--color-accent);
+  }
+
+  /* Mobile: vertical stack, kein Pin/Horizontal-Scroll */
+  @media (max-width: 768px) {
+    .process__viewport {
+      height: auto;
+    }
+    .process__track {
+      flex-direction: column;
+      transform: none !important;
+    }
+    .process__step {
+      flex: 0 0 auto;
+    }
+    .process__indicator {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { prefersReducedMotion } from '@lib/utils';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  type Cleanup = () => void;
+  const cleanups: Cleanup[] = [];
+
+  const init = () => {
+    const section = document.querySelector<HTMLElement>('[data-process]');
+    const track = document.querySelector<HTMLElement>('[data-process-track]');
+    const bar = document.querySelector<HTMLElement>('[data-process-bar]');
+    const counter = document.querySelector<HTMLElement>('[data-process-counter]');
+    if (!section || !track) return;
+
+    // Mobile: kein horizontal scroll
+    if (window.matchMedia('(max-width: 768px)').matches || prefersReducedMotion()) {
+      return;
+    }
+
+    const steps = Array.from(track.children) as HTMLElement[];
+    const stepCount = steps.length;
+    if (stepCount === 0) return;
+
+    // Berechnung wie weit horizontal gescrollt wird
+    const getScrollDistance = () => {
+      // Letztes Step muss komplett sichtbar sein.
+      const lastStep = steps[stepCount - 1];
+      const lastStepRect = lastStep.getBoundingClientRect();
+      const trackRect = track.getBoundingClientRect();
+      const distance =
+        lastStepRect.right -
+        trackRect.left -
+        section.clientWidth +
+        parseFloat(getComputedStyle(track).paddingRight || '0') +
+        24; // Buffer
+      return Math.max(distance, 0);
+    };
+
+    const tween = gsap.to(track, {
+      x: () => `-${getScrollDistance()}px`,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: section,
+        start: 'top top',
+        end: () => `+=${getScrollDistance()}`,
+        scrub: 1,
+        pin: true,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          if (bar) bar.style.transform = `scaleX(${0.25 + progress * 0.75})`;
+          if (counter) {
+            const currentStep = Math.min(
+              stepCount,
+              Math.floor(progress * stepCount) + 1,
+            );
+            counter.textContent = `${String(currentStep).padStart(2, '0')} / ${String(stepCount).padStart(2, '0')}`;
+          }
+        },
+      },
+    });
+
+    cleanups.push(() => {
+      tween.scrollTrigger?.kill();
+      tween.kill();
+    });
+  };
+
+  const teardown = () => {
+    cleanups.forEach((fn) => fn());
+    cleanups.length = 0;
+  };
+
+  init();
+  document.addEventListener('astro:page-load', init);
+  document.addEventListener('astro:before-swap', teardown);
+</script>

@@ -1,0 +1,65 @@
+/* ==========================================================================
+   Globale Design-Tokens
+   --------------------------------------------------------------------------
+   Diese Tokens sind themenneutral. Jede Demo überschreibt zusätzlich Farben
+   und Fonts in src/styles/themes/<demo>.css.
+   ========================================================================== */
+
+:root {
+  /* -- Type-Scale (fluid via clamp) ---------------------------------------- */
+  --text-xs: clamp(0.75rem, 0.5vw + 0.6rem, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.5vw + 0.75rem, 1rem);
+  --text-base: clamp(1rem, 0.5vw + 0.875rem, 1.125rem);
+  --text-lg: clamp(1.25rem, 1vw + 1rem, 1.5rem);
+  --text-xl: clamp(1.5rem, 2vw + 1rem, 2.25rem);
+  --text-2xl: clamp(2rem, 4vw + 1rem, 3.5rem);
+  --text-display: clamp(3rem, 8vw + 1rem, 7rem);
+  --text-mega: clamp(4rem, 14vw, 14rem);
+
+  /* -- Spacing (8px-Basis) ------------------------------------------------- */
+  --space-1: 0.5rem;   /*  8px */
+  --space-2: 1rem;     /* 16px */
+  --space-3: 1.5rem;   /* 24px */
+  --space-4: 2rem;     /* 32px */
+  --space-6: 4rem;     /* 64px */
+  --space-8: 6rem;     /* 96px */
+  --space-12: 9rem;    /* 144px */
+
+  /* -- Easings ------------------------------------------------------------- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* -- Radius -------------------------------------------------------------- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 32px;
+
+  /* -- Z-Index Scale ------------------------------------------------------- */
+  --z-cursor: 9999;
+  --z-modal: 1000;
+  --z-header: 100;
+  --z-overlay: 50;
+
+  /* -- Default Font-Stacks (werden pro Theme überschrieben) ---------------- */
+  --font-display: ui-serif, Georgia, serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", monospace;
+
+  /* -- Default-Farbwerte (werden pro Theme überschrieben) ------------------ */
+  --color-bg: #0E0E0C;
+  --color-surface: #161614;
+  --color-text: #F0EDE4;
+  --color-muted: #8a877f;
+  --color-primary: #F0EDE4;
+  --color-accent: #FFD60A;
+
+  /* -- Layout -------------------------------------------------------------- */
+  --container-max: 1440px;
+  --container-pad: clamp(1.25rem, 4vw, 3rem);
+
+  /* -- Motion-Tuning (von prefers-reduced-motion überschrieben) ------------ */
+  --motion-scale: 1;
+}

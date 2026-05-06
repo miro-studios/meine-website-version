@@ -1,0 +1,102 @@
+---
+interface Props {
+  /** Endwert */
+  to: number;
+  /** Startwert (default 0) */
+  from?: number;
+  /** Animationsdauer in Sekunden */
+  duration?: number;
+  /** Anzahl Dezimalstellen (für Float-Werte) */
+  decimals?: number;
+  /** Suffix (z.B. "+", "%", "k") */
+  suffix?: string;
+  /** Prefix (z.B. "€") */
+  prefix?: string;
+  /** Locale für Tausender-Trenner */
+  locale?: string;
+  /** ScrollTrigger-Start */
+  start?: string;
+  /** Tag */
+  as?: keyof HTMLElementTagNameMap;
+  /** Klassen */
+  class?: string;
+}
+
+const {
+  to,
+  from = 0,
+  duration = 2,
+  decimals = 0,
+  suffix = '',
+  prefix = '',
+  locale = 'de-DE',
+  start = 'top 80%',
+  as: Tag = 'span',
+  class: className = '',
+}: Props = Astro.props;
+---
+
+<Tag
+  class:list={['number-counter', className]}
+  data-counter
+  data-to={to}
+  data-from={from}
+  data-duration={duration}
+  data-decimals={decimals}
+  data-suffix={suffix}
+  data-prefix={prefix}
+  data-locale={locale}
+  data-start={start}
+>
+  {prefix}{from.toLocaleString(locale)}{suffix}
+</Tag>
+
+<style>
+  .number-counter {
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font-display);
+  }
+</style>
+
+<script>
+  import { numberCounter } from '@lib/animations';
+
+  const cleanups = new Map<HTMLElement, () => void>();
+
+  const start = () => {
+    document.querySelectorAll<HTMLElement>('[data-counter]').forEach((el) => {
+      const to = parseFloat(el.dataset.to ?? '0');
+      const from = parseFloat(el.dataset.from ?? '0');
+      const duration = parseFloat(el.dataset.duration ?? '2');
+      const decimals = parseInt(el.dataset.decimals ?? '0');
+      const suffix = el.dataset.suffix ?? '';
+      const prefix = el.dataset.prefix ?? '';
+      const locale = el.dataset.locale ?? 'de-DE';
+      const triggerStart = el.dataset.start ?? 'top 80%';
+
+      const format = (v: number) =>
+        `${prefix}${v.toLocaleString(locale, {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals,
+        })}${suffix}`;
+
+      const cleanup = numberCounter(el, {
+        from,
+        to,
+        duration,
+        format,
+        start: triggerStart,
+      });
+      cleanups.set(el, cleanup);
+    });
+  };
+
+  const stop = () => {
+    cleanups.forEach((fn) => fn());
+    cleanups.clear();
+  };
+
+  start();
+  document.addEventListener('astro:page-load', start);
+  document.addEventListener('astro:before-swap', stop);
+</script>

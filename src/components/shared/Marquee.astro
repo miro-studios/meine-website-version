@@ -1,0 +1,122 @@
+---
+interface Props {
+  /** Geschwindigkeit in px/s */
+  speed?: number;
+  /** Bewegungsrichtung */
+  direction?: 'left' | 'right';
+  /** Wenn true, koppelt sich Geschwindigkeit an Scroll-Velocity */
+  reactive?: boolean;
+  /** Trennzeichen zwischen Items */
+  separator?: string;
+  /** Vertikales Padding */
+  paddingY?: string;
+  /** Item-Liste */
+  items: string[];
+  /** Wie oft werden die Items dupliziert (für nahtloses Loopen) */
+  repeats?: number;
+  /** Optionale Class für das Wrapper-Element */
+  class?: string;
+}
+
+const {
+  speed = 80,
+  direction = 'left',
+  reactive = false,
+  separator = '·',
+  paddingY = '1.5rem',
+  items,
+  repeats = 4,
+  class: className = '',
+} = Astro.props;
+
+// Items duplizieren um nahtloses Loopen zu ermöglichen
+const looped = Array.from({ length: repeats }).flatMap(() => items);
+---
+
+<div
+  class:list={['marquee', className]}
+  data-marquee
+  data-speed={speed}
+  data-direction={direction}
+  data-reactive={reactive ? 'true' : 'false'}
+  style={`--marquee-py: ${paddingY};`}
+  aria-hidden="true"
+>
+  <div class="marquee__track" data-marquee-track>
+    {
+      looped.map((item, idx) => (
+        <span class="marquee__item">
+          <span class="marquee__text">{item}</span>
+          {idx < looped.length - 1 && (
+            <span class="marquee__sep">{separator}</span>
+          )}
+        </span>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .marquee {
+    width: 100%;
+    overflow: hidden;
+    padding-block: var(--marquee-py);
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 6vw, 5rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .marquee__track {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.5rem;
+    will-change: transform;
+  }
+
+  .marquee__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .marquee__sep {
+    opacity: 0.4;
+    font-weight: 300;
+  }
+
+  @media (hover: hover) {
+    .marquee:hover .marquee__track {
+      animation-play-state: paused;
+    }
+  }
+</style>
+
+<script>
+  import { marquee as initMarquee } from '@lib/animations';
+
+  const cleanups = new Map<HTMLElement, () => void>();
+
+  const start = () => {
+    document.querySelectorAll<HTMLElement>('[data-marquee]').forEach((el) => {
+      const track = el.querySelector<HTMLElement>('[data-marquee-track]');
+      if (!track) return;
+      const speed = parseFloat(el.dataset.speed ?? '80');
+      const direction = (el.dataset.direction as 'left' | 'right') ?? 'left';
+      const reactive = el.dataset.reactive === 'true';
+      const cleanup = initMarquee(track, { speed, direction, reactive });
+      cleanups.set(el, cleanup);
+    });
+  };
+
+  const stop = () => {
+    cleanups.forEach((fn) => fn());
+    cleanups.clear();
+  };
+
+  start();
+  document.addEventListener('astro:page-load', start);
+  document.addEventListener('astro:before-swap', stop);
+</script>

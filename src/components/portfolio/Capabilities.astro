@@ -1,0 +1,253 @@
+---
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+import SplitText from '@components/shared/SplitText.astro';
+
+const capabilities = [
+  {
+    index: '01',
+    title: 'Web Design',
+    description:
+      'Editorial, mit Charakter. Wir entwerfen Sites die wirken wie sie etwas zu sagen haben — keine Theme-Schablonen.',
+    tools: ['Figma', 'Typografie', 'Art Direction'],
+  },
+  {
+    index: '02',
+    title: 'Development',
+    description:
+      'Sauberer Code, blitzschnell, accessible. Astro für Content-driven Sites, Component-Architektur die wartbar bleibt.',
+    tools: ['Astro', 'TypeScript', 'Tailwind', 'GSAP'],
+  },
+  {
+    index: '03',
+    title: 'Brand & Identity',
+    description:
+      'Wortmarke, Bildsprache, Farbsystem. Als Mini-Branding-Paket inklusive, oder eigenständig vor dem Web-Projekt.',
+    tools: ['Logo', 'Visual Language', 'Brand Guide'],
+  },
+  {
+    index: '04',
+    title: 'Animation & Motion',
+    description:
+      'Smooth Scroll, Custom Cursor, Page Transitions, Scroll-Storytelling. Jede Bewegung dient der Lesbarkeit.',
+    tools: ['GSAP + ScrollTrigger', 'Lenis', 'View Transitions'],
+  },
+  {
+    index: '05',
+    title: 'CMS & Redaktion',
+    description:
+      'Wenn deine Inhalte regelmäßig wechseln: Headless-CMS-Anbindung mit dem Editor-Setup, das zu deinem Team passt.',
+    tools: ['Sanity', 'Astro Content Collections', 'Markdown'],
+  },
+  {
+    index: '06',
+    title: 'Performance & SEO',
+    description:
+      'Lighthouse 90+ ist Standard, nicht Ziel. Selfhosted Fonts, AVIF/WebP, semantisches HTML, strukturierte Daten.',
+    tools: ['Core Web Vitals', 'Schema.org', 'Open Graph'],
+  },
+] as const;
+---
+
+<section class="capabilities" aria-labelledby="capabilities-title">
+  <header class="capabilities__header">
+    <span class="capabilities__eyebrow">
+      <span class="dash" aria-hidden="true"></span>
+      Disziplinen / 06
+    </span>
+
+    <SplitText
+      as="h2"
+      by="words"
+      stagger={0.05}
+      class="capabilities__title"
+      id="capabilities-title"
+    >
+      Was wir machen.
+    </SplitText>
+  </header>
+
+  <RevealOnScroll class="capabilities__list" stagger={0.06} y={30}>
+    {
+      capabilities.map((cap) => (
+        <article class="cap-row" data-cursor-hover>
+          <span class="cap-row__index">{cap.index}</span>
+          <div class="cap-row__heading">
+            <h3 class="cap-row__title">{cap.title}</h3>
+            <ul class="cap-row__tools">
+              {cap.tools.map((tool) => (
+                <li>{tool}</li>
+              ))}
+            </ul>
+          </div>
+          <p class="cap-row__description">{cap.description}</p>
+          <span class="cap-row__arrow" aria-hidden="true">→</span>
+        </article>
+      ))
+    }
+  </RevealOnScroll>
+</section>
+
+<style>
+  .capabilities {
+    position: relative;
+    padding-block: var(--space-8);
+    padding-inline: var(--container-pad);
+    max-width: var(--container-max);
+    margin-inline: auto;
+  }
+
+  .capabilities__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+  }
+
+  .capabilities__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-muted);
+  }
+
+  .dash {
+    display: inline-block;
+    width: 2.5rem;
+    height: 1px;
+    background-color: currentColor;
+  }
+
+  .capabilities__title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+  }
+
+  .capabilities__list {
+    border-top: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+  }
+
+  .cap-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 4rem 1fr 1.5fr 2rem;
+    gap: clamp(1rem, 3vw, 3rem);
+    padding-block: clamp(1.5rem, 3vw, 2.5rem);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+    align-items: start;
+    cursor: none;
+    transition: padding 0.4s var(--ease-out-expo),
+      background-color 0.4s var(--ease-out-expo);
+  }
+
+  /* Akzent-Strich links beim Hover */
+  .cap-row::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 1px;
+    width: 0;
+    background-color: var(--color-accent);
+    transform: translateY(-50%);
+    transition: width 0.5s var(--ease-out-expo);
+  }
+
+  .cap-row:hover::before {
+    width: 2rem;
+  }
+
+  .cap-row:hover {
+    padding-left: 2.5rem;
+  }
+
+  .cap-row:hover .cap-row__title {
+    color: var(--color-accent);
+  }
+
+  .cap-row__index {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    letter-spacing: 0.1em;
+    padding-top: 0.5rem;
+  }
+
+  .cap-row__heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .cap-row__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3.5vw, 3rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+    transition: color 0.4s var(--ease-out-expo);
+  }
+
+  .cap-row__tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .cap-row__tools li {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+    border: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+  }
+
+  .cap-row__description {
+    font-size: var(--text-base);
+    line-height: 1.5;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+    max-width: 50ch;
+  }
+
+  .cap-row__arrow {
+    font-size: var(--text-xl);
+    color: var(--color-muted);
+    transition: transform 0.4s var(--ease-out-expo),
+      color 0.4s var(--ease-out-expo);
+    padding-top: 0.25rem;
+  }
+
+  .cap-row:hover .cap-row__arrow {
+    color: var(--color-accent);
+    transform: translate(8px, -4px) rotate(-45deg);
+  }
+
+  @media (max-width: 768px) {
+    .cap-row {
+      grid-template-columns: 2.5rem 1fr;
+      grid-template-rows: auto auto;
+      gap: 1rem;
+    }
+    .cap-row__description {
+      grid-column: 1 / -1;
+    }
+    .cap-row__arrow {
+      display: none;
+    }
+    .cap-row:hover {
+      padding-left: 1rem;
+    }
+  }
+</style>

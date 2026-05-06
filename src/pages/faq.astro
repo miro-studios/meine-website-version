@@ -1,0 +1,23 @@
+---
+import PortfolioLayout from '@layouts/PortfolioLayout.astro';
+import Faq from '@components/portfolio/Faq.astro';
+import Footer from '@components/portfolio/Footer.astro';
+---
+
+<PortfolioLayout
+  title="FAQ — Häufige Fragen | miro-studios"
+  description="Alles was du über Preise, Ablauf, Design und Support wissen willst — transparent und auf den Punkt."
+  active="faq"
+>
+  <div class="faq-page">
+    <Faq />
+  </div>
+  <Footer />
+</PortfolioLayout>
+
+<style>
+  .faq-page {
+    padding-top: clamp(5rem, 12vh, 9rem); /* Header-Abstand */
+    min-height: 100vh;
+  }
+</style>

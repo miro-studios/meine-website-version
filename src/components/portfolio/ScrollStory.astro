@@ -1,0 +1,411 @@
+---
+/**
+ * ScrollStory — Sticky-Sphere + statische Step-Liste.
+ *
+ * Kein Pin, kein erzwungenes Step-Swap. Sphere bleibt per `position: sticky`
+ * neben den Step-Karten und reagiert auf Hover/Viewport-Mitte des aktiven
+ * Steps via `story:progress`-Event.
+ */
+
+const steps = [
+  {
+    index: '01',
+    title: 'Wir verstehen dein Geschäft',
+    body: 'Vor jeder Codezeile kommen Gespräche. Was unterscheidet dich vom Wettbewerber zwei Straßen weiter? Welche Kunden willst du gewinnen?',
+    meta: 'Briefing · Recherche',
+  },
+  {
+    index: '02',
+    title: 'Wir entwerfen, nicht klicken',
+    body: 'Keine Drag-and-Drop-Templates, keine generischen Themes. Jedes Layout wird in Figma als eigene Idee entwickelt — Typografie, Bildsprache, Energie.',
+    meta: 'Konzept · Design',
+  },
+  {
+    index: '03',
+    title: 'Wir bauen mit echtem Code',
+    body: 'Astro, GSAP, Three.js — moderne Frontend-Technologie für 60-fps Performance auf Handy und Desktop. Lighthouse 90+, sonst stoppen wir die Auslieferung.',
+    meta: 'Build · QA',
+  },
+  {
+    index: '04',
+    title: 'Wir hosten und pflegen',
+    body: 'Strato-Hosting durch uns. Updates, Backups, kleine Änderungen — du bekommst eine Kontaktperson, keinen Ticket-Roboter.',
+    meta: 'Launch · Support',
+  },
+];
+---
+
+<section
+  class="scroll-story"
+  data-scroll-story
+  aria-labelledby="story-title"
+>
+  <div class="scroll-story__inner">
+    <header class="scroll-story__header">
+      <span class="scroll-story__eyebrow">
+        <span class="dash" aria-hidden="true"></span>
+        Wie wir arbeiten
+      </span>
+      <h2 id="story-title" class="scroll-story__title">
+        Vier Schritte. Kein Bullshit.
+      </h2>
+      <p class="scroll-story__lede">
+        Vom ersten Gespräch bis zum Live-Gang — vier klare Phasen. Klick oder
+        hover die Karten, um zu sehen wie sich die Bühne dreht.
+      </p>
+    </header>
+
+    <div class="scroll-story__layout">
+      <!-- Linke Spalte: Sticky-Sphere (folgt beim Scrollen) -->
+      <aside class="scroll-story__stage-wrap">
+        <div class="scroll-story__stage" data-story-stage>
+          <canvas class="scroll-story__canvas" data-story-canvas></canvas>
+
+          <!-- Phase-Label überlagert die Kugel -->
+          <div class="scroll-story__phase" aria-hidden="true">
+            <span class="scroll-story__phase-num" data-story-current>01</span>
+            <span class="scroll-story__phase-total">/ 0{steps.length}</span>
+            <span
+              class="scroll-story__phase-label"
+              data-story-current-label
+            >Briefing · Recherche</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Rechte Spalte: alle Steps gleichzeitig sichtbar -->
+      <ol class="scroll-story__steps" data-story-steps role="list">
+        {steps.map((step, i) => (
+          <li>
+            <button
+              type="button"
+              class:list={['story-step', { 'is-active': i === 0 }]}
+              data-story-step
+              data-step-index={i}
+              data-step-meta={step.meta}
+              data-cursor-hover
+              aria-label={`Schritt ${step.index}: ${step.title}`}
+              aria-current={i === 0 ? 'step' : 'false'}
+            >
+              <span class="story-step__rail" aria-hidden="true"></span>
+
+              <header class="story-step__head">
+                <span class="story-step__index">{step.index}</span>
+                <span class="story-step__meta">{step.meta}</span>
+              </header>
+
+              <h3 class="story-step__title">{step.title}</h3>
+              <p class="story-step__body">{step.body}</p>
+            </button>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .scroll-story {
+    position: relative;
+    padding-block: var(--space-8);
+    padding-inline: var(--container-pad);
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      color-mix(in srgb, var(--color-accent) 4%, transparent) 50%,
+      transparent 100%
+    );
+    overflow: clip;
+  }
+
+  .scroll-story__inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .scroll-story__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    max-width: 56rem;
+  }
+
+  .scroll-story__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-muted);
+  }
+
+  .dash {
+    display: inline-block;
+    width: 2.5rem;
+    height: 1px;
+    background-color: currentColor;
+  }
+
+  .scroll-story__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .scroll-story__lede {
+    margin: 0.5rem 0 0;
+    font-size: var(--text-base);
+    line-height: 1.55;
+    max-width: 50ch;
+    color: color-mix(in srgb, var(--color-text) 70%, transparent);
+  }
+
+  /* ===== Layout: 2 columns, sticky sphere left, steps right ============== */
+  .scroll-story__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .scroll-story__layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .scroll-story__stage-wrap {
+    position: sticky;
+    top: clamp(5rem, 10vh, 8rem);
+    align-self: start;
+  }
+
+  @media (max-width: 900px) {
+    .scroll-story__stage-wrap {
+      position: relative;
+      top: 0;
+      max-width: 22rem;
+      margin-inline: auto;
+    }
+  }
+
+  .scroll-story__stage {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(
+        circle at 30% 30%,
+        color-mix(in srgb, var(--color-accent) 8%, transparent) 0%,
+        transparent 60%
+      ),
+      var(--color-surface, color-mix(in srgb, var(--color-text) 4%, var(--color-bg)));
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+  }
+
+  .scroll-story__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* Overlay-Label auf der Kugel: "01 / 04 — Briefing · Recherche" */
+  .scroll-story__phase {
+    position: absolute;
+    bottom: clamp(1rem, 2vw, 1.5rem);
+    left: clamp(1rem, 2vw, 1.5rem);
+    right: clamp(1rem, 2vw, 1.5rem);
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-muted);
+    z-index: 2;
+  }
+
+  .scroll-story__phase-num {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .scroll-story__phase-total {
+    color: var(--color-muted);
+  }
+
+  .scroll-story__phase-label {
+    flex-basis: 100%;
+    color: var(--color-accent);
+    transition: opacity 0.3s var(--ease-out-expo);
+  }
+
+  /* ===== Step-Liste ===================================================== */
+  .scroll-story__steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .scroll-story__steps li {
+    display: block;
+  }
+
+  .story-step {
+    --rail-w: 2px;
+    position: relative;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: none;
+    padding: clamp(1.25rem, 2.5vw, 2rem) 0 clamp(1.25rem, 2.5vw, 2rem)
+      clamp(1.25rem, 2.5vw, 2rem);
+    border-top: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    transition: padding 0.4s var(--ease-out-expo);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .scroll-story__steps li:last-child .story-step {
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+  }
+
+  /* Akzent-Schiene links — wächst bei Aktiv */
+  .story-step__rail {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: var(--rail-w);
+    background-color: color-mix(in srgb, var(--color-text) 18%, transparent);
+    transition: background-color 0.4s var(--ease-out-expo),
+      width 0.4s var(--ease-out-expo);
+  }
+
+  .story-step.is-active .story-step__rail {
+    width: 4px;
+    background-color: var(--color-accent);
+    box-shadow: 0 0 16px color-mix(in srgb, var(--color-accent) 60%, transparent);
+  }
+
+  .story-step:hover {
+    padding-left: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .story-step:focus-visible {
+    outline: none;
+  }
+
+  .story-step:focus-visible .story-step__rail {
+    background-color: var(--color-accent);
+    width: 4px;
+  }
+
+  .story-step__head {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.85rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .story-step__index {
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    letter-spacing: 0.08em;
+  }
+
+  .story-step__meta {
+    color: var(--color-muted);
+  }
+
+  .story-step__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+    color: color-mix(in srgb, var(--color-text) 70%, transparent);
+    transition: color 0.4s var(--ease-out-expo);
+  }
+
+  .story-step:hover .story-step__title,
+  .story-step.is-active .story-step__title {
+    color: var(--color-text);
+  }
+
+  .story-step__body {
+    margin: 0;
+    font-size: var(--text-base);
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-text) 60%, transparent);
+    max-width: 52ch;
+    transition: color 0.4s var(--ease-out-expo);
+  }
+
+  .story-step.is-active .story-step__body {
+    color: color-mix(in srgb, var(--color-text) 82%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .story-step,
+    .story-step__rail,
+    .story-step__title,
+    .story-step__body,
+    .scroll-story__phase-label {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { initScrollStories } from '@lib/scroll-story';
+  import { initStoryStage } from '@lib/scroll-story-stage';
+
+  let cleanupStory: (() => void) | null = null;
+  let cleanupStage: (() => void) | null = null;
+
+  const start = () => {
+    cleanupStory?.();
+    cleanupStage?.();
+    cleanupStory = initScrollStories();
+    cleanupStage = initStoryStage();
+  };
+  const stop = () => {
+    cleanupStory?.();
+    cleanupStage?.();
+    cleanupStory = null;
+    cleanupStage = null;
+  };
+
+  start();
+  document.addEventListener('astro:page-load', start);
+  document.addEventListener('astro:before-swap', stop);
+</script>

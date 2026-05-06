@@ -1,0 +1,1210 @@
+---
+import SplitText from '@components/shared/SplitText.astro';
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+import MagneticButton from '@components/shared/MagneticButton.astro';
+
+type PlanDemo = {
+  name: string;
+  category: string;
+  href?: string;
+  theme: 'pizzeria' | 'elektro' | 'friseur' | 'handwerker';
+  headline: string;
+  available: boolean;
+};
+
+type Plan = {
+  index: string;
+  name: string;
+  tagline: string;
+  description: string;
+  price: string;
+  delivery: string;
+  features: readonly string[];
+  demos: readonly PlanDemo[];
+  cta: string;
+  variant: 'starter' | 'featured' | 'premium';
+  badge?: string;
+};
+
+const onePagerPlans: readonly Plan[] = [
+  {
+    index: '01',
+    name: 'Starter',
+    tagline: 'Online praesent. Schnell.',
+    description:
+      'Fuer Selbststaendige und kleine Geschaefte, die endlich sichtbar werden muessen. Eine fokussierte Seite, die Vertrauen aufbaut und zur Anfrage fuehrt.',
+    price: '&euro; 599',
+    delivery: '5&ndash;7 Werktage',
+    features: [
+      'Onepager bis 4 Sections',
+      'Individuelles Design auf Ihre Marke',
+      'Mobile-optimiert &middot; Lighthouse 90+',
+      'Basis-SEO (Meta, Sitemap, Schema)',
+      'Kontakt- oder Anfrageformular',
+      'Ladezeit unter 2 Sekunden',
+    ],
+    demos: [
+      {
+        name: 'Kruse Bau',
+        category: 'Handwerk',
+        href: '/demos/handwerker/index.html',
+        theme: 'handwerker',
+        headline: 'Bauen mit Verstand.',
+        available: true,
+      },
+      {
+        name: 'Bella Notte',
+        category: 'Pizzeria',
+        href: '/demos/pizzeria/index.html',
+        theme: 'pizzeria',
+        headline: 'La Vera Pizza',
+        available: true,
+      },
+    ],
+    cta: 'Starter starten',
+    variant: 'starter',
+  },
+  {
+    index: '02',
+    name: 'Growth',
+    tagline: 'Mehr Anfragen. Klar messbar.',
+    description:
+      'Fuer lokale Unternehmen, die nicht nur eine Website wollen &mdash; sondern eine, die verkauft. Editorial-Niveau mit Conversion im Kern.',
+    price: '&euro; 1.299',
+    delivery: '7&ndash;12 Werktage',
+    features: [
+      'Onepager bis 6 Sections',
+      'Editorial-Design + Custom-Animationen',
+      'Premium-SEO (technisch + lokal)',
+      'Google-Maps &amp; Bewertungs-Integration',
+      'Anfrageformular mit Validierung',
+      'Lighthouse 95+ Performance',
+      '2 Korrekturschleifen inklusive',
+    ],
+    demos: [
+      {
+        name: 'Holtkamp',
+        category: 'Elektrotechnik',
+        href: '/demos/elektro/index.html',
+        theme: 'elektro',
+        headline: 'Strom. W&auml;rme.',
+        available: true,
+      },
+    ],
+    cta: 'Growth waehlen',
+    variant: 'featured',
+    badge: 'Beliebteste Wahl',
+  },
+  {
+    index: '03',
+    name: 'Premium',
+    tagline: 'Verkaufsstark. Animiert. Einzigartig.',
+    description:
+      'Wenn Ihr Auftritt auf Awwwards-Niveau spielen soll. Aufwendiges Storytelling, hoechste Conversion &mdash; eine Seite, die nicht vergessen wird.',
+    price: '&euro; 2.299',
+    delivery: '10&ndash;16 Werktage',
+    features: [
+      'Voll animierter Onepager (GSAP, Lenis, Custom-Cursor)',
+      'Bildrecherche &amp; Auswahl passend zur Marke',
+      'Optimierte CTA-Strecken &amp; Conversion-Layout',
+      'Erweiterte SEO + Google Business Einrichtung',
+      'GA4 + Conversion-Tracking',
+      'Unbegrenzte Korrekturschleifen',
+    ],
+    demos: [
+      {
+        name: 'Studio Sept',
+        category: 'Friseur',
+        href: '/demos/friseur/index.html',
+        theme: 'friseur',
+        headline: '&Agrave; la coupe',
+        available: true,
+      },
+    ],
+    cta: 'Premium anfragen',
+    variant: 'premium',
+  },
+];
+
+const multiPagePlans: readonly Plan[] = [
+  {
+    index: '01',
+    name: 'Basic',
+    tagline: 'Ihr Unternehmen, klar strukturiert.',
+    description:
+      'Die mehrseitige Basis fuer etablierte Selbststaendige, die mehr Tiefe brauchen &mdash; Vertrauen durch Struktur, ohne Schnickschnack.',
+    price: '&euro; 1.499',
+    delivery: '14&ndash;21 Werktage',
+    features: [
+      '4&ndash;5 Seiten (Start, &Uuml;ber, Leistungen, Kontakt + 1)',
+      'Editorial-Design, voll responsiv',
+      'Basis-CMS fuer eigenstaendige Pflege',
+      'SEO-Grundlagen + lokale Optimierung',
+      'Ladezeit unter 2 Sekunden',
+      'SSL &amp; Sicherheits-Setup',
+    ],
+    demos: [
+      {
+        name: 'Kruse Bau+',
+        category: 'Handwerk &middot; Multi-Page',
+        theme: 'handwerker',
+        headline: 'Case-Studies &middot; Anfrage',
+        available: false,
+      },
+    ],
+    cta: 'Basic anfragen',
+    variant: 'starter',
+  },
+  {
+    index: '02',
+    name: 'Business',
+    tagline: 'Skalieren. Vertrauen aufbauen. Wachsen.',
+    description:
+      'Fuer wachsende Unternehmen, die ihre Website als Wachstumsmotor nutzen. Tiefe, Story und Lead-Funnel in einem konsistenten Auftritt.',
+    price: '&euro; 2.799',
+    delivery: '4&ndash;6 Wochen',
+    features: [
+      '6&ndash;10 Seiten inkl. Blog oder Case-Studies',
+      'Erweitertes CMS mit eigenen Modulen',
+      'SEO-Strategie + Content-Architektur',
+      'Custom-Animationen &amp; Story-Sections',
+      'DE/EN-Mehrsprachigkeit auf Wunsch',
+      'Lead-Funnel- / Newsletter-Anbindung',
+      'GA4 + Conversion-Tracking',
+      '3 Korrekturschleifen inklusive',
+    ],
+    demos: [
+      {
+        name: 'Holtkamp+',
+        category: 'Elektrotechnik &middot; Multi-Page',
+        theme: 'elektro',
+        headline: 'Leistungen &middot; Projekte',
+        available: false,
+      },
+      {
+        name: 'Bella Notte+',
+        category: 'Pizzeria &middot; Multi-Page',
+        theme: 'pizzeria',
+        headline: 'Speisekarte &middot; Story',
+        available: false,
+      },
+    ],
+    cta: 'Business buchen',
+    variant: 'featured',
+    badge: 'Beliebteste Wahl',
+  },
+  {
+    index: '03',
+    name: 'Pro',
+    tagline: 'Der digitale Auftritt, der gewinnt.',
+    description:
+      'Fuer etablierte Marken, die maximale Tiefe und Wirkung brauchen. Konzipiert, gestaltet und gebaut wie ein Studio-Flagship.',
+    price: '&euro; 4.499',
+    delivery: '6&ndash;8 Wochen',
+    features: [
+      'Unbegrenzte Seiten + Custom-Module',
+      'Headless-CMS auf Wunsch (Sanity, Storyblok)',
+      'Premium-SEO + Content-Strategie',
+      'Bildrecherche &amp; Stock-Foto Direktion',
+      'Komplexe Animationen &amp; Interaktionen',
+      'Performance-Garantie Lighthouse 95+',
+      'E-Commerce-Anbindung moeglich',
+      'Kickoff-Gespraech &amp; Anforderungsanalyse',
+    ],
+    demos: [
+      {
+        name: 'Studio Sept+',
+        category: 'Friseur &middot; Multi-Page',
+        theme: 'friseur',
+        headline: 'Lookbook &middot; Team',
+        available: false,
+      },
+    ],
+    cta: 'Pro anfragen',
+    variant: 'premium',
+  },
+];
+
+const supportInclusions = [
+  'Domain (.de oder .com) inklusive',
+  'Cloudflare Hosting inklusive',
+  'SSL-Zertifikat automatisch',
+  'Inhalts-Aenderungen (Texte, Bilder)',
+  'Bug-Fixes &amp; technischer Support',
+] as const;
+---
+
+<section class="pricing" aria-labelledby="pricing-title">
+  <div class="pricing__inner">
+    <header class="pricing__header">
+      <span class="pricing__eyebrow">
+        <span class="dash" aria-hidden="true"></span>
+        Pakete / 03
+      </span>
+
+      <SplitText
+        as="h2"
+        by="words"
+        stagger={0.05}
+        class="pricing__title"
+        id="pricing-title"
+      >
+        Klare Pakete.
+      </SplitText>
+
+      <p class="pricing__intro">
+        Drei Stufen pro Format &mdash; vom fokussierten Einstieg bis zum Premium-Auftritt.
+        Domain, Hosting und Support in jedem Paket inklusive. Keine
+        Vertragsfalle, keine versteckten Aufschl&auml;ge.
+      </p>
+    </header>
+
+    <!-- ============== Master Toggle ========================================= -->
+    <div class="pricing__sync" data-sync data-active="one-pager">
+      <div
+        class="demo-toggle pricing__master-toggle"
+        role="tablist"
+        aria-label="Format w&auml;hlen"
+        data-toggle
+      >
+        <span class="demo-toggle__thumb" aria-hidden="true"></span>
+        <button
+          type="button"
+          class="demo-toggle__option is-active"
+          role="tab"
+          aria-selected="true"
+          data-target="one-pager"
+          data-cursor-hover
+        >
+          One-Pager &middot; 599 &ndash; 2.299 &euro;
+        </button>
+        <button
+          type="button"
+          class="demo-toggle__option"
+          role="tab"
+          aria-selected="false"
+          data-target="multi-page"
+          data-cursor-hover
+        >
+          Multi-Page &middot; 1.499 &ndash; 4.499 &euro;
+        </button>
+      </div>
+
+      <!-- ============== Plan-Panels ========================================== -->
+      <div class="plans-panels">
+
+        <!-- One-Pager -->
+        <div class="plans-panel is-active" role="tabpanel" data-panel="one-pager" aria-label="One-Pager Pakete">
+          <div class="pricing__grid">
+            <RevealOnScroll class="pricing__grid-inner" stagger={0.1} y={50}>
+              {onePagerPlans.map((plan) => (
+                <article class:list={['plan', `plan--${plan.variant}`]} data-cursor-hover>
+                  {plan.badge && <span class="plan__badge mono-label">{plan.badge}</span>}
+
+                  <header class="plan__head">
+                    <span class="plan__index mono-label">{plan.index} / One-Pager</span>
+                    <h3 class="plan__name" set:html={plan.name} />
+                    <p class="plan__tagline" set:html={plan.tagline} />
+                  </header>
+
+                  <div class="plan__price">
+                    <span class="plan__price-amount" set:html={plan.price} />
+                    <span class="plan__price-suffix">einmalig</span>
+                  </div>
+
+                  <p class="plan__delivery mono-label">
+                    <span class="dash" aria-hidden="true" />
+                    Lieferzeit <span set:html={plan.delivery} />
+                  </p>
+
+                  <p class="plan__description" set:html={plan.description} />
+
+                  <ul class="plan__features">
+                    {plan.features.map((f) => (
+                      <li>
+                        <span class="plan__check" aria-hidden="true">+</span>
+                        <span set:html={f} />
+                      </li>
+                    ))}
+                    <li class="plan__feature--included">
+                      <span class="plan__check" aria-hidden="true">&#9733;</span>
+                      Domain, Hosting &amp; Support inklusive
+                    </li>
+                  </ul>
+
+                  <!-- Demo-Vorschau -->
+                  <div class="plan__preview">
+                    <span class="plan__preview-label">Wie Ihre Website aussehen k&ouml;nnte</span>
+                    <div class:list={['plan__preview-row', plan.demos.length > 1 && 'plan__preview-row--two']}>
+                      {plan.demos.map((demo) => (
+                        demo.available
+                          ? (
+                            <a href={demo.href} class:list={['plan__demo-chip', `plan__demo-chip--${demo.theme}`]} data-cursor-hover>
+                              <span class="plan__demo-chip-bg" data-theme={demo.theme}>
+                                <span class="plan__demo-chip-overlay" />
+                                <span class="plan__demo-chip-headline" set:html={demo.headline} />
+                              </span>
+                              <span class="plan__demo-chip-meta">
+                                <span class="plan__demo-chip-name">{demo.name}</span>
+                                <span class="plan__demo-chip-cat" set:html={demo.category} />
+                              </span>
+                            </a>
+                          )
+                          : (
+                            <div class:list={['plan__demo-chip', 'plan__demo-chip--soon', `plan__demo-chip--${demo.theme}`]}>
+                              <span class="plan__demo-chip-bg" data-theme={demo.theme}>
+                                <span class="plan__demo-chip-overlay" />
+                                <span class="plan__demo-chip-hatch" />
+                                <span class="plan__demo-chip-soon-label">In Vorbereitung</span>
+                                <span class="plan__demo-chip-headline" set:html={demo.headline} />
+                              </span>
+                              <span class="plan__demo-chip-meta">
+                                <span class="plan__demo-chip-name">{demo.name}</span>
+                                <span class="plan__demo-chip-cat" set:html={demo.category} />
+                              </span>
+                            </div>
+                          )
+                      ))}
+                    </div>
+                    {plan.demos.some(d => d.available) && (
+                      <a href={plan.demos.find(d => d.available)?.href} class="plan__preview-link" data-cursor-hover>
+                        Demos ansehen <span aria-hidden="true">&rarr;</span>
+                      </a>
+                    )}
+                  </div>
+
+                  <div class="plan__cta">
+                    <MagneticButton
+                      href="/kontakt"
+                      variant={plan.variant === 'featured' ? 'primary' : 'ghost'}
+                      strength={0.25}
+                      class="plan__btn"
+                    >
+                      <span set:html={plan.cta} />
+                      <span aria-hidden="true">&rarr;</span>
+                    </MagneticButton>
+                  </div>
+                </article>
+              ))}
+            </RevealOnScroll>
+          </div>
+        </div>
+
+        <!-- Multi-Page -->
+        <div class="plans-panel" role="tabpanel" data-panel="multi-page" aria-label="Multi-Page Pakete" hidden>
+          <div class="pricing__grid">
+            <RevealOnScroll class="pricing__grid-inner" stagger={0.1} y={50}>
+              {multiPagePlans.map((plan) => (
+                <article class:list={['plan', `plan--${plan.variant}`]} data-cursor-hover>
+                  {plan.badge && <span class="plan__badge mono-label">{plan.badge}</span>}
+
+                  <header class="plan__head">
+                    <span class="plan__index mono-label">{plan.index} / Multi-Page</span>
+                    <h3 class="plan__name" set:html={plan.name} />
+                    <p class="plan__tagline" set:html={plan.tagline} />
+                  </header>
+
+                  <div class="plan__price">
+                    <span class="plan__price-amount" set:html={plan.price} />
+                    <span class="plan__price-suffix">einmalig</span>
+                  </div>
+
+                  <p class="plan__delivery mono-label">
+                    <span class="dash" aria-hidden="true" />
+                    Lieferzeit <span set:html={plan.delivery} />
+                  </p>
+
+                  <p class="plan__description" set:html={plan.description} />
+
+                  <ul class="plan__features">
+                    {plan.features.map((f) => (
+                      <li>
+                        <span class="plan__check" aria-hidden="true">+</span>
+                        <span set:html={f} />
+                      </li>
+                    ))}
+                    <li class="plan__feature--included">
+                      <span class="plan__check" aria-hidden="true">&#9733;</span>
+                      Domain, Hosting &amp; Support inklusive
+                    </li>
+                  </ul>
+
+                  <!-- Demo-Vorschau -->
+                  <div class="plan__preview">
+                    <span class="plan__preview-label">Wie Ihre Website aussehen k&ouml;nnte</span>
+                    <div class:list={['plan__preview-row', plan.demos.length > 1 && 'plan__preview-row--two']}>
+                      {plan.demos.map((demo) => (
+                        <div class:list={['plan__demo-chip', 'plan__demo-chip--soon', `plan__demo-chip--${demo.theme}`]}>
+                          <span class="plan__demo-chip-bg" data-theme={demo.theme}>
+                            <span class="plan__demo-chip-overlay" />
+                            <span class="plan__demo-chip-hatch" />
+                            <span class="plan__demo-chip-soon-label">In Vorbereitung</span>
+                            <span class="plan__demo-chip-headline" set:html={demo.headline} />
+                          </span>
+                          <span class="plan__demo-chip-meta">
+                            <span class="plan__demo-chip-name">{demo.name}</span>
+                            <span class="plan__demo-chip-cat" set:html={demo.category} />
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div class="plan__cta">
+                    <MagneticButton
+                      href="/kontakt"
+                      variant={plan.variant === 'featured' ? 'primary' : 'ghost'}
+                      strength={0.25}
+                      class="plan__btn"
+                    >
+                      <span set:html={plan.cta} />
+                      <span aria-hidden="true">&rarr;</span>
+                    </MagneticButton>
+                  </div>
+                </article>
+              ))}
+            </RevealOnScroll>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============== Support-Inklusiv-Banner =============================== -->
+    <aside class="support-banner" aria-label="Im Preis enthaltener Support">
+      <div class="support-banner__head">
+        <span class="support-banner__icon" aria-hidden="true">&#9733;</span>
+        <div>
+          <h4 class="support-banner__title">
+            Domain, Hosting &amp; Support &mdash; alles inklusive
+          </h4>
+          <p class="support-banner__sub">
+            <strong>&euro; 34,99 / Monat</strong> &mdash; kein Aufpreis, kein Add-On.
+            Jederzeit monatlich k&uuml;ndbar.
+          </p>
+        </div>
+      </div>
+      <ul class="support-banner__list">
+        {supportInclusions.map((f) => (
+          <li>
+            <span class="support-banner__check" aria-hidden="true">+</span>
+            <span set:html={f} />
+          </li>
+        ))}
+      </ul>
+    </aside>
+
+    <footer class="pricing__footer">
+      <p class="pricing__note">
+        Alle Preise zzgl. 19&nbsp;% USt. Monatliche K&uuml;ndigung jederzeit m&ouml;glich.
+        Domain-Registrierung im ersten Monat enthalten &mdash; keine versteckten Aufschl&auml;ge.
+      </p>
+    </footer>
+  </div>
+</section>
+
+<style>
+  .pricing {
+    position: relative;
+    padding-block: var(--space-8);
+    padding-inline: var(--container-pad);
+    background-color: color-mix(in srgb, var(--color-text) 4%, var(--color-bg));
+  }
+
+  .pricing__inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .pricing__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 60rem;
+  }
+
+  .pricing__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-muted);
+  }
+
+  .dash {
+    display: inline-block;
+    width: 2.5rem;
+    height: 1px;
+    background-color: currentColor;
+  }
+
+  .pricing__title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+  }
+
+  .pricing__intro {
+    font-size: var(--text-lg);
+    line-height: 1.5;
+    max-width: 52ch;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+  }
+
+  /* ===== Master Toggle =================================================== */
+  .pricing__sync {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .pricing__master-toggle {
+    max-width: 36rem;
+  }
+
+  /* ===== Plan-Panels Crossfade ========================================== */
+  .plans-panels { position: relative; }
+
+  .plans-panel {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.45s cubic-bezier(0.32, 0.72, 0, 1),
+      transform 0.45s cubic-bezier(0.32, 0.72, 0, 1);
+    pointer-events: none;
+  }
+  .plans-panel.is-active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .plans-panel[hidden] { display: none; }
+
+  /* ===== 3-Column Plan Grid ============================================== */
+  .pricing__grid :global(.pricing__grid-inner) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1rem, 2vw, 1.5rem);
+    align-items: stretch;
+  }
+
+  @media (max-width: 1100px) {
+    .pricing__grid :global(.pricing__grid-inner) {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+  }
+
+  /* ===== Plan card ======================================================== */
+  .plan {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: clamp(1.5rem, 2.2vw, 2rem);
+    border: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg);
+    cursor: none;
+    transition: transform 0.5s var(--ease-out-expo),
+      border-color 0.4s var(--ease-out-expo);
+    isolation: isolate;
+    height: 100%;
+  }
+
+  .plan:hover { transform: translateY(-4px); }
+
+  .plan--featured {
+    border-color: var(--color-accent);
+    box-shadow:
+      0 1px 0 0 color-mix(in srgb, var(--color-accent) 25%, transparent),
+      0 20px 40px -20px color-mix(in srgb, var(--color-accent) 35%, transparent);
+  }
+
+  .plan--featured::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--color-accent) 0%, transparent 60%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  @media (min-width: 1101px) {
+    .plan--featured { transform: translateY(-12px); }
+    .plan--featured:hover { transform: translateY(-16px); }
+  }
+
+  .plan--premium {
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-text) 3%, var(--color-bg)) 0%,
+      var(--color-bg) 100%
+    );
+  }
+
+  .plan__badge {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: color-mix(in srgb, var(--color-text) 88%, transparent);
+    color: var(--color-bg);
+    padding: 0.45rem 0.9rem;
+    border-radius: 9999px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .plan--featured .plan__badge {
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  .plan__head { display: flex; flex-direction: column; gap: 0.4rem; }
+  .plan__index { color: var(--color-muted); }
+
+  .plan__name {
+    font-family: var(--font-display);
+    font-size: clamp(1.875rem, 2.6vw, 2.5rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .plan__tagline {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-style: italic;
+    color: color-mix(in srgb, var(--color-text) 70%, transparent);
+    margin: 0;
+  }
+
+  .plan__price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+    padding-block: 0.6rem 0.4rem;
+  }
+
+  .plan__price-suffix {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+  }
+
+  .plan__price-amount {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 3.5vw, 3rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .plan--featured .plan__price-amount { color: var(--color-accent); }
+
+  .plan__delivery {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-muted);
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+    margin: 0;
+  }
+  .plan__delivery .dash { width: 1.5rem; }
+
+  .plan__description {
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+  }
+
+  .plan__features {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .plan__features li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    font-size: var(--text-sm);
+    line-height: 1.4;
+    color: color-mix(in srgb, var(--color-text) 88%, transparent);
+  }
+
+  .plan__check {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .plan__feature--included {
+    margin-top: 0.35rem;
+    padding-top: 0.55rem;
+    border-top: 1px dashed color-mix(in srgb, var(--color-text) 14%, transparent);
+    color: var(--color-text) !important;
+    font-weight: 500;
+  }
+  .plan__feature--included .plan__check { color: var(--color-accent); }
+
+  /* ===== Demo-Vorschau im Plan ============================================ */
+  .plan__preview {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+    margin-top: 0.25rem;
+  }
+
+  .plan__preview-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-muted);
+  }
+
+  .plan__preview-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+  .plan__preview-row--two {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .plan__demo-chip {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    text-decoration: none;
+    color: inherit;
+    cursor: none;
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+
+  a.plan__demo-chip:hover { transform: translateY(-2px); }
+
+  .plan__demo-chip-bg {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    padding: 0.5rem 0.65rem;
+    isolation: isolate;
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+
+  a.plan__demo-chip:hover .plan__demo-chip-bg { transform: scale(1.02); }
+
+  .plan__demo-chip--soon .plan__demo-chip-bg {
+    border: 1px dashed color-mix(in srgb, var(--color-text) 20%, transparent);
+  }
+
+  .plan__demo-chip-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.85;
+    pointer-events: none;
+  }
+
+  .plan__demo-chip-hatch {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      135deg,
+      transparent 0,
+      transparent 10px,
+      color-mix(in srgb, currentColor 12%, transparent) 10px,
+      color-mix(in srgb, currentColor 12%, transparent) 11px
+    );
+    opacity: 0.4;
+  }
+
+  .plan__demo-chip-soon-label {
+    position: absolute;
+    top: 0.4rem;
+    left: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.2rem 0.45rem;
+    border-radius: 9999px;
+    background-color: color-mix(in srgb, currentColor 12%, transparent);
+    border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+    z-index: 1;
+  }
+
+  .plan__demo-chip-headline {
+    font-family: var(--font-display);
+    font-size: clamp(0.75rem, 1.1vw, 1rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+    z-index: 1;
+    position: relative;
+  }
+
+  .plan__demo-chip-meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.35rem;
+  }
+
+  .plan__demo-chip-name {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .plan__demo-chip-cat {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+  }
+
+  .plan__preview-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: gap 0.3s var(--ease-out-expo);
+  }
+  .plan__preview-link:hover { gap: 0.55rem; }
+
+  /* Theme-Farben fuer Demo-Chips */
+  .plan__demo-chip--pizzeria .plan__demo-chip-bg {
+    background-color: #F8F2E8;
+    color: #A8261B;
+  }
+  .plan__demo-chip--pizzeria .plan__demo-chip-headline { font-style: italic; }
+  .plan__demo-chip--pizzeria .plan__demo-chip-overlay {
+    background:
+      radial-gradient(circle at 20% 80%, #C44536 0%, transparent 55%),
+      radial-gradient(circle at 90% 20%, #E8B547 0%, transparent 45%);
+    opacity: 0.22;
+  }
+
+  .plan__demo-chip--elektro .plan__demo-chip-bg {
+    background-color: #0E0E0C;
+    color: #FFD60A;
+  }
+  .plan__demo-chip--elektro .plan__demo-chip-headline {
+    text-transform: uppercase;
+    font-family: 'Anton', 'Bebas Neue', 'Arial Narrow Bold', sans-serif;
+    letter-spacing: 0.02em;
+  }
+  .plan__demo-chip--elektro .plan__demo-chip-overlay {
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 20px,
+      color-mix(in srgb, #FFD60A 8%, transparent) 20px,
+      color-mix(in srgb, #FFD60A 8%, transparent) 21px
+    );
+    opacity: 0.6;
+  }
+
+  .plan__demo-chip--friseur .plan__demo-chip-bg {
+    background-color: #F8F4ED;
+    color: #3A2438;
+  }
+  .plan__demo-chip--friseur .plan__demo-chip-headline { font-style: italic; }
+  .plan__demo-chip--friseur .plan__demo-chip-overlay {
+    background:
+      radial-gradient(circle at 80% 70%, #F4C5B5 0%, transparent 50%),
+      radial-gradient(circle at 10% 30%, #B5C4A8 0%, transparent 45%);
+    opacity: 0.45;
+  }
+
+  .plan__demo-chip--handwerker .plan__demo-chip-bg {
+    background-color: #EFEAE0;
+    color: #3A2C1F;
+  }
+  .plan__demo-chip--handwerker .plan__demo-chip-headline { font-weight: 600; }
+  .plan__demo-chip--handwerker .plan__demo-chip-overlay {
+    background:
+      linear-gradient(135deg, transparent 30%, #C75D2F 130%),
+      linear-gradient(45deg, transparent 60%, #5A6E4F 200%);
+    opacity: 0.22;
+  }
+
+  /* ===== Plan CTA ========================================================= */
+  .plan__cta {
+    margin-top: auto;
+    padding-top: 0.5rem;
+  }
+  .plan__cta :global(.magnetic-btn) { width: 100%; }
+
+  /* ===== Support-Inklusiv-Banner ========================================= */
+  .support-banner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    align-items: center;
+    padding: clamp(1.25rem, 2.5vw, 2rem) clamp(1.25rem, 3vw, 2rem);
+    border: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+    border-radius: var(--radius-lg);
+    background:
+      linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--color-accent) 8%, transparent) 0%,
+        color-mix(in srgb, var(--color-accent) 2%, transparent) 100%
+      ),
+      var(--color-bg);
+  }
+
+  @media (max-width: 800px) { .support-banner { grid-template-columns: 1fr; } }
+
+  .support-banner__head { display: flex; align-items: flex-start; gap: 1rem; }
+
+  .support-banner__icon {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 9999px;
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+    font-size: 1rem;
+  }
+
+  .support-banner__title {
+    margin: 0 0 0.35rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+  }
+
+  .support-banner__sub {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+  .support-banner__sub strong { color: var(--color-text); font-weight: 500; }
+
+  .support-banner__list {
+    display: grid;
+    gap: 0.4rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .support-banner__list li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    font-size: var(--text-sm);
+    color: color-mix(in srgb, var(--color-text) 88%, transparent);
+  }
+
+  .support-banner__check {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    line-height: 1;
+  }
+
+  /* ===== Footer =========================================================== */
+  .pricing__footer {
+    padding-top: var(--space-3);
+    border-top: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+  }
+
+  .pricing__note {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    color: var(--color-muted);
+    max-width: 64ch;
+  }
+
+  /* ===== Toggle =========================================================== */
+  .demo-toggle {
+    --toggle-pad: 5px;
+    position: relative;
+    display: flex;
+    width: 100%;
+    padding: var(--toggle-pad);
+    background-color: color-mix(in srgb, var(--color-text) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+    border-radius: 9999px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    isolation: isolate;
+  }
+
+  .demo-toggle__thumb {
+    position: absolute;
+    top: var(--toggle-pad);
+    left: var(--toggle-pad);
+    height: calc(100% - var(--toggle-pad) * 2);
+    width: calc(50% - var(--toggle-pad));
+    background-color: var(--color-text);
+    border-radius: 9999px;
+    box-shadow:
+      0 1px 2px color-mix(in srgb, var(--color-text) 20%, transparent),
+      0 4px 16px color-mix(in srgb, var(--color-text) 12%, transparent);
+    transition: transform 0.45s cubic-bezier(0.32, 0.72, 0, 1);
+    z-index: 0;
+    will-change: transform;
+  }
+
+  .demo-toggle[data-active='multi-page'] .demo-toggle__thumb {
+    transform: translateX(100%);
+  }
+
+  .demo-toggle__option {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 1rem;
+    background: none;
+    border: none;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: color-mix(in srgb, var(--color-text) 65%, transparent);
+    cursor: none;
+    border-radius: 9999px;
+    transition: color 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+    -webkit-tap-highlight-color: transparent;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .demo-toggle__option:hover { color: var(--color-text); }
+  .demo-toggle__option.is-active { color: var(--color-bg); }
+  .demo-toggle__option:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .demo-toggle__thumb,
+    .plans-panel,
+    .demo-toggle__option {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const init = () => {
+    const syncRoot = document.querySelector<HTMLElement>('[data-sync]');
+    if (!syncRoot) return;
+
+    const toggle = syncRoot.querySelector<HTMLElement>('[data-toggle]');
+    if (!toggle) return;
+
+    const options = Array.from(toggle.querySelectorAll<HTMLButtonElement>('.demo-toggle__option'));
+    const panels = Array.from(syncRoot.querySelectorAll<HTMLElement>('[data-panel]'));
+
+    const setActive = (target: string) => {
+      if (syncRoot.dataset.active === target) return;
+      syncRoot.dataset.active = target;
+      toggle.dataset.active = target;
+
+      options.forEach((opt) => {
+        const isActive = opt.dataset.target === target;
+        opt.classList.toggle('is-active', isActive);
+        opt.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+
+      const outgoing = panels.find((p) => p.classList.contains('is-active'));
+      const incoming = panels.find((p) => p.dataset.panel === target);
+      if (!incoming) return;
+
+      if (outgoing && outgoing !== incoming) {
+        outgoing.classList.remove('is-active');
+        window.setTimeout(() => outgoing.setAttribute('hidden', ''), 200);
+      }
+
+      incoming.removeAttribute('hidden');
+      void incoming.offsetWidth;
+      window.setTimeout(
+        () => incoming.classList.add('is-active'),
+        outgoing && outgoing !== incoming ? 200 : 0
+      );
+    };
+
+    options.forEach((opt) => {
+      opt.addEventListener('click', () => {
+        if (opt.dataset.target) setActive(opt.dataset.target);
+      });
+    });
+
+    toggle.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      e.preventDefault();
+      const idx = options.findIndex((o) => o.classList.contains('is-active'));
+      const next =
+        e.key === 'ArrowRight'
+          ? options[(idx + 1) % options.length]
+          : options[(idx - 1 + options.length) % options.length];
+      next.focus();
+      if (next.dataset.target) setActive(next.dataset.target);
+    });
+  };
+
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

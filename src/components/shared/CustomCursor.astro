@@ -1,0 +1,101 @@
+---
+interface Props {
+  /** Größe des Punkts in px */
+  dotSize?: number;
+  /** Größe des Rings in px */
+  ringSize?: number;
+  /** Mix-Blend-Mode (z.B. "difference" für invertierten Cursor) */
+  blendMode?: 'normal' | 'difference' | 'exclusion' | 'multiply';
+  /** Skala beim Hover */
+  hoverScale?: number;
+  /** Lerp-Faktor für den Ring */
+  ringLerp?: number;
+}
+
+const {
+  dotSize = 6,
+  ringSize = 36,
+  blendMode = 'difference',
+  hoverScale = 2.2,
+  ringLerp = 0.18,
+} = Astro.props;
+---
+
+<div
+  class="custom-cursor"
+  data-cursor-dot
+  style={`--dot-size: ${dotSize}px; --blend: ${blendMode};`}
+  aria-hidden="true"
+></div>
+<div
+  class="custom-cursor-follower"
+  data-cursor-ring
+  style={`--ring-size: ${ringSize}px; --blend: ${blendMode};`}
+  aria-hidden="true"
+></div>
+
+<style>
+  .custom-cursor,
+  .custom-cursor-follower {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: var(--z-cursor);
+    border-radius: 50%;
+    visibility: hidden;
+    opacity: 0;
+    will-change: transform;
+    mix-blend-mode: var(--blend);
+  }
+
+  .custom-cursor {
+    width: var(--dot-size);
+    height: var(--dot-size);
+    background-color: var(--color-text);
+    transform: translate(-50%, -50%);
+    margin: calc(var(--dot-size) / -2) 0 0 calc(var(--dot-size) / -2);
+  }
+
+  .custom-cursor-follower {
+    width: var(--ring-size);
+    height: var(--ring-size);
+    border: 1.5px solid var(--color-text);
+    transform: translate(-50%, -50%);
+    margin: calc(var(--ring-size) / -2) 0 0 calc(var(--ring-size) / -2);
+    transition: border-color 0.2s ease;
+  }
+
+  .custom-cursor-follower[data-cursor-state='hover'] {
+    border-color: var(--color-accent);
+  }
+</style>
+
+<script
+  is:inline
+  define:vars={{ ringLerp, hoverScale }}
+  data-cursor-config
+></script>
+
+<script>
+  import { initCustomCursor } from '@lib/cursor';
+
+  let cleanup: (() => void) | null = null;
+
+  const start = () => {
+    cleanup?.();
+    const config = document.querySelector('[data-cursor-config]');
+    const ringLerp = parseFloat(config?.getAttribute('data-ring-lerp') ?? '0.18');
+    const hoverScale = parseFloat(config?.getAttribute('data-hover-scale') ?? '2.2');
+    cleanup = initCustomCursor({ ringLerp, hoverScale });
+  };
+
+  const stop = () => {
+    cleanup?.();
+    cleanup = null;
+  };
+
+  start();
+  document.addEventListener('astro:page-load', start);
+  document.addEventListener('astro:before-swap', stop);
+</script>

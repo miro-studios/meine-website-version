@@ -1,0 +1,51 @@
+---
+/**
+ * HeroScene — Shader-distorted Sphere im Hero-Hintergrund.
+ *
+ * Markup-Wrapper. Die eigentliche Three.js-Logik (Geometry, Lighting,
+ * Custom-Shader, Maus-Parallax, Scroll-Coupling) lebt in
+ * `src/lib/hero-scene-init.ts` und wird unten als Module-Script eingebunden.
+ *
+ * Astro bündelt Three.js via Vite — kein CDN, kein Cold-Start-Glitch.
+ */
+---
+
+<div class="hero-scene" data-hero-scene aria-hidden="true">
+  <canvas class="hero-scene__canvas" data-hero-scene-canvas></canvas>
+  <div class="hero-scene__overlay" data-hero-scene-overlay></div>
+</div>
+
+<style>
+  .hero-scene {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .hero-scene__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .hero-scene__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 70%,
+      var(--color-bg, #0a0a0a) 100%
+    );
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  import { initHeroScene } from '@lib/hero-scene-init';
+  initHeroScene();
+</script>

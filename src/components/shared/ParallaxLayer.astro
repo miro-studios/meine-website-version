@@ -1,0 +1,117 @@
+---
+/**
+ * ParallaxLayer — wickelt Inhalt in einen Tiefen-Layer mit
+ * scroll-gesteuertem Speed, optionaler Skala und optionalem Blur.
+ *
+ * Verwendung:
+ *   <div class="my-section" data-parallax-trigger>
+ *     <ParallaxLayer depth="background"> ... </ParallaxLayer>
+ *     <ParallaxLayer depth="midground"> ... </ParallaxLayer>
+ *     <ParallaxLayer depth="foreground"> ... </ParallaxLayer>
+ *   </div>
+ *
+ * Tiefen-Presets sind weich abgestimmt (subtle, kein "billiger" Effekt).
+ * Wer feiner steuern will, übergibt `speed`, `scale` und `blur` direkt.
+ */
+
+export type ParallaxDepth = 'background' | 'midground' | 'foreground' | 'custom';
+
+interface Props {
+  /** Tiefen-Preset. */
+  depth?: ParallaxDepth;
+  /** Override: Speed-Faktor (< 1 = langsamer, > 1 = schneller). */
+  speed?: number;
+  /** Override: Skala-Hub am Ende des Scroll-Ranges (z. B. 0.05 = 5 %). */
+  scale?: number;
+  /** Override: Blur-Hub in px (sinnvoll für Background-Layer). */
+  blur?: number;
+  /** Zusätzliche Klassen. */
+  class?: string;
+  /** Optional: HTML-Tag (default: div). */
+  as?: keyof HTMLElementTagNameMap;
+}
+
+const PRESETS: Record<
+  Exclude<ParallaxDepth, 'custom'>,
+  { speed: number; scale: number; blur: number }
+> = {
+  background: { speed: 0.35, scale: 0.04, blur: 1.5 },
+  midground: { speed: 0.7, scale: 0, blur: 0 },
+  foreground: { speed: 1.15, scale: 0.02, blur: 0 },
+};
+
+const {
+  depth = 'midground',
+  speed,
+  scale,
+  blur,
+  class: className = '',
+  as: Tag = 'div',
+} = Astro.props;
+
+const preset = depth !== 'custom' ? PRESETS[depth] : { speed: 1, scale: 0, blur: 0 };
+const finalSpeed = speed ?? preset.speed;
+const finalScale = scale ?? preset.scale;
+const finalBlur = blur ?? preset.blur;
+---
+
+<Tag
+  class:list={['parallax-layer', `parallax-layer--${depth}`, className]}
+  data-parallax
+  data-parallax-speed={finalSpeed.toString()}
+  data-parallax-scale={finalScale.toString()}
+  data-parallax-blur={finalBlur.toString()}
+>
+  <slot />
+</Tag>
+
+<style>
+  .parallax-layer {
+    position: relative;
+    will-change: transform, filter;
+    backface-visibility: hidden;
+  }
+
+  /* z-index-Defaults — kann pro Section überschrieben werden. */
+  .parallax-layer--background {
+    z-index: 0;
+  }
+  .parallax-layer--midground {
+    z-index: 1;
+  }
+  .parallax-layer--foreground {
+    z-index: 2;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .parallax-layer {
+      will-change: auto;
+      transform: none !important;
+      filter: none !important;
+    }
+  }
+</style>
+
+<script>
+  import { initParallaxLayers, initMouseParallax } from '@lib/parallax';
+
+  let cleanupScroll: (() => void) | null = null;
+  let cleanupMouse: (() => void) | null = null;
+
+  const start = () => {
+    cleanupScroll?.();
+    cleanupMouse?.();
+    cleanupScroll = initParallaxLayers();
+    cleanupMouse = initMouseParallax();
+  };
+  const stop = () => {
+    cleanupScroll?.();
+    cleanupMouse?.();
+    cleanupScroll = null;
+    cleanupMouse = null;
+  };
+
+  start();
+  document.addEventListener('astro:page-load', start);
+  document.addEventListener('astro:before-swap', stop);
+</script>

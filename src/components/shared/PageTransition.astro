@@ -1,0 +1,100 @@
+---
+/**
+ * Page-Transition-Wrapper: Slide-Up-Cover-Mask zwischen Routen.
+ * Nutzt Astro's `astro:before-preparation` und `astro:after-swap` Events
+ * um eine Mask-Animation zu choreografieren, die View-Transitions ergänzt.
+ *
+ * In den BaseLayout einbauen (genau einmal pro Page).
+ */
+
+interface Props {
+  /** Mask-Farbe (default: theme-bg) */
+  color?: string;
+  /** Dauer in ms */
+  duration?: number;
+}
+
+const { color = 'var(--color-bg)', duration = 700 } = Astro.props;
+---
+
+<div
+  class="page-transition"
+  data-page-transition
+  style={`--mask-color: ${color}; --mask-duration: ${duration}ms;`}
+  aria-hidden="true"
+>
+  <div class="page-transition__panel" data-page-transition-panel></div>
+</div>
+
+<style>
+  .page-transition {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: var(--z-modal);
+  }
+
+  .page-transition__panel {
+    position: absolute;
+    inset: 0;
+    background-color: var(--mask-color);
+    transform: translateY(100%);
+    transform-origin: bottom center;
+    will-change: transform;
+  }
+
+  .page-transition[data-state='covering'] .page-transition__panel {
+    animation: page-cover var(--mask-duration) var(--ease-in-out-quart) forwards;
+  }
+
+  .page-transition[data-state='revealing'] .page-transition__panel {
+    animation: page-reveal var(--mask-duration) var(--ease-in-out-quart) forwards;
+  }
+
+  @keyframes page-cover {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes page-reveal {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-100%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page-transition {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const overlay = () =>
+    document.querySelector<HTMLElement>('[data-page-transition]');
+
+  const setState = (state: 'covering' | 'revealing' | null) => {
+    const el = overlay();
+    if (!el) return;
+    if (state) el.setAttribute('data-state', state);
+    else el.removeAttribute('data-state');
+  };
+
+  // Vor der Navigation: Mask schließt nach oben (covers content)
+  document.addEventListener('astro:before-preparation', () => {
+    setState('covering');
+  });
+
+  // Nach dem Swap: Mask geht weiter nach oben (reveals new page)
+  document.addEventListener('astro:after-swap', () => {
+    setState('revealing');
+    setTimeout(() => setState(null), 800);
+  });
+</script>

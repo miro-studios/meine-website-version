@@ -1,0 +1,144 @@
+---
+interface Props {
+  /** href — wenn gesetzt, rendert <a>, sonst <button> */
+  href?: string;
+  /** Magnetic-Stärke (0..1) */
+  strength?: number;
+  /** Type für Buttons */
+  type?: 'button' | 'submit' | 'reset';
+  /** Variant */
+  variant?: 'primary' | 'ghost' | 'underline';
+  /** Zusätzliche Klassen */
+  class?: string;
+  /** Wenn extern, target="_blank" + rel-Attribute */
+  external?: boolean;
+}
+
+const {
+  href,
+  strength = 0.3,
+  type = 'button',
+  variant = 'primary',
+  class: className = '',
+  external = false,
+  ...rest
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+const externalAttrs = external && href
+  ? { target: '_blank', rel: 'noopener noreferrer' }
+  : {};
+---
+
+<Tag
+  class:list={['magnetic-btn', `magnetic-btn--${variant}`, className]}
+  href={href}
+  type={!href ? type : undefined}
+  data-magnetic
+  data-magnetic-strength={strength}
+  {...externalAttrs}
+  {...rest}
+>
+  <span class="magnetic-btn__inner">
+    <slot />
+  </span>
+</Tag>
+
+<style>
+  .magnetic-btn {
+    --pad-x: 2rem;
+    --pad-y: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: var(--pad-y) var(--pad-x);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    text-decoration: none;
+    border-radius: 9999px;
+    transition:
+      background-color 0.3s var(--ease-out-expo),
+      color 0.3s var(--ease-out-expo),
+      box-shadow 0.4s var(--ease-out-expo);
+    cursor: pointer;
+    will-change: transform;
+    box-shadow: 0 0 0 0 transparent;
+  }
+
+  .magnetic-btn:hover {
+    box-shadow:
+      0 18px 36px -10px color-mix(in srgb, var(--color-accent) 35%, transparent),
+      0 6px 12px -4px rgba(0, 0, 0, 0.25);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .magnetic-btn {
+      transition: none;
+    }
+    .magnetic-btn:hover {
+      box-shadow: none;
+    }
+  }
+
+  .magnetic-btn__inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    will-change: transform;
+  }
+
+  /* Variants */
+  .magnetic-btn--primary {
+    background-color: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .magnetic-btn--primary:hover {
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  .magnetic-btn--ghost {
+    background-color: transparent;
+    color: var(--color-text);
+    border: 1px solid color-mix(in srgb, var(--color-text) 20%, transparent);
+  }
+
+  .magnetic-btn--ghost:hover {
+    background-color: var(--color-text);
+    color: var(--color-bg);
+    border-color: var(--color-text);
+  }
+
+  .magnetic-btn--underline {
+    background-color: transparent;
+    color: var(--color-text);
+    padding-inline: 0;
+    border-radius: 0;
+    border-bottom: 1px solid currentColor;
+  }
+</style>
+
+<script>
+  import { initAllMagnetics } from '@lib/cursor';
+
+  let cleanup: (() => void) | null = null;
+
+  const start = () => {
+    cleanup?.();
+    cleanup = initAllMagnetics('[data-magnetic]');
+  };
+
+  const stop = () => {
+    cleanup?.();
+    cleanup = null;
+  };
+
+  start();
+  document.addEventListener('astro:page-load', start);
+  document.addEventListener('astro:before-swap', stop);
+</script>

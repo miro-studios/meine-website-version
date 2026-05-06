@@ -1,0 +1,80 @@
+---
+/**
+ * SceneFrame — Wrapper für scroll-gekoppelte Section-Transitions.
+ *
+ * Hängt eine Enter+Hold+Exit-Timeline an einen ScrollTrigger pro Element.
+ * Die eigentliche Animation wohnt in `src/lib/scene-transitions.ts`; diese
+ * Komponente liefert nur das Markup, die Wrapper-Styles und das Init-Script.
+ *
+ * Verwendung:
+ *   <SceneFrame variant="zoom">
+ *     <About />
+ *   </SceneFrame>
+ *
+ * Die Komponente wird bewusst NICHT um Hero, Process, Marquee oder Footer
+ * gewickelt — siehe Plan-Dokument.
+ */
+
+export type SceneVariant = 'default' | 'zoom' | 'slide-up' | 'slide-side' | 'rotate3d';
+
+interface Props {
+  /** Animation-Variante. Default: "default" (sanftes Fade + Y-Lift). */
+  variant?: SceneVariant;
+  /** Zusätzliche Klassen am Wrapper. */
+  class?: string;
+}
+
+const { variant = 'default', class: className = '' }: Props = Astro.props;
+---
+
+<div
+  class:list={['scene-frame', className]}
+  data-scene
+  data-scene-variant={variant}
+>
+  <slot />
+</div>
+
+<style>
+  .scene-frame {
+    /* Eigener Stacking-Context + GPU-Layer für saubere Transforms.
+       transformPerspective wird in JS pro Variant gesetzt, NICHT global,
+       damit position:fixed Descendants (Custom Cursor, Header) nicht
+       relativ zum Frame positioniert werden. */
+    position: relative;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    /* Verhindert horizontalen Scrollbar-Flash bei slide-side x-Translate.
+       overflow:clip ist neuer als overflow:hidden, blockiert aber nichts
+       außer overflow — Sticky-Children innerhalb funktionieren weiter. */
+    overflow: clip;
+  }
+
+  /* In reduced-motion bleibt der Wrapper neutral; will-change entfällt,
+     damit der Browser nicht unnötig GPU-Schichten allokiert. */
+  @media (prefers-reduced-motion: reduce) {
+    .scene-frame {
+      will-change: auto;
+    }
+  }
+</style>
+
+<script>
+  import { initSceneTransitions } from '@lib/scene-transitions';
+
+  let cleanup: (() => void) | null = null;
+
+  const start = () => {
+    cleanup?.();
+    cleanup = initSceneTransitions();
+  };
+
+  const stop = () => {
+    cleanup?.();
+    cleanup = null;
+  };
+
+  start();
+  document.addEventListener('astro:page-load', start);
+  document.addEventListener('astro:before-swap', stop);
+</script>

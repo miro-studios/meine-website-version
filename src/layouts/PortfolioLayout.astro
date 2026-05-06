@@ -1,0 +1,42 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import CustomCursor from '@components/shared/CustomCursor.astro';
+import ScrollProgress from '@components/shared/ScrollProgress.astro';
+import PageTransition from '@components/shared/PageTransition.astro';
+import MicroInteractions from '@components/shared/MicroInteractions.astro';
+import Header from '@components/portfolio/Header.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Wenn `false`, wird der Header nicht gerendert (z.B. für volle Hero-Pages) */
+  showHeader?: boolean;
+  /** Aktuelle Route für aktive Nav-States */
+  active?: 'index' | 'about' | 'kontakt' | 'impressum' | 'datenschutz' | 'faq';
+  canonical?: string;
+}
+
+const {
+  title,
+  description,
+  showHeader = true,
+  active = 'index',
+  canonical,
+}: Props = Astro.props;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  theme="portfolio"
+  canonical={canonical}
+>
+  <ScrollProgress color="var(--color-accent)" height="2px" />
+  <CustomCursor blendMode="difference" hoverScale={2.6} />
+  <PageTransition />
+  <MicroInteractions />
+
+  {showHeader && <Header active={active} />}
+
+  <slot />
+</BaseLayout>

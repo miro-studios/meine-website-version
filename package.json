@@ -1,0 +1,29 @@
+{
+  "name": "webdev-studio",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Webdev Studio Lüdenscheid — Portfolio + Demo-Sites",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/tailwind": "^5.1.4",
+    "@types/three": "^0.184.0",
+    "astro": "^4.16.18",
+    "gsap": "^3.12.5",
+    "lenis": "^1.1.20",
+    "splitting": "^1.0.6",
+    "tailwindcss": "^3.4.17",
+    "three": "^0.184.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@types/splitting": "^1.0.5",
+    "typescript": "^5.7.2"
+  }
+}

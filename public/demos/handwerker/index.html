@@ -1,0 +1,2327 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kruse Bau · Sanierung &amp; Anbauten · Lüdenscheid</title>
+<meta name="description" content="Kruse Bau · Familienbetrieb für Sanierung, Anbauten und Innenausbau in Lüdenscheid. Drei Generationen Handwerk seit 1962.">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Playfair+Display:wght@500;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EFEAE0;
+    --bg2: #E5DECF;
+    --bg3: #D8D4CC;
+    --primary: #3A2C1F;
+    --primary2: #54402F;
+    --accent: #C75D2F;
+    --accent2: #D77140;
+    --moss: #5A6E4F;
+    --text: #26221E;
+    --text-dim: #5C544A;
+    --muted: #8a7f72;
+    --border: rgba(38,34,30,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter Tight', system-ui, sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+    line-height: 1.6;
+  }
+
+  ::selection { background: var(--accent); color: var(--bg); }
+
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; cursor: none; }
+
+  /* ══ CUSTOM CURSOR ══ */
+  .cursor {
+    position: fixed;
+    width: 7px; height: 7px;
+    background: var(--primary);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%,-50%);
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 30px; height: 30px;
+    border: 1.5px solid rgba(58,44,31,0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: transform 0.2s ease, border-color 0.2s, background 0.2s;
+  }
+
+  .cursor-spark {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9997;
+    transform: translate(-50%,-50%);
+    animation: sparkFade 0.7s ease forwards;
+  }
+  @keyframes sparkFade {
+    0%   { opacity: 0.5; transform: translate(-50%,-50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%,-50%) scale(0); }
+  }
+
+  /* ══ SCROLL PROGRESS ══ */
+  .scroll-progress {
+    position: fixed;
+    top: 0; left: 0;
+    width: 0%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--moss), var(--accent));
+    background-size: 200% 100%;
+    z-index: 9999;
+    animation: progressShimmer 3s linear infinite;
+    transition: width 0.1s linear;
+  }
+  @keyframes progressShimmer {
+    0%   { background-position: 0% 0%; }
+    100% { background-position: 200% 0%; }
+  }
+
+  /* ══ PAPER GRAIN — stronger than other demos ══ */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9990;
+    opacity: 0.08;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.32 0 0 0 0 0.22 0 0 0 0 0.12 0 0 0 0.7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 240px 240px;
+    mix-blend-mode: multiply;
+  }
+
+  /* ══ AMBIENT ORBS (zurückhaltender, erdig) ══ */
+  .ambient-orb {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(120px);
+    opacity: 0.18;
+    animation: orbDrift 26s ease-in-out infinite;
+  }
+  .ambient-orb-1 {
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, var(--accent), transparent 70%);
+    top: -240px; right: -240px;
+  }
+  .ambient-orb-2 {
+    width: 540px; height: 540px;
+    background: radial-gradient(circle, var(--moss), transparent 70%);
+    bottom: 20%; left: -180px;
+    animation-duration: 22s;
+    animation-delay: -9s;
+    opacity: 0.15;
+  }
+  @keyframes orbDrift {
+    0%,100% { transform: translate(0,0) scale(1); }
+    33%      { transform: translate(40px,-30px) scale(1.05); }
+    66%      { transform: translate(-25px,25px) scale(0.95); }
+  }
+
+  /* ══ NAV ══ */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 260;
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.4s, border-color 0.4s, padding 0.4s;
+    border-bottom: 1px solid transparent;
+  }
+  nav.scrolled {
+    background: rgba(239,234,224,0.92);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom-color: var(--border);
+    padding: 0.875rem 4rem;
+  }
+
+  .nav-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--primary);
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.45rem;
+    letter-spacing: -0.015em;
+  }
+  .nav-logo-mark {
+    width: 26px; height: 26px;
+    color: var(--accent);
+  }
+  .nav-logo-est {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-left: 0.4rem;
+    align-self: end;
+    margin-bottom: 0.3rem;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text);
+    opacity: 0.7;
+    transition: opacity 0.3s, color 0.3s;
+    position: relative;
+    padding-bottom: 4px;
+  }
+  .nav-links a::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 1px;
+    background: var(--accent);
+    transition: width 0.4s ease;
+  }
+  .nav-links a:hover, .nav-links a.nav-active {
+    opacity: 1; color: var(--accent);
+  }
+  .nav-links a:hover::before, .nav-links a.nav-active::before { width: 100%; }
+
+  .nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.2rem;
+    background: var(--primary);
+    color: var(--bg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .nav-cta:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0.75rem;
+    background: none;
+    border: none;
+  }
+  .nav-hamburger span {
+    display: block; width: 22px; height: 2px;
+    background: var(--primary);
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .nav-drawer {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 250;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.75rem;
+    padding: 4rem 2rem;
+    transform: translateY(-100%);
+    transition: transform 0.55s cubic-bezier(0.77,0,0.175,1);
+    visibility: hidden;
+  }
+  .nav-drawer.open { transform: translateY(0); visibility: visible; }
+  .nav-drawer a {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 2.2rem;
+    color: var(--primary);
+  }
+  .nav-drawer a:hover { color: var(--accent); }
+
+  /* ══ HERO ══ */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 7rem 4rem 3rem;
+    overflow: hidden;
+  }
+
+  .hero-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-block: 1px solid var(--border);
+    margin-bottom: 4rem;
+  }
+  .hero-bar-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .hero-bar-key { color: var(--accent); }
+  .hero-bar-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--moss);
+    box-shadow: 0 0 0 4px rgba(90,110,79,0.2);
+  }
+
+  .hero-content {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 4rem;
+    align-items: end;
+    padding-block: 1rem 4rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-headline {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(4rem, 13vw, 13rem);
+    line-height: 0.9;
+    letter-spacing: -0.025em;
+    color: var(--primary);
+  }
+  .hero-headline-1, .hero-headline-2 {
+    display: block;
+    overflow: hidden;
+  }
+  .hero-headline-1 span, .hero-headline-2 span {
+    display: inline-block;
+    transform: translateY(110%);
+    animation: heroLineUp 1.2s cubic-bezier(0.77,0,0.175,1) forwards;
+  }
+  .hero-headline-1 span { animation-delay: 0.3s; }
+  .hero-headline-2 span { animation-delay: 0.5s; }
+  .hero-headline-2 span {
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 600;
+  }
+  @keyframes heroLineUp {
+    to { transform: translateY(0); }
+  }
+
+  .hero-side {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    max-width: 30rem;
+    padding-bottom: 1rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: heroSideIn 1.2s ease 0.8s forwards;
+  }
+  @keyframes heroSideIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-handwritten {
+    font-family: 'Caveat', cursive;
+    font-weight: 600;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    color: var(--accent);
+    transform: rotate(-2deg);
+    transform-origin: left;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 0.4rem;
+    width: fit-content;
+  }
+
+  .hero-copy {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--text-dim);
+  }
+
+  .hero-actions {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .btn-primary, .btn-ghost, .btn-submit {
+    overflow: hidden;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 1rem 1.6rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    line-height: 1;
+    transition: background 0.35s, color 0.35s, transform 0.35s, box-shadow 0.35s;
+    cursor: none;
+    border: 1px solid transparent;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: var(--bg);
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -120%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(105deg, transparent, rgba(255,255,255,0.18), transparent);
+    transition: left 0.6s cubic-bezier(0.23,1,0.32,1);
+    pointer-events: none;
+  }
+  .btn-primary:hover::before { left: 160%; }
+  .btn-primary:hover {
+    background: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(58,44,31,0.25);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--primary);
+    border-color: var(--primary);
+  }
+  .btn-ghost::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(58,44,31,0), rgba(58,44,31,0.12));
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.45s cubic-bezier(0.23,1,0.32,1);
+    pointer-events: none;
+  }
+  .btn-ghost:hover::before { transform: scaleY(1); }
+  .btn-ghost:hover {
+    color: var(--bg);
+    background: var(--primary);
+  }
+
+  .btn-arrow { transition: transform 0.4s cubic-bezier(0.23,1,0.32,1); }
+  .btn-primary:hover .btn-arrow,
+  .btn-ghost:hover .btn-arrow { transform: translateX(4px); }
+
+  .btn-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transform: scale(0);
+    animation: btnRipple 0.6s linear forwards;
+    pointer-events: none;
+  }
+  @keyframes btnRipple {
+    to { transform: scale(4); opacity: 0; }
+  }
+
+  /* Hero stamp (dekoratives Element rechts) */
+  .hero-stamp {
+    position: absolute;
+    top: 9rem;
+    right: 4rem;
+    width: clamp(140px, 18vw, 220px);
+    height: clamp(140px, 18vw, 220px);
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    transform: rotate(-8deg);
+    animation: stampFloat 6s ease-in-out infinite;
+    z-index: 1;
+    background: rgba(199,93,47,0.06);
+  }
+  @keyframes stampFloat {
+    0%,100% { transform: rotate(-8deg) translateY(0); }
+    50% { transform: rotate(-6deg) translateY(-8px); }
+  }
+  .hero-stamp-text {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 3vw, 3rem);
+    line-height: 0.95;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+  }
+  .hero-stamp-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    margin-top: 0.4rem;
+    display: block;
+  }
+
+  .hero-spec {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    padding-top: 2rem;
+    margin-top: auto;
+    border-top: 1px solid var(--border);
+    position: relative;
+    z-index: 2;
+  }
+  .hero-spec-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    opacity: 0;
+    transform: translateY(15px);
+    animation: heroSpecIn 0.9s ease forwards;
+  }
+  .hero-spec-item:nth-child(1) { animation-delay: 1.1s; }
+  .hero-spec-item:nth-child(2) { animation-delay: 1.25s; }
+  .hero-spec-item:nth-child(3) { animation-delay: 1.4s; }
+  .hero-spec-item:nth-child(4) { animation-delay: 1.55s; }
+  @keyframes heroSpecIn { to { opacity: 1; transform: translateY(0); } }
+  .hero-spec-num {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 3vw, 2.75rem);
+    line-height: 1;
+    color: var(--primary);
+  }
+  .hero-spec-handwritten {
+    font-family: 'Caveat', cursive;
+    color: var(--accent);
+    font-size: 1.4em;
+    font-weight: 600;
+    margin-left: 0.3rem;
+  }
+  .hero-spec-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  /* ══ TICKER ══ */
+  .ticker-wrap {
+    overflow: hidden;
+    border-block: 1px solid var(--border);
+    background: var(--primary);
+    color: var(--bg);
+    padding: 1.4rem 0;
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
+    mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
+  }
+  .ticker {
+    display: flex;
+    gap: 0;
+    animation: ticker 30s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-item {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    letter-spacing: -0.005em;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .ticker-item::after {
+    content: '◆';
+    font-size: 0.6rem;
+    color: var(--accent);
+    font-style: normal;
+  }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ══ SECTIONS ══ */
+  section {
+    padding: 7rem 4rem;
+    position: relative;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: color 0.4s;
+  }
+  .section-label::before {
+    content: '';
+    width: 32px; height: 1px;
+    background: currentColor;
+  }
+  .section-label.glowing { text-shadow: 0 0 8px rgba(199,93,47,0.4); }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(2.75rem, 7vw, 6rem);
+    line-height: 0.95;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.025em;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 1.1s cubic-bezier(0.77,0,0.175,1);
+  }
+  .section-title.clipped-in { clip-path: inset(0 0% 0 0); }
+  .section-title em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ══ STORY / ZEITSTRAHL ══ */
+  #story {
+    background: var(--bg2);
+  }
+
+  .story-header {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 4rem;
+    align-items: end;
+    margin-bottom: 5rem;
+  }
+  .story-intro p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+  }
+  .story-signature {
+    font-family: 'Caveat', cursive;
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: var(--primary);
+    transform: rotate(-3deg);
+    margin-top: 1.5rem;
+    display: inline-block;
+  }
+
+  .timeline {
+    border-top: 1px solid var(--border);
+  }
+  .event {
+    display: grid;
+    grid-template-columns: 9rem 3rem 1fr;
+    gap: 2.5rem;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+
+  .event-year {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: clamp(2.5rem, 4vw, 3.75rem);
+    line-height: 1;
+    color: var(--accent);
+  }
+
+  .event-line {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: stretch;
+  }
+  .event-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--primary);
+    border: 3px solid var(--bg2);
+    box-shadow: 0 0 0 1.5px var(--primary);
+    margin-top: 0.75rem;
+    flex-shrink: 0;
+  }
+  .event-connector {
+    flex: 1;
+    width: 1px;
+    background: linear-gradient(180deg, var(--primary) 0%, transparent 100%);
+    margin-top: 0.4rem;
+  }
+
+  .event-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-width: 56ch;
+  }
+  .event-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+  }
+  .event-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(1.4rem, 2.2vw, 1.875rem);
+    line-height: 1.2;
+    color: var(--primary);
+    letter-spacing: -0.015em;
+  }
+  .event-body {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-dim);
+  }
+
+  /* ══ SERVICES — numerierte Liste ══ */
+  #services {
+    background: var(--bg);
+  }
+
+  .services-header {
+    max-width: 700px;
+    margin-bottom: 4rem;
+  }
+
+  .services-list {
+    border-top: 1px solid var(--border);
+  }
+  .service-row {
+    display: grid;
+    grid-template-columns: 5rem 1fr 2fr 2rem;
+    gap: 2rem;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+    position: relative;
+    cursor: none;
+    transition: padding-left 0.4s, background 0.4s;
+  }
+  .service-row:hover {
+    padding-left: 1.5rem;
+    background: rgba(199,93,47,0.04);
+  }
+  .service-row::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%;
+    width: 4px; height: 0%;
+    background: var(--accent);
+    transform: translateY(-50%);
+    transition: height 0.4s;
+  }
+  .service-row:hover::before { height: 60%; }
+
+  .service-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    padding-top: 0.4rem;
+  }
+  .service-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(1.5rem, 2.5vw, 2.125rem);
+    line-height: 1.15;
+    color: var(--primary);
+    letter-spacing: -0.015em;
+    transition: color 0.4s;
+  }
+  .service-row:hover .service-title { color: var(--accent); }
+
+  .service-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .service-desc {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--text-dim);
+    max-width: 56ch;
+  }
+  .service-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    margin-top: 0.5rem;
+  }
+  .service-tools li {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    padding: 0.25rem 0.65rem;
+    border: 1px solid var(--border);
+  }
+
+  .service-arrow {
+    align-self: start;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--muted);
+    transition: color 0.4s, transform 0.4s;
+    padding-top: 0.4rem;
+  }
+  .service-row:hover .service-arrow {
+    color: var(--accent);
+    transform: translate(8px, -6px) rotate(-45deg);
+  }
+
+  /* ══ VORHER / NACHHER SLIDER (das Highlight) ══ */
+  #compare {
+    background: var(--bg2);
+  }
+
+  .compare-header {
+    max-width: 700px;
+    margin-bottom: 4rem;
+  }
+  .compare-intro {
+    font-family: 'Caveat', cursive;
+    font-weight: 600;
+    font-size: 1.35rem;
+    color: var(--accent);
+    margin-top: 1rem;
+    transform: rotate(-1deg);
+    display: inline-block;
+  }
+
+  .compare-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .compare-tabs::-webkit-scrollbar { display: none; }
+  .compare-tab {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 1rem 1.5rem;
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: none;
+    transition: color 0.3s;
+    position: relative;
+    white-space: nowrap;
+  }
+  .compare-tab::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 1.5rem; right: 1.5rem;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+  .compare-tab.active { color: var(--accent); }
+  .compare-tab.active::after { transform: scaleX(1); }
+
+  .compare-frame {
+    position: relative;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    cursor: ew-resize;
+    user-select: none;
+    border: 1px solid var(--border);
+    background: var(--bg3);
+  }
+  .compare-img-wrap {
+    position: absolute;
+    inset: 0;
+  }
+  .compare-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    user-select: none;
+  }
+  .compare-img-after {
+    clip-path: inset(0 0 0 50%);
+    transition: clip-path 0.05s linear;
+  }
+
+  .compare-divider {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 50%;
+    width: 3px;
+    background: var(--accent);
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 3;
+    box-shadow: 0 0 12px rgba(199,93,47,0.4);
+  }
+  .compare-handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--bg);
+    display: grid;
+    place-items: center;
+    z-index: 4;
+    pointer-events: none;
+    box-shadow: 0 4px 16px rgba(58,44,31,0.4);
+    font-size: 1.2rem;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: -0.05em;
+  }
+  .compare-label {
+    position: absolute;
+    top: 1.5rem;
+    z-index: 2;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    padding: 0.4rem 0.75rem;
+    background: rgba(38,34,30,0.85);
+    color: var(--bg);
+    backdrop-filter: blur(4px);
+  }
+  .compare-label-before { left: 1.5rem; }
+  .compare-label-after { right: 1.5rem; }
+
+  .compare-meta {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .compare-meta-info {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .compare-meta-key {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+  .compare-meta-val {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--primary);
+  }
+  .compare-hint {
+    font-family: 'Caveat', cursive;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--accent);
+    transform: rotate(-2deg);
+  }
+
+  /* ══ PROJECTS ══ */
+  #projects {
+    background: var(--bg);
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .project {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg2);
+    aspect-ratio: 4/3;
+    cursor: none;
+  }
+  .project img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.9) contrast(1.05);
+    transition: transform 0.9s cubic-bezier(0.23,1,0.32,1), filter 0.6s;
+  }
+  .project:hover img {
+    transform: scale(1.04);
+    filter: saturate(1) contrast(1.1);
+  }
+  .project-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(38,34,30,0.85) 100%);
+  }
+  .project-meta {
+    position: absolute;
+    bottom: 1.5rem; left: 1.5rem;
+    right: 1.5rem;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .project-cat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+  }
+  .project-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    line-height: 1.15;
+    color: var(--bg);
+  }
+  .project-num {
+    position: absolute;
+    top: 1.25rem; right: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--accent);
+    z-index: 2;
+  }
+
+  /* ══ VALUES MEGA ══ */
+  #values {
+    background: var(--primary);
+    color: var(--bg);
+    padding: 9rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .values-content {
+    position: relative;
+    z-index: 1;
+    max-width: var(--container-max);
+    margin: 0 auto;
+  }
+  .values-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .values-eyebrow::before {
+    content: '';
+    width: 36px; height: 1px;
+    background: var(--accent);
+  }
+
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid rgba(239,234,224,0.18);
+    margin-top: 2rem;
+  }
+  .value-card {
+    padding: 3rem 2rem;
+    border-right: 1px solid rgba(239,234,224,0.18);
+    border-bottom: 1px solid rgba(239,234,224,0.18);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: background 0.4s;
+  }
+  .value-card:hover {
+    background: rgba(239,234,224,0.04);
+  }
+  .value-card:last-child { border-right: none; }
+  .value-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+  }
+  .value-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 0.95;
+    color: var(--bg);
+    letter-spacing: -0.025em;
+  }
+  .value-body {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(239,234,224,0.85);
+    margin-top: 0.5rem;
+  }
+
+  /* ══ ANFRAGE / FORM ══ */
+  #request {
+    background: var(--bg2);
+    padding: 8rem 4rem;
+  }
+
+  .request-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .request-intro {
+    position: sticky;
+    top: 6rem;
+  }
+
+  .request-copy {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-dim);
+    margin-bottom: 2rem;
+    max-width: 32rem;
+  }
+
+  .request-handwritten {
+    font-family: 'Caveat', cursive;
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: var(--accent);
+    transform: rotate(-2deg);
+    display: inline-block;
+    margin-block: 1.5rem 0;
+  }
+
+  .request-direct {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+  .request-direct-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .request-direct-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+  }
+  .request-direct-val {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--primary);
+  }
+  .request-direct-val a:hover { color: var(--accent); }
+
+  .request-form {
+    background: var(--bg);
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    border: 1px solid var(--border);
+  }
+  .request-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  .form-row {
+    display: grid;
+    gap: 1rem;
+  }
+  .form-row.cols-2 { grid-template-columns: 1fr 1fr; }
+  .form-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    position: relative;
+  }
+  .form-group::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0%; height: 2px;
+    background: var(--accent);
+    transition: width 0.4s ease;
+  }
+  .form-group:focus-within::after { width: 100%; }
+
+  .form-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .form-input, .form-select, .form-textarea {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.85rem 1rem;
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.3s, background 0.3s;
+    cursor: none;
+    border-radius: 0;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--accent);
+    background: var(--bg);
+  }
+  .form-textarea { resize: vertical; min-height: 100px; }
+  .form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C75D2F' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+  }
+
+  .btn-submit {
+    background: var(--primary);
+    color: var(--bg);
+    padding: 1.1rem;
+    width: 100%;
+    margin-top: 0.5rem;
+    border: none;
+  }
+  .btn-submit::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.15));
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.45s cubic-bezier(0.23,1,0.32,1);
+    pointer-events: none;
+  }
+  .btn-submit:hover::before { transform: scaleY(1); }
+  .btn-submit:hover { background: var(--accent); }
+
+  /* ══ FOOTER ══ */
+  footer {
+    background: var(--primary);
+    color: var(--bg);
+    overflow: hidden;
+  }
+
+  .footer-mark-wrap {
+    padding: 3rem 4rem;
+    overflow: hidden;
+  }
+  .footer-mark {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(4rem, 17vw, 17rem);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    color: var(--accent);
+    cursor: none;
+    user-select: none;
+    text-transform: uppercase;
+  }
+  .footer-mark span {
+    display: inline-block;
+    transition: transform 0.5s cubic-bezier(0.23,1,0.32,1), color 0.5s;
+  }
+  .footer-mark:hover span { color: rgba(199,93,47,0.4); }
+  .footer-mark span:hover {
+    color: var(--bg) !important;
+    transform: translateY(-7%);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr repeat(3, 1fr);
+    gap: 3rem;
+    padding: 3rem 4rem;
+    border-top: 1px solid rgba(239,234,224,0.18);
+  }
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .footer-heading {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .footer-copy {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: rgba(239,234,224,0.85);
+  }
+  .footer-copy strong {
+    color: var(--accent);
+  }
+  .footer-handwritten {
+    font-family: 'Caveat', cursive;
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: var(--accent);
+    transform: rotate(-2deg);
+    display: inline-block;
+  }
+
+  .footer-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    list-style: none;
+  }
+  .footer-list a {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 0.9rem;
+    color: rgba(239,234,224,0.85);
+    transition: color 0.3s, padding 0.3s;
+  }
+  .footer-list a:hover { color: var(--accent); padding-left: 0.4rem; }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1.5rem 4rem;
+    border-top: 1px solid rgba(239,234,224,0.18);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(239,234,224,0.6);
+  }
+  .footer-legal {
+    display: flex;
+    gap: 1.25rem;
+    list-style: none;
+  }
+  .footer-legal a:hover { color: var(--accent); }
+
+  /* ══ TOAST ══ */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    background: var(--accent);
+    color: var(--bg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    padding: 1rem 2rem;
+    z-index: 9999;
+    transition: transform 0.55s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow: 0 8px 32px rgba(199,93,47,0.4);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ══ REVEAL ══ */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.9s ease, transform 0.9s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-left { opacity: 0; transform: translateX(-50px); transition: opacity 0.9s ease, transform 0.9s ease; }
+  .reveal-left.visible { opacity: 1; transform: translateX(0); }
+  .reveal-right { opacity: 0; transform: translateX(50px); transition: opacity 0.9s ease, transform 0.9s ease; }
+  .reveal-right.visible { opacity: 1; transform: translateX(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  /* ══ RESPONSIVE ══ */
+  @media (max-width: 1100px) {
+    nav, section, #values, #request, .footer-mark-wrap, .footer-grid, .footer-bottom {
+      padding-inline: 2rem;
+    }
+    .hero-content, .story-header, .request-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .hero-stamp { display: none; }
+    .projects-grid, .values-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .request-intro { position: static; }
+  }
+  @media (max-width: 720px) {
+    nav { padding: 1rem 1.5rem; }
+    nav.scrolled { padding: 0.7rem 1.5rem; }
+    .nav-links, .nav-cta { display: none; }
+    .nav-hamburger { display: flex; }
+    section, #values, #request, .footer-mark-wrap, .footer-grid, .footer-bottom {
+      padding-inline: 1.5rem;
+    }
+    section { padding-block: 5rem; }
+    .hero-bar { gap: 0.5rem; }
+    .hero-spec { grid-template-columns: repeat(2, 1fr); }
+    .event { grid-template-columns: 4rem 2rem 1fr; gap: 1rem; }
+    .service-row { grid-template-columns: 3rem 1fr; gap: 1rem; }
+    .service-row .service-body, .service-row .service-arrow { grid-column: 1 / -1; padding-top: 0.5rem; }
+    .projects-grid, .values-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .form-row.cols-2, .form-row.cols-3 { grid-template-columns: 1fr; }
+    .compare-handle { width: 44px; height: 44px; font-size: 1rem; }
+    .cursor, .cursor-ring { display: none; }
+    body { cursor: auto; }
+    a, button, input, select, textarea { cursor: pointer; }
+    input, select, textarea { cursor: text; }
+    .compare-frame { cursor: ew-resize; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    .ambient-orb, .cursor-spark { display: none; }
+    .hero-headline-1 span, .hero-headline-2 span { transform: translateY(0); }
+    .reveal, .reveal-left, .reveal-right { opacity: 1; transform: none; }
+    .section-title { clip-path: inset(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Scroll Progress -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Ambient Orbs -->
+<div class="ambient-orb ambient-orb-1"></div>
+<div class="ambient-orb ambient-orb-2"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <svg class="nav-logo-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M 4 28 L 16 4 L 28 28 Z"/>
+      <path d="M 10 28 L 16 16 L 22 28"/>
+    </svg>
+    Kruse Bau
+    <span class="nav-logo-est">est. 1962</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#story">Geschichte</a></li>
+    <li><a href="#services">Leistungen</a></li>
+    <li><a href="#compare">Vorher/Nachher</a></li>
+    <li><a href="#projects">Projekte</a></li>
+    <li><a href="#request">Anfrage</a></li>
+  </ul>
+  <a href="#request" class="nav-cta">Anfrage stellen</a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menü">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="nav-drawer" id="navDrawer">
+  <a href="#story" class="nav-drawer-link">Geschichte</a>
+  <a href="#services" class="nav-drawer-link">Leistungen</a>
+  <a href="#compare" class="nav-drawer-link">Vorher/Nachher</a>
+  <a href="#projects" class="nav-drawer-link">Projekte</a>
+  <a href="#request" class="nav-drawer-link">Anfrage</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bar">
+    <span class="hero-bar-item">
+      <span class="hero-bar-dot"></span>
+      Aktiv für Q2/Q3 2026 buchbar
+    </span>
+    <span class="hero-bar-item">
+      <span class="hero-bar-key">[Standort]</span> Lüdenscheid · Sauerland
+    </span>
+    <span class="hero-bar-item">
+      <span class="hero-bar-key">[Innung]</span> HWK Arnsberg · Reg. 1962
+    </span>
+  </div>
+
+  <div class="hero-stamp">
+    <div>
+      <div class="hero-stamp-text">62<br>Jahre</div>
+      <span class="hero-stamp-sub">Kruse · Family</span>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <h1 class="hero-headline">
+      <span class="hero-headline-1"><span>Bauen mit</span></span>
+      <span class="hero-headline-2"><span>Verstand.</span></span>
+    </h1>
+
+    <div class="hero-side">
+      <p class="hero-handwritten">Ehrlich. Pünktlich. Sauber.</p>
+      <p class="hero-copy">
+        Familienbetrieb für Sanierung, Anbauten und Innenausbau seit 1962.
+        Drei Generationen, ein Anspruch — und ein klares Versprechen, das
+        sich in 62 Jahren nicht geändert hat.
+      </p>
+      <div class="hero-actions">
+        <a href="#request" class="btn-primary">
+          Anfrage stellen <span class="btn-arrow">→</span>
+        </a>
+        <a href="#projects" class="btn-ghost">
+          Projekte ansehen
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-spec">
+    <div class="hero-spec-item">
+      <span class="hero-spec-num">62<span class="hero-spec-handwritten">·J</span></span>
+      <span class="hero-spec-label">Jahre Familienbetrieb</span>
+    </div>
+    <div class="hero-spec-item">
+      <span class="hero-spec-num">540<span class="hero-spec-handwritten">+</span></span>
+      <span class="hero-spec-label">Sanierungen abgeschlossen</span>
+    </div>
+    <div class="hero-spec-item">
+      <span class="hero-spec-num">12</span>
+      <span class="hero-spec-label">Mitarbeiter (Stamm)</span>
+    </div>
+    <div class="hero-spec-item">
+      <span class="hero-spec-num">3.</span>
+      <span class="hero-spec-label">Generation am Werk</span>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <div class="ticker-item">Sanierung</div>
+    <div class="ticker-item">Anbauten</div>
+    <div class="ticker-item">Innenausbau</div>
+    <div class="ticker-item">Trockenbau</div>
+    <div class="ticker-item">Dachgeschoss</div>
+    <div class="ticker-item">Energetisch</div>
+    <div class="ticker-item">Sanierung</div>
+    <div class="ticker-item">Anbauten</div>
+    <div class="ticker-item">Innenausbau</div>
+    <div class="ticker-item">Trockenbau</div>
+    <div class="ticker-item">Dachgeschoss</div>
+    <div class="ticker-item">Energetisch</div>
+  </div>
+</div>
+
+<!-- STORY -->
+<section id="story">
+  <div class="story-header">
+    <div class="reveal-left">
+      <div class="section-label">Geschichte / 1962 – heute</div>
+      <h2 class="section-title">Drei Generationen.<br><em>Ein Handwerk.</em></h2>
+    </div>
+    <div class="story-intro reveal-right reveal-delay-1">
+      <p>
+        Wir sind kein Stahlbauunternehmen, das auch noch ein paar Wände zieht.
+        Wir sind ein klassischer Familienbetrieb mit Wurzeln im Sauerland —
+        Heinz Kruse hat 1962 mit zwei Mann gestartet, sein Sohn Karl
+        übernahm 1991, jetzt führt Lukas das Geschäft.
+      </p>
+      <span class="story-signature">— Lukas Kruse, Inhaber</span>
+    </div>
+  </div>
+
+  <div class="timeline">
+    <article class="event reveal">
+      <span class="event-year">1962</span>
+      <div class="event-line"><span class="event-dot"></span><span class="event-connector"></span></div>
+      <div class="event-content">
+        <span class="event-tag">Anfang</span>
+        <h3 class="event-title">Heinz Kruse gründet den Betrieb</h3>
+        <p class="event-body">Mit zwei Mann und einem alten Hanomag-LKW startet Heinz Kruse am 12. März 1962 — ursprünglich als reine Maurer-Kolonne. Das erste Projekt: ein Anbau am Pfarrhaus in Lüdenscheid-Brügge.</p>
+      </div>
+    </article>
+
+    <article class="event reveal">
+      <span class="event-year">1976</span>
+      <div class="event-line"><span class="event-dot"></span><span class="event-connector"></span></div>
+      <div class="event-content">
+        <span class="event-tag">Erweiterung</span>
+        <h3 class="event-title">Eigene Werkstatt &amp; Lager</h3>
+        <p class="event-body">Bezug der Werkstatt in der Liegnitzer Straße. Erweiterung um Trockenbau und Innenausbau. Mitarbeiterstamm wächst auf sieben.</p>
+      </div>
+    </article>
+
+    <article class="event reveal">
+      <span class="event-year">1991</span>
+      <div class="event-line"><span class="event-dot"></span><span class="event-connector"></span></div>
+      <div class="event-content">
+        <span class="event-tag">Übergabe · 2. Gen</span>
+        <h3 class="event-title">Karl Kruse übernimmt</h3>
+        <p class="event-body">Karl Kruse, Sohn von Heinz und ausgebildeter Maurermeister, übernimmt den Betrieb mit 31. Spezialisierung auf Sanierung historischer Bausubstanz im Sauerland.</p>
+      </div>
+    </article>
+
+    <article class="event reveal">
+      <span class="event-year">2008</span>
+      <div class="event-line"><span class="event-dot"></span><span class="event-connector"></span></div>
+      <div class="event-content">
+        <span class="event-tag">Energetisch</span>
+        <h3 class="event-title">Energetische Sanierung wird Schwerpunkt</h3>
+        <p class="event-body">KfW-Förderprogramme nehmen Fahrt auf. Wir bilden uns zertifiziert in energetischer Sanierung weiter und werden Effizienzhaus-Fachbetrieb.</p>
+      </div>
+    </article>
+
+    <article class="event reveal">
+      <span class="event-year">2019</span>
+      <div class="event-line"><span class="event-dot"></span><span class="event-connector"></span></div>
+      <div class="event-content">
+        <span class="event-tag">Übergabe · 3. Gen</span>
+        <h3 class="event-title">Lukas Kruse übernimmt</h3>
+        <p class="event-body">Lukas Kruse — Maurermeister, Bauingenieur (B.Eng.), Karls Sohn — übernimmt schrittweise. Karl bleibt im Unternehmen aktiv. Der Betrieb wird digitaler, das Handwerk bleibt.</p>
+      </div>
+    </article>
+
+    <article class="event reveal">
+      <span class="event-year">2024</span>
+      <div class="event-line"><span class="event-dot"></span></div>
+      <div class="event-content">
+        <span class="event-tag">Heute</span>
+        <h3 class="event-title">12 Mitarbeiter, eigene Schreinerei, BNB-zertifiziert</h3>
+        <p class="event-body">Stammbelegschaft 12 Personen, eigene Schreinerei seit 2022, BNB-zertifiziert für nachhaltiges Bauen. Drei Lehrlinge in Ausbildung.</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-header reveal">
+    <div class="section-label">Leistungen / 06</div>
+    <h2 class="section-title">Was wir <em>machen.</em></h2>
+  </div>
+
+  <div class="services-list">
+    <article class="service-row reveal">
+      <span class="service-num">01</span>
+      <h3 class="service-title">Sanierung &amp; Modernisierung</h3>
+      <div class="service-body">
+        <p class="service-desc">Vom Bad bis zur Komplettsanierung. Auch energetische Maßnahmen — KfW/BAFA-fähig, mit Förderantrag-Begleitung.</p>
+        <ul class="service-tools">
+          <li>Energetisch</li><li>Fassade</li><li>Dach</li><li>Innen</li>
+        </ul>
+      </div>
+      <span class="service-arrow">→</span>
+    </article>
+
+    <article class="service-row reveal">
+      <span class="service-num">02</span>
+      <h3 class="service-title">Anbauten &amp; Aufstockungen</h3>
+      <div class="service-body">
+        <p class="service-desc">Mehr Platz schaffen, ohne neu zu bauen. Eingeschossige Anbauten, Wintergarten-Erweiterungen, Dachaufstockungen — schlüsselfertig.</p>
+        <ul class="service-tools">
+          <li>Schlüsselfertig</li><li>Statik</li><li>BImSchV</li>
+        </ul>
+      </div>
+      <span class="service-arrow">→</span>
+    </article>
+
+    <article class="service-row reveal">
+      <span class="service-num">03</span>
+      <h3 class="service-title">Innenausbau &amp; Trockenbau</h3>
+      <div class="service-body">
+        <p class="service-desc">Wände versetzen, abgehängte Decken, Akustikbau, Möbelbau aus eigener Schreinerei. Sauber arbeitet bei uns nicht das Putzteam — sondern der Bautrupp selbst.</p>
+        <ul class="service-tools">
+          <li>Schreinerei</li><li>Akustik</li><li>Möbelbau</li>
+        </ul>
+      </div>
+      <span class="service-arrow">→</span>
+    </article>
+
+    <article class="service-row reveal">
+      <span class="service-num">04</span>
+      <h3 class="service-title">Dachgeschoss-Ausbau</h3>
+      <div class="service-body">
+        <p class="service-desc">Dämmung, Gaubeneinbau, Dachflächenfenster, kompletter Innenausbau. Inkl. Statikprüfung und brandschutztechnischer Beratung.</p>
+        <ul class="service-tools">
+          <li>Velux-Partner</li><li>Brandschutz</li><li>Wärmedämmung</li>
+        </ul>
+      </div>
+      <span class="service-arrow">→</span>
+    </article>
+
+    <article class="service-row reveal">
+      <span class="service-num">05</span>
+      <h3 class="service-title">Bad &amp; Küche</h3>
+      <div class="service-body">
+        <p class="service-desc">Komplettbäder schlüsselfertig — Sanitär, Fliesen, Elektrik aus einer Hand mit unseren festen Partnerbetrieben. Küchenmontage inklusive.</p>
+        <ul class="service-tools">
+          <li>Schlüsselfertig</li><li>Barrierefrei</li><li>Smart-fähig</li>
+        </ul>
+      </div>
+      <span class="service-arrow">→</span>
+    </article>
+
+    <article class="service-row reveal">
+      <span class="service-num">06</span>
+      <h3 class="service-title">Denkmalschutz &amp; Altbau</h3>
+      <div class="service-body">
+        <p class="service-desc">Sauerländer Fachwerk, Gründerzeit-Häuser, denkmalgeschützte Substanz. Wir arbeiten mit der Denkmalbehörde zusammen — kein "drüberputzen".</p>
+        <ul class="service-tools">
+          <li>Denkmalbehörde</li><li>Lehmputz</li><li>Originalmaterial</li>
+        </ul>
+      </div>
+      <span class="service-arrow">→</span>
+    </article>
+  </div>
+</section>
+
+<!-- VORHER / NACHHER -->
+<section id="compare">
+  <div class="compare-header reveal">
+    <div class="section-label">Highlight · Vorher / Nachher</div>
+    <h2 class="section-title">Schau dir an, <em>was passiert.</em></h2>
+    <span class="compare-intro">Slider greifen, Maus halten, ziehen →</span>
+  </div>
+
+  <div class="compare-tabs" id="compareTabs">
+    <button class="compare-tab active" data-tab="0">01 · Bad-Sanierung</button>
+    <button class="compare-tab" data-tab="1">02 · Dachgeschoss-Ausbau</button>
+    <button class="compare-tab" data-tab="2">03 · Anbau &amp; Fassade</button>
+  </div>
+
+  <div class="compare-frame" id="compareFrame">
+    <div class="compare-img-wrap" id="compareBefore">
+      <img id="imgBefore" src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1600&q=80" alt="Vorher">
+    </div>
+    <div class="compare-img-wrap compare-img-after" id="compareAfter">
+      <img id="imgAfter" src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1600&q=80" alt="Nachher">
+    </div>
+    <span class="compare-label compare-label-before">Vorher · 1987</span>
+    <span class="compare-label compare-label-after">Nachher · 2024</span>
+    <div class="compare-divider" id="compareDivider"></div>
+    <div class="compare-handle" id="compareHandle">⇆</div>
+  </div>
+
+  <div class="compare-meta">
+    <div class="compare-meta-info">
+      <div>
+        <span class="compare-meta-key">Projekt</span>
+        <span class="compare-meta-val" id="metaProject">Bad-Sanierung · Lüdenscheid-Brügge</span>
+      </div>
+      <div>
+        <span class="compare-meta-key">Dauer</span>
+        <span class="compare-meta-val" id="metaDuration">3 Wochen</span>
+      </div>
+      <div>
+        <span class="compare-meta-key">Umfang</span>
+        <span class="compare-meta-val" id="metaScope">Fliesen · Sanitär · Elektrik · Möbel</span>
+      </div>
+    </div>
+    <span class="compare-hint">← ziehen für Vergleich →</span>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="projects-header reveal">
+    <div class="section-label">Referenzen / Auswahl</div>
+    <h2 class="section-title">Aus dem <em>Archiv.</em></h2>
+  </div>
+
+  <div class="projects-grid">
+    <a href="#" class="project reveal">
+      <span class="project-num">01</span>
+      <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200&q=80" alt="Anbau Familienhaus" loading="lazy">
+      <div class="project-overlay"></div>
+      <div class="project-meta">
+        <span class="project-cat">Anbau · 2024</span>
+        <h3 class="project-name">Familienhaus · Plettenberg</h3>
+      </div>
+    </a>
+    <a href="#" class="project reveal reveal-delay-1">
+      <span class="project-num">02</span>
+      <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80" alt="Komplettsanierung" loading="lazy">
+      <div class="project-overlay"></div>
+      <div class="project-meta">
+        <span class="project-cat">Komplettsanierung · 2024</span>
+        <h3 class="project-name">Stadthaus · Lüdenscheid-Innenstadt</h3>
+      </div>
+    </a>
+    <a href="#" class="project reveal reveal-delay-2">
+      <span class="project-num">03</span>
+      <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80" alt="Dachgeschoss-Ausbau" loading="lazy">
+      <div class="project-overlay"></div>
+      <div class="project-meta">
+        <span class="project-cat">Dachgeschoss · 2023</span>
+        <h3 class="project-name">DG-Ausbau mit Gaube · Werdohl</h3>
+      </div>
+    </a>
+    <a href="#" class="project reveal reveal-delay-3">
+      <span class="project-num">04</span>
+      <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&q=80" alt="Bad-Sanierung" loading="lazy">
+      <div class="project-overlay"></div>
+      <div class="project-meta">
+        <span class="project-cat">Komplettbad · 2024</span>
+        <h3 class="project-name">Barrierefrei · Halver</h3>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- VALUES MEGA -->
+<section id="values">
+  <div class="values-content reveal">
+    <div class="values-eyebrow">Werte / 03</div>
+    <h2 class="section-title" style="color: var(--bg)">Wofür <em>wir stehen.</em></h2>
+  </div>
+
+  <div class="values-grid">
+    <article class="value-card reveal">
+      <span class="value-num">01 / 03</span>
+      <h3 class="value-title">Ehrlich.</h3>
+      <p class="value-body">
+        Wenn ein Projekt nicht zu uns passt, sagen wir es. Wenn ein günstigerer
+        Weg möglich ist, auch. Festpreis bedeutet bei uns Festpreis.
+      </p>
+    </article>
+    <article class="value-card reveal reveal-delay-1">
+      <span class="value-num">02 / 03</span>
+      <h3 class="value-title">Pünktlich.</h3>
+      <p class="value-body">
+        Termine sind Versprechen. Wenn etwas dazwischenkommt, melden wir uns
+        bevor du es merkst. Kein Verschieben, keine Ausreden.
+      </p>
+    </article>
+    <article class="value-card reveal reveal-delay-2">
+      <span class="value-num">03 / 03</span>
+      <h3 class="value-title">Sauber.</h3>
+      <p class="value-body">
+        Schuhüberzieher, Folien, tägliches Aufräumen. Wir verlassen die Baustelle
+        am Abend so, dass du im Wohnzimmer noch Tee trinken kannst.
+      </p>
+    </article>
+  </div>
+</section>
+
+<!-- ANFRAGE -->
+<section id="request">
+  <div class="request-grid">
+    <div class="request-intro">
+      <div class="section-label glowing">Anfrage · Erstgespräch</div>
+      <h2 class="section-title">Kommt vorbei,<br><em>wir reden.</em></h2>
+      <p class="request-copy">
+        Erstgespräch ist immer kostenlos und unverbindlich. Wir kommen gern
+        vorbei, schauen uns an was du planst, und melden uns innerhalb einer
+        Woche mit einem ersten Konzept und Preisrahmen.
+      </p>
+      <span class="request-handwritten">Karl &amp; Lukas Kruse</span>
+
+      <div class="request-direct">
+        <div class="request-direct-row">
+          <span class="request-direct-label">Direkt anrufen</span>
+          <span class="request-direct-val"><a href="tel:+4923514040">02351 / 40 40</a></span>
+        </div>
+        <div class="request-direct-row">
+          <span class="request-direct-label">E-Mail</span>
+          <span class="request-direct-val"><a href="mailto:hallo@kruse-bau.de">hallo@kruse-bau.de</a></span>
+        </div>
+        <div class="request-direct-row">
+          <span class="request-direct-label">Werkstatt &amp; Büro</span>
+          <span class="request-direct-val">Liegnitzer Str. 18 · 58509 Lüdenscheid</span>
+        </div>
+        <div class="request-direct-row">
+          <span class="request-direct-label">Sprechzeiten</span>
+          <span class="request-direct-val">Mo – Fr · 7:30 – 17:00</span>
+        </div>
+      </div>
+    </div>
+
+    <form class="request-form" onsubmit="submitForm(event)">
+      <div class="request-form-header">
+        <span>06 Felder</span>
+        <span>≈ 90 Sekunden</span>
+      </div>
+
+      <div class="form-row cols-2">
+        <div class="form-group">
+          <label class="form-label" for="name">Name *</label>
+          <input type="text" id="name" name="name" class="form-input" placeholder="Vor- &amp; Nachname" required autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="phone">Telefon *</label>
+          <input type="tel" id="phone" name="phone" class="form-input" placeholder="z.B. 0151 / ..." required autocomplete="tel">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">E-Mail *</label>
+        <input type="email" id="email" name="email" class="form-input" placeholder="du@adresse.de" required autocomplete="email">
+      </div>
+
+      <div class="form-row cols-2">
+        <div class="form-group">
+          <label class="form-label" for="topic">Worum geht's? *</label>
+          <select id="topic" name="topic" class="form-select" required>
+            <option value="">Bitte wählen</option>
+            <option value="san">Sanierung / Modernisierung</option>
+            <option value="anbau">Anbau / Aufstockung</option>
+            <option value="innen">Innenausbau / Trockenbau</option>
+            <option value="dach">Dachgeschoss-Ausbau</option>
+            <option value="bad">Bad / Küche</option>
+            <option value="denk">Denkmalschutz / Altbau</option>
+            <option value="other">Etwas anderes</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="budget">Grobes Budget</label>
+          <select id="budget" name="budget" class="form-select">
+            <option value="">Wenn schon klar</option>
+            <option value="under-25">unter 25.000 €</option>
+            <option value="25-60">25.000 – 60.000 €</option>
+            <option value="60-150">60.000 – 150.000 €</option>
+            <option value="over-150">über 150.000 €</option>
+            <option value="open">Muss sich noch zeigen</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row cols-2">
+        <div class="form-group">
+          <label class="form-label" for="object">Objektart</label>
+          <select id="object" name="object" class="form-select">
+            <option value="">Bitte wählen</option>
+            <option value="efh">Einfamilienhaus</option>
+            <option value="zfh">Zweifamilienhaus</option>
+            <option value="mfh">Mehrfamilienhaus</option>
+            <option value="gewerbe">Gewerbe</option>
+            <option value="denkmal">Denkmal</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="when">Geplanter Start</label>
+          <select id="when" name="when" class="form-select">
+            <option value="">Wenn schon klar</option>
+            <option value="now">So bald wie möglich</option>
+            <option value="3m">In 1 – 3 Monaten</option>
+            <option value="6m">In 3 – 6 Monaten</option>
+            <option value="open">Erst mal Beratung</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="message">Beschreibung *</label>
+        <textarea id="message" name="message" class="form-textarea" placeholder="Was, wo, warum. Bilder gerne per Mail nachreichen." required></textarea>
+      </div>
+
+      <button type="submit" class="btn-submit">
+        Anfrage schicken <span class="btn-arrow">→</span>
+      </button>
+
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; line-height: 1.6; color: var(--muted);">
+        Mit Absenden willigst du ein, dass wir deine Daten zur Bearbeitung der Anfrage verwenden. Mehr in der Datenschutzerklärung.
+      </p>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-mark-wrap">
+    <div class="footer-mark" data-wordmark>
+      <span>K</span><span>R</span><span>U</span><span>S</span><span>E</span>
+    </div>
+  </div>
+
+  <div class="footer-grid">
+    <div class="footer-col">
+      <span class="footer-heading">Kruse Bau · Familienbetrieb</span>
+      <p class="footer-copy">
+        <strong>Seit 1962 · 3. Generation</strong><br>
+        Liegnitzer Str. 18<br>
+        58509 Lüdenscheid · NRW
+      </p>
+      <span class="footer-handwritten">— Karl &amp; Lukas Kruse</span>
+    </div>
+
+    <div class="footer-col">
+      <span class="footer-heading">Sitemap</span>
+      <ul class="footer-list">
+        <li><a href="#story">Geschichte</a></li>
+        <li><a href="#services">Leistungen</a></li>
+        <li><a href="#compare">Vorher/Nachher</a></li>
+        <li><a href="#projects">Projekte</a></li>
+        <li><a href="#request">Anfrage</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <span class="footer-heading">Kontakt</span>
+      <ul class="footer-list">
+        <li><a href="tel:+4923514040">02351 / 40 40</a></li>
+        <li><a href="mailto:hallo@kruse-bau.de">hallo@kruse-bau.de</a></li>
+        <li><a href="#">Mo – Fr · 7:30 – 17:00</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <span class="footer-heading">Innung &amp; Zertifikate</span>
+      <ul class="footer-list">
+        <li>HWK Arnsberg · Reg. 1962</li>
+        <li>BNB-zertifiziert</li>
+        <li>Effizienzhaus-Fachbetrieb</li>
+        <li>Denkmalpflege NRW</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 Kruse Bau GmbH &amp; Co. KG · Lüdenscheid</span>
+    <ul class="footer-legal">
+      <li><a href="#">Impressum</a></li>
+      <li><a href="#">Datenschutz</a></li>
+      <li><a href="#">AGB</a></li>
+    </ul>
+    <span><a href="/">Site by Webdev Studio</a></span>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✓ Anfrage geschickt — wir melden uns binnen einer Woche</div>
+
+<script>
+  // ════ CURSOR ════
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  function animateCursor() {
+    rx += (mx - rx) * 0.13;
+    ry += (my - ry) * 0.13;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  document.querySelectorAll('a, button, input, select, textarea, .service-row, .project, .event, .footer-mark span').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.transform = 'translate(-50%,-50%) scale(1.7)';
+      ring.style.borderColor = 'rgba(199,93,47,0.85)';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.transform = 'translate(-50%,-50%) scale(1)';
+      ring.style.borderColor = 'rgba(58,44,31,0.4)';
+    });
+  });
+
+  // ════ SPARKS ════
+  let lastSparkTime = 0;
+  document.addEventListener('mousemove', e => {
+    const now = Date.now();
+    if (now - lastSparkTime < 80) return;
+    lastSparkTime = now;
+    const spark = document.createElement('div');
+    spark.className = 'cursor-spark';
+    const size = 3 + Math.random() * 3;
+    spark.style.cssText = `left:${e.clientX}px;top:${e.clientY}px;width:${size}px;height:${size}px;background:rgba(199,93,47,0.4)`;
+    document.body.appendChild(spark);
+    setTimeout(() => spark.remove(), 700);
+  });
+
+  // ════ NAVBAR ════
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ════ SCROLL PROGRESS ════
+  const progressBar = document.getElementById('scrollProgress');
+  function updateProgress() {
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = ((window.scrollY / total) * 100) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+
+  // ════ REVEAL ════
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => revealObs.observe(el));
+
+  // ════ SECTION TITLE CLIP ════
+  const clipObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('clipped-in');
+        clipObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.section-title').forEach(el => clipObs.observe(el));
+
+  // ════ ACTIVE NAV ════
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const navObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => {
+          a.classList.toggle('nav-active', a.getAttribute('href') === '#' + e.target.id);
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('section[id]').forEach(s => navObs.observe(s));
+
+  // ════ SECTION LABEL GLOW ════
+  const labelObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('glowing');
+        labelObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.section-label').forEach(el => labelObs.observe(el));
+
+  // ════ RIPPLE ════
+  document.querySelectorAll('.btn-primary, .btn-ghost, .btn-submit, .nav-cta').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const r = btn.getBoundingClientRect();
+      const ripple = document.createElement('span');
+      ripple.className = 'btn-ripple';
+      const size = Math.max(r.width, r.height);
+      ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - r.left - size/2}px;top:${e.clientY - r.top - size/2}px`;
+      btn.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 600);
+    });
+  });
+
+  // ════ HAMBURGER ════
+  const hamburger = document.getElementById('navHamburger');
+  const drawer = document.getElementById('navDrawer');
+  if (hamburger && drawer) {
+    hamburger.addEventListener('click', () => {
+      const open = hamburger.classList.toggle('open');
+      drawer.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    drawer.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        drawer.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && drawer.classList.contains('open')) {
+        hamburger.classList.remove('open');
+        drawer.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+  }
+
+  // ════ FORM ════
+  function submitForm(e) {
+    e.preventDefault();
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4000);
+    e.target.reset();
+  }
+
+  // ════ COMPARE SLIDER ════
+  const compareData = [
+    {
+      before: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1600&q=80',
+      after:  'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1600&q=80',
+      labelBefore: 'Vorher · 1987',
+      labelAfter:  'Nachher · 2024',
+      project: 'Bad-Sanierung · Lüdenscheid-Brügge',
+      duration: '3 Wochen',
+      scope: 'Fliesen · Sanitär · Elektrik · Möbel'
+    },
+    {
+      before: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1600&q=80',
+      after:  'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=1600&q=80',
+      labelBefore: 'Vorher · Rohzustand',
+      labelAfter:  'Nachher · 2023',
+      project: 'Dachgeschoss-Ausbau · Werdohl',
+      duration: '8 Wochen',
+      scope: 'Dämmung · Gaube · Komplett-Innenausbau'
+    },
+    {
+      before: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1600&q=80',
+      after:  'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600&q=80',
+      labelBefore: 'Vorher · 1968',
+      labelAfter:  'Nachher · 2024',
+      project: 'Anbau &amp; Fassade · Halver',
+      duration: '14 Wochen',
+      scope: 'Anbau · Fassadendämmung · Dach'
+    }
+  ];
+
+  const compareFrame = document.getElementById('compareFrame');
+  const divider = document.getElementById('compareDivider');
+  const handle = document.getElementById('compareHandle');
+  const after = document.getElementById('compareAfter');
+  const imgBefore = document.getElementById('imgBefore');
+  const imgAfter = document.getElementById('imgAfter');
+  const labelBefore = document.querySelector('.compare-label-before');
+  const labelAfter = document.querySelector('.compare-label-after');
+  const metaProject = document.getElementById('metaProject');
+  const metaDuration = document.getElementById('metaDuration');
+  const metaScope = document.getElementById('metaScope');
+
+  let dragging = false;
+  function setSlider(percent) {
+    percent = Math.max(0, Math.min(100, percent));
+    after.style.clipPath = `inset(0 0 0 ${percent}%)`;
+    divider.style.left = percent + '%';
+    handle.style.left = percent + '%';
+  }
+  setSlider(50);
+
+  function getPercent(clientX) {
+    const r = compareFrame.getBoundingClientRect();
+    return ((clientX - r.left) / r.width) * 100;
+  }
+
+  compareFrame.addEventListener('mousedown', e => { dragging = true; setSlider(getPercent(e.clientX)); });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    setSlider(getPercent(e.clientX));
+  });
+  document.addEventListener('mouseup', () => { dragging = false; });
+
+  compareFrame.addEventListener('touchstart', e => { dragging = true; setSlider(getPercent(e.touches[0].clientX)); }, { passive: true });
+  compareFrame.addEventListener('touchmove', e => {
+    if (!dragging) return;
+    setSlider(getPercent(e.touches[0].clientX));
+  }, { passive: true });
+  compareFrame.addEventListener('touchend', () => { dragging = false; });
+
+  // Tabs
+  document.querySelectorAll('.compare-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.compare-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const idx = parseInt(tab.dataset.tab);
+      const d = compareData[idx];
+      imgBefore.src = d.before;
+      imgAfter.src = d.after;
+      labelBefore.textContent = d.labelBefore;
+      labelAfter.textContent = d.labelAfter;
+      metaProject.innerHTML = d.project;
+      metaDuration.textContent = d.duration;
+      metaScope.textContent = d.scope;
+      setSlider(50);
+    });
+  });
+</script>
+</body>
+</html>

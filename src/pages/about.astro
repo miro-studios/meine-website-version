@@ -1,0 +1,303 @@
+---
+import PortfolioLayout from '@layouts/PortfolioLayout.astro';
+import About from '@components/portfolio/About.astro';
+import Footer from '@components/portfolio/Footer.astro';
+import SplitText from '@components/shared/SplitText.astro';
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+import MagneticButton from '@components/shared/MagneticButton.astro';
+
+const principles = [
+  {
+    index: '01',
+    title: 'Ich liefere nichts ab, das ich selbst nicht gut finden würde.',
+    body: 'Wenn ein Entwurf "okay" ist, fängt die Arbeit erst an. Awwwards-Qualität ist Standard, nicht Bonus.',
+  },
+  {
+    index: '02',
+    title: 'Du sprichst mit dem, der baut.',
+    body: 'Kein Project Manager dazwischen, kein Stille-Post-Effekt. Du hast direkten Draht zu mir — das spart Zeit, Geld und Nerven.',
+  },
+  {
+    index: '03',
+    title: 'Festpreis pro Phase, keine Überraschungen.',
+    body: 'Du weißt vorher was es kostet, was du bekommst und wann es fertig ist. Stundenabrechnung gibt es nicht.',
+  },
+  {
+    index: '04',
+    title: 'Performance ist Design.',
+    body: 'Eine schnelle Site zu bauen ist genauso eine gestalterische Entscheidung wie die Wahl der Schrift. Ich trenne das nicht.',
+  },
+];
+---
+
+<PortfolioLayout
+  title="Studio — Über uns | Webdev Studio Lüdenscheid"
+  description="Zweiköpfiges Webdesign-Studio aus Lüdenscheid. Editorial-Webdesign mit Awwwards-Qualität für lokale Geschäfte in NRW."
+  active="about"
+>
+  <main>
+    <!-- Manifest Hero -->
+    <section class="about-hero" aria-labelledby="about-hero-title">
+      <span class="about-hero__eyebrow">
+        <span class="dash" aria-hidden="true"></span>
+        Studio
+      </span>
+
+      <SplitText
+        as="h1"
+        by="words"
+        stagger={0.05}
+        class="about-hero__headline"
+        id="about-hero-title"
+      >
+        Klein. Direkt.
+      </SplitText>
+      <SplitText
+        as="p"
+        by="words"
+        stagger={0.05}
+        delay={0.2}
+        class="about-hero__headline about-hero__headline--accent"
+      >
+        Eigensinnig.
+      </SplitText>
+
+      <p class="about-hero__copy">
+        miro-studios ist ein Solo-Studio aus Lüdenscheid. Ich baue Websites
+        für lokale Geschäfte mit dem gleichen Anspruch, den große Studios
+        in Berlin oder Amsterdam an Konzern-Kunden anlegen.
+      </p>
+    </section>
+
+    <!-- Team Cards -->
+    <About />
+
+    <!-- Prinzipien -->
+    <section class="principles" aria-labelledby="principles-title">
+      <div class="principles__inner">
+        <header class="principles__header">
+          <span class="principles__eyebrow">
+            <span class="dash" aria-hidden="true"></span>
+            Wie wir denken / 04 Prinzipien
+          </span>
+          <SplitText
+            as="h2"
+            by="words"
+            stagger={0.05}
+            start="top 95%"
+            class="principles__title"
+            id="principles-title"
+          >
+            Was uns wichtig ist.
+          </SplitText>
+        </header>
+
+        <RevealOnScroll class="principles__list" stagger={0.08} y={30} start="top 98%">
+          {
+            principles.map((p) => (
+              <article class="principle">
+                <span class="principle__index">{p.index}</span>
+                <h3 class="principle__title">{p.title}</h3>
+                <p class="principle__body">{p.body}</p>
+              </article>
+            ))
+          }
+        </RevealOnScroll>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="about-cta" aria-labelledby="about-cta-title">
+      <div class="about-cta__inner">
+        <SplitText
+          as="h2"
+          by="words"
+          stagger={0.06}
+          class="about-cta__title"
+          id="about-cta-title"
+        >
+          Lust, mit uns zu arbeiten?
+        </SplitText>
+        <div class="about-cta__actions">
+          <MagneticButton href="/kontakt" strength={0.35}>
+            Anfrage starten
+            <span aria-hidden="true">→</span>
+          </MagneticButton>
+          <MagneticButton href="/#showcase" variant="ghost" strength={0.25}>
+            Erst Arbeiten ansehen
+          </MagneticButton>
+        </div>
+      </div>
+    </section>
+
+    <Footer />
+  </main>
+</PortfolioLayout>
+
+<style>
+  /* About Hero */
+  .about-hero {
+    padding-block: clamp(8rem, 18vh, 12rem) var(--space-6);
+    padding-inline: var(--container-pad);
+    max-width: var(--container-max);
+    margin-inline: auto;
+  }
+
+  .about-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-muted);
+    margin-bottom: var(--space-3);
+  }
+
+  .dash {
+    display: inline-block;
+    width: 2.5rem;
+    height: 1px;
+    background-color: currentColor;
+  }
+
+  .about-hero__headline {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 11vw, 11rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+    display: block;
+  }
+
+  .about-hero__headline--accent {
+    color: var(--color-accent);
+    font-style: italic;
+  }
+
+  .about-hero__copy {
+    margin-top: var(--space-4);
+    font-size: var(--text-lg);
+    line-height: 1.5;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+    max-width: 56ch;
+  }
+
+  /* Principles */
+  .principles {
+    padding-block: var(--space-8);
+    padding-inline: var(--container-pad);
+    background-color: color-mix(in srgb, var(--color-text) 4%, var(--color-bg));
+  }
+
+  .principles__inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+  }
+
+  .principles__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+  }
+
+  .principles__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-muted);
+  }
+
+  .principles__title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+  }
+
+  .principles__list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.5rem, 3vw, 3rem);
+  }
+
+  @media (max-width: 768px) {
+    .principles__list {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .principle {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.75rem;
+    border: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg);
+    transition: border-color 0.4s var(--ease-out-expo),
+      transform 0.4s var(--ease-out-expo);
+  }
+
+  .principle:hover {
+    border-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+    transform: translateY(-3px);
+  }
+
+  .principle__index {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+    letter-spacing: 0.1em;
+  }
+
+  .principle__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2vw, 1.625rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+  }
+
+  .principle__body {
+    font-size: var(--text-base);
+    line-height: 1.5;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+  }
+
+  /* CTA */
+  .about-cta {
+    padding-block: var(--space-12);
+    padding-inline: var(--container-pad);
+    text-align: center;
+  }
+
+  .about-cta__inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+  }
+
+  .about-cta__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 9vw, 8rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+    font-style: italic;
+  }
+
+  .about-cta__actions {
+    margin-top: var(--space-4);
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+</style>

@@ -1,0 +1,101 @@
+---
+interface Props {
+  /** Tag für das umschließende Element (h1, h2, p, span...) */
+  as?: keyof HTMLElementTagNameMap;
+  /** Split-Granularität */
+  by?: 'chars' | 'words' | 'lines';
+  /** Stagger zwischen Items in Sekunden */
+  stagger?: number;
+  /** Delay vor dem Start in Sekunden */
+  delay?: number;
+  /** Easing-Curve */
+  ease?: string;
+  /** Trigger-Punkt für ScrollTrigger */
+  start?: string;
+  /** Wenn `false`, läuft Animation sofort beim Laden */
+  onScroll?: boolean;
+  /** Zusätzliche Klassen */
+  class?: string;
+  /** HTML id (z.B. für aria-labelledby) */
+  id?: string;
+}
+
+const {
+  as: Tag = 'span',
+  by = 'chars',
+  stagger = 0.02,
+  delay = 0,
+  ease = 'expo.out',
+  start = 'top 80%',
+  onScroll = true,
+  class: className = '',
+  id,
+}: Props = Astro.props;
+---
+
+<Tag
+  id={id}
+  class:list={['split-text', className]}
+  data-split-text
+  data-by={by}
+  data-stagger={stagger}
+  data-delay={delay}
+  data-ease={ease}
+  data-start={start}
+  data-on-scroll={onScroll ? 'true' : 'false'}
+>
+  <slot />
+</Tag>
+
+<style>
+  .split-text {
+    display: inline-block;
+  }
+
+  .split-text :global(.char),
+  .split-text :global(.word) {
+    display: inline-block;
+    will-change: transform, opacity;
+  }
+
+  .split-text :global(.word) {
+    overflow: hidden;
+    line-height: 1.05;
+  }
+</style>
+
+<script>
+  import { splitTextReveal } from '@lib/animations';
+
+  const cleanups = new Map<HTMLElement, () => void>();
+
+  const start = () => {
+    document.querySelectorAll<HTMLElement>('[data-split-text]').forEach((el) => {
+      const by = (el.dataset.by as 'chars' | 'words' | 'lines') ?? 'chars';
+      const stagger = parseFloat(el.dataset.stagger ?? '0.02');
+      const delay = parseFloat(el.dataset.delay ?? '0');
+      const ease = el.dataset.ease ?? 'expo.out';
+      const triggerStart = el.dataset.start ?? 'top 80%';
+      const onScroll = el.dataset.onScroll !== 'false';
+
+      const cleanup = splitTextReveal(el, {
+        by,
+        stagger,
+        delay,
+        ease,
+        start: triggerStart,
+        onScroll,
+      });
+      cleanups.set(el, cleanup);
+    });
+  };
+
+  const stop = () => {
+    cleanups.forEach((fn) => fn());
+    cleanups.clear();
+  };
+
+  start();
+  document.addEventListener('astro:page-load', start);
+  document.addEventListener('astro:before-swap', stop);
+</script>

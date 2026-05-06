@@ -1,0 +1,62 @@
+---
+/**
+ * MicroInteractions — initialisiert Float, Depth-Hover und Button-Depth
+ * für die ganze Seite. View-Transitions-aware.
+ *
+ * Einmal in BaseLayout / PortfolioLayout einbinden, dann pro Element
+ * via Data-Attribute opt-in (`data-float`, `data-depth-hover`, `data-button-depth`).
+ */
+---
+
+<style is:global>
+  [data-button-depth] {
+    transition:
+      transform 0.4s var(--ease-out-expo),
+      box-shadow 0.4s var(--ease-out-expo);
+    will-change: transform, box-shadow;
+  }
+
+  @media (hover: hover) {
+    [data-button-depth]:hover {
+      transform: translate3d(0, -3px, 0);
+      box-shadow:
+        0 12px 28px -8px color-mix(in srgb, var(--color-accent) 40%, transparent),
+        0 4px 8px -2px rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  [data-button-depth].is-pressed {
+    transform: translate3d(0, 0, 0);
+    box-shadow:
+      0 4px 12px -4px color-mix(in srgb, var(--color-accent) 30%, transparent),
+      0 1px 2px -1px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-button-depth] {
+      transition: none;
+    }
+    [data-button-depth]:hover {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  import { initMicroInteractions } from '@lib/micro-interactions';
+
+  let cleanup: (() => void) | null = null;
+
+  const start = () => {
+    cleanup?.();
+    cleanup = initMicroInteractions();
+  };
+  const stop = () => {
+    cleanup?.();
+    cleanup = null;
+  };
+
+  start();
+  document.addEventListener('astro:page-load', start);
+  document.addEventListener('astro:before-swap', stop);
+</script>

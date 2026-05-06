@@ -1,0 +1,80 @@
+---
+interface Props {
+  /** Tag */
+  as?: keyof HTMLElementTagNameMap;
+  /** Vertikaler Offset in px */
+  y?: number;
+  /** Animationsdauer in Sekunden */
+  duration?: number;
+  /** Easing-Curve */
+  ease?: string;
+  /** ScrollTrigger-Start-Point */
+  start?: string;
+  /** Stagger zwischen Children (in Sek.) — wenn > 0, werden direkte Kinder einzeln animiert */
+  stagger?: number;
+  /** Zusätzliche Klassen */
+  class?: string;
+}
+
+const {
+  as: Tag = 'div',
+  y = 40,
+  duration = 1,
+  ease = 'expo.out',
+  start = 'top 85%',
+  stagger = 0,
+  class: className = '',
+}: Props = Astro.props;
+---
+
+<Tag
+  class:list={['reveal-wrap', className]}
+  data-reveal-wrap
+  data-y={y}
+  data-duration={duration}
+  data-ease={ease}
+  data-start={start}
+  data-stagger={stagger}
+>
+  <slot />
+</Tag>
+
+<script>
+  import { revealOnScroll } from '@lib/animations';
+
+  const cleanups = new Map<HTMLElement, () => void>();
+
+  const start = () => {
+    document.querySelectorAll<HTMLElement>('[data-reveal-wrap]').forEach((el) => {
+      const y = parseFloat(el.dataset.y ?? '40');
+      const duration = parseFloat(el.dataset.duration ?? '1');
+      const ease = el.dataset.ease ?? 'expo.out';
+      const triggerStart = el.dataset.start ?? 'top 85%';
+      const stagger = parseFloat(el.dataset.stagger ?? '0');
+
+      // Wenn stagger > 0, animiere direkte Kinder; sonst das Element selbst
+      const targets =
+        stagger > 0
+          ? Array.from(el.children) as HTMLElement[]
+          : [el];
+
+      const cleanup = revealOnScroll(targets, {
+        y,
+        duration,
+        ease,
+        start: triggerStart,
+        stagger: stagger || 0.08,
+      });
+      cleanups.set(el, cleanup);
+    });
+  };
+
+  const stop = () => {
+    cleanups.forEach((fn) => fn());
+    cleanups.clear();
+  };
+
+  start();
+  document.addEventListener('astro:page-load', start);
+  document.addEventListener('astro:before-swap', stop);
+</script>

@@ -1,0 +1,642 @@
+---
+import SplitText from '@components/shared/SplitText.astro';
+import MagneticButton from '@components/shared/MagneticButton.astro';
+import HeroScene from './HeroScene.astro';
+---
+
+
+<section class="hero" aria-labelledby="hero-headline" data-hero-intro>
+  <!-- Three.js 3D-Element (Background-Layer, hinter Content) -->
+  <HeroScene />
+
+  <!-- Partikel-Layer fuer den Zerfall (2D Canvas) -->
+  <canvas class="hero__fragments" data-hero-fragments aria-hidden="true"></canvas>
+
+  <!-- Logo-Intro: erscheint zuerst gross im Vordergrund -->
+  <div class="hero__logo-intro" data-hero-logo aria-hidden="true">
+    <span class="hero__logo-word">miro-studios</span>
+  </div>
+
+  <!-- Mono-Labels an Ecken (technical, editorial details) -->
+  <div
+    class="hero__corner hero__corner--tl"
+    data-mouse-parallax
+    data-mouse-strength="10"
+    data-hero-reveal
+  >
+    <span class="mono-label">[ miro-studios ]</span>
+    <span class="mono-label hero__location">Lüdenscheid · NRW · DE</span>
+  </div>
+
+  <div
+    class="hero__corner hero__corner--tr"
+    data-mouse-parallax
+    data-mouse-strength="10"
+    data-hero-reveal
+  >
+    <span class="mono-label hero__live">
+      <span class="live-dot" aria-hidden="true"></span>
+      Verfügbar für Q2/Q3 2026
+    </span>
+  </div>
+
+  <!-- Mega Headline -->
+  <div class="hero__center" data-hero-headline>
+    <p class="hero__eyebrow">
+      <span class="eyebrow-line"></span>
+      <span>Webdesign &amp; Development</span>
+    </p>
+
+    <h1 id="hero-headline" class="hero__headline">
+      <SplitText as="span" by="words" stagger={0.04} class="hero__line">
+        Mehr Kunden
+      </SplitText>
+      <SplitText
+        as="span"
+        by="words"
+        stagger={0.04}
+        delay={0.15}
+        class="hero__line hero__line--rotator"
+      >
+        <span class="hero__rotator" aria-live="polite">
+          <span class="hero__rotator-word is-active">für dein Geschäft</span>
+          <span class="hero__rotator-word">für deinen Salon</span>
+          <span class="hero__rotator-word">für dein Restaurant</span>
+          <span class="hero__rotator-word">für dein Handwerk</span>
+        </span>
+      </SplitText>
+      <span class="hero__line hero__line--accent">durch deine Website.</span>
+    </h1>
+
+    <p class="hero__tagline">
+      Ein Studio, ein Ansprechpartner. Awwwards-Qualität für die Pizzeria,
+      den Friseur, den Handwerksbetrieb. Keine Templates. Keine Plattitüden.
+    </p>
+
+    <div class="hero__actions">
+      <MagneticButton href="#showcase" strength={0.35}>
+        Arbeiten ansehen
+        <span aria-hidden="true">↓</span>
+      </MagneticButton>
+      <MagneticButton href="/kontakt" variant="ghost" strength={0.25}>
+        Projekt starten
+      </MagneticButton>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div
+    class="hero__corner hero__corner--bl"
+    data-mouse-parallax
+    data-mouse-strength="6"
+    data-hero-reveal
+  >
+    <span class="mono-label">(scroll)</span>
+    <span class="hero__scroll-line" aria-hidden="true"></span>
+  </div>
+
+  <div
+    class="hero__corner hero__corner--br"
+    data-mouse-parallax
+    data-mouse-strength="8"
+    data-hero-reveal
+  >
+    <ul class="hero__stats mono-label">
+      <li><span>04</span> Demos</li>
+      <li><span>01</span> Designer</li>
+      <li><span>∞</span> Ideen</li>
+    </ul>
+  </div>
+</section>
+
+<script>
+  // Rotator: tauscht alle 4s das aktive Wort mit Cross-Fade
+  function initRotator() {
+    const rotator = document.querySelector<HTMLElement>('.hero__rotator');
+    if (!rotator) return;
+    const words = Array.from(rotator.querySelectorAll<HTMLElement>('.hero__rotator-word'));
+    if (words.length <= 1) return;
+    let active = 0;
+    const tick = () => {
+      words[active].classList.remove('is-active');
+      active = (active + 1) % words.length;
+      words[active].classList.add('is-active');
+    };
+    const interval = window.setInterval(tick, 4000);
+    document.addEventListener('astro:before-swap', () => window.clearInterval(interval), { once: true });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initRotator);
+  } else {
+    initRotator();
+  }
+  document.addEventListener('astro:page-load', initRotator);
+</script>
+
+<script>
+  // Hero-Intro Orchestration: Logo -> Partikel-Zerfall -> Network -> Headline
+  function initHeroIntro() {
+    const heroEl = document.querySelector<HTMLElement>('[data-hero-intro]');
+    const logoEl = document.querySelector<HTMLElement>('[data-hero-logo]');
+    const logoWordEl = logoEl?.querySelector<HTMLElement>('.hero__logo-word') || null;
+    const fragCanvas = document.querySelector<HTMLCanvasElement>('[data-hero-fragments]');
+    const headlineEl = document.querySelector<HTMLElement>('[data-hero-headline]');
+    const heroSceneEl = document.querySelector<HTMLElement>('[data-hero-scene]');
+    const reveals = document.querySelectorAll<HTMLElement>('[data-hero-reveal]');
+
+    if (!heroEl || !logoEl || !logoWordEl || !fragCanvas || !headlineEl) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Wenn reduced motion: alles direkt zeigen
+    if (reduced) {
+      logoEl.style.display = 'none';
+      headlineEl.classList.add('is-on');
+      reveals.forEach((r) => r.classList.add('is-on'));
+      if (heroSceneEl) heroSceneEl.classList.add('is-on');
+      return;
+    }
+
+    const fctx = fragCanvas.getContext('2d');
+    if (!fctx) return;
+
+    function resizeFrag() {
+      const dpr = Math.min(window.devicePixelRatio, 2);
+      fragCanvas!.width = window.innerWidth * dpr;
+      fragCanvas!.height = window.innerHeight * dpr;
+      fctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resizeFrag();
+    window.addEventListener('resize', resizeFrag);
+
+    type Particle = {
+      sx: number; sy: number;
+      tx: number; ty: number;
+      mx: number; my: number;
+      delay: number; duration: number;
+      size: number; hue: number; lightness: number;
+    };
+
+    const PARTICLE_COUNT = 80;
+    let particles: Particle[] = [];
+    let fragStart = -1;
+    let fragActive = false;
+    let rafId = 0;
+
+    function spawnParticles() {
+      const r = logoWordEl!.getBoundingClientRect();
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight / 2;
+      particles = [];
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        const sx = r.left + Math.random() * r.width;
+        const sy = r.top + Math.random() * r.height;
+        const angle = Math.random() * Math.PI * 2;
+        const radius = 30 + Math.random() * 90;
+        const tx = cx + Math.cos(angle) * radius;
+        const ty = cy + Math.sin(angle) * radius;
+        particles.push({
+          sx, sy, tx, ty,
+          mx: (sx + tx) / 2 + (Math.random() - 0.5) * 200,
+          my: (sy + ty) / 2 - 80 - Math.random() * 120,
+          delay: Math.random() * 0.35,
+          duration: 1.0 + Math.random() * 0.5,
+          size: 1.5 + Math.random() * 2.5,
+          hue: Math.random() < 0.6 ? 22 : 30,
+          lightness: 60 + Math.random() * 30,
+        });
+      }
+    }
+
+    function easeInOutCubic(t: number) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function drawFragments(elapsedMs: number) {
+      fctx!.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      if (!fragActive) return;
+      const tSec = elapsedMs / 1000;
+      let allDone = true;
+      for (const p of particles) {
+        const t = (tSec - p.delay) / p.duration;
+        if (t < 0) { allDone = false; continue; }
+        if (t < 1) allDone = false;
+        const tt = Math.min(1, Math.max(0, t));
+        const e = easeInOutCubic(tt);
+        const u = 1 - e;
+        const x = u * u * p.sx + 2 * u * e * p.mx + e * e * p.tx;
+        const y = u * u * p.sy + 2 * u * e * p.my + e * e * p.ty;
+        const fadeIn = Math.min(1, tt * 6);
+        const fadeOut = tt > 0.75 ? 1 - (tt - 0.75) / 0.25 : 1;
+        const alpha = fadeIn * fadeOut;
+        fctx!.beginPath();
+        fctx!.fillStyle = `hsla(${p.hue}, 95%, ${p.lightness}%, ${alpha})`;
+        fctx!.shadowBlur = 14;
+        fctx!.shadowColor = `hsla(${p.hue}, 95%, 60%, ${alpha * 0.8})`;
+        fctx!.arc(x, y, p.size, 0, Math.PI * 2);
+        fctx!.fill();
+      }
+      fctx!.shadowBlur = 0;
+      if (allDone) fragActive = false;
+    }
+
+    function loop() {
+      rafId = requestAnimationFrame(loop);
+      if (fragStart > 0) drawFragments(performance.now() - fragStart);
+      else fctx!.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    }
+    loop();
+
+    const timers: number[] = [];
+
+    // Network-Canvas + Headline + Corners initial verstecken
+    if (heroSceneEl) heroSceneEl.classList.remove('is-on');
+    headlineEl.classList.remove('is-on');
+    reveals.forEach((r) => r.classList.remove('is-on'));
+
+    // T = 1600ms: Logo fadet aus, Partikel spawnen
+    timers.push(window.setTimeout(() => {
+      spawnParticles();
+      fragActive = true;
+      fragStart = performance.now();
+      logoEl.classList.add('is-hidden');
+    }, 1600));
+
+    // T = 2000ms: Logo komplett raus
+    timers.push(window.setTimeout(() => {
+      logoEl.style.display = 'none';
+    }, 2000));
+
+    // T = 2400ms: Network fadet ein
+    timers.push(window.setTimeout(() => {
+      if (heroSceneEl) heroSceneEl.classList.add('is-on');
+    }, 2400));
+
+    // T = 3500ms: Headline + Corners
+    timers.push(window.setTimeout(() => {
+      headlineEl.classList.add('is-on');
+      reveals.forEach((r, i) => {
+        window.setTimeout(() => r.classList.add('is-on'), i * 120);
+      });
+    }, 3500));
+
+    document.addEventListener('astro:before-swap', () => {
+      timers.forEach((t) => window.clearTimeout(t));
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('resize', resizeFrag);
+    }, { once: true });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHeroIntro);
+  } else {
+    initHeroIntro();
+  }
+  document.addEventListener('astro:page-load', initHeroIntro);
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    padding-block: var(--space-12) var(--space-8);
+    padding-inline: var(--container-pad);
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        ellipse at 50% 60%,
+        color-mix(in srgb, var(--color-accent) 8%, transparent) 0%,
+        transparent 60%
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Hero-Scene (Network) startet unsichtbar, fadet ein */
+  .hero :global(.hero-scene) {
+    opacity: 0;
+    transition: opacity 1s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+  }
+  .hero :global(.hero-scene.is-on) {
+    opacity: 1;
+  }
+
+  /* Partikel-Canvas (2D) */
+  .hero__fragments {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 6;
+    pointer-events: none;
+  }
+
+  /* Logo-Intro */
+  .hero__logo-intro {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    z-index: 5;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .hero__logo-intro.is-hidden {
+    opacity: 0;
+  }
+  .hero__logo-word {
+    font-family: 'Bricolage Grotesque', var(--font-display), sans-serif;
+    font-weight: 800;
+    font-stretch: 75%;
+    font-size: clamp(3.5rem, 14vw, 14rem);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    color: var(--color-text);
+    white-space: nowrap;
+    text-shadow: 0 0 40px color-mix(in srgb, var(--color-accent) 30%, transparent);
+  }
+
+  /* Headline-Stage + Corners starten unsichtbar */
+  .hero__center {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 1200px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)),
+                transform 1s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+  }
+  .hero__center.is-on {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .hero__corner {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 0.8s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)),
+                transform 0.8s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+  }
+  .hero__corner.is-on {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .hero__corner--tl { top: clamp(5rem, 10vh, 7rem); left: var(--container-pad); }
+  .hero__corner--tr { top: clamp(5rem, 10vh, 7rem); right: var(--container-pad); align-items: flex-end; }
+  .hero__corner--bl { bottom: var(--space-4); left: var(--container-pad); flex-direction: row; align-items: center; gap: 0.75rem; }
+  .hero__corner--br { bottom: var(--space-4); right: var(--container-pad); }
+
+  .mono-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: clamp(0.6875rem, 0.4vw + 0.6rem, 0.8125rem);
+    font-variant-numeric: tabular-nums;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+  }
+
+  .hero__location { color: color-mix(in srgb, var(--color-text) 50%, transparent); }
+  .hero__live { color: var(--color-text); }
+
+  .live-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background-color: #4ade80;
+    box-shadow: 0 0 0 4px color-mix(in srgb, #4ade80 25%, transparent);
+    animation: hero-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes hero-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); box-shadow: 0 0 0 8px transparent; }
+  }
+
+  .hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-muted);
+    margin-bottom: var(--space-3);
+  }
+
+  .eyebrow-line { display: inline-block; width: 2.5rem; height: 1px; background-color: var(--color-muted); }
+
+  .hero__headline {
+    font-family: 'Bricolage Grotesque', var(--font-display), sans-serif;
+    font-optical-sizing: auto;
+    /* Etwas kleiner als zuvor (max 9rem statt 12rem) */
+    font-size: clamp(2.6rem, 9vw, 9rem);
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    font-weight: 800;
+    font-style: normal;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  /* Headline: Alle drei Zeilen in Bricolage Condensed Caps,
+     unterschieden nur durch Farbe / Gradient */
+  :global(.hero__line) {
+    display: block;
+    font-family: 'Bricolage Grotesque', var(--font-display), sans-serif !important;
+    font-weight: 800 !important;
+    font-style: normal !important;
+    font-stretch: 75% !important;
+    letter-spacing: -0.05em !important;
+    text-transform: uppercase !important;
+    color: var(--color-text) !important;
+  }
+
+  /* Zeile 2: dezent grau */
+  :global(.hero__line.hero__line--rotator) {
+    color: color-mix(in srgb, var(--color-text) 55%, transparent) !important;
+  }
+
+  /* Zeile 3: startet unsichtbar, faded nach den anderen Zeilen rein */
+  :global(.hero__line.hero__line--accent) {
+    opacity: 0;
+    transition: opacity 0.9s 0.35s var(--ease-out-expo, cubic-bezier(0.16,1,0.3,1));
+  }
+  /* is-on kommt vom hero__center — Zeile 3 erbt es nicht direkt,
+     daher triggern wir über den Parent */
+  :global(.hero__center.is-on .hero__line--accent) {
+    opacity: 1;
+  }
+
+  /* Shimmer direkt auf die Buchstaben via background-clip: text */
+  :global(.hero__line.hero__line--accent) {
+    color: var(--color-accent) !important;
+    background-image: linear-gradient(
+      105deg,
+      var(--color-accent) 0%,
+      var(--color-accent) 33%,
+      #ffd4a0 44%,
+      #fff8ee 50%,
+      #ffd4a0 56%,
+      var(--color-accent) 67%,
+      var(--color-accent) 100%
+    ) !important;
+    background-size: 300% 100% !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    animation: shimmer-text 2.8s ease-in-out infinite !important;
+  }
+
+  @keyframes shimmer-text {
+    0%   { background-position: 120% center; }
+    100% { background-position: -20% center; }
+  }
+
+  :global(.hero__rotator) {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    min-height: 1em;
+    min-width: max-content;
+  }
+
+  :global(.hero__rotator-word) {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.4em);
+    transition:
+      opacity 0.55s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)),
+      transform 0.55s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)),
+      filter 0.55s ease;
+    filter: blur(6px);
+  }
+
+  :global(.hero__rotator-word + .hero__rotator-word) {
+    position: absolute;
+    inset: 0;
+    white-space: nowrap;
+  }
+
+  :global(.hero__rotator-word.is-active) {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
+  .hero__headline {
+    transform-style: preserve-3d;
+    transform: perspective(1200px)
+               rotateX(var(--tilt-x, 0deg))
+               rotateY(var(--tilt-y, 0deg));
+    transition: transform 0.4s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+  }
+
+  .hero__tagline {
+    margin-top: var(--space-4);
+    margin-inline: auto;
+    max-width: 52ch;
+    font-size: var(--text-lg);
+    color: color-mix(in srgb, var(--color-text) 70%, transparent);
+    line-height: 1.4;
+  }
+
+  .hero__actions {
+    margin-top: var(--space-4);
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .hero__scroll-line {
+    display: inline-block;
+    width: 3rem; height: 1px;
+    background: linear-gradient(90deg, var(--color-muted) 0%, var(--color-muted) 50%, transparent 50%, transparent 100%);
+    background-size: 200% 100%;
+    background-position-x: 100%;
+    animation: scroll-line 1.6s var(--ease-out-expo) infinite;
+  }
+
+  @keyframes scroll-line {
+    0% { background-position-x: 100%; }
+    50% { background-position-x: 0%; }
+    100% { background-position-x: -100%; }
+  }
+
+  .hero__stats {
+    display: flex; flex-direction: column; align-items: flex-end;
+    gap: 0.25rem; margin: 0; padding: 0; list-style: none;
+    color: color-mix(in srgb, var(--color-text) 60%, transparent);
+  }
+
+  .hero__stats li { display: inline-flex; align-items: baseline; gap: 0.5rem; }
+  .hero__stats span { font-family: var(--font-display); font-size: var(--text-base); color: var(--color-accent); }
+
+  @media (max-width: 768px) {
+    .hero__corner--tr, .hero__corner--br { display: none; }
+    .hero__corner--bl { bottom: var(--space-2); }
+    .hero__corner--tl { flex-direction: row; align-items: center; gap: 0.75rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__line--accent { animation: none; }
+    .hero__rotator-word { transition: none; }
+    .hero__logo-intro { display: none; }
+    /* Zeile 3 sofort sichtbar bei reduced motion */
+    :global(.hero__line--accent) {
+      opacity: 1 !important;
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  // Subtiler 3D-Tilt der Headline auf Mausbewegung (CSS-Variablen)
+  function initHeadlineTilt() {
+    const headline = document.querySelector<HTMLElement>('.hero__headline');
+    const hero = document.querySelector<HTMLElement>('.hero');
+    if (!headline || !hero) return;
+    const onMove = (e: MouseEvent) => {
+      const rect = hero.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      const y = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+      headline.style.setProperty('--tilt-y', `${x * 4}deg`);
+      headline.style.setProperty('--tilt-x', `${-y * 3}deg`);
+    };
+    const onLeave = () => {
+      headline.style.setProperty('--tilt-y', `0deg`);
+      headline.style.setProperty('--tilt-x', `0deg`);
+    };
+    hero.addEventListener('mousemove', onMove);
+    hero.addEventListener('mouseleave', onLeave);
+    document.addEventListener('astro:before-swap', () => {
+      hero.removeEventListener('mousemove', onMove);
+      hero.removeEventListener('mouseleave', onLeave);
+    }, { once: true });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHeadlineTilt);
+  } else {
+    initHeadlineTilt();
+  }
+  document.addEventListener('astro:page-load', initHeadlineTilt);
+</script>

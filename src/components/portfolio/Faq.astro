@@ -1,0 +1,1057 @@
+---
+import SplitText from '@components/shared/SplitText.astro';
+
+const categories = [
+  {
+    id: 'preise',
+    label: 'Preise & Kosten',
+    number: '01',
+    faqs: [
+      {
+        q: 'Was kostet eine professionelle Website?',
+        a: 'Ab 1.890 € für einen One-Pager, ab 4.290 € für Multi-Page, ab 8.900 € für Premium. Nach dem ersten kostenlosen Gespräch nennen wir dir eine genaue Zahl — keine vagen Angebote.',
+      },
+      {
+        q: 'Gibt es einmalige Kosten oder monatliche Gebühren?',
+        a: 'Der Website-Aufbau ist eine Einmalkosten. Laufende Kosten entstehen nur für Hosting (ca. 10–20 €/Monat), Domain und optional unser Wartungspaket — transparent und ohne Überraschungen.',
+      },
+      {
+        q: 'Ist Hosting und Domain im Preis enthalten?',
+        a: 'Hosting und Domain sind nicht pauschal enthalten, aber wir richten alles ein und begleiten dich dabei — auch wenn du die Kosten selbst trägst. Auf Cloudflare Pages ist Hosting oft kostenlos.',
+      },
+      {
+        q: 'Kann ich in Raten zahlen?',
+        a: 'Ja. Standard: 50 % bei Auftragsstart, 50 % bei Abnahme. Auf Wunsch auch dreiteilig möglich. Wir finden eine Lösung die für dich passt.',
+      },
+      {
+        q: 'Gibt es versteckte Zusatzkosten?',
+        a: 'Nein. Wir kalkulieren transparent und kommunizieren offen, wenn Aufwand über das Vereinbarte hinausgeht — bevor wir handeln, nicht danach.',
+      },
+    ],
+  },
+  {
+    id: 'ablauf',
+    label: 'Ablauf',
+    number: '02',
+    faqs: [
+      {
+        q: 'Wie läuft die Zusammenarbeit ab?',
+        a: 'Vier Phasen: Briefing & Recherche → Konzept & Design → Build & Animation → Launch & Übergabe. Du bekommst pro Phase Reviews und entscheidest aktiv mit.',
+      },
+      {
+        q: 'Wie lange dauert es, bis meine Website fertig ist?',
+        a: '3 Wochen für One-Pager, 5 für Multi-Page, 8 für Premium. Mit klaren Inhalten und Bildern von dir geht es schneller — bei Null starten dauert es etwas länger.',
+      },
+      {
+        q: 'Was braucht ihr von mir, um zu starten?',
+        a: 'Deine Zielgruppe, grobe Vorstellungen vom Look und vorhandene Texte oder Bilder — falls vorhanden. Und natürlich einen Termin für das erste kostenlose Gespräch.',
+      },
+      {
+        q: 'Muss ich Texte und Bilder selbst liefern?',
+        a: 'Wir helfen bei Struktur und Bildauswahl. Reine Texterstellung von Grund auf empfehlen wir spezialisierten Textern — das machen wir lieber nicht halbherzig.',
+      },
+      {
+        q: 'Kann ich während des Projekts Änderungen anfragen?',
+        a: 'Ja, pro Phase gibt es einen definierten Feedback-Loop. Größere Richtungsänderungen nach Design-Freigabe werden nach Aufwand berechnet — immer transparent kommuniziert.',
+      },
+    ],
+  },
+  {
+    id: 'design',
+    label: 'Design & Technik',
+    number: '03',
+    faqs: [
+      {
+        q: 'Wird meine Website individuell designt?',
+        a: 'Ja, jede Seite ist ein Unikat. Kein Page-Builder, kein Template-Kauf, kein Drag & Drop. Alles wird speziell für dich konzipiert und entwickelt.',
+      },
+      {
+        q: 'Ist die Website für Handy und Tablet optimiert?',
+        a: 'Selbstverständlich. Mobile-first ist kein Buzzword bei uns — jede Sektion wird auf allen Gerätegrößen getestet, von 320 px bis 4K.',
+      },
+      {
+        q: 'Ist die Website schnell und DSGVO-konform?',
+        a: 'Lighthouse ≥ 90 mobil ist unser Ziel. DSGVO: selfhosted Fonts, kein Google-Tracking, europäisches Hosting, Datenschutzerklärung & Impressum inklusive.',
+      },
+      {
+        q: 'Kann ich später selbst Inhalte ändern?',
+        a: 'Auf Wunsch bauen wir ein einfaches CMS ein oder erstellen eine Anleitung. Die meisten Kunden schicken uns aber einfach eine Nachricht — weil es schneller geht.',
+      },
+      {
+        q: 'Auf welchem System wird meine Website gebaut?',
+        a: 'Astro — ein modernes Framework für blitzschnelle Websites. Kein WordPress, kein Wix, kein Elementor. Weniger Angriffsfläche, mehr Performance.',
+      },
+    ],
+  },
+  {
+    id: 'seo',
+    label: 'SEO & Wachstum',
+    number: '04',
+    faqs: [
+      {
+        q: 'Ist Suchmaschinenoptimierung (SEO) inklusive?',
+        a: 'Technisches SEO (Ladezeit, Meta-Tags, strukturiertes HTML, Sitemap) ist immer dabei. Content-SEO mit Keyword-Strategie bieten wir als Add-on.',
+      },
+      {
+        q: 'Werde ich bei Google besser gefunden?',
+        a: 'Bessere technische Basis — ja. Rankings hängen auch von Inhalten und Backlinks ab. Wir versprechen keine Platzierungen, aber eine solide Grundlage die Rankings ermöglicht.',
+      },
+      {
+        q: 'Unterstützt ihr auch Google Business Profile?',
+        a: 'Ja, wir helfen beim Einrichten und Optimieren deines Google-Unternehmensprofils — besonders wichtig für lokale Suchanfragen wie "Elektriker Lüdenscheid".',
+      },
+      {
+        q: 'Bietet ihr Landingpages für Werbung an?',
+        a: 'Ja. Conversion-optimierte Landingpages für Google Ads oder Meta Ads sind ein Spezialgebiet von uns. Klarer Fokus, keine Ablenkung, mehr Anfragen.',
+      },
+    ],
+  },
+  {
+    id: 'support',
+    label: 'Support & Pflege',
+    number: '05',
+    faqs: [
+      {
+        q: 'Bietet ihr Wartung und Support nach Fertigstellung?',
+        a: 'Ja, ab 65 €/Monat: Sicherheits-Updates, Content-Änderungen, Performance-Monitoring. Optional, nicht verpflichtend.',
+      },
+      {
+        q: 'Was passiert, wenn ich später Änderungen brauche?',
+        a: 'Kleinere Änderungen im Wartungspaket enthalten. Größere Updates werden nach Aufwand berechnet — transparent und vorab kommuniziert, nie einfach in Rechnung gestellt.',
+      },
+      {
+        q: 'Wie schnell antwortet ihr bei Problemen?',
+        a: 'Werktags innerhalb von 24 Stunden. Bei technischen Notfällen (Site down) reagieren wir so schnell wie möglich — wir checken morgens als erstes.',
+      },
+      {
+        q: 'Gibt es ein monatliches Betreuungspaket?',
+        a: 'Ja: Basis (65 €/Monat), Standard (120 €/Monat), Full-Service (ab 250 €/Monat). Inhalte, Updates, Monitoring, SEO-Pflege — je nach Paket unterschiedlich.',
+      },
+    ],
+  },
+  {
+    id: 'vertrauen',
+    label: 'Vertrauen',
+    number: '06',
+    faqs: [
+      {
+        q: 'Warum sollte ich mit euch arbeiten?',
+        a: 'Weil wir nicht einfach Websites bauen, sondern visuelle Systeme die Vertrauen erzeugen. Und weil wir klein genug sind um wirklich zu liefern — ohne Agentur-Overhead und Projektmanager-Kaskade.',
+      },
+      {
+        q: 'Habt ihr Referenzen oder Kundenbeispiele?',
+        a: 'Ja — schau dir die Demos auf dieser Seite an. Das ist echter Code, keine Mockups. Auf Anfrage zeigen wir weitere Projekte und vermitteln Kundenkontakte.',
+      },
+      {
+        q: 'Für welche Branchen erstellt ihr Websites?',
+        a: 'Gastronomie, Handwerk, Friseure, Dienstleister, Einzelhandel — alle lokalen Betriebe die seriös auftreten und Vertrauen bei neuen Kunden gewinnen wollen.',
+      },
+      {
+        q: 'Gibt es eine Zufriedenheitsgarantie?',
+        a: 'Keine Geld-zurück-Garantie im klassischen Sinne, aber klare Revisions-Runden und Abnahme erst wenn du wirklich zufrieden bist. Wir arbeiten auch nach Launch nach.',
+      },
+    ],
+  },
+  {
+    id: 'conversion',
+    label: 'Lohnt es sich?',
+    number: '07',
+    faqs: [
+      {
+        q: 'Wie viele neue Kunden kann ich mit einer professionellen Website erwarten?',
+        a: 'Das hängt von Branche, Standort und Marketingbudget ab. Was wir garantieren: Wenn Interessenten deine Seite besuchen, werden sie häufiger anfragen als vorher.',
+      },
+      {
+        q: 'Lohnt sich eine neue Website für mein lokales Unternehmen?',
+        a: 'Fast immer ja. Eine professionelle Website erhöht Vertrauen, reduziert den Erklärungsaufwand beim Erstgespräch und arbeitet 24 Stunden täglich für dich.',
+      },
+      {
+        q: 'Was unterscheidet euch von anderen Agenturen oder Freelancern?',
+        a: 'Wir liefern Awwwards-Niveau für lokale Budgets. Keine Templates, kein Copy-Paste-Design. Und wir sind erreichbar — kein großes Agentur-Karussell wo niemand verantwortlich ist.',
+      },
+    ],
+  },
+] as const;
+---
+
+<section class="faq" aria-labelledby="faq-title">
+  <div class="faq__inner">
+
+    <!-- Header -->
+    <header class="faq__header">
+      <span class="faq__eyebrow">
+        <span class="dash" aria-hidden="true"></span>
+        FAQ / 08
+      </span>
+      <SplitText
+        as="h2"
+        by="words"
+        stagger={0.06}
+        class="faq__title"
+        id="faq-title"
+      >
+        Häufig gestellte Fragen.
+      </SplitText>
+      <p class="faq__subtitle">
+        Alles was du wissen willst — sortiert nach Thema.
+      </p>
+    </header>
+
+    <!-- Category Tabs -->
+    <div class="faq__tabs-wrap" role="tablist" aria-label="FAQ Kategorien">
+      <div class="faq__tabs">
+        {categories.map((cat, i) => (
+          <button
+            class={`faq__tab${i === 0 ? ' is-active' : ''}`}
+            data-tab={cat.id}
+            role="tab"
+            aria-selected={i === 0 ? 'true' : 'false'}
+            aria-controls={`panel-${cat.id}`}
+          >
+            <span class="faq__tab-num">{cat.number}</span>
+            <span class="faq__tab-label">{cat.label}</span>
+          </button>
+        ))}
+        <span class="faq__tab-indicator" aria-hidden="true"></span>
+      </div>
+    </div>
+
+    <!-- Panels area with ghost + meta overlay -->
+    <div class="faq__panels-wrap">
+
+      <!-- Ghost category number -->
+      <div class="faq__ghost" aria-hidden="true">
+        <span class="faq__ghost-num">01</span>
+      </div>
+
+      <!-- Category meta: counter + label -->
+      <div class="faq__meta" aria-hidden="true">
+        <div class="faq__counter">
+          <span class="faq__counter-num">01</span>
+          <span class="faq__counter-sep">/</span>
+          <span class="faq__counter-total">07</span>
+        </div>
+        <div class="faq__cat-label">Preise &amp; Kosten</div>
+      </div>
+
+      <!-- Curtain wipe overlay -->
+      <div class="faq__curtain" aria-hidden="true"></div>
+
+      <!-- FAQ Panels -->
+      <div class="faq__panels" id="faq-panels">
+        {categories.map((cat, ci) => (
+          <div
+            class={`faq__panel${ci === 0 ? ' is-active' : ''}`}
+            id={`panel-${cat.id}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${cat.id}`}
+            data-panel={cat.id}
+            data-index={ci}
+          >
+            {cat.faqs.map((item, idx) => (
+              <div class="faq-item" data-idx={idx}>
+                <button
+                  class="faq-item__trigger"
+                  aria-expanded="false"
+                  data-cursor-hover
+                >
+                  <span class="faq-item__index">
+                    {String(idx + 1).padStart(2, '0')}
+                  </span>
+                  <span class="faq-item__question">{item.q}</span>
+                  <span class="faq-item__icon" aria-hidden="true">
+                    <svg class="faq-item__icon-svg" viewBox="0 0 24 24" fill="none">
+                      <line x1="4" y1="12" x2="20" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      <line x1="12" y1="4" x2="12" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                  </span>
+                </button>
+                <div class="faq-item__body" aria-hidden="true">
+                  <div class="faq-item__body-inner">
+                    <p class="faq-item__answer">{item.a}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+
+    </div><!-- /.faq__panels-wrap -->
+
+  </div>
+</section>
+
+<style>
+  /* ─── Section ─────────────────────────────────── */
+  .faq {
+    position: relative;
+    padding-block: var(--space-8);
+    padding-inline: var(--container-pad);
+    overflow: hidden;
+  }
+
+  .faq__inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+  }
+
+  /* ─── Header ─────────────────────────────────── */
+  .faq__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+
+  .faq__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-muted);
+  }
+
+  .dash {
+    display: inline-block;
+    width: 2.5rem;
+    height: 1px;
+    background-color: currentColor;
+  }
+
+  .faq__title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+  }
+
+  .faq__subtitle {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    letter-spacing: 0.05em;
+    margin-top: 0.5rem;
+  }
+
+  /* ─── Tabs ───────────────────────────────────── */
+  .faq__tabs-wrap {
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .faq__tabs-wrap::-webkit-scrollbar { display: none; }
+
+  .faq__tabs {
+    position: relative;
+    display: inline-flex;
+    gap: 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+    width: max-content;
+    min-width: 100%;
+  }
+
+  .faq__tab {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem clamp(0.875rem, 2vw, 1.5rem);
+    background: none;
+    border: none;
+    cursor: none;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: clamp(0.7rem, 1.2vw, 0.8rem);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    transition: color 0.35s var(--ease-out-expo);
+    transform-style: preserve-3d;
+  }
+
+  .faq__tab:hover {
+    color: var(--color-text);
+  }
+
+  .faq__tab.is-active {
+    color: var(--color-text);
+  }
+
+  .faq__tab-num {
+    font-size: 0.65em;
+    opacity: 0.5;
+    letter-spacing: 0.05em;
+    transition: opacity 0.35s;
+  }
+
+  .faq__tab.is-active .faq__tab-num {
+    opacity: 1;
+    color: var(--color-accent);
+  }
+
+  /* sliding underline */
+  .faq__tab-indicator {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    background-color: var(--color-accent);
+    transition: transform 0.55s var(--ease-out-expo), width 0.55s var(--ease-out-expo);
+    will-change: transform, width;
+  }
+
+  /* ─── Panels wrap (ghost + panels) ──────────── */
+  .faq__panels-wrap {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Ghost number */
+  .faq__ghost {
+    position: absolute;
+    top: -0.15em;
+    right: -0.05em;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    line-height: 1;
+    user-select: none;
+  }
+
+  .faq__ghost-num {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(8rem, 22vw, 22rem);
+    font-weight: 700;
+    letter-spacing: -0.06em;
+    line-height: 0.85;
+    color: transparent;
+    -webkit-text-stroke: 1px color-mix(in srgb, var(--color-text) 7%, transparent);
+    clip-path: inset(0 0 0 0);
+    will-change: clip-path, opacity;
+  }
+
+  /* Category meta (counter + label) */
+  .faq__meta {
+    position: absolute;
+    top: 1rem;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .faq__counter {
+    display: flex;
+    align-items: baseline;
+    gap: 0.3em;
+    font-family: var(--font-mono);
+    font-size: clamp(0.65rem, 1vw, 0.75rem);
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+    overflow: hidden;
+  }
+
+  .faq__counter-num {
+    display: inline-block;
+    color: var(--color-accent);
+    will-change: transform, opacity;
+  }
+
+  .faq__counter-sep,
+  .faq__counter-total {
+    opacity: 0.5;
+  }
+
+  .faq__cat-label {
+    font-family: var(--font-mono);
+    font-size: clamp(0.6rem, 0.9vw, 0.7rem);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: color-mix(in srgb, var(--color-text) 30%, transparent);
+    will-change: opacity, transform;
+  }
+
+  /* Curtain overlay - mit Akzent-Streifen für 3D-Tiefe */
+  .faq__curtain {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      var(--color-bg, #0a0a0a) 0%,
+      var(--color-bg, #0a0a0a) 96%,
+      color-mix(in srgb, var(--color-accent) 60%, transparent) 98%,
+      var(--color-accent) 100%
+    );
+    transform: scaleX(0);
+    transform-origin: left center;
+    z-index: 10;
+    pointer-events: none;
+    will-change: transform;
+    box-shadow: 0 0 60px color-mix(in srgb, var(--color-accent) 30%, transparent);
+  }
+
+  /* ─── Panels ─────────────────────────────────── */
+  .faq__panels {
+    position: relative;
+    z-index: 1;
+    /* perspective wird per GSAP transformPerspective gesetzt, nicht hier */
+  }
+
+  .faq__panel {
+    display: none;
+    flex-direction: column;
+    border-top: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+  }
+
+  .faq__panel.is-active {
+    display: flex;
+  }
+
+  /* faq-item: kein backface-visibility:hidden → Items verschwinden sonst bei >90° */
+  .faq-item {
+    will-change: transform, opacity;
+  }
+
+  /* ─── FAQ Item ───────────────────────────────── */
+  .faq-item {
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+    transform-origin: top center;
+    will-change: transform, opacity;
+  }
+
+  .faq-item__trigger {
+    display: grid;
+    grid-template-columns: 3rem 1fr 2.25rem;
+    align-items: center;
+    gap: clamp(1rem, 2vw, 2rem);
+    width: 100%;
+    padding-block: clamp(1.25rem, 2.5vw, 1.875rem);
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: none;
+    position: relative;
+    transition: padding-left 0.45s var(--ease-out-expo);
+  }
+
+  .faq-item__trigger::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    background: color-mix(in srgb, var(--color-accent) 8%, transparent);
+    transition: width 0.45s var(--ease-out-expo);
+    pointer-events: none;
+  }
+
+  .faq-item:hover .faq-item__trigger::after,
+  .faq-item.is-open .faq-item__trigger::after {
+    width: 3px;
+  }
+
+  .faq-item:hover .faq-item__trigger {
+    padding-left: 1rem;
+  }
+
+  .faq-item.is-open .faq-item__trigger {
+    padding-left: 1rem;
+  }
+
+  .faq-item__index {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    letter-spacing: 0.1em;
+    transition: color 0.35s;
+  }
+
+  .faq-item.is-open .faq-item__index {
+    color: var(--color-accent);
+  }
+
+  .faq-item__question {
+    font-family: var(--font-display);
+    font-size: clamp(1.125rem, 2.2vw, 1.75rem);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    transition: color 0.35s var(--ease-out-expo);
+  }
+
+  .faq-item:hover .faq-item__question,
+  .faq-item.is-open .faq-item__question {
+    color: var(--color-text);
+  }
+
+  /* Icon */
+  .faq-item__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--color-text) 20%, transparent);
+    flex-shrink: 0;
+    transition: border-color 0.35s var(--ease-out-expo),
+                background-color 0.35s var(--ease-out-expo),
+                transform 0.55s var(--ease-out-expo);
+    transform-style: preserve-3d;
+  }
+
+  .faq-item:hover .faq-item__icon {
+    border-color: var(--color-accent);
+  }
+
+  .faq-item.is-open .faq-item__icon {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    transform: rotate(45deg);
+  }
+
+  .faq-item__icon-svg {
+    width: 1rem;
+    height: 1rem;
+    color: var(--color-text);
+    transition: color 0.35s;
+  }
+
+  .faq-item.is-open .faq-item__icon-svg {
+    color: var(--color-bg, #0a0a0a);
+  }
+
+  /* Body / Answer */
+  .faq-item__body {
+    overflow: hidden;
+    height: 0;
+    will-change: height;
+  }
+
+  .faq-item__body-inner {
+    padding-left: clamp(3.5rem, 6vw, 5rem);
+    padding-right: clamp(2rem, 6vw, 5rem);
+    padding-bottom: clamp(1.25rem, 2.5vw, 2rem);
+    max-width: 72ch;
+    opacity: 0;
+    transform: translateY(-0.75rem) translateZ(-20px);
+    transition: opacity 0.5s var(--ease-out-expo),
+                transform 0.5s var(--ease-out-expo);
+  }
+
+  .faq-item.is-open .faq-item__body-inner {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
+
+  .faq-item__answer {
+    font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+    line-height: 1.7;
+    color: color-mix(in srgb, var(--color-text) 65%, transparent);
+  }
+
+  /* ─── Mobile ─────────────────────────────────── */
+  @media (max-width: 640px) {
+    .faq-item__trigger {
+      grid-template-columns: 2.25rem 1fr 2rem;
+      gap: 0.75rem;
+    }
+    .faq-item__body-inner {
+      padding-left: 3rem;
+      padding-right: 0.5rem;
+    }
+    .faq-item:hover .faq-item__trigger {
+      padding-left: 0.25rem;
+    }
+  }
+
+  /* ─── Reduced Motion ────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .faq-item__trigger,
+    .faq-item__icon,
+    .faq-item__question,
+    .faq-item__body-inner,
+    .faq__tab-indicator {
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ─── Elements ──────────────────────────────────────────────
+  const tabsWrap    = document.querySelector<HTMLElement>('.faq__tabs')!;
+  const tabs        = document.querySelectorAll<HTMLElement>('.faq__tab');
+  const indicator   = document.querySelector<HTMLElement>('.faq__tab-indicator')!;
+  const ghostNum    = document.querySelector<HTMLElement>('.faq__ghost-num')!;
+  const counterNum  = document.querySelector<HTMLElement>('.faq__counter-num')!;
+  const catLabel    = document.querySelector<HTMLElement>('.faq__cat-label')!;
+  const curtain     = document.querySelector<HTMLElement>('.faq__curtain')!;
+
+  const catData = [
+    { num: '01', label: 'Preise & Kosten' },
+    { num: '02', label: 'Ablauf' },
+    { num: '03', label: 'Design & Technik' },
+    { num: '04', label: 'SEO & Wachstum' },
+    { num: '05', label: 'Support & Pflege' },
+    { num: '06', label: 'Vertrauen' },
+    { num: '07', label: 'Lohnt es sich?' },
+  ];
+
+  let currentIdx = 0;
+  let isAnimating = false;
+
+  // ─── Indicator position ────────────────────────────────────
+  function positionIndicator(tab: HTMLElement, instant = false) {
+    const tw = tabsWrap.getBoundingClientRect();
+    const r  = tab.getBoundingClientRect();
+    if (instant) {
+      indicator.style.transition = 'none';
+      indicator.style.width      = r.width + 'px';
+      indicator.style.transform  = `translateX(${r.left - tw.left}px)`;
+      indicator.offsetHeight; // reflow
+      indicator.style.transition = '';
+    } else {
+      indicator.style.width     = r.width + 'px';
+      indicator.style.transform = `translateX(${r.left - tw.left}px)`;
+    }
+  }
+
+  // Init
+  if (tabs[0]) positionIndicator(tabs[0], true);
+
+  // ─── Ghost number wipe ─────────────────────────────────────
+  function animateGhost(toNum: string, goingRight: boolean) {
+    const exitDir  = goingRight ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)';
+    const enterDir = goingRight ? 'inset(0 100% 0 0)' : 'inset(0 0 0 100%)';
+
+    gsap.to(ghostNum, {
+      clipPath: exitDir,
+      duration: 0.4,
+      ease: 'expo.in',
+      onComplete: () => {
+        ghostNum.textContent = toNum;
+        gsap.fromTo(ghostNum,
+          { clipPath: enterDir },
+          { clipPath: 'inset(0 0% 0 0%)', duration: 0.55, ease: 'expo.out' }
+        );
+      },
+    });
+  }
+
+  // ─── Counter flip ──────────────────────────────────────────
+  function flipCounter(toNum: string) {
+    const tl = gsap.timeline();
+    tl.to(counterNum, {
+      y: -14, opacity: 0, rotateX: -60,
+      duration: 0.22, ease: 'power2.in',
+    })
+    .call(() => { counterNum.textContent = toNum; })
+    .fromTo(counterNum,
+      { y: 18, opacity: 0, rotateX: 60 },
+      { y: 0,  opacity: 1, rotateX: 0, duration: 0.38, ease: 'expo.out' }
+    );
+  }
+
+  // ─── Category label swap ───────────────────────────────────
+  function swapCatLabel(toLabel: string, goingRight: boolean) {
+    const xOut = goingRight ? -20 : 20;
+    const xIn  = goingRight ? 20 : -20;
+    gsap.to(catLabel, {
+      x: xOut, opacity: 0, duration: 0.2, ease: 'power2.in',
+      onComplete: () => {
+        catLabel.textContent = toLabel;
+        gsap.fromTo(catLabel,
+          { x: xIn, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.4, ease: 'expo.out' }
+        );
+      },
+    });
+  }
+
+  // ─── Curtain wipe ──────────────────────────────────────────
+  function curtainWipe(goingRight: boolean, onMidpoint: () => void) {
+    const origin = goingRight ? 'left center' : 'right center';
+    const exitOrigin = goingRight ? 'right center' : 'left center';
+    const tl = gsap.timeline();
+
+    tl.set(curtain, { transformOrigin: origin, scaleX: 0 })
+      .to(curtain, {
+        scaleX: 1, duration: 0.28, ease: 'expo.in',
+        onComplete: onMidpoint,
+      })
+      .set(curtain, { transformOrigin: exitOrigin })
+      .to(curtain, { scaleX: 0, duration: 0.32, ease: 'expo.out' });
+  }
+
+  // ─── Items exit: Cards fliegen mit 3D-Perspective raus ────
+  function exitItems(panel: HTMLElement, goingRight: boolean): Promise<void> {
+    return new Promise(resolve => {
+      const items = [...panel.querySelectorAll<HTMLElement>('.faq-item')];
+      if (!items.length) { resolve(); return; }
+
+      // Panel sichtbar halten während Exit (display:none erst nach Curtain)
+      panel.style.display = 'flex';
+
+      gsap.to(items, {
+        transformPerspective: 1200,
+        x: (i) => (120 + i * 15) * (goingRight ? -1 : 1),
+        rotateY: (i) => (goingRight ? -1 : 1) * (28 + i * 3),
+        rotateX: (i) => (i % 2 === 0 ? -6 : 3),
+        opacity: 0,
+        filter: 'blur(6px)',
+        scale: 0.9,
+        stagger: { each: 0.04, ease: 'power1.in' },
+        duration: 0.38,
+        ease: 'power2.in',
+        onComplete: resolve,
+        force3D: true,
+      });
+    });
+  }
+
+  // ─── Items entrance: aus der Tiefe rein (rotieren ein) ────
+  function enterItems(panel: HTMLElement, goingRight: boolean) {
+    const items = [...panel.querySelectorAll<HTMLElement>('.faq-item')];
+    // Erst zurücksetzen, dann von Startposition animieren
+    gsap.set(items, {
+      transformPerspective: 1200,
+      x: goingRight ? 60 : -60,
+      rotateY: goingRight ? 35 : -35,
+      rotateX: 18,
+      opacity: 0,
+      filter: 'blur(8px)',
+      scale: 0.92,
+      force3D: true,
+    });
+    gsap.to(items, {
+      x: 0,
+      rotateY: 0,
+      rotateX: 0,
+      opacity: 1,
+      filter: 'blur(0px)',
+      scale: 1,
+      stagger: { each: 0.065, ease: 'power1.out' },
+      duration: 0.75,
+      ease: 'expo.out',
+      force3D: true,
+      clearProps: 'transform,filter,opacity',
+    });
+  }
+
+  // ─── Panel-Container: leichter Kipp während Switch ────────
+  function panelCubeTwist(goingRight: boolean) {
+    const panelsEl = document.querySelector<HTMLElement>('.faq__panels');
+    if (!panelsEl) return;
+    const dir = goingRight ? -1 : 1;
+    // Kein clearProps:'transform' damit Item-Transforms nicht gekillt werden
+    gsap.timeline()
+      .to(panelsEl, {
+        transformPerspective: 1600,
+        rotateY: 5 * dir,
+        rotateX: -2,
+        duration: 0.3,
+        ease: 'power2.in',
+        force3D: true,
+      })
+      .to(panelsEl, {
+        rotateY: 0,
+        rotateX: 0,
+        duration: 0.6,
+        ease: 'expo.out',
+        onComplete: () => gsap.set(panelsEl, { clearProps: 'transform' }),
+      });
+  }
+
+  // ─── Main switchTab ────────────────────────────────────────
+  function switchTab(targetId: string, targetIdx: number) {
+    if (isAnimating) return;
+    const prevPanel = document.querySelector<HTMLElement>('.faq__panel.is-active');
+    const nextPanel = document.querySelector<HTMLElement>(`[data-panel="${targetId}"]`);
+    const targetTab = document.querySelector<HTMLElement>(`[data-tab="${targetId}"]`);
+
+    if (!nextPanel || prevPanel === nextPanel) return;
+
+    isAnimating = true;
+    const goingRight = targetIdx > currentIdx;
+    const { num, label } = catData[targetIdx];
+
+    // Update tab UI immediately
+    tabs.forEach(t => { t.classList.remove('is-active'); t.setAttribute('aria-selected', 'false'); });
+    targetTab?.classList.add('is-active');
+    targetTab?.setAttribute('aria-selected', 'true');
+    if (targetTab) positionIndicator(targetTab);
+
+    if (prefersReduced) {
+      prevPanel?.classList.remove('is-active');
+      nextPanel.classList.add('is-active');
+      counterNum.textContent = num;
+      catLabel.textContent   = label;
+      ghostNum.textContent   = num;
+      currentIdx = targetIdx;
+      isAnimating = false;
+      return;
+    }
+
+    // Fire parallel decorative animations
+    animateGhost(num, goingRight);
+    flipCounter(num);
+    swapCatLabel(label, goingRight);
+    panelCubeTwist(goingRight);
+
+    // Tab "press" Punch in 3D-Tiefe
+    if (targetTab) {
+      gsap.fromTo(targetTab,
+        { z: 0, scale: 1 },
+        { z: 30, scale: 1.05, duration: 0.18, ease: 'power2.out',
+          onComplete: () => {
+            gsap.to(targetTab, { z: 0, scale: 1, duration: 0.5, ease: 'elastic.out(1, 0.5)' });
+          }
+        }
+      );
+    }
+
+    // Exit startet sofort (Panel bleibt via inline-style sichtbar)
+    exitItems(prevPanel!, goingRight);
+
+    // Curtain Wipe — Panel-Swap erst wenn Curtain geschlossen ist
+    curtainWipe(goingRight, () => {
+      // Curtain ist zu → jetzt sicher swappen
+      if (prevPanel) {
+        prevPanel.classList.remove('is-active');
+        prevPanel.style.display = '';           // Inline-Style entfernen
+        gsap.set(prevPanel.querySelectorAll<HTMLElement>('.faq-item'), { clearProps: 'all' });
+      }
+      nextPanel.classList.add('is-active');
+
+      // Entrance startet nach Curtain-Öffnung
+      gsap.delayedCall(0.05, () => enterItems(nextPanel, goingRight));
+    });
+
+    gsap.delayedCall(0.28 + 0.32 + 0.05 + 0.75 + 0.065 * 5, () => {
+      isAnimating = false;
+    });
+
+    currentIdx = targetIdx;
+  }
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => switchTab(tab.dataset.tab!, i));
+  });
+
+  // ─── Tab hover: 3D tilt + lift ─────────────────────────────
+  if (!prefersReduced) {
+    tabs.forEach(tab => {
+      tab.addEventListener('mousemove', (e) => {
+        const r  = tab.getBoundingClientRect();
+        const cx = (e.clientX - r.left) / r.width  - 0.5;
+        const cy = (e.clientY - r.top)  / r.height - 0.5;
+        gsap.to(tab, { rotateY: cx * 10, rotateX: -cy * 6, y: -3, duration: 0.3, ease: 'power2.out' });
+      });
+      tab.addEventListener('mouseleave', () => {
+        gsap.to(tab, { rotateY: 0, rotateX: 0, y: 0, duration: 0.7, ease: 'elastic.out(1, 0.4)' });
+      });
+    });
+  }
+
+  // ─── Accordion open / close ────────────────────────────────
+  function openItem(item: HTMLElement) {
+    const body    = item.querySelector<HTMLElement>('.faq-item__body')!;
+    const inner   = item.querySelector<HTMLElement>('.faq-item__body-inner')!;
+    const trigger = item.querySelector<HTMLElement>('.faq-item__trigger')!;
+
+    item.closest('.faq__panel')?.querySelectorAll<HTMLElement>('.faq-item.is-open').forEach(other => {
+      if (other !== item) closeItem(other);
+    });
+
+    item.classList.add('is-open');
+    trigger.setAttribute('aria-expanded', 'true');
+
+    if (prefersReduced) { body.style.height = inner.scrollHeight + 'px'; return; }
+
+    gsap.fromTo(body,
+      { height: 0 },
+      { height: inner.scrollHeight, duration: 0.55, ease: 'expo.out',
+        onComplete: () => { body.style.height = 'auto'; } }
+    );
+  }
+
+  function closeItem(item: HTMLElement) {
+    const body    = item.querySelector<HTMLElement>('.faq-item__body')!;
+    const trigger = item.querySelector<HTMLElement>('.faq-item__trigger')!;
+
+    item.classList.remove('is-open');
+    trigger.setAttribute('aria-expanded', 'false');
+
+    if (prefersReduced) { body.style.height = '0'; return; }
+
+    gsap.to(body, { height: 0, duration: 0.4, ease: 'expo.inOut' });
+  }
+
+  document.querySelectorAll<HTMLElement>('.faq-item__trigger').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const item = trigger.closest<HTMLElement>('.faq-item')!;
+      item.classList.contains('is-open') ? closeItem(item) : openItem(item);
+    });
+  });
+
+  // ─── Scroll entrance (first panel) ────────────────────────
+  if (!prefersReduced) {
+    const firstPanel = document.querySelector<HTMLElement>('.faq__panel.is-active');
+    if (firstPanel) {
+      gsap.fromTo(firstPanel.querySelectorAll<HTMLElement>('.faq-item'),
+        { opacity: 0, y: 44, rotateX: 16, filter: 'blur(6px)', scale: 0.96 },
+        {
+          opacity: 1, y: 0, rotateX: 0, filter: 'blur(0px)', scale: 1,
+          stagger: { each: 0.07, ease: 'power1.out' },
+          duration: 0.85, ease: 'expo.out',
+          clearProps: 'transform,opacity,filter,scale',
+          scrollTrigger: { trigger: '.faq__panels-wrap', start: 'top 76%', once: true },
+        }
+      );
+    }
+
+    // Ghost entrance on scroll
+    gsap.fromTo('.faq__ghost-num',
+      { opacity: 0, clipPath: 'inset(0 100% 0 0)' },
+      { opacity: 1, clipPath: 'inset(0 0% 0 0%)', duration: 1.1, ease: 'expo.out',
+        scrollTrigger: { trigger: '.faq__panels-wrap', start: 'top 80%', once: true } }
+    );
+
+    // Meta entrance
+    gsap.fromTo([counterNum.parentElement, catLabel],
+      { opacity: 0, x: 20 },
+      { opacity: 1, x: 0, stagger: 0.1, duration: 0.7, ease: 'expo.out',
+        scrollTrigger: { trigger: '.faq__panels-wrap', start: 'top 78%', once: true } }
+    );
+
+    // Header reveals
+    gsap.fromTo('.faq__subtitle',
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.8, ease: 'expo.out',
+        scrollTrigger: { trigger: '.faq__header', start: 'top 82%', once: true } }
+    );
+    gsap.fromTo('.faq__tabs-wrap',
+      { opacity: 0, y: 24 },
+      { opacity: 1, y: 0, duration: 0.75, ease: 'expo.out',
+        scrollTrigger: { trigger: '.faq__tabs-wrap', start: 'top 82%', once: true } }
+    );
+  }
+</script>

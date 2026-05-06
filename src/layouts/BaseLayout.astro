@@ -1,0 +1,65 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import BaseHead from '@components/shared/BaseHead.astro';
+import SmoothScroll from '@components/shared/SmoothScroll.astro';
+
+import '@styles/global.css';
+import '@styles/themes/portfolio.css';
+import '@styles/themes/elektro.css';
+import '@styles/themes/friseur.css';
+import '@styles/themes/handwerker.css';
+
+// Hinweis: Pizzeria ist eine statische HTML-Demo unter public/demos/pizzeria/index.html
+// und braucht kein Astro-Theme.
+export type Theme = 'portfolio' | 'elektro' | 'friseur' | 'handwerker';
+
+interface Props {
+  title: string;
+  description?: string;
+  theme?: Theme;
+  /** Wenn `true`, wird Lenis (Smooth Scroll) initialisiert. */
+  smoothScroll?: boolean;
+  /** Body-Klassen die zusätzlich gesetzt werden. */
+  bodyClass?: string;
+  /** Custom canonical URL */
+  canonical?: string;
+  /** OG-Bild-Pfad */
+  image?: string;
+}
+
+const {
+  title,
+  description,
+  theme = 'portfolio',
+  smoothScroll = true,
+  bodyClass = '',
+  canonical,
+  image,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="de" data-theme={theme}>
+  <head>
+    <BaseHead
+      title={title}
+      description={description}
+      image={image}
+      canonical={canonical}
+    />
+    <ViewTransitions />
+  </head>
+  <body class={bodyClass}>
+    {smoothScroll && <SmoothScroll />}
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  /* Body-Hintergrund + Text-Farbe kommen aus dem Theme */
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    transition: background-color 0.4s var(--ease-out-expo);
+  }
+</style>

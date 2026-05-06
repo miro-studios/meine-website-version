@@ -1,0 +1,20 @@
+/* ==========================================================================
+   Theme: Portfolio "Studio"
+   Editorial-Studio meets Tech-Forward. Dunkel, smart, bold.
+   ========================================================================== */
+
+[data-theme="portfolio"] {
+  --color-bg: #0A0A0A;
+  --color-surface: #131313;
+  --color-text: #F4F2EE;
+  --color-muted: #6e6c68;
+  --color-primary: #F4F2EE;
+  --color-accent: #FF4D1C;
+
+  /* Display: PP Editorial New / Migra / Editorial Old (selfhosted woff2)   */
+  /* Body:    Geist / Söhne                                                  */
+  /* Mono:    JetBrains Mono                                                 */
+  --font-display: "Editorial", "PP Editorial New", ui-serif, Georgia, serif;
+  --font-body: "Geist", "Söhne", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+}

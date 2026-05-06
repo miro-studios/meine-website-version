@@ -1,0 +1,239 @@
+---
+import MagneticButton from '@components/shared/MagneticButton.astro';
+
+interface Props {
+  active?: 'index' | 'about' | 'kontakt' | 'impressum' | 'datenschutz' | 'faq';
+}
+
+const { active = 'index' }: Props = Astro.props;
+
+const navItems = [
+  { label: 'Arbeiten', href: '/#demos', match: 'index' },
+  { label: 'Studio', href: '/about', match: 'about' },
+  { label: 'FAQ', href: '/faq', match: 'faq' },
+  { label: 'Kontakt', href: '/kontakt', match: 'kontakt' },
+] as const;
+---
+
+<header class="site-header" data-site-header>
+  <div class="site-header__inner">
+    <a href="/" class="logo" aria-label="miro-studios Startseite">
+      <span class="logo__mark">◇</span>
+      <span class="logo__text">miro-studios<span class="logo__dot">.</span></span>
+    </a>
+
+    <nav class="site-nav" aria-label="Hauptnavigation">
+      <ul>
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class:list={['nav-link', { 'is-active': item.match === active }]}
+              >
+                <span class="nav-link__label">{item.label}</span>
+                <span class="nav-link__hover" aria-hidden="true">{item.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="site-header__cta">
+      <MagneticButton href="/kontakt" variant="primary" strength={0.4}>
+        Anfrage starten
+        <span class="cta-arrow" aria-hidden="true">↗</span>
+      </MagneticButton>
+    </div>
+
+    <button
+      class="site-header__menu-toggle"
+      data-menu-toggle
+      aria-label="Menü öffnen"
+      aria-expanded="false"
+      type="button"
+    >
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-header);
+    padding-block: 1rem;
+    transition: background-color 0.3s var(--ease-out-expo),
+      backdrop-filter 0.3s var(--ease-out-expo),
+      padding 0.3s var(--ease-out-expo);
+  }
+
+  .site-header[data-scrolled='true'] {
+    background-color: color-mix(in srgb, var(--color-bg) 75%, transparent);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    padding-block: 0.625rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 6%, transparent);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-pad);
+  }
+
+  .logo {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    color: var(--color-text);
+  }
+
+  .logo__mark {
+    display: inline-block;
+    color: var(--color-accent);
+    transform: translateY(0.05em);
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+
+  .logo:hover .logo__mark {
+    transform: rotate(180deg) translateY(-0.05em);
+  }
+
+  .logo__dot {
+    color: var(--color-accent);
+  }
+
+  .site-nav ul {
+    display: flex;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-link {
+    --pad-x: 1rem;
+    position: relative;
+    display: inline-block;
+    padding: 0.5rem var(--pad-x);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-text);
+    line-height: 1.2;
+    /* clip-path clippt absolut positionierte Kinder zuverlässig */
+    clip-path: inset(0);
+  }
+
+  .nav-link__label,
+  .nav-link__hover {
+    display: block;
+    transition: transform 0.4s var(--ease-out-expo),
+                opacity 0.3s var(--ease-out-expo);
+    white-space: nowrap;
+  }
+
+  .nav-link__hover {
+    position: absolute;
+    inset: 0.5rem var(--pad-x);
+    transform: translateY(200%);
+    opacity: 0;
+    color: var(--color-accent);
+  }
+
+  .nav-link:hover .nav-link__label,
+  .nav-link:focus-visible .nav-link__label {
+    transform: translateY(-200%);
+    opacity: 0;
+  }
+
+  .nav-link:hover .nav-link__hover,
+  .nav-link:focus-visible .nav-link__hover {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .nav-link.is-active::after {
+    content: '';
+    position: absolute;
+    left: var(--pad-x);
+    right: var(--pad-x);
+    bottom: 0.25rem;
+    height: 2px;
+    background-color: var(--color-accent);
+  }
+
+  .cta-arrow {
+    display: inline-block;
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+
+  .site-header__cta :global(.magnetic-btn:hover) .cta-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  /* Mobile menu toggle (only visible on small screens) */
+  .site-header__menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    padding: 0.75rem;
+  }
+
+  .site-header__menu-toggle span {
+    display: block;
+    width: 22px;
+    height: 1.5px;
+    background-color: var(--color-text);
+    transition: transform 0.3s var(--ease-out-expo);
+  }
+
+  @media (max-width: 768px) {
+    .site-nav,
+    .site-header__cta {
+      display: none;
+    }
+    .site-header__menu-toggle {
+      display: flex;
+    }
+  }
+</style>
+
+<script>
+  const init = () => {
+    const header = document.querySelector<HTMLElement>('[data-site-header]');
+    if (!header) return;
+
+    const update = () => {
+      const scrolled = window.scrollY > 24;
+      header.dataset.scrolled = scrolled ? 'true' : 'false';
+    };
+
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+
+    const cleanup = () => {
+      window.removeEventListener('scroll', update);
+    };
+
+    document.addEventListener('astro:before-swap', cleanup, { once: true });
+  };
+
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

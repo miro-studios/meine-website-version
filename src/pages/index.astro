@@ -1,0 +1,313 @@
+---
+import PortfolioLayout from '@layouts/PortfolioLayout.astro';
+import Hero from '@components/portfolio/Hero.astro';
+import Capabilities from '@components/portfolio/Capabilities.astro';
+import ScrollStory from '@components/portfolio/ScrollStory.astro';
+import Pricing from '@components/portfolio/Pricing.astro';
+import Footer from '@components/portfolio/Footer.astro';
+import Marquee from '@components/shared/Marquee.astro';
+import SceneFrame from '@components/shared/SceneFrame.astro';
+---
+
+<PortfolioLayout
+  title="miro-studios — Premium Websites für lokale Geschäfte aus Lüdenscheid"
+  description="Webdesign-Studio aus Lüdenscheid. Websites mit Editorial-Qualität für Pizzerien, Friseure, Handwerksbetriebe und lokale Dienstleister in NRW — Design & Development aus einer Hand."
+  active="index"
+>
+  <Hero />
+
+  <Marquee
+    items={[
+      'Editorial Webdesign',
+      'Astro · GSAP · Three.js',
+      'Strato-Hosting inklusive',
+      'Made in Lüdenscheid',
+      'Premium-Niveau',
+    ]}
+    speed={70}
+    reactive
+  />
+
+  <ScrollStory />
+
+  <SceneFrame variant="default">
+    <Capabilities />
+  </SceneFrame>
+
+  <SceneFrame variant="rotate3d">
+    <Pricing />
+  </SceneFrame>
+
+  <!-- Studio-Teaser vor dem Footer -->
+  <section class="studio-teaser" data-studio-teaser>
+    <div class="studio-teaser__inner">
+      <p class="studio-teaser__label">Das Studio</p>
+      <h2 class="studio-teaser__heading">Ein Kopf.<br/>Ein Studio.</h2>
+      <p class="studio-teaser__sub">Design & Development aus einer Hand — aus Lüdenscheid, für ganz NRW.</p>
+      <a href="/about" class="studio-teaser__btn">
+        <span>Studio kennenlernen</span>
+        <span class="studio-teaser__btn-icon" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- CTA-Banner vor dem Footer -->
+  <section class="cta-banner" data-cta-banner>
+    <div class="cta-banner__inner">
+      <p class="cta-banner__label">Bereit loszulegen?</p>
+      <h2 class="cta-banner__heading">Kontaktieren Sie uns jetzt.</h2>
+      <a href="/kontakt" class="cta-banner__btn" data-magnetic>
+        <span>Anfrage starten</span>
+        <span class="cta-banner__btn-icon" aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </section>
+
+  <Footer />
+</PortfolioLayout>
+
+<style>
+  /* ── Studio Teaser ────────────────────────────── */
+  .studio-teaser {
+    padding-block: clamp(4rem, 8vw, 7rem);
+    padding-inline: var(--container-pad);
+    border-top: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+  }
+
+  .studio-teaser__inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 5rem);
+    flex-wrap: wrap;
+  }
+
+  .studio-teaser__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-accent);
+    flex-basis: 100%;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.6s var(--ease-out-expo),
+                transform 0.6s var(--ease-out-expo);
+  }
+
+  .studio-teaser__heading {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+    color: var(--color-text);
+    flex: 1;
+    min-width: 260px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s 0.08s var(--ease-out-expo),
+                transform 0.7s 0.08s var(--ease-out-expo);
+  }
+
+  .studio-teaser__sub {
+    font-size: var(--text-base);
+    color: color-mix(in srgb, var(--color-text) 55%, transparent);
+    line-height: 1.6;
+    max-width: 32ch;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s 0.15s var(--ease-out-expo),
+                transform 0.7s 0.15s var(--ease-out-expo);
+  }
+
+  .studio-teaser__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.875rem 1.875rem;
+    border: 1px solid color-mix(in srgb, var(--color-text) 25%, transparent);
+    border-radius: 100px;
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-text);
+    text-decoration: none;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s 0.22s var(--ease-out-expo),
+                transform 0.7s 0.22s var(--ease-out-expo),
+                border-color 0.3s ease,
+                color 0.3s ease;
+  }
+
+  .studio-teaser__btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .studio-teaser__btn-icon {
+    display: inline-block;
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+
+  .studio-teaser__btn:hover .studio-teaser__btn-icon {
+    transform: translateX(4px);
+  }
+
+  .studio-teaser.is-visible .studio-teaser__label,
+  .studio-teaser.is-visible .studio-teaser__heading,
+  .studio-teaser.is-visible .studio-teaser__sub,
+  .studio-teaser.is-visible .studio-teaser__btn {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ── CTA Banner ───────────────────────────────── */
+  .cta-banner {
+    padding-block: clamp(5rem, 10vw, 9rem);
+    padding-inline: var(--container-pad);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* subtiler Glow-Hintergrund */
+  .cta-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse 80% 60% at 50% 100%,
+      color-mix(in srgb, var(--color-accent) 10%, transparent),
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+
+  .cta-banner__inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    max-width: 800px;
+    margin-inline: auto;
+  }
+
+  .cta-banner__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-accent);
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s var(--ease-out-expo),
+                transform 0.7s var(--ease-out-expo);
+  }
+
+  .cta-banner__heading {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+    color: var(--color-text);
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s 0.1s var(--ease-out-expo),
+                transform 0.8s 0.1s var(--ease-out-expo);
+  }
+
+  .cta-banner__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.1rem 2.5rem;
+    background: var(--color-accent);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border-radius: 100px;
+    text-decoration: none;
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+    transition: opacity 0.7s 0.2s var(--ease-out-expo),
+                transform 0.7s 0.2s var(--ease-out-expo),
+                background-color 0.3s ease,
+                box-shadow 0.3s ease;
+  }
+
+  .cta-banner__btn:hover {
+    background: color-mix(in srgb, var(--color-accent) 85%, #fff);
+    box-shadow: 0 8px 40px color-mix(in srgb, var(--color-accent) 40%, transparent);
+  }
+
+  .cta-banner__btn-icon {
+    display: inline-block;
+    font-size: 1.1em;
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+
+  .cta-banner__btn:hover .cta-banner__btn-icon {
+    transform: translate(3px, -3px);
+  }
+
+  /* Scroll-Reveal: is-visible wird per JS gesetzt */
+  .cta-banner.is-visible .cta-banner__label,
+  .cta-banner.is-visible .cta-banner__heading,
+  .cta-banner.is-visible .cta-banner__btn {
+    opacity: 1;
+    transform: none;
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initStudioTeaser() {
+    const el = document.querySelector<HTMLElement>('[data-studio-teaser]');
+    if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      el.classList.add('is-visible');
+      return;
+    }
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 78%',
+      once: true,
+      onEnter: () => el.classList.add('is-visible'),
+    });
+  }
+
+  function initCtaBanner() {
+    const banner = document.querySelector<HTMLElement>('[data-cta-banner]');
+    if (!banner) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      banner.classList.add('is-visible');
+      return;
+    }
+
+    ScrollTrigger.create({
+      trigger: banner,
+      start: 'top 75%',
+      once: true,
+      onEnter: () => banner.classList.add('is-visible'),
+    });
+  }
+
+  initStudioTeaser();
+  initCtaBanner();
+  document.addEventListener('astro:page-load', () => {
+    initStudioTeaser();
+    initCtaBanner();
+  });
+</script>
