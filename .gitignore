@@ -45,3 +45,9 @@ Thumbs.db
 # Lockfiles from other package managers (we use npm)
 yarn.lock
 pnpm-lock.yaml
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example

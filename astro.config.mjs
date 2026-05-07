@@ -1,13 +1,17 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 
+import cloudflare from "@astrojs/cloudflare";
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://studio.de',
+
   prefetch: {
     prefetchAll: true,
     defaultStrategy: 'viewport',
   },
+
   // Hinweis: KEINE Astro-Redirects für die Demos.
   // Astro würde sonst beim Build Meta-Refresh-Stubs nach
   // dist/demos/<demo>/index.html schreiben und damit die statischen
@@ -18,12 +22,17 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
   ],
+
   vite: {
     ssr: {
       noExternal: ['gsap', 'lenis', 'splitting'],
     },
   },
+
   build: {
     inlineStylesheets: 'auto',
   },
+
+  output: "hybrid",
+  adapter: cloudflare()
 });
