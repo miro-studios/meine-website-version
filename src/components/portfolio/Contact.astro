@@ -4,19 +4,23 @@ import MagneticButton from '@components/shared/MagneticButton.astro';
 
 const projectTypes = [
   { value: '', label: 'Bitte wählen' },
-  { value: 'one-pager', label: 'One-Pager (~1.890 €+)' },
-  { value: 'multi-page', label: 'Multi-Page (~4.290 €+)' },
-  { value: 'premium', label: 'Premium (~8.900 €+)' },
+  { value: 'starter-onepager', label: 'One-Pager · Starter (599 €)' },
+  { value: 'growth-onepager', label: 'One-Pager · Growth (1.299 €)' },
+  { value: 'premium-onepager', label: 'One-Pager · Premium (2.299 €)' },
+  { value: 'basic-multipage', label: 'Multi-Page · Basic (1.499 €)' },
+  { value: 'business-multipage', label: 'Multi-Page · Business (2.799 €)' },
+  { value: 'pro-multipage', label: 'Multi-Page · Pro (4.499 €)' },
   { value: 'unsicher', label: 'Bin mir noch unsicher' },
   { value: 'sonstiges', label: 'Etwas anderes' },
 ];
 
 const budgetRanges = [
   { value: '', label: 'Bitte wählen' },
-  { value: 'small', label: 'unter 3.000 €' },
-  { value: 'medium', label: '3.000 € – 6.000 €' },
-  { value: 'large', label: '6.000 € – 12.000 €' },
-  { value: 'xlarge', label: '12.000 € und mehr' },
+  { value: 'starter', label: 'unter 1.000 €' },
+  { value: 'small', label: '1.000 € – 2.000 €' },
+  { value: 'medium', label: '2.000 € – 3.500 €' },
+  { value: 'large', label: '3.500 € – 5.000 €' },
+  { value: 'xlarge', label: '5.000 € und mehr' },
   { value: 'open', label: 'Offen / muss sich ergeben' },
 ];
 ---
@@ -48,8 +52,8 @@ const budgetRanges = [
       <ul class="contact__direct">
         <li class="contact__direct-item">
           <span class="contact__direct-label">Mail</span>
-          <a href="mailto:hallo@studio.de" class="contact__direct-value">
-            hallo@studio.de
+          <a href="mailto:info@miro-studios.de" class="contact__direct-value">
+            info@miro-studios.de
           </a>
         </li>
         <li class="contact__direct-item">
@@ -68,6 +72,13 @@ const budgetRanges = [
     </div>
 
     <form class="contact-form" data-contact-form novalidate>
+      <!-- Web3Forms hidden inputs -->
+      <input type="hidden" name="access_key" value="38ad6adc-4cc0-4d48-8f11-646853352085" />
+      <input type="hidden" name="subject" value="Neue Anfrage über miro-studios.de" />
+      <input type="hidden" name="from_name" value="miro-studios Anfrage-Formular" />
+      <!-- Honeypot Spam-Schutz: Bots fuellen das aus, Menschen sehen es nicht -->
+      <input type="checkbox" name="botcheck" class="contact-form__honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
       <div class="contact-form__row">
         <label class="field" for="contact-name">
           <span class="field__label">
@@ -156,9 +167,53 @@ const budgetRanges = [
       </div>
 
       <output class="contact-form__success" data-contact-success aria-live="polite">
-        <span class="success-icon" aria-hidden="true">✓</span>
-        <strong>Danke!</strong> Deine Nachricht ist angekommen — wir melden uns
-        innerhalb von 48 Stunden.
+        <!-- Animated Glow-Halo hinter der Karte -->
+        <span class="success-glow" aria-hidden="true"></span>
+
+        <!-- Animierter SVG Checkmark der sich selbst zeichnet -->
+        <span class="success-mark" aria-hidden="true">
+          <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="40" cy="40" r="36" class="success-mark__circle" />
+            <path d="M24 41.5 L36 53 L57 30" class="success-mark__check" />
+          </svg>
+        </span>
+
+        <span class="success-eyebrow mono-label">
+          <span class="success-dot" aria-hidden="true"></span>
+          Anfrage angekommen
+        </span>
+
+        <h3 class="success-title">
+          <span class="success-title__line">Danke<span class="success-name" data-success-name></span>.</span>
+          <span class="success-title__line success-title__line--accent">
+            Wir sind dran.
+          </span>
+        </h3>
+
+        <p class="success-copy">
+          Du bekommst gleich eine Bestätigung an deine E-Mail.
+          Wir melden uns persönlich innerhalb von <strong>48 Stunden</strong>
+          — meistens schneller.
+        </p>
+
+        <div class="success-meta">
+          <span class="success-meta__item">
+            <span class="success-meta__label">Status</span>
+            <span class="success-meta__value">
+              <span class="success-meta__pulse" aria-hidden="true"></span>
+              In Bearbeitung
+            </span>
+          </span>
+          <span class="success-meta__item">
+            <span class="success-meta__label">Antwort innerhalb</span>
+            <span class="success-meta__value">48 h</span>
+          </span>
+        </div>
+
+        <button type="button" class="success-reset" data-contact-reset>
+          <span>Weitere Anfrage senden</span>
+          <span aria-hidden="true">↻</span>
+        </button>
       </output>
 
       <output
@@ -166,7 +221,18 @@ const budgetRanges = [
         data-contact-error
         aria-live="polite"
         role="status"
-      ></output>
+      >
+        <span class="error-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" class="error-mark__circle" />
+            <path d="M12 7v5" class="error-mark__line" />
+            <circle cx="12" cy="16" r="1" class="error-mark__dot" />
+          </svg>
+        </span>
+        <span class="error-text" data-contact-error-text>
+          Etwas ist schiefgelaufen.
+        </span>
+      </output>
     </form>
   </div>
 </section>
@@ -392,67 +458,422 @@ const budgetRanges = [
     text-underline-offset: 2px;
   }
 
-  /* Success / Error */
-  .contact-form__success,
-  .contact-form__error {
-    display: none;
-    padding: 1rem 1.25rem;
-    border-radius: var(--radius-md);
-    font-size: var(--text-sm);
-    line-height: 1.5;
+  /* ============== Honeypot (Spam-Schutz) ============== */
+  .contact-form__honeypot {
+    position: absolute !important;
+    left: -9999px !important;
+    width: 1px !important;
+    height: 1px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 
+  /* ============== Submit-Button Loading-State =========== */
+  .contact-form__submit[data-loading='true'] {
+    pointer-events: none;
+    opacity: 0.85;
+  }
+  .contact-form__submit[data-loading='true']::after {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-left: 0.5rem;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* ============== Success-State ========================= */
   .contact-form__success {
-    background-color: color-mix(in srgb, #4ade80 12%, transparent);
-    color: var(--color-text);
-    border: 1px solid color-mix(in srgb, #4ade80 35%, transparent);
-  }
-
-  .contact-form__error {
-    background-color: color-mix(in srgb, #f87171 12%, transparent);
-    color: var(--color-text);
-    border: 1px solid color-mix(in srgb, #f87171 35%, transparent);
+    display: none;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: clamp(2rem, 4vw, 3.5rem) clamp(1.25rem, 3vw, 2.5rem);
+    min-height: 22rem;
+    overflow: hidden;
+    isolation: isolate;
   }
 
   .contact-form[data-state='success'] .contact-form__success {
     display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
+    animation: success-card-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
-  .contact-form[data-state='error'] .contact-form__error {
-    display: block;
+  @keyframes success-card-in {
+    0% { opacity: 0; transform: translateY(16px) scale(0.98); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
   }
 
   .contact-form[data-state='success'] :where(.contact-form__row, .field, .contact-form__footer) {
     display: none;
   }
 
-  .success-icon {
-    color: #4ade80;
-    font-size: var(--text-xl);
+  /* Glow-Halo hinter der Karte */
+  .success-glow {
+    position: absolute;
+    inset: -20%;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse at 50% 30%,
+        color-mix(in srgb, var(--color-accent) 22%, transparent) 0%,
+        transparent 55%
+      );
+    filter: blur(40px);
+    opacity: 0;
+    animation: success-glow-in 1.4s 0.2s ease-out forwards;
+  }
+  @keyframes success-glow-in {
+    to { opacity: 1; }
+  }
+
+  /* SVG Checkmark - zeichnet sich selbst */
+  .success-mark {
+    display: inline-block;
+    width: clamp(64px, 8vw, 88px);
+    height: clamp(64px, 8vw, 88px);
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+  }
+  .success-mark svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .success-mark__circle,
+  .success-mark__check {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .success-mark__circle {
+    stroke: var(--color-accent);
+    stroke-width: 2.5;
+    stroke-dasharray: 226;
+    stroke-dashoffset: 226;
+    animation: success-circle-draw 0.75s 0.15s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    filter: drop-shadow(0 0 12px color-mix(in srgb, var(--color-accent) 60%, transparent));
+  }
+  .success-mark__check {
+    stroke: var(--color-accent);
+    stroke-width: 4;
+    stroke-dasharray: 60;
+    stroke-dashoffset: 60;
+    animation: success-check-draw 0.45s 0.75s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+  }
+  @keyframes success-circle-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes success-check-draw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  /* Eyebrow mit Live-Dot */
+  .success-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+    border-radius: 9999px;
+    background-color: color-mix(in srgb, var(--color-accent) 8%, transparent);
+    color: var(--color-accent);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: success-eyebrow-in 0.5s 1.05s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes success-eyebrow-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .success-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 25%, transparent);
+    animation: success-dot-pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes success-dot-pulse {
+    0%, 100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 25%, transparent); }
+    50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-accent) 12%, transparent); }
+  }
+
+  /* Headline */
+  .success-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+    margin: 0 0 1rem;
+    text-wrap: balance;
+  }
+
+  .success-title__line {
+    display: block;
+    opacity: 0;
+    transform: translateY(14px);
+    animation: success-line-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .success-title__line:nth-child(1) { animation-delay: 1.15s; }
+  .success-title__line:nth-child(2) { animation-delay: 1.3s; }
+
+  .success-title__line--accent {
+    font-style: italic;
+    color: var(--color-accent);
+    background-image: linear-gradient(
+      105deg,
+      var(--color-accent) 0%,
+      var(--color-accent) 35%,
+      #ffd4a0 50%,
+      var(--color-accent) 65%,
+      var(--color-accent) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation:
+      success-line-in 0.7s 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+      success-shimmer 3s 2s ease-in-out infinite;
+  }
+  @keyframes success-line-in {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes success-shimmer {
+    0%, 100% { background-position: 100% center; }
+    50% { background-position: 0% center; }
+  }
+
+  .success-name {
+    font-family: var(--font-display);
+    font-style: italic;
+  }
+  .success-name:not(:empty)::before {
+    content: ', ';
+  }
+
+  .success-copy {
+    max-width: 38ch;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+    font-size: var(--text-base);
+    line-height: 1.55;
+    margin: 0 0 clamp(1.5rem, 3vw, 2.25rem);
+    opacity: 0;
+    animation: success-line-in 0.6s 1.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .success-copy strong {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  /* Meta-Info Cards */
+  .success-meta {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+    opacity: 0;
+    animation: success-line-in 0.6s 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .success-meta__item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+    padding: 0.65rem 1rem;
+    border: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+    border-radius: var(--radius-md);
+    background-color: color-mix(in srgb, var(--color-text) 3%, transparent);
+    text-align: left;
+  }
+  .success-meta__label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-muted);
+  }
+  .success-meta__value {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    color: var(--color-text);
     line-height: 1;
+  }
+  .success-meta__pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #4ade80;
+    box-shadow: 0 0 0 0 color-mix(in srgb, #4ade80 50%, transparent);
+    animation: meta-pulse 1.5s ease-out infinite;
+  }
+  @keyframes meta-pulse {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, #4ade80 50%, transparent); }
+    70% { box-shadow: 0 0 0 8px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+
+  /* Reset-Button */
+  .success-reset {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.65rem 1.2rem;
+    background: none;
+    border: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent);
+    border-radius: 9999px;
+    color: color-mix(in srgb, var(--color-text) 70%, transparent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition:
+      color 0.3s var(--ease-out-expo),
+      border-color 0.3s var(--ease-out-expo),
+      background-color 0.3s var(--ease-out-expo);
+    opacity: 0;
+    animation: success-line-in 0.6s 1.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .success-reset:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+    background-color: color-mix(in srgb, var(--color-accent) 8%, transparent);
+  }
+  .success-reset > span:last-child {
+    display: inline-block;
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+  .success-reset:hover > span:last-child {
+    transform: rotate(180deg);
+  }
+
+  /* ============== Error-State =========================== */
+  .contact-form__error {
+    display: none;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    background-color: color-mix(in srgb, #f87171 10%, transparent);
+    border: 1px solid color-mix(in srgb, #f87171 35%, transparent);
+    color: var(--color-text);
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
+  .contact-form[data-state='error'] .contact-form__error {
+    display: flex;
+    animation: error-shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  }
+  @keyframes error-shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(3px); }
+  }
+
+  .error-mark {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    color: #f87171;
+  }
+  .error-mark svg { width: 100%; height: 100%; display: block; }
+  .error-mark__circle,
+  .error-mark__line,
+  .error-mark__dot {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+  }
+  .error-mark__circle { stroke-width: 2; }
+  .error-mark__line { stroke-width: 2; }
+  .error-mark__dot { fill: currentColor; stroke: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact-form__success,
+    .success-glow,
+    .success-mark__circle,
+    .success-mark__check,
+    .success-eyebrow,
+    .success-dot,
+    .success-title__line,
+    .success-title__line--accent,
+    .success-copy,
+    .success-meta,
+    .success-meta__pulse,
+    .success-reset,
+    .contact-form__error {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    .success-mark__circle,
+    .success-mark__check {
+      stroke-dashoffset: 0 !important;
+    }
   }
 </style>
 
 <script>
-  // TODO: Endpoint via Formspree o.ä. konfigurieren — Phase 2.5
-  const ENDPOINT: string | null = null;
+  // Web3Forms-Endpoint — kostenlos, unbegrenzt
+  const ENDPOINT = 'https://api.web3forms.com/submit';
 
   const init = () => {
     const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
     if (!form) return;
 
     const errorOut = form.querySelector<HTMLElement>('[data-contact-error]');
+    const errorTextOut = form.querySelector<HTMLElement>('[data-contact-error-text]');
+    const successNameEl = form.querySelector<HTMLElement>('[data-success-name]');
+    const submitBtn = form.querySelector<HTMLElement>('.contact-form__submit');
+    const resetBtn = form.querySelector<HTMLButtonElement>('[data-contact-reset]');
+
+    const setError = (msg: string) => {
+      form.dataset.state = 'error';
+      if (errorTextOut) errorTextOut.textContent = msg;
+    };
+
+    const setLoading = (loading: boolean) => {
+      if (submitBtn) submitBtn.dataset.loading = loading ? 'true' : 'false';
+      submitBtn?.querySelectorAll('button, a').forEach((b) => {
+        if (loading) b.setAttribute('aria-busy', 'true');
+        else b.removeAttribute('aria-busy');
+      });
+    };
+
+    const resetForm = () => {
+      form.reset();
+      form.dataset.state = '';
+      if (successNameEl) successNameEl.textContent = '';
+      // Re-set the hidden inputs that form.reset() doesn't touch
+      const ak = form.querySelector<HTMLInputElement>('[name="access_key"]');
+      if (ak) ak.value = '38ad6adc-4cc0-4d48-8f11-646853352085';
+    };
 
     const handleSubmit = async (event: SubmitEvent) => {
       event.preventDefault();
 
-      // Reset error
-      if (errorOut) errorOut.textContent = '';
+      if (errorTextOut) errorTextOut.textContent = '';
       form.dataset.state = '';
 
-      // Manual validation
+      // Validierung
       const requiredFields = form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>(
         '[required]',
       );
@@ -472,20 +893,22 @@ const budgetRanges = [
         invalid = true;
       }
       if (invalid) {
-        form.dataset.state = 'error';
-        if (errorOut) errorOut.textContent = 'Bitte prüfe die markierten Felder.';
+        setError('Bitte pruefe die markierten Felder.');
         return;
       }
 
+      // Vornamen extrahieren fuer personalisierte Erfolgs-Anzeige
+      const nameField = form.querySelector<HTMLInputElement>('input[name="name"]');
+      const fullName = nameField?.value.trim() ?? '';
+      const firstName = fullName.split(/\s+/)[0] || '';
+
+      // FormData zusammenbauen + replyto setzen damit man direkt antworten kann
       const formData = new FormData(form);
-
-      // Mock-Submit wenn kein Endpoint konfiguriert ist
-      if (!ENDPOINT) {
-        // eslint-disable-next-line no-console
-        console.info('[contact-form] Mock-Submit (kein Endpoint konfiguriert):', Object.fromEntries(formData));
-        form.dataset.state = 'success';
-        return;
+      if (emailField?.value) {
+        formData.set('replyto', emailField.value);
       }
+
+      setLoading(true);
 
       try {
         const response = await fetch(ENDPOINT, {
@@ -493,25 +916,40 @@ const budgetRanges = [
           body: formData,
           headers: { Accept: 'application/json' },
         });
-        if (response.ok) {
-          form.reset();
+        const data = await response.json().catch(() => ({}));
+
+        if (response.ok && (data.success === true || data.success === undefined)) {
+          // Vornamen ins Success-State setzen
+          if (successNameEl && firstName) {
+            successNameEl.textContent = firstName;
+          }
           form.dataset.state = 'success';
+          form.reset();
+          setLoading(false);
         } else {
-          form.dataset.state = 'error';
-          if (errorOut) errorOut.textContent = 'Etwas ist schiefgelaufen. Versuch es nochmal oder schreib direkt an hallo@studio.de.';
+          setLoading(false);
+          setError(
+            data?.message ||
+              'Etwas ist schiefgelaufen. Versuch es nochmal oder schreib direkt an info@miro-studios.de.',
+          );
         }
       } catch (err) {
-        form.dataset.state = 'error';
-        if (errorOut) errorOut.textContent = 'Verbindung fehlgeschlagen. Versuch es nochmal oder schreib direkt an hallo@studio.de.';
+        setLoading(false);
+        setError(
+          'Verbindung fehlgeschlagen. Versuch es nochmal oder schreib direkt an info@miro-studios.de.',
+        );
       }
     };
 
     form.addEventListener('submit', handleSubmit);
+    resetBtn?.addEventListener('click', resetForm);
 
-    // Cleanup
     document.addEventListener(
       'astro:before-swap',
-      () => form.removeEventListener('submit', handleSubmit),
+      () => {
+        form.removeEventListener('submit', handleSubmit);
+        resetBtn?.removeEventListener('click', resetForm);
+      },
       { once: true },
     );
   };
