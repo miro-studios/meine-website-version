@@ -5,8 +5,12 @@ import SmoothScroll from '@components/shared/SmoothScroll.astro';
 
 import '@styles/global.css';
 import '@styles/themes/portfolio.css';
+import '@styles/themes/cafe-starter.css';
 
-export type Theme = 'portfolio';
+// Hinweis: Pizzeria/Elektro/Friseur/Handwerker sind statische HTML-Demos
+// unter public/demos/<demo>/index.html und brauchen kein Astro-Theme.
+// Café Nordlicht ist eine echte Astro-Demo und benötigt das Theme hier.
+export type Theme = 'portfolio' | 'cafe-starter';
 
 interface Props {
   title: string;

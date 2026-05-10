@@ -175,6 +175,17 @@ const supportInclusions = [
         Domain, Hosting und Support in jedem Paket inklusive. Keine
         Vertragsfalle, keine versteckten Aufschl&auml;ge.
       </p>
+
+      <a href="/arbeiten" class="pricing__demo-link" data-cursor-hover>
+        <span class="pricing__demo-link-dot" aria-hidden="true"></span>
+        <span class="pricing__demo-link-stack">
+          <span class="pricing__demo-link-label">Wie sieht das aus?</span>
+          <span class="pricing__demo-link-sub">
+            Beispiel-Demo pro Paket ansehen
+          </span>
+        </span>
+        <span class="pricing__demo-link-arrow" aria-hidden="true">&rarr;</span>
+      </a>
     </header>
 
     <!-- ============== Master Toggle ========================================= -->
@@ -429,6 +440,91 @@ const supportInclusions = [
     color: color-mix(in srgb, var(--color-text) 75%, transparent);
   }
 
+  /* ===== Demo-Link (führt zu /arbeiten) ============================== */
+  .pricing__demo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding: 0.85rem 1.25rem 0.85rem 1rem;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--color-accent) 6%, var(--color-bg));
+    text-decoration: none;
+    color: var(--color-text);
+    width: max-content;
+    max-width: 100%;
+    cursor: none;
+    transition:
+      border-color 0.4s var(--ease-out-expo),
+      background-color 0.4s var(--ease-out-expo),
+      transform 0.4s var(--ease-out-expo),
+      box-shadow 0.5s var(--ease-out-expo);
+  }
+
+  .pricing__demo-link:hover {
+    border-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 12%, var(--color-bg));
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px -12px color-mix(in srgb, var(--color-accent) 50%, transparent);
+  }
+
+  .pricing__demo-link-dot {
+    display: inline-block;
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 25%, transparent);
+    flex-shrink: 0;
+    animation: pricing-demo-pulse 2.4s var(--ease-in-out-quart) infinite;
+  }
+
+  @keyframes pricing-demo-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%      { transform: scale(0.8); opacity: 0.7; }
+  }
+
+  .pricing__demo-link-stack {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    line-height: 1.2;
+    text-align: left;
+    min-width: 0;
+  }
+
+  .pricing__demo-link-label {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+  }
+
+  .pricing__demo-link-sub {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: color-mix(in srgb, var(--color-text) 60%, transparent);
+  }
+
+  .pricing__demo-link-arrow {
+    font-family: var(--font-mono);
+    font-size: 1.05rem;
+    color: var(--color-accent);
+    transition: transform 0.45s var(--ease-out-expo);
+    flex-shrink: 0;
+  }
+
+  .pricing__demo-link:hover .pricing__demo-link-arrow {
+    transform: translateX(4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pricing__demo-link-dot { animation: none; }
+  }
+
   /* ===== Master Toggle =================================================== */
   .pricing__sync {
     display: flex;
@@ -647,204 +743,6 @@ const supportInclusions = [
     font-weight: 500;
   }
   .plan__feature--included .plan__check { color: var(--color-accent); }
-
-  /* ===== Demo-Vorschau im Plan ============================================ */
-  .plan__preview {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    padding-top: 0.85rem;
-    border-top: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
-    margin-top: 0.25rem;
-  }
-
-  .plan__preview-label {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--color-muted);
-  }
-
-  .plan__preview-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.6rem;
-  }
-  .plan__preview-row--two {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .plan__demo-chip {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    text-decoration: none;
-    color: inherit;
-    cursor: none;
-    transition: transform 0.4s var(--ease-out-expo);
-  }
-
-  a.plan__demo-chip:hover { transform: translateY(-2px); }
-
-  .plan__demo-chip-bg {
-    position: relative;
-    display: flex;
-    align-items: flex-end;
-    aspect-ratio: 4 / 3;
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    padding: 0.5rem 0.65rem;
-    isolation: isolate;
-    transition: transform 0.5s var(--ease-out-expo);
-  }
-
-  a.plan__demo-chip:hover .plan__demo-chip-bg { transform: scale(1.02); }
-
-  .plan__demo-chip--soon .plan__demo-chip-bg {
-    border: 1px dashed color-mix(in srgb, var(--color-text) 20%, transparent);
-  }
-
-  .plan__demo-chip-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    opacity: 0.85;
-    pointer-events: none;
-  }
-
-  .plan__demo-chip-hatch {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background-image: repeating-linear-gradient(
-      135deg,
-      transparent 0,
-      transparent 10px,
-      color-mix(in srgb, currentColor 12%, transparent) 10px,
-      color-mix(in srgb, currentColor 12%, transparent) 11px
-    );
-    opacity: 0.4;
-  }
-
-  .plan__demo-chip-soon-label {
-    position: absolute;
-    top: 0.4rem;
-    left: 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding: 0.2rem 0.45rem;
-    border-radius: 9999px;
-    background-color: color-mix(in srgb, currentColor 12%, transparent);
-    border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
-    z-index: 1;
-  }
-
-  .plan__demo-chip-headline {
-    font-family: var(--font-display);
-    font-size: clamp(0.75rem, 1.1vw, 1rem);
-    line-height: 1;
-    letter-spacing: -0.02em;
-    font-weight: 500;
-    z-index: 1;
-    position: relative;
-  }
-
-  .plan__demo-chip-meta {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.35rem;
-  }
-
-  .plan__demo-chip-name {
-    font-family: var(--font-display);
-    font-size: var(--text-sm);
-    font-weight: 500;
-    letter-spacing: -0.01em;
-  }
-
-  .plan__demo-chip-cat {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-muted);
-  }
-
-  .plan__preview-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--color-accent);
-    text-decoration: none;
-    transition: gap 0.3s var(--ease-out-expo);
-  }
-  .plan__preview-link:hover { gap: 0.55rem; }
-
-  /* Theme-Farben fuer Demo-Chips */
-  .plan__demo-chip--pizzeria .plan__demo-chip-bg {
-    background-color: #F8F2E8;
-    color: #A8261B;
-  }
-  .plan__demo-chip--pizzeria .plan__demo-chip-headline { font-style: italic; }
-  .plan__demo-chip--pizzeria .plan__demo-chip-overlay {
-    background:
-      radial-gradient(circle at 20% 80%, #C44536 0%, transparent 55%),
-      radial-gradient(circle at 90% 20%, #E8B547 0%, transparent 45%);
-    opacity: 0.22;
-  }
-
-  .plan__demo-chip--elektro .plan__demo-chip-bg {
-    background-color: #0E0E0C;
-    color: #FFD60A;
-  }
-  .plan__demo-chip--elektro .plan__demo-chip-headline {
-    text-transform: uppercase;
-    font-family: 'Anton', 'Bebas Neue', 'Arial Narrow Bold', sans-serif;
-    letter-spacing: 0.02em;
-  }
-  .plan__demo-chip--elektro .plan__demo-chip-overlay {
-    background: repeating-linear-gradient(
-      90deg,
-      transparent 0,
-      transparent 20px,
-      color-mix(in srgb, #FFD60A 8%, transparent) 20px,
-      color-mix(in srgb, #FFD60A 8%, transparent) 21px
-    );
-    opacity: 0.6;
-  }
-
-  .plan__demo-chip--friseur .plan__demo-chip-bg {
-    background-color: #F8F4ED;
-    color: #3A2438;
-  }
-  .plan__demo-chip--friseur .plan__demo-chip-headline { font-style: italic; }
-  .plan__demo-chip--friseur .plan__demo-chip-overlay {
-    background:
-      radial-gradient(circle at 80% 70%, #F4C5B5 0%, transparent 50%),
-      radial-gradient(circle at 10% 30%, #B5C4A8 0%, transparent 45%);
-    opacity: 0.45;
-  }
-
-  .plan__demo-chip--handwerker .plan__demo-chip-bg {
-    background-color: #EFEAE0;
-    color: #3A2C1F;
-  }
-  .plan__demo-chip--handwerker .plan__demo-chip-headline { font-weight: 600; }
-  .plan__demo-chip--handwerker .plan__demo-chip-overlay {
-    background:
-      linear-gradient(135deg, transparent 30%, #C75D2F 130%),
-      linear-gradient(45deg, transparent 60%, #5A6E4F 200%);
-    opacity: 0.22;
-  }
 
   /* ===== Plan CTA ========================================================= */
   .plan__cta {

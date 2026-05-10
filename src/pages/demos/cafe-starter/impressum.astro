@@ -1,0 +1,133 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Impressum — Café Nordlicht"
+  description="Impressum und Anbieterkennzeichnung des Café Nordlicht in Lüdenscheid."
+  theme="cafe-starter"
+  bodyClass="cs-page cs-legal"
+>
+  <main class="cs-legal__page">
+    <a href="/demos/cafe-starter/" class="cs-legal__back">← Zurück zur Startseite</a>
+
+    <h1 class="cs-legal__title">Impressum</h1>
+
+    <section class="cs-legal__block">
+      <h2>Angaben gemäß § 5 TMG</h2>
+      <p>
+        Café Nordlicht GbR<br />
+        Inhaber: Mira Brockmann & Jonas Wendt<br />
+        Knapper Weg 12<br />
+        58507 Lüdenscheid
+      </p>
+    </section>
+
+    <section class="cs-legal__block">
+      <h2>Kontakt</h2>
+      <p>
+        Telefon: 02351 / 234 56 78<br />
+        E-Mail:
+        <a href="mailto:hallo@cafe-nordlicht.de">hallo@cafe-nordlicht.de</a>
+      </p>
+    </section>
+
+    <section class="cs-legal__block">
+      <h2>Umsatzsteuer-ID</h2>
+      <p>
+        Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:<br />
+        DE 123 456 789
+      </p>
+    </section>
+
+    <section class="cs-legal__block">
+      <h2>Verantwortlich für den Inhalt</h2>
+      <p>
+        Mira Brockmann<br />
+        Knapper Weg 12, 58507 Lüdenscheid
+      </p>
+    </section>
+
+    <section class="cs-legal__block">
+      <h2>Hinweis</h2>
+      <p>
+        Diese Demo-Seite dient ausschließlich der Veranschaulichung des
+        miro-studios "Starter"-Pakets. Café Nordlicht ist ein fiktives
+        Beispielunternehmen — alle Angaben sind frei erfunden.
+      </p>
+    </section>
+
+    <section class="cs-legal__block">
+      <h2>Streitschlichtung</h2>
+      <p>
+        Die Europäische Kommission stellt eine Plattform zur
+        Online-Streitbeilegung (OS) bereit:
+        <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer">
+          https://ec.europa.eu/consumers/odr
+        </a>.
+        Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren
+        vor einer Verbraucherschlichtungsstelle teilzunehmen.
+      </p>
+    </section>
+  </main>
+</BaseLayout>
+
+<style is:global>
+  body.cs-legal {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+  }
+</style>
+
+<style>
+  .cs-legal__page {
+    max-width: 720px;
+    margin-inline: auto;
+    padding-inline: var(--cs-gutter);
+    padding-block: clamp(3rem, 8vw, 6rem);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .cs-legal__back {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--color-primary);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
+    align-self: flex-start;
+  }
+
+  .cs-legal__back:hover {
+    border-bottom-color: currentColor;
+  }
+
+  .cs-legal__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--color-text);
+  }
+
+  .cs-legal__block h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    margin-bottom: 0.75rem;
+    color: var(--color-primary);
+  }
+
+  .cs-legal__block p {
+    font-size: var(--text-base);
+    line-height: 1.7;
+    color: color-mix(in srgb, var(--color-text) 85%, transparent);
+  }
+
+  .cs-legal__block a {
+    color: var(--color-primary);
+    border-bottom: 1px solid currentColor;
+  }
+</style>

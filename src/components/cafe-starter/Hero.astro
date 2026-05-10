@@ -1,0 +1,571 @@
+---
+/**
+ * Café Nordlicht — Hero
+ *
+ * Layout: editorial, asymmetrisch.
+ *  - links:  riesige Headline ("Bohne. / Brot. / Begegnung.") mit Split-Text-Reveal
+ *  - rechts: Hero-Visual (handgezeichnete Tassen-SVG), Parallax beim Scroll
+ *  - oben:   Mini-Header mit Logo-Wortmarke + Adresse
+ *  - unten:  primärer Magnetic-CTA + Mono-Label "Eröffnet 2018 in Lüdenscheid"
+ *
+ * Pflicht-Effekte aus dem Brief:
+ *  - Split-Text-Reveal beim Pageload
+ *  - Magnetic CTA
+ *  - Mindestens 1 scroll-getriggerter Effekt beim Verlassen
+ */
+import SplitText from '@components/shared/SplitText.astro';
+import MagneticButton from '@components/shared/MagneticButton.astro';
+---
+
+<section class="cs-hero" data-cs-hero>
+  <header class="cs-hero__bar">
+    <a href="/demos/cafe-starter/" class="cs-hero__brand" aria-label="Café Nordlicht — Startseite">
+      <span class="cs-hero__brand-mark" aria-hidden="true">◉</span>
+      <span class="cs-hero__brand-name">Café Nordlicht</span>
+    </a>
+    <p class="cs-hero__bar-meta">
+      <span>Knapper Weg 12</span>
+      <span aria-hidden="true">·</span>
+      <span>58507 Lüdenscheid</span>
+    </p>
+  </header>
+
+  <div class="cs-hero__inner">
+    <div class="cs-hero__copy">
+      <p class="cs-hero__eyebrow">
+        <span class="cs-hero__dot" aria-hidden="true"></span>
+        Specialty Coffee · Frühstück · Lüdenscheid
+      </p>
+
+      <h1 class="cs-hero__headline">
+        <span class="cs-hero__headline-line">
+          <SplitText by="chars" delay={0.1} stagger={0.025} onScroll={false}>Bohne.</SplitText>
+        </span>
+        <span class="cs-hero__headline-line cs-hero__headline-line--alt">
+          <SplitText by="chars" delay={0.35} stagger={0.025} onScroll={false}>Brot.</SplitText>
+        </span>
+        <span class="cs-hero__headline-line">
+          <SplitText by="chars" delay={0.6} stagger={0.025} onScroll={false}>Begegnung.</SplitText>
+        </span>
+      </h1>
+
+      <p class="cs-hero__sub">
+        Geröstet auf der Volme. Gebacken vor Sonnenaufgang. Serviert mit Zeit.
+      </p>
+
+      <div class="cs-hero__actions">
+        <MagneticButton href="#kontakt" strength={0.35} variant="primary" class="cs-hero__cta">
+          <span>Tisch reservieren</span>
+          <span class="cs-hero__cta-arrow" aria-hidden="true">→</span>
+        </MagneticButton>
+
+        <a href="tel:+4923512345678" class="cs-hero__call">
+          <span class="cs-hero__call-label">Lieber anrufen</span>
+          <span class="cs-hero__call-number">02351 / 234 56 78</span>
+        </a>
+      </div>
+
+      <p class="cs-hero__since">
+        <span class="cs-hero__since-line" aria-hidden="true"></span>
+        Eröffnet 2018 — geführt von Mira & Jonas
+      </p>
+    </div>
+
+    <figure class="cs-hero__visual" data-cs-hero-visual>
+      <!-- Editorial Hero-Visual: gestapelte Kaffeetasse + dampfendes Brot,
+           rein als SVG (kein Stockfoto nötig). Subtle Paper-Grain überdeckt. -->
+      <div class="cs-hero__paper" aria-hidden="true"></div>
+
+      <svg
+        class="cs-hero__art"
+        viewBox="0 0 520 640"
+        role="img"
+        aria-label="Illustrierte Tasse Kaffee mit Dampf neben einem frischen Sauerteig-Laib"
+        data-cs-hero-art
+      >
+        <!-- Brot-Laib (weicher Burgund-Schatten hinten) -->
+        <ellipse cx="170" cy="500" rx="135" ry="38" fill="#6B1F25" opacity="0.18" />
+
+        <!-- Brot-Laib -->
+        <path
+          d="M70 470
+             C 60 410, 110 360, 175 360
+             C 245 360, 295 410, 285 475
+             C 280 510, 240 525, 175 525
+             C 110 525, 75 505, 70 470 Z"
+          fill="#C2683A"
+        />
+        <path
+          d="M105 405 Q 175 380 245 405"
+          stroke="#1F1814"
+          stroke-width="2.5"
+          fill="none"
+          opacity="0.55"
+          stroke-linecap="round"
+        />
+        <path
+          d="M115 430 Q 175 408 235 430"
+          stroke="#1F1814"
+          stroke-width="2"
+          fill="none"
+          opacity="0.4"
+          stroke-linecap="round"
+        />
+        <path
+          d="M125 455 Q 175 438 225 455"
+          stroke="#1F1814"
+          stroke-width="1.8"
+          fill="none"
+          opacity="0.3"
+          stroke-linecap="round"
+        />
+
+        <!-- Tasse: Schatten -->
+        <ellipse cx="370" cy="445" rx="118" ry="22" fill="#1F1814" opacity="0.15" />
+
+        <!-- Tasse: Untertasse -->
+        <ellipse cx="370" cy="430" rx="118" ry="20" fill="#ECE3D0" stroke="#1F1814" stroke-width="2" />
+
+        <!-- Tasse: Korpus -->
+        <path
+          d="M268 295
+             L 470 295
+             L 460 410
+             C 458 425, 440 432, 370 432
+             C 300 432, 282 425, 280 410 Z"
+          fill="#F2EBDD"
+          stroke="#1F1814"
+          stroke-width="2.5"
+        />
+
+        <!-- Tasse: Kaffee-Oberfläche -->
+        <ellipse cx="370" cy="295" rx="101" ry="14" fill="#3D1E12" />
+        <ellipse cx="370" cy="293" rx="92" ry="9" fill="#5A2E1B" opacity="0.7" />
+
+        <!-- Tasse: Henkel -->
+        <path
+          d="M460 320
+             C 500 318, 510 360, 482 388"
+          fill="none"
+          stroke="#1F1814"
+          stroke-width="2.5"
+          stroke-linecap="round"
+        />
+        <path
+          d="M462 332
+             C 488 332, 495 360, 478 378"
+          fill="none"
+          stroke="#1F1814"
+          stroke-width="2"
+          stroke-linecap="round"
+          opacity="0.6"
+        />
+
+        <!-- Dampfschwaden -->
+        <g class="cs-hero__steam" stroke="#1F1814" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.55">
+          <path d="M340 260 C 332 230, 350 215, 342 188 C 336 168, 350 152, 344 132" />
+          <path d="M375 255 C 368 225, 385 210, 378 182 C 372 162, 388 146, 381 124" />
+          <path d="M410 260 C 402 230, 420 215, 412 188 C 406 168, 420 152, 414 134" />
+        </g>
+
+        <!-- Bohne (Detail) -->
+        <g transform="translate(85 240) rotate(-18)">
+          <ellipse cx="0" cy="0" rx="22" ry="13" fill="#3D1E12" />
+          <path d="M-18 0 Q 0 -6 18 0 Q 0 6 -18 0" stroke="#F2EBDD" stroke-width="1.5" fill="none" />
+        </g>
+        <g transform="translate(120 220) rotate(34)">
+          <ellipse cx="0" cy="0" rx="18" ry="10" fill="#3D1E12" opacity="0.85" />
+          <path d="M-15 0 Q 0 -5 15 0 Q 0 5 -15 0" stroke="#F2EBDD" stroke-width="1.2" fill="none" />
+        </g>
+      </svg>
+
+      <figcaption class="cs-hero__visual-caption">
+        <span aria-hidden="true">⌖</span>
+        <span>Hausröstung</span>
+        <span aria-hidden="true">·</span>
+        <span>Sauerteig vom Vortag</span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <!-- Pflicht-Effekt: Mega-Wortmarke driftet beim Verlassen der Hero ein -->
+  <div class="cs-hero__wordmark" aria-hidden="true" data-cs-wordmark>
+    <span>Nordlicht</span>
+  </div>
+</section>
+
+<style>
+  /* ── Container ─────────────────────────────────────────────────────────── */
+  .cs-hero {
+    position: relative;
+    min-height: 100svh;
+    padding-inline: var(--cs-gutter);
+    padding-block: clamp(1.5rem, 3vw, 2.5rem) clamp(4rem, 8vw, 7rem);
+    background:
+      radial-gradient(ellipse 80% 50% at 80% 0%, color-mix(in srgb, var(--color-accent) 12%, transparent), transparent 60%),
+      var(--color-bg);
+    color: var(--color-text);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  /* ── Top-Bar ───────────────────────────────────────────────────────────── */
+  .cs-hero__bar {
+    max-width: var(--cs-container);
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.75rem;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .cs-hero__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+  }
+
+  .cs-hero__brand-mark {
+    display: inline-block;
+    color: var(--color-primary);
+    font-size: 1.1em;
+    transform: translateY(-1px);
+  }
+
+  .cs-hero__brand-name {
+    font-weight: 500;
+  }
+
+  .cs-hero__bar-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Inner Grid ────────────────────────────────────────────────────────── */
+  .cs-hero__inner {
+    max-width: var(--cs-container);
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 5vw, 4rem);
+    align-items: center;
+    padding-block: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  @media (min-width: 900px) {
+    .cs-hero__inner {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    }
+  }
+
+  /* ── Copy ──────────────────────────────────────────────────────────────── */
+  .cs-hero__copy {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .cs-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-primary);
+    width: max-content;
+    max-width: 100%;
+  }
+
+  .cs-hero__dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 22%, transparent);
+    animation: cs-pulse 2.4s var(--ease-in-out-quart) infinite;
+  }
+
+  @keyframes cs-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%      { transform: scale(0.85); opacity: 0.7; }
+  }
+
+  .cs-hero__headline {
+    font-family: var(--font-display);
+    font-size: clamp(3.4rem, 11vw, 9rem);
+    line-height: 0.92;
+    letter-spacing: -0.045em;
+    font-weight: 500;
+    margin-block: 0.25rem;
+  }
+
+  .cs-hero__headline-line {
+    display: block;
+    overflow: hidden;
+  }
+
+  /* mittlere Zeile in Burgund + leichter italic für editorial Look */
+  .cs-hero__headline-line--alt {
+    color: var(--color-primary);
+    font-style: italic;
+    font-variation-settings: "opsz" 144, "SOFT" 50, "WONK" 1;
+    padding-left: clamp(0.5rem, 4vw, 4rem);
+  }
+
+  .cs-hero__sub {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.15rem, 1.8vw, 1.5rem);
+    line-height: 1.4;
+    color: color-mix(in srgb, var(--color-text) 78%, transparent);
+    max-width: 32ch;
+  }
+
+  /* ── Actions ───────────────────────────────────────────────────────────── */
+  .cs-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem 2rem;
+    margin-top: 0.5rem;
+  }
+
+  .cs-hero__cta {
+    --pad-x: 2rem;
+    --pad-y: 1.05rem;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    letter-spacing: 0.01em;
+    background-color: var(--color-primary);
+    color: #fff;
+  }
+
+  .cs-hero__cta:hover {
+    background-color: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .cs-hero__cta-arrow {
+    display: inline-block;
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+
+  .cs-hero__cta:hover .cs-hero__cta-arrow {
+    transform: translateX(5px);
+  }
+
+  .cs-hero__call {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    color: var(--color-text);
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: border-color 0.3s var(--ease-out-expo), color 0.3s ease;
+  }
+
+  .cs-hero__call:hover {
+    color: var(--color-primary);
+    border-bottom-color: currentColor;
+  }
+
+  .cs-hero__call-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--color-muted);
+  }
+
+  .cs-hero__call-number {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Since-Note ────────────────────────────────────────────────────────── */
+  .cs-hero__since {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-top: 1rem;
+  }
+
+  .cs-hero__since-line {
+    display: inline-block;
+    width: clamp(40px, 6vw, 70px);
+    height: 1px;
+    background: currentColor;
+  }
+
+  /* ── Visual ────────────────────────────────────────────────────────────── */
+  .cs-hero__visual {
+    position: relative;
+    aspect-ratio: 5 / 6;
+    width: 100%;
+    max-width: 460px;
+    margin-inline: auto;
+    margin: 0 auto;
+    isolation: isolate;
+  }
+
+  @media (min-width: 900px) {
+    .cs-hero__visual {
+      max-width: none;
+      transform: translateY(-1.5rem);
+    }
+  }
+
+  .cs-hero__paper {
+    position: absolute;
+    inset: 4% -6% -6% -2%;
+    background:
+      radial-gradient(circle at 30% 20%, color-mix(in srgb, var(--color-accent) 22%, transparent), transparent 55%),
+      color-mix(in srgb, var(--color-surface) 70%, transparent);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-rule);
+    z-index: -1;
+  }
+
+  .cs-hero__art {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    will-change: transform;
+  }
+
+  .cs-hero__steam path {
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: cs-steam 3.6s var(--ease-in-out-quart) infinite;
+  }
+
+  .cs-hero__steam path:nth-child(2) { animation-delay: -1.2s; }
+  .cs-hero__steam path:nth-child(3) { animation-delay: -2.4s; }
+
+  @keyframes cs-steam {
+    0%   { stroke-dashoffset: 200; opacity: 0; }
+    20%  { opacity: 0.6; }
+    80%  { opacity: 0.6; }
+    100% { stroke-dashoffset: -200; opacity: 0; }
+  }
+
+  .cs-hero__visual-caption {
+    position: absolute;
+    bottom: -2.5rem;
+    left: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── Mega-Wortmarke (driftet beim Scroll-Out rein) ─────────────────────── */
+  .cs-hero__wordmark {
+    position: absolute;
+    left: 50%;
+    bottom: -0.05em;
+    transform: translateX(-50%);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(8rem, 22vw, 18rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    color: color-mix(in srgb, var(--color-primary) 18%, transparent);
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+    z-index: -1;
+    will-change: transform, opacity;
+    opacity: 0;
+  }
+
+  /* ── Reduced-Motion ────────────────────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .cs-hero__dot,
+    .cs-hero__steam path {
+      animation: none !important;
+    }
+    .cs-hero__steam path {
+      stroke-dashoffset: 0;
+      opacity: 0.5;
+    }
+    .cs-hero__wordmark {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  function init() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const hero = document.querySelector<HTMLElement>('[data-cs-hero]');
+    const art = document.querySelector<HTMLElement>('[data-cs-hero-art]');
+    const wordmark = document.querySelector<HTMLElement>('[data-cs-wordmark]');
+    if (!hero) return;
+
+    // Parallax auf das Hero-Visual (subtiler Y-Drift beim Scroll)
+    if (art) {
+      gsap.to(art, {
+        yPercent: -12,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: hero,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 0.6,
+        },
+      });
+    }
+
+    // Mega-Wortmarke driftet von unten rein wenn die Hero den Viewport verlässt
+    if (wordmark) {
+      gsap.fromTo(
+        wordmark,
+        { yPercent: 60, opacity: 0 },
+        {
+          yPercent: 0,
+          opacity: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: hero,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 0.8,
+          },
+        }
+      );
+    }
+  }
+
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

@@ -42,14 +42,22 @@ const looped = Array.from({ length: repeats }).flatMap(() => items);
   style={`--marquee-py: ${paddingY};`}
   aria-hidden="true"
 >
-  <div class="marquee__track" data-marquee-track>
+  <div
+    class="marquee__track"
+    data-marquee-track
+    data-items-per-cycle={items.length}
+  >
     {
-      looped.map((item, idx) => (
+      /*
+       * JEDES Item bekommt einen Separator — auch der "letzte" der Sequenz.
+       * So sind alle Items gleich breit und die Wrap-Logik (nach genau einer
+       * Sequenz-Breite) wird visuell nahtlos. Trenner sind purely dekorativ
+       * (aria-hidden via parent).
+       */
+      looped.map((item) => (
         <span class="marquee__item">
           <span class="marquee__text">{item}</span>
-          {idx < looped.length - 1 && (
-            <span class="marquee__sep">{separator}</span>
-          )}
+          <span class="marquee__sep">{separator}</span>
         </span>
       ))
     }
@@ -69,6 +77,11 @@ const looped = Array.from({ length: repeats }).flatMap(() => items);
     white-space: nowrap;
   }
 
+  /*
+   * Marquee Track — Animation wird per Web Animations API gefahren
+   * (siehe <script>). Das umgeht CSS-Variable-Update-Probleme bei
+   * laufenden Animationen und produziert nahtloses GPU-Compositing.
+   */
   .marquee__track {
     display: inline-flex;
     align-items: center;
@@ -86,37 +99,107 @@ const looped = Array.from({ length: repeats }).flatMap(() => items);
     opacity: 0.4;
     font-weight: 300;
   }
-
-  @media (hover: hover) {
-    .marquee:hover .marquee__track {
-      animation-play-state: paused;
-    }
-  }
 </style>
 
 <script>
-  import { marquee as initMarquee } from '@lib/animations';
+  /**
+   * Marquee via Web Animations API.
+   *
+   *  - Misst eine "Cycle-Width" (= Breite einer Sequenz inkl. Gap)
+   *  - Animiert Track von 0 zu -cycleWidth, infinite, linear
+   *  - Da Track aus mehreren identischen Sequenzen besteht, ist
+   *    der visuelle Frame bei -cycleWidth identisch zu 0 → nahtlos
+   *  - Pause bei Hover (CSS hover-supported devices)
+   *  - Re-measure bei Resize / Font-Load
+   */
+  type AnimRecord = { animation: Animation; cycleWidth: number };
+  const records = new WeakMap<HTMLElement, AnimRecord>();
 
-  const cleanups = new Map<HTMLElement, () => void>();
+  const setupOne = (root: HTMLElement) => {
+    const track = root.querySelector<HTMLElement>('[data-marquee-track]');
+    if (!track) return;
 
-  const start = () => {
-    document.querySelectorAll<HTMLElement>('[data-marquee]').forEach((el) => {
-      const track = el.querySelector<HTMLElement>('[data-marquee-track]');
-      if (!track) return;
-      const speed = parseFloat(el.dataset.speed ?? '80');
-      const direction = (el.dataset.direction as 'left' | 'right') ?? 'left';
-      const reactive = el.dataset.reactive === 'true';
-      const cleanup = initMarquee(track, { speed, direction, reactive });
-      cleanups.set(el, cleanup);
-    });
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+
+    const speed = parseFloat(root.dataset.speed ?? '80');
+    // direction='left' (default): Items wandern nach links → translateX negativ
+    // direction='right':           Items wandern nach rechts → translateX positiv
+    const directionSign = root.dataset.direction === 'right' ? 1 : -1;
+    const itemsPerCycle = parseInt(track.dataset.itemsPerCycle ?? '0', 10);
+    const items = track.children;
+    if (items.length === 0) return;
+
+    const measureCycle = (): number => {
+      const startItem = items[0] as HTMLElement | undefined;
+      const endItem =
+        itemsPerCycle > 0 && itemsPerCycle < items.length
+          ? (items[itemsPerCycle] as HTMLElement)
+          : undefined;
+      if (!startItem || !endItem) return 0;
+      return endItem.offsetLeft - startItem.offsetLeft;
+    };
+
+    const buildAnimation = (cycleWidth: number) => {
+      const durationMs = (cycleWidth / speed) * 1000;
+      const endX = cycleWidth * directionSign;
+      const animation = track.animate(
+        [
+          { transform: 'translate3d(0, 0, 0)' },
+          { transform: `translate3d(${endX}px, 0, 0)` },
+        ],
+        {
+          duration: durationMs,
+          iterations: Infinity,
+          easing: 'linear',
+        },
+      );
+      records.set(track, { animation, cycleWidth });
+    };
+
+    const ensureAnimation = () => {
+      const cycleWidth = measureCycle();
+      if (cycleWidth <= 0) return;
+
+      const existing = records.get(track);
+      if (existing && Math.abs(existing.cycleWidth - cycleWidth) < 1) return;
+
+      // Cycle-Width hat sich geändert → alte Animation wegwerfen
+      if (existing) existing.animation.cancel();
+      buildAnimation(cycleWidth);
+    };
+
+    // Mehrfach versuchen, falls Layout noch nicht ready
+    ensureAnimation();
+    requestAnimationFrame(ensureAnimation);
+    requestAnimationFrame(() => requestAnimationFrame(ensureAnimation));
+    if ('fonts' in document) {
+      document.fonts.ready.then(ensureAnimation);
+    }
+
+    // Hover-Pause (nur auf hover-fähigen Devices)
+    if (window.matchMedia('(hover: hover)').matches) {
+      root.addEventListener('mouseenter', () => {
+        records.get(track)?.animation.pause();
+      });
+      root.addEventListener('mouseleave', () => {
+        records.get(track)?.animation.play();
+      });
+    }
   };
 
-  const stop = () => {
-    cleanups.forEach((fn) => fn());
-    cleanups.clear();
+  const setupAll = () => {
+    document.querySelectorAll<HTMLElement>('[data-marquee]').forEach(setupOne);
   };
 
-  start();
-  document.addEventListener('astro:page-load', start);
-  document.addEventListener('astro:before-swap', stop);
+  // Resize: re-measure + ggf. neue Animation
+  let resizeFrame = 0;
+  const onResize = () => {
+    cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(setupAll);
+  };
+  window.addEventListener('resize', onResize, { passive: true });
+
+  setupAll();
+  document.addEventListener('astro:page-load', setupAll);
 </script>

@@ -1,0 +1,1114 @@
+---
+import PortfolioLayout from '@layouts/PortfolioLayout.astro';
+import SplitText from '@components/shared/SplitText.astro';
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+import Footer from '@components/portfolio/Footer.astro';
+import { demos } from '@/data/demos';
+
+const liveCount = demos.filter((d) => d.status === 'live').length;
+const totalCount = demos.length;
+---
+
+<PortfolioLayout
+  title="Arbeiten — miro-studios Demos"
+  description="Beispiel-Demo-Sites für jedes miro-studios-Paket. Eine Vorschau, wie deine Website aussehen könnte — pro Paket eine Demo."
+  active="arbeiten"
+>
+  <main class="works">
+    <!-- ── Intro ──────────────────────────────────────────────────────── -->
+    <section class="works__intro">
+      <div class="works__intro-inner">
+        <p class="works__eyebrow">
+          <span class="works__eyebrow-dash" aria-hidden="true"></span>
+          Arbeiten / Demos
+        </p>
+
+        <SplitText
+          as="h1"
+          by="words"
+          stagger={0.05}
+          class="works__title"
+        >
+          So sieht ein Paket bei uns aus.
+        </SplitText>
+
+        <p class="works__lead">
+          Pro Paket bauen wir eine Beispiel-Demo — damit du genau weißt,
+          was du bekommst, bevor du buchst. Klick auf eine Karte, um die
+          Live-Site anzuschauen.
+        </p>
+
+        <ul class="works__meta" role="list">
+          <li>
+            <span class="works__meta-num">{liveCount.toString().padStart(2, '0')}</span>
+            <span class="works__meta-label">Live</span>
+          </li>
+          <li>
+            <span class="works__meta-num">{(totalCount - liveCount).toString().padStart(2, '0')}</span>
+            <span class="works__meta-label">In Bearbeitung</span>
+          </li>
+          <li>
+            <span class="works__meta-num">{totalCount.toString().padStart(2, '0')}</span>
+            <span class="works__meta-label">Gesamt</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ── Filter-Tabs (Pricing-style Toggle, 3 Optionen) ─────────────── -->
+    <section class="works__filters" data-works-filters>
+      <div class="works__filters-inner">
+        <div
+          class="works-toggle"
+          role="tablist"
+          aria-label="Format filtern"
+          data-toggle
+          data-active="all"
+        >
+          <span class="works-toggle__rail" aria-hidden="true"></span>
+          <span class="works-toggle__halo" aria-hidden="true"></span>
+          <span class="works-toggle__thumb" aria-hidden="true">
+            <span class="works-toggle__thumb-shine" aria-hidden="true"></span>
+          </span>
+
+          <button
+            type="button"
+            class="works-toggle__option is-active"
+            role="tab"
+            aria-selected="true"
+            data-filter="all"
+            data-cursor-hover
+          >
+            <span class="works-toggle__option-dot" aria-hidden="true"></span>
+            <span class="works-toggle__option-stack">
+              <span class="works-toggle__option-label">Alle</span>
+              <span class="works-toggle__option-count">{totalCount} Demos</span>
+            </span>
+          </button>
+          <button
+            type="button"
+            class="works-toggle__option"
+            role="tab"
+            aria-selected="false"
+            data-filter="one-pager"
+            data-cursor-hover
+          >
+            <span class="works-toggle__option-dot" aria-hidden="true"></span>
+            <span class="works-toggle__option-stack">
+              <span class="works-toggle__option-label">One-Pager</span>
+              <span class="works-toggle__option-count">
+                {demos.filter(d => d.package.format === 'one-pager').length} Demos
+              </span>
+            </span>
+          </button>
+          <button
+            type="button"
+            class="works-toggle__option"
+            role="tab"
+            aria-selected="false"
+            data-filter="multi-page"
+            data-cursor-hover
+          >
+            <span class="works-toggle__option-dot" aria-hidden="true"></span>
+            <span class="works-toggle__option-stack">
+              <span class="works-toggle__option-label">Multi-Page</span>
+              <span class="works-toggle__option-count">
+                {demos.filter(d => d.package.format === 'multi-page').length} Demos
+              </span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Demo-Grid ──────────────────────────────────────────────────── -->
+    <section class="works__grid" aria-label="Demo-Übersicht">
+      <RevealOnScroll class="works__grid-inner" stagger={0.1} y={50}>
+        {demos.map((demo) => {
+          const Tag = demo.status === 'live' && demo.href ? 'a' : 'div';
+          const tagProps = demo.status === 'live' && demo.href
+            ? { href: demo.href, target: '_blank', rel: 'noopener' }
+            : {};
+
+          return (
+            <Tag
+              class:list={[
+                'work-card',
+                `work-card--${demo.theme}`,
+                demo.status === 'in-progress' && 'work-card--soon',
+              ]}
+              data-format={demo.package.format}
+              data-cursor-hover
+              {...tagProps}
+            >
+              <!-- Visual / Headline-Bühne -->
+              <div class="work-card__stage">
+                <div class="work-card__stage-bg" aria-hidden="true"></div>
+                {demo.status === 'in-progress' && (
+                  <div class="work-card__stage-hatch" aria-hidden="true"></div>
+                )}
+
+                <div class="work-card__stage-top">
+                  <span class="work-card__package">
+                    <span class="work-card__package-name">{demo.package.name}</span>
+                    <span class="work-card__package-format">
+                      {demo.package.format === 'one-pager' ? 'One-Pager' : 'Multi-Page'}
+                    </span>
+                  </span>
+                  <span class:list={[
+                    'work-card__status',
+                    demo.status === 'live' ? 'work-card__status--live' : 'work-card__status--soon'
+                  ]}>
+                    <span class="work-card__status-dot" aria-hidden="true"></span>
+                    {demo.status === 'live' ? 'Live' : 'In Bearbeitung'}
+                  </span>
+                </div>
+
+                <p class="work-card__headline">{demo.headline}</p>
+              </div>
+
+              <!-- Info-Body unten -->
+              <div class="work-card__body">
+                <div class="work-card__head">
+                  <h2 class="work-card__name">{demo.name}</h2>
+                  <p class="work-card__cat">{demo.category}</p>
+                </div>
+
+                <p class="work-card__blurb">{demo.blurb}</p>
+
+                <div class="work-card__foot">
+                  <div class="work-card__price-block">
+                    <span class="work-card__price-label">Paket</span>
+                    <span class="work-card__price-value">{demo.package.price}</span>
+                    <span class="work-card__price-delivery">{demo.package.delivery}</span>
+                  </div>
+
+                  <span class="work-card__cta">
+                    {demo.status === 'live'
+                      ? <><span>Demo öffnen</span><span aria-hidden="true">↗</span></>
+                      : <><span>Bald verfügbar</span><span aria-hidden="true">…</span></>
+                    }
+                  </span>
+                </div>
+              </div>
+            </Tag>
+          );
+        })}
+      </RevealOnScroll>
+    </section>
+
+    <!-- ── CTA-Banner ─────────────────────────────────────────────────── -->
+    <section class="works__cta">
+      <div class="works__cta-inner">
+        <p class="works__cta-eyebrow">Dein Projekt fehlt hier noch?</p>
+        <h2 class="works__cta-title">Lass uns deins bauen.</h2>
+        <p class="works__cta-sub">
+          Sag uns Branche, Vorbild-Sites und Lieferzeit. Wir antworten in
+          24 Stunden.
+        </p>
+        <a href="/kontakt" class="works__cta-btn" data-magnetic>
+          <span>Anfrage starten</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <Footer />
+  </main>
+</PortfolioLayout>
+
+<style>
+  .works {
+    min-height: 100vh;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    padding-top: clamp(5rem, 10vh, 8rem);
+  }
+
+  /* ── Intro ──────────────────────────────────────────────────────────── */
+  .works__intro {
+    padding-inline: var(--container-pad);
+    padding-block: clamp(2rem, 5vw, 4rem) clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .works__intro-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .works__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-muted);
+  }
+
+  .works__eyebrow-dash {
+    display: inline-block;
+    width: 2.5rem;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .works__title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+    max-width: 18ch;
+  }
+
+  .works__lead {
+    font-size: var(--text-lg);
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+    max-width: 56ch;
+  }
+
+  .works__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(1.5rem, 3vw, 3rem);
+    list-style: none;
+    margin-top: 0.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+  }
+
+  .works__meta li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .works__meta-num {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.5vw, 2.75rem);
+    line-height: 1;
+    color: var(--color-accent);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .works__meta-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-muted);
+  }
+
+  /* ── Filter-Tabs ────────────────────────────────────────────────────── */
+  .works__filters {
+    padding-inline: var(--container-pad);
+    padding-bottom: clamp(2rem, 4vw, 3rem);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: linear-gradient(
+      180deg,
+      var(--color-bg) 0%,
+      var(--color-bg) 70%,
+      transparent 100%
+    );
+  }
+
+  .works__filters-inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+  }
+
+  /* ===== Toggle: 3-Optionen-Variante mit Sliding-Thumb ============= */
+  .works-toggle {
+    --toggle-pad: 6px;
+    --toggle-spring: cubic-bezier(0.5, 1.6, 0.4, 1);
+    --toggle-glide: cubic-bezier(0.32, 0.72, 0, 1);
+    --toggle-options: 3;
+    position: relative;
+    display: flex;
+    width: 100%;
+    max-width: clamp(28rem, 56vw, 48rem);
+    padding: var(--toggle-pad);
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--color-text) 4%, transparent) 0%,
+        color-mix(in srgb, var(--color-text) 12%, transparent) 100%
+      );
+    border: 1px solid color-mix(in srgb, var(--color-text) 14%, transparent);
+    border-radius: 9999px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    isolation: isolate;
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--color-text) 8%, transparent),
+      inset 0 -1px 0 color-mix(in srgb, var(--color-bg) 30%, transparent),
+      0 1px 0 color-mix(in srgb, var(--color-bg) 40%, transparent);
+    transition:
+      border-color 0.5s var(--toggle-glide),
+      box-shadow 0.5s var(--toggle-glide);
+  }
+
+  .works-toggle:hover {
+    border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--color-text) 8%, transparent),
+      inset 0 -1px 0 color-mix(in srgb, var(--color-bg) 30%, transparent),
+      0 0 0 4px color-mix(in srgb, var(--color-accent) 8%, transparent);
+  }
+
+  /* Innere Trennlinien */
+  .works-toggle__rail {
+    position: absolute;
+    inset: var(--toggle-pad);
+    border-radius: 9999px;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .works-toggle__rail::before,
+  .works-toggle__rail::after {
+    content: '';
+    position: absolute;
+    top: 22%;
+    bottom: 22%;
+    width: 1px;
+    background: color-mix(in srgb, var(--color-text) 14%, transparent);
+    opacity: 0;
+    transition: opacity 0.4s var(--toggle-glide);
+  }
+  .works-toggle__rail::before { left: 33.333%; }
+  .works-toggle__rail::after  { left: 66.666%; }
+  .works-toggle:hover .works-toggle__rail::before,
+  .works-toggle:hover .works-toggle__rail::after { opacity: 0.6; }
+
+  /* Pulsing halo hinter dem Thumb */
+  .works-toggle__halo {
+    position: absolute;
+    top: var(--toggle-pad);
+    left: var(--toggle-pad);
+    height: calc(100% - var(--toggle-pad) * 2);
+    width: calc((100% - var(--toggle-pad) * 2) / var(--toggle-options));
+    border-radius: 9999px;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(
+      ellipse at center,
+      color-mix(in srgb, var(--color-accent) 35%, transparent) 0%,
+      transparent 70%
+    );
+    filter: blur(20px);
+    transform: translateX(0) scale(1);
+    transition: transform 0.7s var(--toggle-spring);
+    will-change: transform;
+    opacity: 0.85;
+    animation: works-halo-pulse 3.5s ease-in-out infinite;
+  }
+  .works-toggle[data-active='one-pager']  .works-toggle__halo { transform: translateX(100%); }
+  .works-toggle[data-active='multi-page'] .works-toggle__halo { transform: translateX(200%); }
+
+  @keyframes works-halo-pulse {
+    0%, 100% { opacity: 0.55; }
+    50%      { opacity: 1; }
+  }
+
+  /* Thumb (sliding indicator) */
+  .works-toggle__thumb {
+    position: absolute;
+    top: var(--toggle-pad);
+    left: var(--toggle-pad);
+    height: calc(100% - var(--toggle-pad) * 2);
+    width: calc((100% - var(--toggle-pad) * 2) / var(--toggle-options));
+    border-radius: 9999px;
+    background:
+      linear-gradient(
+        135deg,
+        var(--color-accent) 0%,
+        color-mix(in srgb, var(--color-accent) 75%, var(--color-text)) 100%
+      );
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, #fff 30%, transparent),
+      inset 0 -1px 0 color-mix(in srgb, #000 25%, transparent),
+      0 2px 6px color-mix(in srgb, var(--color-accent) 35%, transparent),
+      0 12px 32px -6px color-mix(in srgb, var(--color-accent) 55%, transparent);
+    transition:
+      transform 0.7s var(--toggle-spring),
+      box-shadow 0.5s var(--toggle-glide);
+    z-index: 1;
+    will-change: transform;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .works-toggle[data-active='one-pager']  .works-toggle__thumb { transform: translateX(100%); }
+  .works-toggle[data-active='multi-page'] .works-toggle__thumb { transform: translateX(200%); }
+
+  /* Squash beim Wechsel */
+  .works-toggle[data-animating='true'] .works-toggle__thumb {
+    animation: works-thumb-squash 0.7s var(--toggle-spring);
+  }
+  @keyframes works-thumb-squash {
+    0%   { scale: 1 1; }
+    35%  { scale: 1.08 0.86; }
+    70%  { scale: 0.96 1.04; }
+    100% { scale: 1 1; }
+  }
+
+  /* Shine-Sweep über den Thumb */
+  .works-toggle__thumb-shine {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      110deg,
+      transparent 30%,
+      color-mix(in srgb, #fff 45%, transparent) 50%,
+      transparent 70%
+    );
+    transform: translateX(-110%);
+    pointer-events: none;
+  }
+  .works-toggle[data-animating='true'] .works-toggle__thumb-shine {
+    animation: works-shine 0.8s ease-out;
+  }
+  @keyframes works-shine {
+    0%   { transform: translateX(-110%); }
+    100% { transform: translateX(110%); }
+  }
+
+  /* Hover-Lean: Thumb neigt sich Richtung gehoverter inaktiver Option */
+  .works-toggle:has(.works-toggle__option:not(.is-active):hover) .works-toggle__thumb {
+    transform: translateX(2%);
+  }
+  .works-toggle[data-active='one-pager']:has(.works-toggle__option[data-filter='all']:hover) .works-toggle__thumb {
+    transform: translateX(98%);
+  }
+  .works-toggle[data-active='one-pager']:has(.works-toggle__option[data-filter='multi-page']:hover) .works-toggle__thumb {
+    transform: translateX(102%);
+  }
+  .works-toggle[data-active='multi-page']:has(.works-toggle__option:not(.is-active):hover) .works-toggle__thumb {
+    transform: translateX(198%);
+  }
+
+  /* Options */
+  .works-toggle__option {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: clamp(0.6rem, 1vw, 0.8rem) clamp(0.75rem, 1.5vw, 1.1rem);
+    background: none;
+    border: none;
+    font-family: var(--font-mono);
+    color: color-mix(in srgb, var(--color-text) 60%, transparent);
+    cursor: none;
+    border-radius: 9999px;
+    transition:
+      color 0.4s var(--toggle-glide),
+      transform 0.5s var(--toggle-spring);
+    -webkit-tap-highlight-color: transparent;
+    text-align: center;
+    line-height: 1.2;
+    overflow: hidden;
+  }
+
+  .works-toggle__option:hover { color: var(--color-text); }
+  .works-toggle__option.is-active { color: var(--color-bg); }
+
+  .works-toggle__option:not(.is-active):hover { transform: scale(1.03); }
+
+  .works-toggle__option:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+  }
+
+  /* Indicator-Dot */
+  .works-toggle__option-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+    opacity: 0.35;
+    transform: scale(0.7);
+    transition:
+      opacity 0.45s var(--toggle-glide),
+      transform 0.55s var(--toggle-spring),
+      box-shadow 0.45s var(--toggle-glide);
+  }
+
+  .works-toggle__option.is-active .works-toggle__option-dot {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--color-bg) 25%, transparent),
+      0 0 12px color-mix(in srgb, #fff 60%, transparent);
+    animation: works-dot-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes works-dot-pulse {
+    0%, 100% {
+      box-shadow:
+        0 0 0 3px color-mix(in srgb, var(--color-bg) 25%, transparent),
+        0 0 8px color-mix(in srgb, #fff 50%, transparent);
+    }
+    50% {
+      box-shadow:
+        0 0 0 4px color-mix(in srgb, var(--color-bg) 35%, transparent),
+        0 0 18px color-mix(in srgb, #fff 80%, transparent);
+    }
+  }
+
+  .works-toggle__option-stack {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+    line-height: 1;
+    text-align: left;
+  }
+
+  .works-toggle__option-label {
+    font-family: var(--font-display);
+    font-size: clamp(0.85rem, 1vw, 1rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-transform: none;
+    transition:
+      letter-spacing 0.6s var(--toggle-glide),
+      transform 0.5s var(--toggle-spring);
+  }
+
+  .works-toggle__option-count {
+    font-family: var(--font-mono);
+    font-size: clamp(0.58rem, 0.65vw, 0.65rem);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    opacity: 0.7;
+    transition:
+      opacity 0.45s var(--toggle-glide),
+      letter-spacing 0.6s var(--toggle-glide);
+  }
+
+  .works-toggle__option.is-active .works-toggle__option-label {
+    letter-spacing: 0;
+  }
+  .works-toggle__option.is-active .works-toggle__option-count {
+    opacity: 0.9;
+    letter-spacing: 0.2em;
+  }
+
+  @media (max-width: 640px) {
+    .works-toggle__option { gap: 0.4rem; padding-inline: 0.5rem; }
+    .works-toggle__option-count { font-size: 0.55rem; letter-spacing: 0.12em; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .works-toggle__thumb,
+    .works-toggle__halo,
+    .works-toggle__option,
+    .works-toggle__option-dot,
+    .works-toggle__option-label,
+    .works-toggle__option-count {
+      transition: none;
+      animation: none !important;
+    }
+    .works-toggle__thumb-shine { display: none; }
+  }
+
+  /* ── Grid ───────────────────────────────────────────────────────────── */
+  .works__grid {
+    padding-inline: var(--container-pad);
+    padding-bottom: clamp(4rem, 8vw, 7rem);
+  }
+
+  .works__grid :global(.works__grid-inner) {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 2.5vw, 2.25rem);
+  }
+
+  @media (min-width: 720px) {
+    .works__grid :global(.works__grid-inner) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .works__grid :global(.works__grid-inner) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* ── Work-Card ─────────────────────────────────────────────────────── */
+  .work-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: var(--color-text);
+    background: color-mix(in srgb, var(--color-text) 4%, var(--color-bg));
+    border: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    cursor: none;
+    transition:
+      transform 0.5s var(--ease-out-expo),
+      border-color 0.4s ease,
+      box-shadow 0.5s var(--ease-out-expo);
+  }
+
+  /* Live-Karten (anklickbar) reagieren stärker */
+  a.work-card:hover {
+    transform: translateY(-6px);
+    border-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+    box-shadow: 0 28px 60px -28px color-mix(in srgb, var(--color-accent) 40%, transparent);
+  }
+
+  /* Soon-Karten haben dezent reduzierten Eindruck */
+  .work-card--soon {
+    opacity: 0.92;
+  }
+
+  .work-card.work-card--soon:hover {
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+
+  /* Filter: ausgeblendete Karten */
+  .work-card.is-hidden {
+    display: none;
+  }
+
+  /* ── Stage (oberer Visual-Bereich) ──────────────────────────────── */
+  .work-card__stage {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    isolation: isolate;
+    color: var(--stage-text, var(--color-text));
+  }
+
+  .work-card__stage-bg {
+    position: absolute;
+    inset: 0;
+    background: var(--stage-bg, var(--color-surface));
+    z-index: -2;
+  }
+
+  .work-card__stage-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--stage-overlay, transparent);
+    opacity: var(--stage-overlay-opacity, 0.5);
+  }
+
+  .work-card__stage-hatch {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      135deg,
+      transparent 0,
+      transparent 14px,
+      color-mix(in srgb, currentColor 12%, transparent) 14px,
+      color-mix(in srgb, currentColor 12%, transparent) 15px
+    );
+    opacity: 0.5;
+  }
+
+  .work-card__stage-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .work-card__package {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.4rem 0.7rem;
+    background: color-mix(in srgb, currentColor 10%, transparent);
+    border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+    border-radius: var(--radius-sm);
+  }
+
+  .work-card__package-name {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .work-card__package-format {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    opacity: 0.7;
+  }
+
+  .work-card__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 9999px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    background: color-mix(in srgb, currentColor 8%, transparent);
+    border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  }
+
+  .work-card__status-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .work-card__status--live .work-card__status-dot {
+    background: #2ecc71;
+    box-shadow: 0 0 0 3px color-mix(in srgb, #2ecc71 25%, transparent);
+    animation: works-status-pulse 2.4s ease-in-out infinite;
+  }
+
+  .work-card__status--soon {
+    opacity: 0.7;
+  }
+
+  @keyframes works-status-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(0.85); }
+  }
+
+  .work-card__headline {
+    font-family: var(--stage-display, var(--font-display));
+    font-style: var(--stage-italic, italic);
+    font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    font-weight: 500;
+    margin: 0;
+    align-self: flex-start;
+    max-width: 14ch;
+  }
+
+  /* ── Body (Info-Bereich unten) ─────────────────────────────────── */
+  .work-card__body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex: 1;
+  }
+
+  .work-card__head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .work-card__name {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2vw, 1.75rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .work-card__cat {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-muted);
+  }
+
+  .work-card__blurb {
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+    flex: 1;
+  }
+
+  .work-card__foot {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+  }
+
+  .work-card__price-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .work-card__price-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-muted);
+  }
+
+  .work-card__price-value {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  .work-card__price-delivery {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    margin-top: 0.2rem;
+  }
+
+  .work-card__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-accent);
+    transition: gap 0.4s var(--ease-out-expo);
+  }
+
+  .work-card--soon .work-card__cta {
+    color: var(--color-muted);
+  }
+
+  a.work-card:hover .work-card__cta {
+    gap: 0.7rem;
+  }
+
+  /* ── Theme-Tokens pro Demo (treiben --stage-bg / --stage-text / --stage-overlay) ── */
+  .work-card--cafe-starter {
+    --stage-bg: #F2EBDD;
+    --stage-text: #6B1F25;
+    --stage-display: 'Fraunces', ui-serif, Georgia, serif;
+    --stage-italic: italic;
+    --stage-overlay:
+      radial-gradient(circle at 80% 20%, #C2683A 0%, transparent 55%),
+      radial-gradient(circle at 20% 80%, #6B1F25 0%, transparent 55%);
+    --stage-overlay-opacity: 0.18;
+  }
+
+  .work-card--pizzeria {
+    --stage-bg: #F8F2E8;
+    --stage-text: #A8261B;
+    --stage-italic: italic;
+    --stage-overlay:
+      radial-gradient(circle at 20% 80%, #C44536 0%, transparent 55%),
+      radial-gradient(circle at 90% 20%, #E8B547 0%, transparent 50%);
+    --stage-overlay-opacity: 0.22;
+  }
+
+  .work-card--elektro {
+    --stage-bg: #0E0E0C;
+    --stage-text: #FFD60A;
+    --stage-italic: normal;
+    --stage-display: 'Anton', 'Bebas Neue', 'Arial Narrow Bold', sans-serif;
+    --stage-overlay: repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 24px,
+      color-mix(in srgb, #FFD60A 8%, transparent) 24px,
+      color-mix(in srgb, #FFD60A 8%, transparent) 25px
+    );
+    --stage-overlay-opacity: 0.55;
+  }
+
+  .work-card--elektro .work-card__headline {
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .work-card--friseur {
+    --stage-bg: #F8F4ED;
+    --stage-text: #3A2438;
+    --stage-italic: italic;
+    --stage-overlay:
+      radial-gradient(circle at 80% 70%, #F4C5B5 0%, transparent 50%),
+      radial-gradient(circle at 10% 30%, #B5C4A8 0%, transparent 45%);
+    --stage-overlay-opacity: 0.45;
+  }
+
+  .work-card--handwerker {
+    --stage-bg: #EFEAE0;
+    --stage-text: #3A2C1F;
+    --stage-italic: normal;
+    --stage-overlay:
+      linear-gradient(135deg, transparent 30%, #C75D2F 130%),
+      linear-gradient(45deg, transparent 60%, #5A6E4F 200%);
+    --stage-overlay-opacity: 0.22;
+  }
+
+  .work-card--handwerker .work-card__headline {
+    font-weight: 600;
+  }
+
+  /* ── CTA-Banner unten ──────────────────────────────────────────── */
+  .works__cta {
+    padding-block: clamp(4rem, 8vw, 7rem);
+    padding-inline: var(--container-pad);
+    text-align: center;
+    border-top: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+    background: radial-gradient(
+      ellipse 60% 50% at 50% 100%,
+      color-mix(in srgb, var(--color-accent) 12%, transparent),
+      transparent 70%
+    );
+  }
+
+  .works__cta-inner {
+    max-width: 720px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .works__cta-eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-accent);
+  }
+
+  .works__cta-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+  }
+
+  .works__cta-sub {
+    font-size: var(--text-base);
+    color: color-mix(in srgb, var(--color-text) 70%, transparent);
+    max-width: 44ch;
+  }
+
+  .works__cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.75rem;
+    padding: 1.05rem 2.25rem;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border-radius: 9999px;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform 0.4s var(--ease-out-expo), box-shadow 0.5s var(--ease-out-expo);
+  }
+
+  .works__cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px -10px color-mix(in srgb, var(--color-accent) 50%, transparent);
+  }
+
+  /* ── Reduced-Motion ────────────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .work-card__status--live .work-card__status-dot {
+      animation: none;
+    }
+    a.work-card:hover {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+</style>
+
+<script>
+  function init() {
+    const toggle = document.querySelector<HTMLElement>('.works-toggle[data-toggle]');
+    const options = toggle
+      ? Array.from(toggle.querySelectorAll<HTMLButtonElement>('.works-toggle__option'))
+      : [];
+    const cards = document.querySelectorAll<HTMLElement>('.work-card');
+    if (!toggle || !options.length || !cards.length) return;
+
+    let animTimer: number | undefined;
+
+    const apply = (filter: string) => {
+      if (toggle.dataset.active === filter) return;
+      toggle.dataset.active = filter;
+
+      // One-shot Squash + Shine
+      toggle.dataset.animating = 'true';
+      window.clearTimeout(animTimer);
+      animTimer = window.setTimeout(() => {
+        delete toggle.dataset.animating;
+      }, 800);
+
+      // Aktiver Tab + ARIA
+      options.forEach((opt) => {
+        const isActive = opt.dataset.filter === filter;
+        opt.classList.toggle('is-active', isActive);
+        opt.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+
+      // Karten ein-/ausblenden
+      cards.forEach((card) => {
+        const matches = filter === 'all' || card.dataset.format === filter;
+        card.classList.toggle('is-hidden', !matches);
+      });
+    };
+
+    options.forEach((opt) => {
+      opt.addEventListener('click', () => {
+        if (opt.dataset.filter) apply(opt.dataset.filter);
+      });
+    });
+
+    // Tastatur-Navigation
+    toggle.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      e.preventDefault();
+      const idx = options.findIndex((o) => o.classList.contains('is-active'));
+      const next =
+        e.key === 'ArrowRight'
+          ? options[(idx + 1) % options.length]
+          : options[(idx - 1 + options.length) % options.length];
+      next.focus();
+      if (next.dataset.filter) apply(next.dataset.filter);
+    });
+  }
+
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

@@ -2,13 +2,14 @@
 import MagneticButton from '@components/shared/MagneticButton.astro';
 
 interface Props {
-  active?: 'index' | 'about' | 'kontakt' | 'impressum' | 'datenschutz' | 'faq';
+  active?: 'index' | 'about' | 'kontakt' | 'impressum' | 'datenschutz' | 'faq' | 'arbeiten';
 }
 
 const { active = 'index' }: Props = Astro.props;
 
 const navItems = [
-  { label: 'Arbeiten', href: '/#arbeiten', match: 'index' },
+  { label: 'Home', href: '/', match: 'index' },
+  { label: 'Arbeiten', href: '/arbeiten', match: 'arbeiten' },
   { label: 'Studio', href: '/about', match: 'about' },
   { label: 'FAQ', href: '/faq', match: 'faq' },
   { label: 'Kontakt', href: '/kontakt', match: 'kontakt' },
