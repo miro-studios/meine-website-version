@@ -1,0 +1,670 @@
+---
+/**
+ * Café Nordlicht — Section 4: Kontakt / Reservierung + integrierter Footer
+ *
+ * Großzügiger Whitespace. Editorial split:
+ *  - links:  Mega-Headline + Kontakt-Block (Adresse, Tel, Mail, Öffnungszeiten)
+ *  - rechts: Reservierungsformular mit Validierung, Honeypot, Inline-Success
+ *
+ * Pflicht-Effekte:
+ *  - Reveal-on-Scroll mit Stagger
+ *  - Form-Validierung clientseitig (HTML5 + custom check)
+ *  - Inline-Success-State (kein Reload)
+ *  - Honeypot-Feld als Spam-Schutz
+ *
+ * Hinweis: Form-Endpoint ist als Demo-Stub konfiguriert
+ *  (logged in Console + zeigt Success-Animation).
+ *  Für echte Kunden -> Formspree-URL oder Cloudflare-Worker eintragen.
+ */
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+import SplitText from '@components/shared/SplitText.astro';
+---
+
+<section class="cs-contact" id="kontakt" data-cs-contact>
+  <div class="cs-contact__inner">
+    <!-- ── Linke Spalte: Headline + Kontakt-Info ───────────────────────── -->
+    <div class="cs-contact__col-left">
+      <p class="cs-contact__eyebrow"><span aria-hidden="true">04 ·</span> Tisch reservieren</p>
+
+      <h2 class="cs-contact__headline">
+        <span class="cs-contact__headline-line">
+          <SplitText by="words" stagger={0.06}>Schreib uns,</SplitText>
+        </span>
+        <span class="cs-contact__headline-line cs-contact__headline-line--alt">
+          <SplitText by="words" stagger={0.06} delay={0.15}>oder komm vorbei.</SplitText>
+        </span>
+      </h2>
+
+      <RevealOnScroll y={28} duration={0.85} stagger={0.1} class="cs-contact__info">
+        <a href="https://maps.google.com/?q=Knapper+Weg+12+Lüdenscheid" class="cs-contact__info-block" target="_blank" rel="noopener">
+          <span class="cs-contact__info-label">Adresse</span>
+          <span class="cs-contact__info-value">
+            Knapper Weg 12<br />
+            58507 Lüdenscheid
+          </span>
+          <span class="cs-contact__info-link">In Karte öffnen ↗</span>
+        </a>
+
+        <a href="tel:+4923512345678" class="cs-contact__info-block">
+          <span class="cs-contact__info-label">Telefon</span>
+          <span class="cs-contact__info-value">02351 / 234 56 78</span>
+          <span class="cs-contact__info-link">Jetzt anrufen ↗</span>
+        </a>
+
+        <a href="mailto:hallo@cafe-nordlicht.de" class="cs-contact__info-block">
+          <span class="cs-contact__info-label">E-Mail</span>
+          <span class="cs-contact__info-value">hallo@cafe-nordlicht.de</span>
+          <span class="cs-contact__info-link">Mail schreiben ↗</span>
+        </a>
+
+        <div class="cs-contact__info-block cs-contact__info-block--static">
+          <span class="cs-contact__info-label">Geöffnet</span>
+          <ul class="cs-contact__hours" role="list">
+            <li><span>Mi – Fr</span><span>08:00 – 17:00</span></li>
+            <li><span>Sa</span><span>08:00 – 16:00</span></li>
+            <li><span>So</span><span>09:00 – 14:00</span></li>
+            <li class="cs-contact__hours-closed"><span>Mo – Di</span><span>Ruhetag</span></li>
+          </ul>
+        </div>
+      </RevealOnScroll>
+    </div>
+
+    <!-- ── Rechte Spalte: Form ─────────────────────────────────────────── -->
+    <div class="cs-contact__col-right">
+      <form class="cs-form" data-cs-form novalidate>
+        <p class="cs-form__title">Reservierungsanfrage</p>
+
+        <!-- Honeypot: für Bots sichtbar, für Menschen nicht -->
+        <div class="cs-form__honeypot" aria-hidden="true">
+          <label for="cs-website">Webseite (nicht ausfüllen)</label>
+          <input id="cs-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="cs-form__row">
+          <label class="cs-form__field">
+            <span class="cs-form__label">Name *</span>
+            <input type="text" name="name" required minlength="2" autocomplete="name" />
+            <span class="cs-form__error" data-error-for="name"></span>
+          </label>
+
+          <label class="cs-form__field">
+            <span class="cs-form__label">E-Mail *</span>
+            <input type="email" name="email" required autocomplete="email" />
+            <span class="cs-form__error" data-error-for="email"></span>
+          </label>
+        </div>
+
+        <div class="cs-form__row">
+          <label class="cs-form__field">
+            <span class="cs-form__label">Datum</span>
+            <input type="date" name="date" />
+          </label>
+
+          <label class="cs-form__field">
+            <span class="cs-form__label">Personen</span>
+            <select name="people">
+              <option value="2">2 Personen</option>
+              <option value="3">3 Personen</option>
+              <option value="4">4 Personen</option>
+              <option value="5">5 Personen</option>
+              <option value="6+">6 oder mehr</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="cs-form__field cs-form__field--full">
+          <span class="cs-form__label">Nachricht *</span>
+          <textarea
+            name="message"
+            rows="4"
+            required
+            minlength="5"
+            placeholder="Wunschuhrzeit, Allergien, Geburtstag — alles, was wir wissen sollten."
+          ></textarea>
+          <span class="cs-form__error" data-error-for="message"></span>
+        </label>
+
+        <div class="cs-form__footer">
+          <p class="cs-form__hint">
+            Wir antworten in der Regel innerhalb von 24 Stunden.
+            <a href="/demos/cafe-starter/datenschutz">Datenschutz</a>.
+          </p>
+
+          <button type="submit" class="cs-form__submit" data-magnetic data-magnetic-strength="0.25">
+            <span class="cs-form__submit-label">Anfrage senden</span>
+            <span class="cs-form__submit-arrow" aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <!-- Inline-Success — keine Page-Navigation -->
+        <div class="cs-form__success" data-cs-form-success aria-live="polite">
+          <span class="cs-form__success-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 17l6 6L27 9" />
+            </svg>
+          </span>
+          <p class="cs-form__success-title">Danke — Anfrage ist da.</p>
+          <p class="cs-form__success-text">
+            Wir bestätigen deine Reservierung per Mail, sobald wir den Tisch
+            für dich blockiert haben.
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── Footer (kompakt) ─────────────────────────────────────────────── -->
+  <footer class="cs-footer">
+    <div class="cs-footer__inner">
+      <div class="cs-footer__brand">
+        <span class="cs-footer__brand-mark" aria-hidden="true">◉</span>
+        <span class="cs-footer__brand-name">Café Nordlicht</span>
+      </div>
+
+      <nav class="cs-footer__nav" aria-label="Footer">
+        <a href="/demos/cafe-starter/impressum">Impressum</a>
+        <a href="/demos/cafe-starter/datenschutz">Datenschutz</a>
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+      </nav>
+
+      <p class="cs-footer__copy">
+        © {new Date().getFullYear()} Café Nordlicht — gebaut von
+        <a href="/" class="cs-footer__credit">miro-studios</a>
+      </p>
+    </div>
+  </footer>
+</section>
+
+<style>
+  .cs-contact {
+    background: var(--color-bg);
+    color: var(--color-text);
+    padding-block: clamp(5rem, 10vw, 9rem) 0;
+    padding-inline: var(--cs-gutter);
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .cs-contact__inner {
+    max-width: var(--cs-container);
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(3rem, 6vw, 5rem);
+    padding-bottom: clamp(4rem, 8vw, 7rem);
+  }
+
+  @media (min-width: 960px) {
+    .cs-contact__inner {
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: clamp(3rem, 7vw, 6rem);
+    }
+  }
+
+  /* ── Linke Spalte ──────────────────────────────────────────────────────── */
+  .cs-contact__col-left {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .cs-contact__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-primary);
+  }
+
+  .cs-contact__headline {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6.5vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+
+  .cs-contact__headline-line {
+    display: block;
+    overflow: hidden;
+  }
+
+  .cs-contact__headline-line--alt {
+    color: var(--color-primary);
+    font-style: italic;
+    padding-left: clamp(0.5rem, 3vw, 2.5rem);
+  }
+
+  .cs-contact__info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem 1.5rem;
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 520px) {
+    .cs-contact__info {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .cs-contact__info-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1.25rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    transition: border-color 0.3s ease, transform 0.4s var(--ease-out-expo), background-color 0.3s ease;
+  }
+
+  .cs-contact__info-block:not(.cs-contact__info-block--static):hover {
+    border-color: var(--color-primary);
+    transform: translateY(-3px);
+  }
+
+  .cs-contact__info-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--color-muted);
+  }
+
+  .cs-contact__info-value {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    line-height: 1.4;
+    color: var(--color-text);
+  }
+
+  .cs-contact__info-link {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-primary);
+    margin-top: 0.25rem;
+  }
+
+  .cs-contact__hours {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .cs-contact__hours li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    color: var(--color-text);
+  }
+
+  .cs-contact__hours-closed {
+    color: var(--color-muted);
+  }
+
+  /* ── Form ─────────────────────────────────────────────────────────────── */
+  .cs-form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    background: var(--color-surface);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-lg);
+  }
+
+  .cs-form__title {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+  }
+
+  .cs-form__honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .cs-form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  @media (max-width: 520px) {
+    .cs-form__row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .cs-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .cs-form__label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--color-muted);
+  }
+
+  .cs-form input,
+  .cs-form select,
+  .cs-form textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    color: var(--color-text);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    appearance: none;
+  }
+
+  .cs-form input:focus,
+  .cs-form select:focus,
+  .cs-form textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    background: color-mix(in srgb, var(--color-bg) 80%, var(--color-surface));
+  }
+
+  .cs-form textarea {
+    resize: vertical;
+    min-height: 110px;
+    font-family: var(--font-body);
+  }
+
+  .cs-form__error {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-primary);
+    min-height: 1em;
+    letter-spacing: 0.04em;
+  }
+
+  .cs-form__field.is-error input,
+  .cs-form__field.is-error textarea {
+    border-color: var(--color-primary);
+    background: color-mix(in srgb, var(--color-primary) 5%, var(--color-bg));
+  }
+
+  .cs-form__footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+  }
+
+  .cs-form__hint {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+    max-width: 36ch;
+  }
+
+  .cs-form__hint a {
+    color: var(--color-primary);
+    border-bottom: 1px solid currentColor;
+  }
+
+  .cs-form__submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 1.75rem;
+    background: var(--color-primary);
+    color: #fff;
+    border-radius: 9999px;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.4s ease, transform 0.3s ease;
+    will-change: transform;
+  }
+
+  .cs-form__submit:hover {
+    background: var(--color-text);
+    box-shadow: 0 16px 32px -10px color-mix(in srgb, var(--color-primary) 35%, transparent);
+  }
+
+  .cs-form__submit-arrow {
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+
+  .cs-form__submit:hover .cs-form__submit-arrow {
+    transform: translateX(4px);
+  }
+
+  .cs-form__submit:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+
+  /* ── Success-State ────────────────────────────────────────────────────── */
+  .cs-form__success {
+    position: absolute;
+    inset: 0;
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s var(--ease-out-expo), visibility 0.5s;
+  }
+
+  .cs-form.is-success .cs-form__success {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .cs-form__success-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #fff;
+    margin-bottom: 1.25rem;
+    transform: scale(0);
+    transition: transform 0.6s var(--ease-spring) 0.1s;
+  }
+
+  .cs-form.is-success .cs-form__success-mark {
+    transform: scale(1);
+  }
+
+  .cs-form__success-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    line-height: 1.1;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
+  }
+
+  .cs-form__success-text {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    color: var(--color-muted);
+    max-width: 36ch;
+    line-height: 1.5;
+  }
+
+  /* ── Footer ───────────────────────────────────────────────────────────── */
+  .cs-footer {
+    border-top: 1px solid var(--color-rule);
+    padding-block: clamp(2rem, 4vw, 3rem) clamp(2rem, 3vw, 2.5rem);
+  }
+
+  .cs-footer__inner {
+    max-width: var(--cs-container);
+    margin-inline: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+  }
+
+  .cs-footer__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    color: var(--color-text);
+  }
+
+  .cs-footer__brand-mark {
+    color: var(--color-primary);
+  }
+
+  .cs-footer__nav {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .cs-footer__nav a {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-muted);
+    transition: color 0.3s ease;
+  }
+
+  .cs-footer__nav a:hover {
+    color: var(--color-primary);
+  }
+
+  .cs-footer__copy {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+    flex-basis: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .cs-footer__credit {
+    color: var(--color-primary);
+    border-bottom: 1px solid currentColor;
+  }
+</style>
+
+<script>
+  type FieldName = 'name' | 'email' | 'message';
+
+  const ERR: Record<FieldName, { required: string; invalid: string }> = {
+    name:    { required: 'Bitte deinen Namen.',         invalid: 'Mindestens zwei Zeichen.' },
+    email:   { required: 'Bitte deine E-Mail-Adresse.', invalid: 'Das sieht nicht nach einer E-Mail aus.' },
+    message: { required: 'Was sollen wir wissen?',      invalid: 'Mindestens fünf Zeichen.' },
+  };
+
+  function validateField(input: HTMLInputElement | HTMLTextAreaElement, name: FieldName): string {
+    const v = input.value.trim();
+    if (!v) return ERR[name].required;
+    if (name === 'email') {
+      const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+      if (!ok) return ERR.email.invalid;
+    } else if (v.length < (input.minLength || 2)) {
+      return ERR[name].invalid;
+    }
+    return '';
+  }
+
+  function setError(form: HTMLFormElement, name: FieldName, msg: string) {
+    const errEl = form.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+    const field = form.querySelector<HTMLElement>(`[name="${name}"]`)?.closest('.cs-form__field');
+    if (errEl) errEl.textContent = msg;
+    if (field) field.classList.toggle('is-error', !!msg);
+  }
+
+  function init() {
+    const form = document.querySelector<HTMLFormElement>('[data-cs-form]');
+    if (!form) return;
+
+    // Live-Validierung beim Verlassen
+    (['name', 'email', 'message'] as FieldName[]).forEach((name) => {
+      const input = form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[name="${name}"]`);
+      if (!input) return;
+      input.addEventListener('blur', () => setError(form, name, validateField(input, name)));
+      input.addEventListener('input', () => {
+        if (input.closest('.cs-form__field')?.classList.contains('is-error')) {
+          setError(form, name, validateField(input, name));
+        }
+      });
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Honeypot
+      const hp = (form.elements.namedItem('website') as HTMLInputElement | null)?.value;
+      if (hp) return; // schweigend abbrechen — Bot
+
+      // Validate alle Pflichtfelder
+      let hasError = false;
+      (['name', 'email', 'message'] as FieldName[]).forEach((name) => {
+        const input = form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[name="${name}"]`);
+        if (!input) return;
+        const msg = validateField(input, name);
+        setError(form, name, msg);
+        if (msg) hasError = true;
+      });
+      if (hasError) {
+        const firstError = form.querySelector<HTMLElement>('.cs-form__field.is-error input, .cs-form__field.is-error textarea');
+        firstError?.focus();
+        return;
+      }
+
+      const submit = form.querySelector<HTMLButtonElement>('.cs-form__submit');
+      if (submit) {
+        submit.disabled = true;
+        const label = submit.querySelector('.cs-form__submit-label');
+        if (label) label.textContent = 'Wird gesendet…';
+      }
+
+      // Demo-Submit: simuliert Netzwerk-Roundtrip.
+      // In Produktion: fetch zu Formspree / Cloudflare Worker.
+      const data = Object.fromEntries(new FormData(form).entries());
+      // eslint-disable-next-line no-console
+      console.info('[Café Nordlicht — Reservierungsanfrage]', data);
+
+      await new Promise((r) => setTimeout(r, 700));
+      form.classList.add('is-success');
+    });
+  }
+
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

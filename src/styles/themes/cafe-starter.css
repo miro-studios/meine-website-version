@@ -1,0 +1,32 @@
+/* ==========================================================================
+   Theme: Café Nordlicht — Demo für das Starter-Onepager-Paket
+   --------------------------------------------------------------------------
+   Specialty Coffee + Frühstück, Lüdenscheid.
+   Aesthetic: editorial-warm, papierhaft, mit handwerklicher Note.
+   Cream-Hintergrund, tiefes Burgund als Primär, Kupfer als Akzent.
+   ========================================================================== */
+
+[data-theme="cafe-starter"] {
+  /* -- Brand ---------------------------------------------------------------- */
+  --color-bg: #F2EBDD;            /* warmer Papier-Cream */
+  --color-surface: #ECE3D0;       /* leicht abgesetzte Surface */
+  --color-text: #1F1814;          /* tiefer Espresso-Anthrazit */
+  --color-muted: #6f5f52;         /* Karamell-Muted */
+  --color-primary: #6B1F25;       /* tiefes Burgund — Markenfarbe 1 */
+  --color-secondary: #2F3A2A;     /* dunkles Tannengrün — Markenfarbe 2 */
+  --color-accent: #C2683A;        /* Kupfer / gerösteter Bohnenton — Akzent */
+
+  /* -- Hairline / Divider --------------------------------------------------- */
+  --color-rule: color-mix(in srgb, var(--color-text) 14%, transparent);
+
+  /* -- Typo (verwendet die globalen, im BaseHead geladenen Fonts) ----------- */
+  /* Display: Fraunces (high-contrast Serif, perfekt editorial-warm)          */
+  /* Body:    Bricolage Grotesque (geometrisch, klar, freundlich)             */
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-body: "Bricolage Grotesque", system-ui, -apple-system, sans-serif;
+  --font-mono: "Bricolage Grotesque", ui-monospace, monospace;
+
+  /* -- Container — etwas schmaler als Studio-Default für editorial Lesefluss */
+  --cs-container: 1280px;
+  --cs-gutter: clamp(1.25rem, 4vw, 3rem);
+}

@@ -1,0 +1,107 @@
+---
+/**
+ * Café Nordlicht — Demo-Onepager
+ *
+ * Showcase für miro-studios "Starter"-Paket (€599 + €34,99/Monat).
+ * Genau 4 Sections: Hero → Über uns → Karte → Kontakt (mit Footer).
+ *
+ * Dieses Demo dient als "so könnte deine Website aussehen, wenn du das
+ * Paket holst" für Interessenten — kein realer Kunde.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/cafe-starter/Hero.astro';
+import About from '@components/cafe-starter/About.astro';
+import Menu from '@components/cafe-starter/Menu.astro';
+import Contact from '@components/cafe-starter/Contact.astro';
+
+const businessName = 'Café Nordlicht';
+const businessTag = 'Specialty Coffee, Frühstück & Sauerteig in Lüdenscheid';
+
+// JSON-LD: LocalBusiness Schema
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CafeOrCoffeeShop',
+  name: businessName,
+  description:
+    'Specialty Coffee, hausgebackenes Sauerteigbrot und ehrliches Frühstück mitten in Lüdenscheid. Eigene Röstung, regionale Zutaten, langsames Handwerk.',
+  url: 'https://studio.de/demos/cafe-starter/',
+  telephone: '+49 2351 234 56 78',
+  email: 'hallo@cafe-nordlicht.de',
+  image: 'https://studio.de/og-default.jpg',
+  priceRange: '€€',
+  servesCuisine: ['Specialty Coffee', 'Frühstück', 'Brunch', 'Backwaren'],
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Knapper Weg 12',
+    postalCode: '58507',
+    addressLocality: 'Lüdenscheid',
+    addressRegion: 'NRW',
+    addressCountry: 'DE',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 51.21978,
+    longitude: 7.62576,
+  },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Wednesday', 'Thursday', 'Friday'],
+      opens: '08:00',
+      closes: '17:00',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: 'Saturday',
+      opens: '08:00',
+      closes: '16:00',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: 'Sunday',
+      opens: '09:00',
+      closes: '14:00',
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title={`${businessName} — ${businessTag}`}
+  description="Café Nordlicht: Specialty Coffee, Sauerteig & Frühstück mitten in Lüdenscheid. Tisch reservieren, Karte ansehen, Hausröstung mit nach Hause nehmen."
+  theme="cafe-starter"
+  bodyClass="cs-page"
+>
+  <!-- JSON-LD LocalBusiness Schema (SEO) -->
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(jsonLd)}
+  />
+
+  <main>
+    <Hero />
+    <About />
+    <Menu />
+    <Contact />
+  </main>
+</BaseLayout>
+
+<style is:global>
+  /* Page-spezifische Globalstyles für die Cafe-Demo */
+  body.cs-page {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+  }
+
+  body.cs-page ::selection {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+  }
+
+  body.cs-page :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+  }
+</style>

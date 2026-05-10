@@ -1,0 +1,334 @@
+---
+/**
+ * Café Nordlicht — Section 3: Karte / Leistungen
+ *
+ * Editorial-Liste, asymmetrisches Grid (kein Standard-Card-Layout).
+ *  - 4 Items mit Index (01–04), Titel, 1 Satz, Preis-Label
+ *  - jedes Item hat Hover-State (Border + Translate + Akzent)
+ *  - dezentes Detail-SVG pro Item rechts
+ *
+ * Pflicht-Effekte:
+ *  - Stagger-Reveal beim In-View
+ *  - Hover-State auf jedem Item
+ */
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+
+interface MenuItem {
+  index: string;
+  title: string;
+  body: string;
+  meta: string;
+  glyph: 'cup' | 'loaf' | 'plate' | 'beans';
+}
+
+const items: MenuItem[] = [
+  {
+    index: '01',
+    title: 'Filter & Espresso',
+    body: 'Hausröstung in zwei Profilen. Die Lasertasse für morgens, der Honey-Process für die Pause.',
+    meta: 'Ab 3,40 €',
+    glyph: 'cup',
+  },
+  {
+    index: '02',
+    title: 'Frühstück & Brunch',
+    body: 'Sauerteig, Pochiertes, eingelegtes Gemüse. Mittwoch bis Sonntag, von acht bis halb zwölf.',
+    meta: '8,50 – 16,50 €',
+    glyph: 'plate',
+  },
+  {
+    index: '03',
+    title: 'Brot & Backwaren',
+    body: 'Roggen-Walnuss, Dinkelvollkorn, Cardamom-Schnecken. Vorbestellen wird empfohlen, nicht verlangt.',
+    meta: 'Ab 4,80 €',
+    glyph: 'loaf',
+  },
+  {
+    index: '04',
+    title: 'Bohnen für Zuhause',
+    body: 'Eigene Röstung im 250-g-Beutel. Wahlweise gemahlen für Filter, Aeropress, Espresso oder Mokka.',
+    meta: '12 € / 250 g',
+    glyph: 'beans',
+  },
+];
+---
+
+<section class="cs-menu" id="karte" data-cs-menu>
+  <header class="cs-menu__head">
+    <p class="cs-menu__eyebrow"><span aria-hidden="true">03 ·</span> Was es bei uns gibt</p>
+    <h2 class="cs-menu__headline">
+      Karte des Hauses, <span class="cs-menu__headline-italic">kurz gehalten.</span>
+    </h2>
+    <p class="cs-menu__intro">
+      Vier Dinge, die wir richtig gut können — und zwischen denen wir nicht
+      schwanken. Speisekarte am Tresen, Tagesgerichte auf der Tafel.
+    </p>
+  </header>
+
+  <RevealOnScroll y={48} duration={1} stagger={0.12} class="cs-menu__list">
+    {items.map((item) => (
+      <article class="cs-menu__item" data-glyph={item.glyph}>
+        <span class="cs-menu__item-index">{item.index}</span>
+
+        <div class="cs-menu__item-body">
+          <h3 class="cs-menu__item-title">{item.title}</h3>
+          <p class="cs-menu__item-text">{item.body}</p>
+        </div>
+
+        <div class="cs-menu__item-meta">
+          <span class="cs-menu__item-price">{item.meta}</span>
+          <span class="cs-menu__item-arrow" aria-hidden="true">↗</span>
+        </div>
+
+        <svg
+          class="cs-menu__item-glyph"
+          viewBox="0 0 80 80"
+          aria-hidden="true"
+          focusable="false"
+        >
+          {item.glyph === 'cup' && (
+            <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 28h44l-3 28c-1 8-7 12-19 12s-18-4-19-12L14 28Z" />
+              <path d="M58 36c8 0 12 6 12 12s-4 10-12 10" />
+              <path d="M22 14c0 6 4 6 4 12M34 14c0 6 4 6 4 12M46 14c0 6 4 6 4 12" />
+            </g>
+          )}
+          {item.glyph === 'loaf' && (
+            <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 50C10 32 24 22 40 22s30 10 30 28c0 6-4 10-10 10H20c-6 0-10-4-10-10Z" />
+              <path d="M22 36c4-2 12-3 18-3s14 1 18 3" />
+              <path d="M22 44c4-2 12-3 18-3s14 1 18 3" />
+            </g>
+          )}
+          {item.glyph === 'plate' && (
+            <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="40" cy="40" r="28" />
+              <circle cx="40" cy="40" r="20" />
+              <path d="M30 38c2-3 5-5 10-5s8 2 10 5" />
+              <circle cx="44" cy="44" r="2" fill="currentColor" />
+            </g>
+          )}
+          {item.glyph === 'beans' && (
+            <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <ellipse cx="30" cy="32" rx="14" ry="10" transform="rotate(-25 30 32)" />
+              <path d="M22 36c4-3 12-3 16 0" transform="rotate(-25 30 32)" />
+              <ellipse cx="50" cy="50" rx="14" ry="10" transform="rotate(20 50 50)" />
+              <path d="M42 54c4-3 12-3 16 0" transform="rotate(20 50 50)" />
+            </g>
+          )}
+        </svg>
+      </article>
+    ))}
+  </RevealOnScroll>
+
+  <p class="cs-menu__note">
+    Die vollständige Tageskarte hängt am Tresen — wir mögen Dinge, die man
+    anfassen kann.
+  </p>
+</section>
+
+<style>
+  .cs-menu {
+    background: var(--color-surface);
+    color: var(--color-text);
+    padding-block: clamp(5rem, 10vw, 9rem);
+    padding-inline: var(--cs-gutter);
+    border-top: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .cs-menu__head {
+    max-width: var(--cs-container);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .cs-menu__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-primary);
+  }
+
+  .cs-menu__headline {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6.5vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    max-width: 18ch;
+  }
+
+  .cs-menu__headline-italic {
+    font-style: italic;
+    color: var(--color-primary);
+  }
+
+  .cs-menu__intro {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+    color: var(--color-muted);
+    max-width: 48ch;
+    line-height: 1.5;
+  }
+
+  /* ── Liste ─────────────────────────────────────────────────────────────── */
+  .cs-menu__list {
+    max-width: var(--cs-container);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .cs-menu__item {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    padding-block: clamp(1.5rem, 3vw, 2.5rem);
+    padding-inline: clamp(0rem, 1vw, 1rem);
+    border-bottom: 1px solid var(--color-rule);
+    cursor: pointer;
+    transition:
+      background-color 0.45s var(--ease-out-expo),
+      color 0.4s var(--ease-out-expo),
+      padding-inline 0.5s var(--ease-out-expo);
+  }
+
+  .cs-menu__item:hover {
+    background-color: var(--color-bg);
+    color: var(--color-primary);
+    padding-inline: clamp(1rem, 2.5vw, 2rem);
+  }
+
+  /* asymmetrischer Versatz: jedes 2. Item hat etwas mehr linken Padding */
+  .cs-menu__item:nth-child(even) {
+    padding-left: clamp(0rem, 4vw, 4rem);
+  }
+
+  /* Index-Nummer */
+  .cs-menu__item-index {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    letter-spacing: 0.1em;
+    align-self: start;
+    padding-top: 0.4rem;
+    transition: color 0.4s var(--ease-out-expo);
+  }
+
+  .cs-menu__item:hover .cs-menu__item-index {
+    color: var(--color-accent);
+  }
+
+  /* Body */
+  .cs-menu__item-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    min-width: 0;
+  }
+
+  .cs-menu__item-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: inherit;
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+
+  .cs-menu__item:hover .cs-menu__item-title {
+    transform: translateX(8px);
+  }
+
+  .cs-menu__item-text {
+    font-size: var(--text-base);
+    line-height: 1.55;
+    color: color-mix(in srgb, currentColor 65%, transparent);
+    max-width: 56ch;
+  }
+
+  /* Meta (Preis + Arrow) */
+  .cs-menu__item-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    align-self: start;
+    padding-top: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: 0.04em;
+    color: var(--color-muted);
+    white-space: nowrap;
+    transition: color 0.4s var(--ease-out-expo);
+  }
+
+  .cs-menu__item:hover .cs-menu__item-meta {
+    color: var(--color-primary);
+  }
+
+  .cs-menu__item-arrow {
+    display: inline-block;
+    font-size: 1.1em;
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+
+  .cs-menu__item:hover .cs-menu__item-arrow {
+    transform: translate(4px, -4px);
+  }
+
+  /* Detail-Glyph: positioniert hinter der Item-Kopfzeile, sichtbar ab Tablet */
+  .cs-menu__item-glyph {
+    position: absolute;
+    right: clamp(1rem, 4vw, 4rem);
+    top: 50%;
+    transform: translate(40%, -50%);
+    width: clamp(80px, 12vw, 120px);
+    height: auto;
+    color: color-mix(in srgb, var(--color-primary) 22%, transparent);
+    pointer-events: none;
+    transition: transform 0.55s var(--ease-out-expo), color 0.4s ease;
+    display: none;
+  }
+
+  @media (min-width: 720px) {
+    .cs-menu__item-glyph {
+      display: block;
+    }
+  }
+
+  .cs-menu__item:hover .cs-menu__item-glyph {
+    color: var(--color-accent);
+    transform: translate(20%, -50%) rotate(-6deg);
+  }
+
+  /* Mobile-Layout: Index oben, Body, dann Meta */
+  @media (max-width: 600px) {
+    .cs-menu__item {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+    .cs-menu__item-meta {
+      padding-top: 0;
+    }
+  }
+
+  .cs-menu__note {
+    max-width: var(--cs-container);
+    margin-inline: auto;
+    margin-top: clamp(2rem, 4vw, 3rem);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+    color: var(--color-muted);
+    text-align: center;
+    max-width: 48ch;
+  }
+</style>

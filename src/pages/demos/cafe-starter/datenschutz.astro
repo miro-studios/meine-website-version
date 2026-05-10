@@ -1,0 +1,164 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Datenschutz — Café Nordlicht"
+  description="Datenschutzerklärung des Café Nordlicht — wie wir mit Ihren Daten umgehen."
+  theme="cafe-starter"
+  bodyClass="cs-page cs-legal"
+>
+  <main class="cs-legal__page">
+    <a href="/demos/cafe-starter/" class="cs-legal__back">← Zurück zur Startseite</a>
+
+    <h1 class="cs-legal__title">Datenschutz</h1>
+
+    <p class="cs-legal__lead">
+      Wir nehmen den Schutz Ihrer persönlichen Daten ernst und behandeln sie
+      vertraulich, nach den gesetzlichen Vorschriften und dieser
+      Datenschutzerklärung.
+    </p>
+
+    <section class="cs-legal__block">
+      <h2>Verantwortlich</h2>
+      <p>
+        Café Nordlicht GbR<br />
+        Knapper Weg 12, 58507 Lüdenscheid<br />
+        E-Mail: <a href="mailto:hallo@cafe-nordlicht.de">hallo@cafe-nordlicht.de</a>
+      </p>
+    </section>
+
+    <section class="cs-legal__block">
+      <h2>Reservierungsanfragen</h2>
+      <p>
+        Wenn Sie über das Reservierungsformular auf unserer Seite Kontakt
+        aufnehmen, erheben wir die von Ihnen angegebenen Daten (Name,
+        E-Mail-Adresse, gewünschtes Datum, Personenzahl, Nachricht).
+        Diese Daten verwenden wir ausschließlich zur Bearbeitung Ihrer
+        Reservierungsanfrage. Sie werden nach Abschluss der Anfrage gelöscht,
+        spätestens nach 6 Monaten.
+      </p>
+      <p>
+        Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragsanbahnung).
+      </p>
+    </section>
+
+    <section class="cs-legal__block">
+      <h2>Server-Logfiles</h2>
+      <p>
+        Beim Aufruf unserer Seite werden technisch notwendige Daten
+        (IP-Adresse, Browser-Typ, abgerufene Seite, Zeitpunkt) für maximal
+        7 Tage gespeichert. Eine Auswertung zu Marketingzwecken findet
+        nicht statt.
+      </p>
+    </section>
+
+    <section class="cs-legal__block">
+      <h2>Cookies</h2>
+      <p>
+        Diese Seite setzt keine Tracking-Cookies, keine Marketing-Cookies und
+        keine externen Analyse-Skripte ein.
+      </p>
+    </section>
+
+    <section class="cs-legal__block">
+      <h2>Externe Links</h2>
+      <p>
+        Beim Klick auf "In Karte öffnen" werden Sie zu Google Maps
+        weitergeleitet. Es gelten die Datenschutzbestimmungen von Google.
+      </p>
+    </section>
+
+    <section class="cs-legal__block">
+      <h2>Ihre Rechte</h2>
+      <p>
+        Sie haben das Recht auf Auskunft, Berichtigung, Löschung,
+        Einschränkung der Verarbeitung, Datenübertragbarkeit und
+        Widerspruch. Wenden Sie sich dazu formlos an die oben angegebene
+        E-Mail-Adresse.
+      </p>
+    </section>
+
+    <section class="cs-legal__block">
+      <h2>Hinweis zur Demo</h2>
+      <p>
+        Diese Seite ist eine Demo-Veröffentlichung des Studios miro-studios.
+        Café Nordlicht ist ein fiktives Beispielunternehmen — es findet
+        keinerlei reale Datenverarbeitung statt.
+      </p>
+    </section>
+  </main>
+</BaseLayout>
+
+<style is:global>
+  body.cs-legal {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+  }
+</style>
+
+<style>
+  .cs-legal__page {
+    max-width: 720px;
+    margin-inline: auto;
+    padding-inline: var(--cs-gutter);
+    padding-block: clamp(3rem, 8vw, 6rem);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .cs-legal__back {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--color-primary);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
+    align-self: flex-start;
+  }
+
+  .cs-legal__back:hover {
+    border-bottom-color: currentColor;
+  }
+
+  .cs-legal__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--color-text);
+  }
+
+  .cs-legal__lead {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+    color: var(--color-muted);
+    max-width: 56ch;
+    line-height: 1.5;
+  }
+
+  .cs-legal__block h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    margin-bottom: 0.75rem;
+    color: var(--color-primary);
+  }
+
+  .cs-legal__block p {
+    font-size: var(--text-base);
+    line-height: 1.7;
+    color: color-mix(in srgb, var(--color-text) 85%, transparent);
+  }
+
+  .cs-legal__block p + p {
+    margin-top: 0.75rem;
+  }
+
+  .cs-legal__block a {
+    color: var(--color-primary);
+    border-bottom: 1px solid currentColor;
+  }
+</style>
