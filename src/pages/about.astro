@@ -31,8 +31,8 @@ const principles = [
 ---
 
 <PortfolioLayout
-  title="Studio — Über uns | Webdev Studio Lüdenscheid"
-  description="Zweiköpfiges Webdesign-Studio aus Lüdenscheid. Editorial-Webdesign mit Awwwards-Qualität für lokale Geschäfte in NRW."
+  title="Studio — David Rost | miro-studios Lüdenscheid"
+  description="David Rost, 19 — Webdesigner & Developer aus Kierspe, NRW. Moderne Websites mit Fokus auf Design, Performance und professionelle Umsetzung. Alles aus einer Hand."
   active="about"
 >
   <main>
@@ -40,7 +40,7 @@ const principles = [
     <section class="about-hero" aria-labelledby="about-hero-title">
       <span class="about-hero__eyebrow">
         <span class="dash" aria-hidden="true"></span>
-        Studio
+        Studio · David Rost
       </span>
 
       <SplitText
@@ -50,7 +50,7 @@ const principles = [
         class="about-hero__headline"
         id="about-hero-title"
       >
-        Klein. Direkt.
+        19 Jahre alt.
       </SplitText>
       <SplitText
         as="p"
@@ -59,17 +59,44 @@ const principles = [
         delay={0.2}
         class="about-hero__headline about-hero__headline--accent"
       >
-        Eigensinnig.
+        Vollgas.
       </SplitText>
 
       <p class="about-hero__copy">
-        miro-studios ist ein Solo-Studio aus Lüdenscheid. Ich baue Websites
-        für lokale Geschäfte mit dem gleichen Anspruch, den große Studios
-        in Berlin oder Amsterdam an Konzern-Kunden anlegen.
+        Ich bin David Rost — Webdesigner und Developer aus Kierspe, NRW.
+        Seit über 5 Jahren entwickle ich moderne Websites: mit Fokus auf
+        sauberes Design, echte Performance und professionelle Umsetzung.
+        Alles aus einer Hand, von Anfang bis Ende.
       </p>
     </section>
 
-    <!-- Team Cards -->
+    <!-- Fakten-Streifen -->
+    <div class="facts-strip">
+      <dl class="facts-strip__inner">
+        <div class="facts-strip__item">
+          <dt>Alter</dt>
+          <dd>19 Jahre</dd>
+        </div>
+        <div class="facts-strip__item">
+          <dt>Standort</dt>
+          <dd>Kierspe · NRW</dd>
+        </div>
+        <div class="facts-strip__item">
+          <dt>Erfahrung</dt>
+          <dd>5+ Jahre</dd>
+        </div>
+        <div class="facts-strip__item">
+          <dt>Ausbildung</dt>
+          <dd>ITA · Fachabitur</dd>
+        </div>
+        <div class="facts-strip__item">
+          <dt>Nächstes Ziel</dt>
+          <dd>Informatik-Studium</dd>
+        </div>
+      </dl>
+    </div>
+
+    <!-- Person Card -->
     <About />
 
     <!-- Prinzipien -->
@@ -78,7 +105,7 @@ const principles = [
         <header class="principles__header">
           <span class="principles__eyebrow">
             <span class="dash" aria-hidden="true"></span>
-            Wie wir denken / 04 Prinzipien
+            Wie ich denke / 04 Prinzipien
           </span>
           <SplitText
             as="h2"
@@ -88,7 +115,7 @@ const principles = [
             class="principles__title"
             id="principles-title"
           >
-            Was uns wichtig ist.
+            Was mir wichtig ist.
           </SplitText>
         </header>
 
@@ -116,7 +143,7 @@ const principles = [
           class="about-cta__title"
           id="about-cta-title"
         >
-          Lust, mit uns zu arbeiten?
+          Lust, mit mir zu arbeiten?
         </SplitText>
         <div class="about-cta__actions">
           <MagneticButton href="/kontakt" strength={0.35}>
@@ -299,5 +326,45 @@ const principles = [
     flex-wrap: wrap;
     gap: 0.75rem;
     justify-content: center;
+  }
+
+  /* Fakten-Streifen */
+  .facts-strip {
+    padding-block: clamp(2rem, 4vw, 3rem);
+    padding-inline: var(--container-pad);
+    border-top: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+  }
+
+  .facts-strip__inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: flex-start;
+  }
+
+  .facts-strip__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .facts-strip__item dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-muted);
+  }
+
+  .facts-strip__item dd {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    margin: 0;
   }
 </style>
