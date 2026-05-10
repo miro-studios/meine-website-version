@@ -53,11 +53,43 @@ const navItems = [
       data-menu-toggle
       aria-label="Menü öffnen"
       aria-expanded="false"
+      aria-controls="mobile-menu"
       type="button"
     >
       <span></span>
       <span></span>
     </button>
+  </div>
+
+  <!-- ── Mobile Menu Overlay ───────────────────────────────────────── -->
+  <div
+    id="mobile-menu"
+    class="mobile-menu"
+    data-mobile-menu
+    aria-hidden="true"
+    aria-label="Mobile Navigation"
+  >
+    <nav class="mobile-menu__nav">
+      <ul>
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={['mobile-menu__link', { 'is-active': item.match === active }]}
+              data-mobile-link
+            >
+              {item.label}
+              <span class="mobile-menu__arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <a href="/kontakt" class="mobile-menu__cta" data-mobile-link>
+      Anfrage starten
+      <span aria-hidden="true">↗</span>
+    </a>
   </div>
 </header>
 
@@ -97,6 +129,9 @@ const navItems = [
     display: inline-flex;
     align-items: baseline;
     gap: 0.5rem;
+    /* Tap-Target ≥ 44px für Touch (negative margin hält Layout stabil) */
+    padding-block: 0.6rem;
+    margin-block: -0.6rem;
     font-family: var(--font-display);
     font-size: var(--text-xl);
     line-height: 1;
@@ -192,8 +227,17 @@ const navItems = [
   .site-header__menu-toggle {
     display: none;
     flex-direction: column;
+    justify-content: center;
     gap: 6px;
+    /* 44x44 Tap-Area garantiert */
+    width: 44px;
+    height: 44px;
     padding: 0.75rem;
+    margin-right: -0.5rem;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    z-index: 2;
   }
 
   .site-header__menu-toggle span {
@@ -201,7 +245,131 @@ const navItems = [
     width: 22px;
     height: 1.5px;
     background-color: var(--color-text);
-    transition: transform 0.3s var(--ease-out-expo);
+    transition: transform 0.4s var(--ease-out-expo),
+                opacity 0.3s var(--ease-out-expo);
+    transform-origin: center;
+  }
+
+  /* Burger → X Animation, wenn Menu offen */
+  .site-header__menu-toggle[aria-expanded='true'] span:first-child {
+    transform: translateY(4px) rotate(45deg);
+  }
+  .site-header__menu-toggle[aria-expanded='true'] span:last-child {
+    transform: translateY(-4px) rotate(-45deg);
+  }
+
+  /* ── Mobile Menu Overlay ────────────────────────────────────────── */
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-header) - 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+    padding: 6rem var(--container-pad) 3rem;
+    background-color: color-mix(in srgb, var(--color-bg) 95%, transparent);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.4s var(--ease-out-expo),
+      visibility 0s 0.4s;
+  }
+
+  .mobile-menu[aria-hidden='false'] {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+      opacity 0.4s var(--ease-out-expo),
+      visibility 0s;
+  }
+
+  .mobile-menu__nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .mobile-menu__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    /* Garantierte 44px Touch-Area pro Link */
+    min-height: 56px;
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    color: var(--color-text);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+    transform: translateY(20px);
+    opacity: 0;
+    transition:
+      transform 0.6s var(--ease-out-expo),
+      opacity 0.5s var(--ease-out-expo),
+      color 0.3s ease;
+  }
+
+  .mobile-menu[aria-hidden='false'] .mobile-menu__link {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* Stagger für jeden Link-Eintrag */
+  .mobile-menu[aria-hidden='false'] .mobile-menu__nav li:nth-child(1) .mobile-menu__link { transition-delay: 0.05s; }
+  .mobile-menu[aria-hidden='false'] .mobile-menu__nav li:nth-child(2) .mobile-menu__link { transition-delay: 0.1s; }
+  .mobile-menu[aria-hidden='false'] .mobile-menu__nav li:nth-child(3) .mobile-menu__link { transition-delay: 0.15s; }
+  .mobile-menu[aria-hidden='false'] .mobile-menu__nav li:nth-child(4) .mobile-menu__link { transition-delay: 0.2s; }
+  .mobile-menu[aria-hidden='false'] .mobile-menu__nav li:nth-child(5) .mobile-menu__link { transition-delay: 0.25s; }
+  .mobile-menu[aria-hidden='false'] .mobile-menu__cta { transition-delay: 0.3s; }
+
+  .mobile-menu__link.is-active {
+    color: var(--color-accent);
+  }
+
+  .mobile-menu__arrow {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    color: var(--color-accent);
+    opacity: 0.5;
+  }
+
+  .mobile-menu__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.1rem 2rem;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border-radius: 9999px;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    transform: translateY(20px);
+    opacity: 0;
+    transition:
+      transform 0.6s var(--ease-out-expo),
+      opacity 0.5s var(--ease-out-expo);
+  }
+
+  .mobile-menu[aria-hidden='false'] .mobile-menu__cta {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* Body-Scroll Lock wenn Menu offen */
+  :global(body.menu-open) {
+    overflow: hidden;
   }
 
   @media (max-width: 768px) {
@@ -213,23 +381,86 @@ const navItems = [
       display: flex;
     }
   }
+
+  @media (min-width: 769px) {
+    .mobile-menu {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-menu,
+    .mobile-menu__link,
+    .mobile-menu__cta,
+    .site-header__menu-toggle span {
+      transition: none !important;
+    }
+  }
 </style>
 
 <script>
   const init = () => {
     const header = document.querySelector<HTMLElement>('[data-site-header]');
     if (!header) return;
+    // Idempotent — bei doppeltem Aufruf (Module-Load + astro:page-load)
+    // würden Event-Listener sonst doppelt registriert (Click toggelt 2x = no-op).
+    if (header.dataset.initialized === 'true') return;
+    header.dataset.initialized = 'true';
 
+    // ── Scroll-State (background blur) ─────────────────────────────
     const update = () => {
       const scrolled = window.scrollY > 24;
       header.dataset.scrolled = scrolled ? 'true' : 'false';
     };
-
     update();
     window.addEventListener('scroll', update, { passive: true });
 
+    // ── Mobile Menu Toggle ─────────────────────────────────────────
+    const toggle = header.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+    const menu = header.querySelector<HTMLElement>('[data-mobile-menu]');
+    const body = document.body;
+
+    const setOpen = (open: boolean) => {
+      if (!toggle || !menu) return;
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+      menu.setAttribute('aria-hidden', String(!open));
+      body.classList.toggle('menu-open', open);
+    };
+
+    toggle?.addEventListener('click', () => {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      setOpen(!isOpen);
+    });
+
+    // Klick auf einen Menu-Link → schließt Menu
+    menu?.querySelectorAll<HTMLAnchorElement>('[data-mobile-link]').forEach((link) => {
+      link.addEventListener('click', () => setOpen(false));
+    });
+
+    // ESC-Taste → schließt Menu
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('keydown', onKey);
+
+    // Resize: schließt Menu wenn auf Desktop-Breite gewechselt wird
+    const onResize = () => {
+      if (window.innerWidth > 768 && toggle?.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+      }
+    };
+    window.addEventListener('resize', onResize);
+
+    // ── Cleanup beim View-Transition ────────────────────────────────
     const cleanup = () => {
       window.removeEventListener('scroll', update);
+      document.removeEventListener('keydown', onKey);
+      window.removeEventListener('resize', onResize);
+      body.classList.remove('menu-open');
+      delete header.dataset.initialized;
     };
 
     document.addEventListener('astro:before-swap', cleanup, { once: true });

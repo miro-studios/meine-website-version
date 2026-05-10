@@ -172,6 +172,9 @@ const year = new Date().getFullYear();
     display: inline-flex;
     align-items: baseline;
     gap: 0.4rem;
+    /* Tap-Target ≥ 44px für Touch-Geräte (negative margin hält Layout stabil) */
+    padding-block: 0.5rem;
+    margin-block: -0.5rem;
     font-family: var(--font-display);
     font-size: clamp(1.25rem, 2vw, 1.75rem);
     color: var(--color-text);
@@ -204,7 +207,8 @@ const year = new Date().getFullYear();
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.65rem;
+    /* Etwas mehr Abstand auf Touch, damit Tap-Areas sich nicht überlappen */
+    gap: 0.5rem;
   }
 
   .footer-link {
@@ -215,6 +219,8 @@ const year = new Date().getFullYear();
     color: var(--color-text);
     font-family: var(--font-display);
     font-size: var(--text-lg);
+    /* Tap-Target ≥ 44px für Touch-Bedienung */
+    padding-block: 0.5rem;
   }
 
   .footer-link__label,
