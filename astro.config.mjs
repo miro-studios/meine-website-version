@@ -3,7 +3,7 @@ import tailwind from '@astrojs/tailwind';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://studio.de',
+  site: 'https://miro-studios.de',
 
   prefetch: {
     prefetchAll: true,
@@ -31,5 +31,5 @@ export default defineConfig({
     inlineStylesheets: 'auto',
   },
 
-  output: "static"
+  output: 'static',
 });
