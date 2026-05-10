@@ -5,13 +5,15 @@
   "observability": {
     "enabled": true
   },
-  "main": "dist/_worker.js/index.js",
   "compatibility_flags": [
     "global_fetch_strictly_public",
     "nodejs_compat"
   ],
+  // Static-only Worker — keine Server-Functions, kein _worker.js Entry.
+  // Astro baut mit `output: "static"` (siehe astro.config.mjs) reine HTML/CSS/JS-Files,
+  // die direkt aus dem ASSETS-Bucket ausgeliefert werden.
   "assets": {
-    "binding": "ASSETS",
-    "directory": "dist"
+    "directory": "./dist",
+    "not_found_handling": "404-page"
   }
 }
