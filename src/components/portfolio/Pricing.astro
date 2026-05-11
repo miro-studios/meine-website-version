@@ -175,15 +175,54 @@ const supportInclusions = [
         Vertragsfalle, keine versteckten Aufschl&auml;ge.
       </p>
 
-      <a href="/arbeiten" class="pricing__demo-link" data-cursor-hover>
-        <span class="pricing__demo-link-dot" aria-hidden="true"></span>
-        <span class="pricing__demo-link-stack">
-          <span class="pricing__demo-link-label">Wie sieht das aus?</span>
-          <span class="pricing__demo-link-sub">
-            Beispiel-Demo pro Paket ansehen
+      <!--
+        Prominente Demo-CTA-Karte mit Mini-Vorschau-Stack rechts.
+        Magnetic-Hover, Pulse-Dot, Glow-Animation — soll auffallen,
+        damit Besucher nicht dran vorbeiscrollen.
+      -->
+      <a
+        href="/arbeiten"
+        class="pricing__demo-card"
+        data-cursor-hover
+        data-magnetic
+        data-magnetic-strength="0.18"
+      >
+        <span class="pricing__demo-card-glow" aria-hidden="true"></span>
+
+        <span class="pricing__demo-card-content">
+          <span class="pricing__demo-card-eyebrow">
+            <span class="pricing__demo-card-dot" aria-hidden="true"></span>
+            6 Live-Demos · Eine pro Paket
+          </span>
+          <span class="pricing__demo-card-title">
+            Wie könnte deine Website aussehen?
+          </span>
+          <span class="pricing__demo-card-sub">
+            Schau dir an, was du für dein Geld bekommst — ein Demo pro Paket,
+            in echter Production-Qualität.
+          </span>
+          <span class="pricing__demo-card-cta">
+            <span>Arbeiten ansehen</span>
+            <span class="pricing__demo-card-arrow" aria-hidden="true">→</span>
           </span>
         </span>
-        <span class="pricing__demo-link-arrow" aria-hidden="true">&rarr;</span>
+
+        <!-- Mini-Demo-Thumbnails als gefächerter Stack rechts.
+             Reine CSS-Elemente in Branchen-Theme-Farben. -->
+        <span class="pricing__demo-card-stack" aria-hidden="true">
+          <span class="pricing__demo-thumb pricing__demo-thumb--cafe">
+            <span class="pricing__demo-thumb-label">Café</span>
+          </span>
+          <span class="pricing__demo-thumb pricing__demo-thumb--pizzeria">
+            <span class="pricing__demo-thumb-label">Pizza</span>
+          </span>
+          <span class="pricing__demo-thumb pricing__demo-thumb--elektro">
+            <span class="pricing__demo-thumb-label">Elektro</span>
+          </span>
+          <span class="pricing__demo-thumb pricing__demo-thumb--friseur">
+            <span class="pricing__demo-thumb-label">Friseur</span>
+          </span>
+        </span>
       </a>
     </header>
 
@@ -449,36 +488,95 @@ const supportInclusions = [
     color: color-mix(in srgb, var(--color-text) 75%, transparent);
   }
 
-  /* ===== Demo-Link (führt zu /arbeiten) ============================== */
-  .pricing__demo-link {
+  /* ===== Demo-CTA-Card (prominente Banner-Karte zu /arbeiten) ============
+     Visuelle Hierarchie: Mega-Headline + Sub-Text + CTA-Button + Mini-Demo-
+     Thumbnails als gefächerter Stack rechts. Glow-Animation hinter der Karte.
+  ====================================================================== */
+  .pricing__demo-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    margin-top: 1.75rem;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    background:
+      linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--color-accent) 8%, var(--color-bg)) 0%,
+        color-mix(in srgb, var(--color-accent) 3%, var(--color-bg)) 100%
+      );
+    border: 1px solid color-mix(in srgb, var(--color-accent) 40%, transparent);
+    border-radius: var(--radius-lg);
+    color: var(--color-text);
+    text-decoration: none;
+    cursor: none;
+    isolation: isolate;
+    overflow: hidden;
+    transition:
+      transform 0.5s var(--ease-out-expo),
+      border-color 0.4s ease,
+      box-shadow 0.5s var(--ease-out-expo);
+    will-change: transform;
+    /* Subtiles "Schweben" damit es im Auge bleibt */
+    animation: pricing-demo-bob 4s ease-in-out infinite;
+  }
+
+  @keyframes pricing-demo-bob {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-4px); }
+  }
+
+  .pricing__demo-card:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-8px);
+    box-shadow:
+      0 30px 60px -25px color-mix(in srgb, var(--color-accent) 55%, transparent),
+      0 12px 24px -12px rgba(0, 0, 0, 0.3);
+    animation-play-state: paused;
+  }
+
+  /* Glow hinter der Karte (mit @keyframes pulse) */
+  .pricing__demo-card-glow {
+    position: absolute;
+    inset: -40%;
+    z-index: -1;
+    background: radial-gradient(
+      ellipse at center,
+      color-mix(in srgb, var(--color-accent) 30%, transparent) 0%,
+      transparent 50%
+    );
+    filter: blur(40px);
+    opacity: 0.35;
+    animation: pricing-demo-glow-pulse 3.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes pricing-demo-glow-pulse {
+    0%, 100% { opacity: 0.25; transform: scale(0.95); }
+    50%      { opacity: 0.55; transform: scale(1.05); }
+  }
+
+  /* ── Content (linke Spalte) ─────────────────────────── */
+  .pricing__demo-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    min-width: 0;
+  }
+
+  .pricing__demo-card-eyebrow {
     display: inline-flex;
     align-items: center;
-    gap: 1rem;
-    margin-top: 1.5rem;
-    padding: 0.85rem 1.25rem 0.85rem 1rem;
-    border: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
-    border-radius: 9999px;
-    background: color-mix(in srgb, var(--color-accent) 6%, var(--color-bg));
-    text-decoration: none;
-    color: var(--color-text);
-    width: max-content;
-    max-width: 100%;
-    cursor: none;
-    transition:
-      border-color 0.4s var(--ease-out-expo),
-      background-color 0.4s var(--ease-out-expo),
-      transform 0.4s var(--ease-out-expo),
-      box-shadow 0.5s var(--ease-out-expo);
+    gap: 0.65rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--color-accent);
   }
 
-  .pricing__demo-link:hover {
-    border-color: var(--color-accent);
-    background: color-mix(in srgb, var(--color-accent) 12%, var(--color-bg));
-    transform: translateY(-2px);
-    box-shadow: 0 12px 32px -12px color-mix(in srgb, var(--color-accent) 50%, transparent);
-  }
-
-  .pricing__demo-link-dot {
+  .pricing__demo-card-dot {
     display: inline-block;
     width: 0.55rem;
     height: 0.55rem;
@@ -491,47 +589,164 @@ const supportInclusions = [
 
   @keyframes pricing-demo-pulse {
     0%, 100% { transform: scale(1); opacity: 1; }
-    50%      { transform: scale(0.8); opacity: 0.7; }
+    50%      { transform: scale(0.7); opacity: 0.6; }
   }
 
-  .pricing__demo-link-stack {
-    display: inline-flex;
-    flex-direction: column;
-    gap: 0.1rem;
-    line-height: 1.2;
-    text-align: left;
-    min-width: 0;
-  }
-
-  .pricing__demo-link-label {
+  .pricing__demo-card-title {
     font-family: var(--font-display);
-    font-size: var(--text-base);
-    letter-spacing: -0.01em;
+    font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    font-weight: 500;
     color: var(--color-text);
+    max-width: 22ch;
   }
 
-  .pricing__demo-link-sub {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: color-mix(in srgb, var(--color-text) 60%, transparent);
+  .pricing__demo-card-sub {
+    font-size: var(--text-base);
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+    max-width: 44ch;
   }
 
-  .pricing__demo-link-arrow {
+  .pricing__demo-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.4rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border-radius: 9999px;
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    width: max-content;
+    max-width: 100%;
+    transition: background-color 0.3s ease, box-shadow 0.4s ease;
+  }
+
+  .pricing__demo-card:hover .pricing__demo-card-cta {
+    background: color-mix(in srgb, var(--color-accent) 88%, #fff);
+    box-shadow: 0 8px 20px -6px color-mix(in srgb, var(--color-accent) 60%, transparent);
+  }
+
+  .pricing__demo-card-arrow {
     font-family: var(--font-mono);
-    font-size: 1.05rem;
-    color: var(--color-accent);
+    font-size: 1.05em;
     transition: transform 0.45s var(--ease-out-expo);
+  }
+
+  .pricing__demo-card:hover .pricing__demo-card-arrow {
+    transform: translateX(5px);
+  }
+
+  /* ── Mini-Demo-Thumbnail-Stack (rechte Spalte) ─────── */
+  .pricing__demo-card-stack {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(140px, 14vw, 200px);
+    height: clamp(140px, 14vw, 200px);
     flex-shrink: 0;
   }
 
-  .pricing__demo-link:hover .pricing__demo-link-arrow {
-    transform: translateX(4px);
+  .pricing__demo-thumb {
+    position: absolute;
+    width: 90px;
+    height: 70px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: flex-end;
+    padding: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.1),
+      0 6px 16px -4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.6s var(--ease-out-expo);
+    backface-visibility: hidden;
   }
 
+  /* Gefächerter Stack — Default-Positionen mit verschiedenen Rotations */
+  .pricing__demo-thumb--cafe {
+    background: linear-gradient(135deg, #F2EBDD 0%, #C2683A 110%);
+    color: #6B1F25;
+    transform: translate(-32px, -20px) rotate(-10deg);
+    z-index: 3;
+  }
+  .pricing__demo-thumb--pizzeria {
+    background: linear-gradient(135deg, #F8F2E8 0%, #C44536 110%);
+    color: #A8261B;
+    transform: translate(-12px, -5px) rotate(-3deg);
+    z-index: 4;
+  }
+  .pricing__demo-thumb--elektro {
+    background: linear-gradient(135deg, #1F1F1C 0%, #0E0E0C 100%);
+    color: #FFD60A;
+    transform: translate(12px, 5px) rotate(4deg);
+    z-index: 2;
+  }
+  .pricing__demo-thumb--friseur {
+    background: linear-gradient(135deg, #F8F4ED 0%, #F4C5B5 110%);
+    color: #3A2438;
+    transform: translate(32px, 20px) rotate(10deg);
+    z-index: 1;
+  }
+
+  /* Hover: Stack fächert sich weiter auf */
+  .pricing__demo-card:hover .pricing__demo-thumb--cafe {
+    transform: translate(-60px, -40px) rotate(-18deg);
+  }
+  .pricing__demo-card:hover .pricing__demo-thumb--pizzeria {
+    transform: translate(-22px, -10px) rotate(-6deg);
+  }
+  .pricing__demo-card:hover .pricing__demo-thumb--elektro {
+    transform: translate(22px, 10px) rotate(8deg);
+  }
+  .pricing__demo-card:hover .pricing__demo-thumb--friseur {
+    transform: translate(60px, 40px) rotate(18deg);
+  }
+
+  .pricing__demo-thumb-label {
+    font-weight: 500;
+  }
+
+  /* ── Responsive: Stack auf Mobile kleiner / unter Text ─── */
+  @media (max-width: 720px) {
+    .pricing__demo-card {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .pricing__demo-card-stack {
+      width: 100%;
+      height: 110px;
+      justify-content: flex-start;
+      padding-left: 60px;
+    }
+    .pricing__demo-thumb {
+      width: 75px;
+      height: 58px;
+    }
+  }
+
+  /* ── Reduced-Motion: alle Bewegungen aus ─────────────── */
   @media (prefers-reduced-motion: reduce) {
-    .pricing__demo-link-dot { animation: none; }
+    .pricing__demo-card,
+    .pricing__demo-card-glow,
+    .pricing__demo-card-dot {
+      animation: none;
+    }
+    .pricing__demo-card:hover {
+      transform: none;
+    }
+    .pricing__demo-card:hover .pricing__demo-thumb {
+      transform: inherit;
+    }
   }
 
   /* ===== Master Toggle =================================================== */
