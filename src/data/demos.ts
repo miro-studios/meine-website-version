@@ -72,12 +72,13 @@ export const demos: readonly Demo[] = [
   {
     slug: 'pizzeria',
     name: 'Bella Notte',
-    category: 'Italienisches Restaurant',
+    category: 'Italienisches Restaurant · Lüdenscheid',
     headline: 'La Vera Pizza.',
     blurb:
-      'Familiengeführte Pizzeria. Editorial-Magazine-Aesthetic mit warmen Terracotta-Tönen, Speisekarte als interaktives Magazin.',
+      'Familiengeführte Trattoria mit Holzofen, Editorial-Magazine-Look in Terracotta & Cremeweiß. Reservierungs-Formular, Social-Proof, Click-to-Load-Map.',
     theme: 'pizzeria',
-    status: 'in-progress',
+    status: 'live',
+    href: '/demos/pizzeria/',
     package: {
       format: 'one-pager',
       tier: 'featured',

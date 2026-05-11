@@ -1,0 +1,465 @@
+---
+/**
+ * Bella Notte — Section 3: Speisekarte / Leistungen
+ *
+ * Asymmetrisches Editorial-Grid mit großen Glyph-Bildern.
+ *  - 5 Kategorien (Antipasti, Pizza, Pasta, Dolci, Vini)
+ *  - Jedes Item: Index, Italienischer + Deutscher Name, 2 Sätze, Preisrahmen
+ *  - Hover: Item öffnet einen größeren Detail-Block mit Beispielen
+ *  - Custom Animation: Items reveal sequenziell mit eigener Stagger-Komposition
+ *
+ * Pflicht-Effekte:
+ *  - Sequential Scroll-Reveal (eigene Komposition, kein Standard-Stagger)
+ *  - Hover öffnet Detail-Sublist
+ *  - Glyph-Skalierung bei Hover
+ */
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+
+interface Course {
+  index: string;
+  ital: string;
+  german: string;
+  body: string;
+  price: string;
+  examples: string[];
+  glyph: 'pizza' | 'pasta' | 'antipasti' | 'dolci' | 'vini';
+}
+
+const courses: Course[] = [
+  {
+    index: '01',
+    ital: 'Antipasti',
+    german: 'Vorspeisen',
+    body: 'Bruschetta auf hausgebackenem Brot. Vitello tonnato. Kalt geräucherte Sardellen aus Sizilien.',
+    price: '6,50 – 14,80 €',
+    examples: ['Bruschetta', 'Vitello tonnato', 'Carpaccio di manzo', 'Caprese'],
+    glyph: 'antipasti',
+  },
+  {
+    index: '02',
+    ital: 'Pizza',
+    german: 'aus dem Holzofen',
+    body: 'Margherita, Marinara, Quattro Stagioni — und unsere "Sergio", die nur Marco macht. 480 Grad, 90 Sekunden, fertig.',
+    price: '9,80 – 17,50 €',
+    examples: ['Margherita D.O.P.', 'Marinara', 'Quattro Stagioni', 'Diavola', 'Sergio (Spezial)'],
+    glyph: 'pizza',
+  },
+  {
+    index: '03',
+    ital: 'Pasta',
+    german: 'fresca al giorno',
+    body: 'Jeden Morgen frisch — Tagliatelle, Pappardelle, Ravioli. Die Soßen kochen wir nach Großmutters Aufschrieben aus 1971.',
+    price: '11,80 – 19,50 €',
+    examples: ['Cacio e Pepe', 'Tagliatelle al ragù', 'Ravioli di ricotta', 'Pappardelle al cinghiale'],
+    glyph: 'pasta',
+  },
+  {
+    index: '04',
+    ital: 'Dolci',
+    german: 'Süßes zum Schluss',
+    body: 'Tiramisu, das wir am Abend für den nächsten Tag ansetzen. Cannoli aus Palermo. Affogato mit Hausröstung-Espresso.',
+    price: '5,80 – 8,50 €',
+    examples: ['Tiramisu della casa', 'Cannoli siciliani', 'Affogato al caffè', 'Panna cotta'],
+    glyph: 'dolci',
+  },
+  {
+    index: '05',
+    ital: 'Vini',
+    german: 'kleine, ehrliche Karte',
+    body: 'Rotwein aus dem Piemont, Weiß aus Friaul, Schaumwein aus den Marken. Offenausschank ab 4,50 € — Flaschen ab 22 €.',
+    price: 'ab 4,50 € / Glas',
+    examples: ['Chianti Classico', 'Pinot Grigio', 'Prosecco di Valdobbiadene', 'Nebbiolo'],
+    glyph: 'vini',
+  },
+];
+---
+
+<section class="bn-menu" id="speisekarte" data-bn-menu>
+  <header class="bn-menu__head">
+    <p class="bn-menu__eyebrow"><span aria-hidden="true">03 ·</span> La Carta</p>
+    <h2 class="bn-menu__headline">
+      Karte des Hauses, <span class="bn-menu__headline-it">kurz gehalten.</span>
+    </h2>
+    <p class="bn-menu__intro">
+      Fünf Kategorien, in denen wir genau wissen, was wir tun. Die Tageskarte
+      hängt am Tresen — handgeschrieben, weil es sein muss.
+    </p>
+  </header>
+
+  <RevealOnScroll y={60} duration={1.1} stagger={0.14} class="bn-menu__list">
+    {courses.map((c, i) => (
+      <article
+        class:list={[
+          'bn-menu__item',
+          i % 2 === 1 && 'bn-menu__item--shift',
+        ]}
+        data-glyph={c.glyph}
+        data-bn-menu-item
+      >
+        <span class="bn-menu__item-index">{c.index}</span>
+
+        <div class="bn-menu__item-body">
+          <h3 class="bn-menu__item-title">
+            <span class="bn-menu__item-title-ital">{c.ital}</span>
+            <span class="bn-menu__item-title-de">— {c.german}</span>
+          </h3>
+          <p class="bn-menu__item-text">{c.body}</p>
+
+          <!-- Detail-Sublist: aufklappen bei Hover -->
+          <ul class="bn-menu__item-examples" role="list" aria-hidden="true">
+            {c.examples.map((ex) => (
+              <li class="bn-menu__item-example">{ex}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="bn-menu__item-meta">
+          <span class="bn-menu__item-price">{c.price}</span>
+          <span class="bn-menu__item-arrow" aria-hidden="true">↗</span>
+        </div>
+
+        <!-- Glyph (groß, abstrakt) -->
+        <svg
+          class="bn-menu__item-glyph"
+          viewBox="0 0 100 100"
+          aria-hidden="true"
+          focusable="false"
+        >
+          {c.glyph === 'pizza' && (
+            <g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <circle cx="50" cy="50" r="38" />
+              <circle cx="50" cy="50" r="32" stroke-dasharray="2 4" opacity="0.5" />
+              <circle cx="40" cy="44" r="3" fill="currentColor" stroke="none" />
+              <circle cx="58" cy="40" r="2.5" fill="currentColor" stroke="none" />
+              <circle cx="55" cy="58" r="3.2" fill="currentColor" stroke="none" />
+              <circle cx="42" cy="60" r="2" fill="currentColor" stroke="none" />
+              <path d="M 50 12 L 50 88 M 12 50 L 88 50 M 23 23 L 77 77 M 77 23 L 23 77" stroke-width="0.5" opacity="0.4" />
+            </g>
+          )}
+          {c.glyph === 'pasta' && (
+            <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+              <path d="M 20 35 Q 30 25 50 30 T 80 35 Q 75 50 60 55 T 30 60 Q 22 50 20 35 Z" />
+              <path d="M 28 38 Q 38 32 50 36" />
+              <path d="M 30 46 Q 42 42 56 45" />
+              <path d="M 34 54 Q 46 50 58 52" />
+              <path d="M 24 75 Q 40 70 56 72 Q 70 75 78 82" stroke-dasharray="3 3" opacity="0.5" />
+            </g>
+          )}
+          {c.glyph === 'antipasti' && (
+            <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <ellipse cx="50" cy="58" rx="32" ry="22" />
+              <ellipse cx="50" cy="56" rx="26" ry="16" />
+              <path d="M 36 50 L 46 42 L 58 48 L 64 42" />
+              <circle cx="42" cy="58" r="2.5" fill="currentColor" stroke="none" />
+              <circle cx="56" cy="56" r="3" fill="currentColor" stroke="none" />
+              <path d="M 50 22 L 50 32 M 44 26 L 50 32 L 56 26" />
+            </g>
+          )}
+          {c.glyph === 'dolci' && (
+            <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="22" y="38" width="56" height="38" rx="2" />
+              <line x1="22" y1="50" x2="78" y2="50" />
+              <line x1="22" y1="62" x2="78" y2="62" />
+              <path d="M 35 30 L 38 38 M 50 26 L 50 38 M 65 30 L 62 38" />
+              <circle cx="38" cy="28" r="2.5" />
+              <circle cx="50" cy="24" r="2.5" />
+              <circle cx="62" cy="28" r="2.5" />
+            </g>
+          )}
+          {c.glyph === 'vini' && (
+            <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M 38 22 L 62 22 Q 64 36 60 46 Q 56 56 50 56 Q 44 56 40 46 Q 36 36 38 22 Z" />
+              <path d="M 40 32 Q 50 36 60 32" stroke-dasharray="2 2" />
+              <line x1="50" y1="56" x2="50" y2="76" />
+              <line x1="36" y1="78" x2="64" y2="78" />
+            </g>
+          )}
+        </svg>
+      </article>
+    ))}
+  </RevealOnScroll>
+
+  <p class="bn-menu__note">
+    <span class="bn-menu__note-line" aria-hidden="true"></span>
+    Vollständige Karte am Tresen — wir mögen Dinge, die man anfassen kann.
+  </p>
+</section>
+
+<style>
+  .bn-menu {
+    background: var(--color-surface);
+    color: var(--color-text);
+    padding-block: clamp(5rem, 10vw, 9rem);
+    padding-inline: var(--bn-gutter);
+    border-top: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+    position: relative;
+  }
+
+  .bn-menu__head {
+    max-width: var(--bn-container);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+
+  .bn-menu__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-primary);
+  }
+
+  .bn-menu__headline {
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 7vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    max-width: 18ch;
+  }
+
+  .bn-menu__headline-it {
+    font-style: italic;
+    color: var(--color-primary);
+  }
+
+  .bn-menu__intro {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+    color: var(--color-muted);
+    max-width: 48ch;
+    line-height: 1.5;
+  }
+
+  /* ── List ─────────────────────────────────────────────────────────── */
+  .bn-menu__list {
+    max-width: var(--bn-container);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .bn-menu__item {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: start;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    padding-block: clamp(2rem, 4vw, 3rem);
+    padding-inline: clamp(0rem, 1vw, 1rem);
+    border-bottom: 1px solid var(--color-rule);
+    cursor: pointer;
+    transition:
+      background-color 0.5s var(--ease-out-expo),
+      padding-inline 0.5s var(--ease-out-expo),
+      padding-block 0.5s var(--ease-out-expo);
+    isolation: isolate;
+  }
+
+  .bn-menu__item--shift {
+    padding-left: clamp(0rem, 5vw, 5rem);
+  }
+
+  .bn-menu__item:hover {
+    background-color: var(--color-cream);
+    padding-inline: clamp(1rem, 3vw, 2.5rem);
+  }
+
+  .bn-menu__item--shift:hover {
+    padding-left: clamp(1rem, 6vw, 5.5rem);
+  }
+
+  /* Index */
+  .bn-menu__item-index {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-muted);
+    letter-spacing: 0.1em;
+    padding-top: 0.6rem;
+    transition: color 0.4s var(--ease-out-expo);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bn-menu__item:hover .bn-menu__item-index {
+    color: var(--color-accent);
+  }
+
+  /* Body */
+  .bn-menu__item-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    min-width: 0;
+  }
+
+  .bn-menu__item-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 4.2vw, 3rem);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    color: var(--color-text);
+    transition: transform 0.55s var(--ease-out-expo);
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .bn-menu__item:hover .bn-menu__item-title {
+    transform: translateX(8px);
+    color: var(--color-primary);
+  }
+
+  .bn-menu__item-title-ital {
+    font-style: italic;
+  }
+
+  .bn-menu__item-title-de {
+    font-family: var(--font-display);
+    font-style: normal;
+    font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+    letter-spacing: 0;
+    color: var(--color-muted);
+  }
+
+  .bn-menu__item-text {
+    font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+    max-width: 56ch;
+  }
+
+  /* Detail-Examples: aufklappen bei Hover */
+  .bn-menu__item-examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    margin-top: 0.4rem;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition:
+      max-height 0.6s var(--ease-out-expo),
+      opacity 0.5s ease 0.15s,
+      margin-top 0.5s var(--ease-out-expo);
+  }
+
+  .bn-menu__item:hover .bn-menu__item-examples {
+    max-height: 200px;
+    opacity: 1;
+    margin-top: 1rem;
+  }
+
+  .bn-menu__item-example {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text);
+    background: var(--color-bg);
+    padding: 0.45rem 0.8rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-rule);
+  }
+
+  /* Meta */
+  .bn-menu__item-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding-top: 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    color: var(--color-muted);
+    white-space: nowrap;
+    transition: color 0.4s var(--ease-out-expo);
+  }
+
+  .bn-menu__item:hover .bn-menu__item-meta {
+    color: var(--color-primary);
+  }
+
+  .bn-menu__item-arrow {
+    display: inline-block;
+    font-size: 1.1em;
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+
+  .bn-menu__item:hover .bn-menu__item-arrow {
+    transform: translate(4px, -4px);
+  }
+
+  /* Glyph */
+  .bn-menu__item-glyph {
+    position: absolute;
+    right: clamp(1rem, 5vw, 5rem);
+    top: 50%;
+    transform: translate(35%, -50%) rotate(-5deg);
+    width: clamp(100px, 14vw, 160px);
+    height: auto;
+    color: color-mix(in srgb, var(--color-primary) 22%, transparent);
+    pointer-events: none;
+    transition:
+      transform 0.65s var(--ease-out-expo),
+      color 0.4s ease;
+    display: none;
+    z-index: -1;
+  }
+
+  @media (min-width: 760px) {
+    .bn-menu__item-glyph {
+      display: block;
+    }
+  }
+
+  .bn-menu__item:hover .bn-menu__item-glyph {
+    color: var(--color-accent);
+    transform: translate(18%, -50%) rotate(2deg) scale(1.08);
+  }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    .bn-menu__item {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+    .bn-menu__item-index {
+      padding-top: 0;
+    }
+    .bn-menu__item-meta {
+      padding-top: 0.25rem;
+    }
+  }
+
+  /* ── Note ─────────────────────────────────────────────────────────── */
+  .bn-menu__note {
+    max-width: var(--bn-container);
+    margin-inline: auto;
+    margin-top: clamp(2.5rem, 4vw, 3.5rem);
+    display: inline-flex;
+    align-items: center;
+    gap: 1.25rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    color: var(--color-muted);
+    text-align: left;
+    justify-self: center;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .bn-menu__note-line {
+    display: inline-block;
+    width: clamp(40px, 6vw, 80px);
+    height: 1px;
+    background: currentColor;
+    opacity: 0.4;
+  }
+</style>
