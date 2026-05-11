@@ -1,6 +1,5 @@
 ---
 import SplitText from '@components/shared/SplitText.astro';
-import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
 import MagneticButton from '@components/shared/MagneticButton.astro';
 
 type Plan = {
@@ -239,9 +238,14 @@ const supportInclusions = [
         <!-- One-Pager -->
         <div class="plans-panel is-active" role="tabpanel" data-panel="one-pager" aria-label="One-Pager Pakete">
           <div class="pricing__grid">
-            <RevealOnScroll class="pricing__grid-inner" stagger={0.1} y={50}>
-              {onePagerPlans.map((plan) => (
-                <article class:list={['plan', `plan--${plan.variant}`]} data-cursor-hover>
+            <div class="pricing__grid-inner" data-pricing-grid>
+              {onePagerPlans.map((plan, i) => (
+                <article
+                  class:list={['plan', `plan--${plan.variant}`]}
+                  data-cursor-hover
+                  data-plan-card
+                  style={`--plan-index: ${i};`}
+                >
                   {plan.badge && <span class="plan__badge mono-label">{plan.badge}</span>}
 
                   <header class="plan__head">
@@ -288,16 +292,21 @@ const supportInclusions = [
                   </div>
                 </article>
               ))}
-            </RevealOnScroll>
+            </div>
           </div>
         </div>
 
         <!-- Multi-Page -->
         <div class="plans-panel" role="tabpanel" data-panel="multi-page" aria-label="Multi-Page Pakete" hidden>
           <div class="pricing__grid">
-            <RevealOnScroll class="pricing__grid-inner" stagger={0.1} y={50}>
-              {multiPagePlans.map((plan) => (
-                <article class:list={['plan', `plan--${plan.variant}`]} data-cursor-hover>
+            <div class="pricing__grid-inner" data-pricing-grid>
+              {multiPagePlans.map((plan, i) => (
+                <article
+                  class:list={['plan', `plan--${plan.variant}`]}
+                  data-cursor-hover
+                  data-plan-card
+                  style={`--plan-index: ${i};`}
+                >
                   {plan.badge && <span class="plan__badge mono-label">{plan.badge}</span>}
 
                   <header class="plan__head">
@@ -344,7 +353,7 @@ const supportInclusions = [
                   </div>
                 </article>
               ))}
-            </RevealOnScroll>
+            </div>
           </div>
         </div>
 
@@ -582,12 +591,79 @@ const supportInclusions = [
     background-color: var(--color-bg);
     cursor: none;
     transition: transform 0.5s var(--ease-out-expo),
-      border-color 0.4s var(--ease-out-expo);
+      border-color 0.4s var(--ease-out-expo),
+      filter 0.5s var(--ease-out-expo),
+      opacity 0.5s var(--ease-out-expo);
     isolation: isolate;
     height: 100%;
   }
 
+  /*
+   * Modern Reveal-Animation: Blur-In + Y-Lift + Scale (cinematic).
+   * Wir nutzen @keyframes statt transition, weil der Stagger-Delay
+   * sonst auch jeden späteren Hover verzögern würde.
+   */
+  .plan[data-plan-card] {
+    opacity: 0;
+  }
+
+  .plan[data-plan-card].is-revealed {
+    animation: plan-reveal 1s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+    animation-delay: calc(var(--plan-index, 0) * 100ms);
+  }
+
+  @keyframes plan-reveal {
+    0% {
+      opacity: 0;
+      transform: translateY(40px) scale(0.96);
+      filter: blur(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+  }
+
   .plan:hover { transform: translateY(-4px); }
+
+  /* Wenn der Featured-Plan revealed, kurzes Glow-Pulse */
+  .plan--featured[data-plan-card].is-revealed {
+    animation:
+      plan-reveal 1s cubic-bezier(0.32, 0.72, 0, 1) forwards,
+      plan-feature-glow 1.4s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+    animation-delay:
+      calc(var(--plan-index, 0) * 100ms),
+      calc(var(--plan-index, 0) * 100ms + 0.5s);
+  }
+
+  @keyframes plan-feature-glow {
+    0% {
+      box-shadow:
+        0 1px 0 0 color-mix(in srgb, var(--color-accent) 25%, transparent),
+        0 0 0 0 color-mix(in srgb, var(--color-accent) 0%, transparent);
+    }
+    50% {
+      box-shadow:
+        0 1px 0 0 color-mix(in srgb, var(--color-accent) 50%, transparent),
+        0 0 60px 8px color-mix(in srgb, var(--color-accent) 30%, transparent);
+    }
+    100% {
+      box-shadow:
+        0 1px 0 0 color-mix(in srgb, var(--color-accent) 25%, transparent),
+        0 20px 40px -20px color-mix(in srgb, var(--color-accent) 35%, transparent);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .plan[data-plan-card] {
+      opacity: 1;
+    }
+    .plan[data-plan-card].is-revealed,
+    .plan--featured[data-plan-card].is-revealed {
+      animation: none;
+    }
+  }
 
   .plan--featured {
     border-color: var(--color-accent);
@@ -1237,6 +1313,58 @@ const supportInclusions = [
     });
   };
 
+  /**
+   * Card-Reveal: Sobald die Pricing-Section in View kommt, kriegen
+   * alle Plan-Cards (beide Panels) die .is-revealed-Klasse. Die
+   * CSS-@keyframes-Animation + Stagger via --plan-index erledigt
+   * den Rest. So bleiben die Cards auch nach Toggle-Switch visible.
+   */
+  const initReveal = () => {
+    const section = document.querySelector<HTMLElement>('.pricing');
+    if (!section) return;
+
+    const cards = Array.from(
+      section.querySelectorAll<HTMLElement>('[data-plan-card]'),
+    );
+    if (cards.length === 0) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      cards.forEach((c) => c.classList.add('is-revealed'));
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            // Index pro Spalte (0, 1, 2) — wir gruppieren pro Panel
+            // damit der Stagger pro Panel von links nach rechts läuft.
+            const grids = Array.from(
+              section.querySelectorAll<HTMLElement>('[data-pricing-grid]'),
+            );
+            grids.forEach((grid) => {
+              const panelCards = Array.from(
+                grid.querySelectorAll<HTMLElement>('[data-plan-card]'),
+              );
+              panelCards.forEach((card, i) => {
+                card.style.setProperty('--plan-index', String(i));
+                card.classList.add('is-revealed');
+              });
+            });
+            io.disconnect();
+            break;
+          }
+        }
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -80px 0px' },
+    );
+    io.observe(section);
+  };
+
   init();
-  document.addEventListener('astro:page-load', init);
+  initReveal();
+  document.addEventListener('astro:page-load', () => {
+    init();
+    initReveal();
+  });
 </script>
