@@ -6,7 +6,6 @@ import ScrollStory from '@components/portfolio/ScrollStory.astro';
 import Pricing from '@components/portfolio/Pricing.astro';
 import Footer from '@components/portfolio/Footer.astro';
 import Marquee from '@components/shared/Marquee.astro';
-import SceneFrame from '@components/shared/SceneFrame.astro';
 import ParticleField from '@components/shared/ParticleField.astro';
 ---
 
@@ -34,13 +33,9 @@ import ParticleField from '@components/shared/ParticleField.astro';
 
   <ScrollStory />
 
-  <SceneFrame variant="default">
-    <Capabilities />
-  </SceneFrame>
+  <Capabilities />
 
-  <SceneFrame variant="rotate3d">
-    <Pricing />
-  </SceneFrame>
+  <Pricing />
 
   <!-- Studio-Teaser vor dem Footer -->
   <section class="studio-teaser" data-studio-teaser>
