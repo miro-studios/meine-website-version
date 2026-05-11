@@ -69,6 +69,19 @@ const navItems = [
     aria-hidden="true"
     aria-label="Mobile Navigation"
   >
+    <!-- Explizites Close-X oben rechts (zusätzlich zum Burger im Header) -->
+    <button
+      type="button"
+      class="mobile-menu__close"
+      data-menu-close
+      aria-label="Menü schließen"
+    >
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <line x1="5" y1="5" x2="19" y2="19" />
+        <line x1="19" y1="5" x2="5" y2="19" />
+      </svg>
+    </button>
+
     <nav class="mobile-menu__nav">
       <ul>
         {navItems.map((item) => (
@@ -288,6 +301,45 @@ const navItems = [
       visibility 0s;
   }
 
+  /* X-Close-Button oben rechts */
+  .mobile-menu__close {
+    position: absolute;
+    top: 1rem;
+    right: var(--container-pad);
+    /* 44x44 Tap-Target */
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent);
+    border-radius: 50%;
+    color: var(--color-text);
+    cursor: pointer;
+    transform: rotate(-90deg) scale(0.8);
+    opacity: 0;
+    transition:
+      opacity 0.4s var(--ease-out-expo),
+      transform 0.5s var(--ease-out-expo),
+      border-color 0.3s ease,
+      color 0.3s ease,
+      background-color 0.3s ease;
+  }
+
+  .mobile-menu__close:hover,
+  .mobile-menu__close:focus-visible {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background-color: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  }
+
+  .mobile-menu[aria-hidden='false'] .mobile-menu__close {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+    transition-delay: 0.15s;
+  }
+
   .mobile-menu__nav ul {
     list-style: none;
     margin: 0;
@@ -471,6 +523,10 @@ const navItems = [
       const isOpen = toggle.getAttribute('aria-expanded') === 'true';
       setOpen(!isOpen);
     });
+
+    // Explizites Close-X oben rechts im Menu
+    const closeBtn = menu?.querySelector<HTMLButtonElement>('[data-menu-close]');
+    closeBtn?.addEventListener('click', () => setOpen(false));
 
     // Klick auf einen Menu-Link → schließt Menu
     menu?.querySelectorAll<HTMLAnchorElement>('[data-mobile-link]').forEach((link) => {
