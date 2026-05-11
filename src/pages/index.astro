@@ -7,6 +7,7 @@ import Pricing from '@components/portfolio/Pricing.astro';
 import Footer from '@components/portfolio/Footer.astro';
 import Marquee from '@components/shared/Marquee.astro';
 import SceneFrame from '@components/shared/SceneFrame.astro';
+import ParticleField from '@components/shared/ParticleField.astro';
 ---
 
 <PortfolioLayout
@@ -43,9 +44,16 @@ import SceneFrame from '@components/shared/SceneFrame.astro';
 
   <!-- Studio-Teaser vor dem Footer -->
   <section class="studio-teaser" data-studio-teaser>
+    <ParticleField count={70} size={1.5} connections reactive interactionRadius={140} />
     <div class="studio-teaser__inner">
       <p class="studio-teaser__label">Das Studio</p>
-      <h2 class="studio-teaser__heading">Ein Kopf.<br/>Ein Studio.</h2>
+      <h2
+        class="studio-teaser__heading"
+        data-scroll-depth
+        data-depth-strength="0.45"
+        data-depth-rotate-x="10"
+        data-depth-translate-z="-90"
+      >Ein Kopf.<br/>Ein Studio.</h2>
       <p class="studio-teaser__sub">Design & Development aus einer Hand — aus Lüdenscheid, für ganz NRW.</p>
       <a href="/about" class="studio-teaser__btn">
         <span>Studio kennenlernen</span>
@@ -56,9 +64,16 @@ import SceneFrame from '@components/shared/SceneFrame.astro';
 
   <!-- CTA-Banner vor dem Footer -->
   <section class="cta-banner" data-cta-banner>
+    <ParticleField count={110} size={1.8} connections reactive interactionRadius={160} speed={22} />
     <div class="cta-banner__inner">
       <p class="cta-banner__label">Bereit loszulegen?</p>
-      <h2 class="cta-banner__heading">Kontaktieren Sie uns jetzt.</h2>
+      <h2
+        class="cta-banner__heading"
+        data-scroll-depth
+        data-depth-strength="0.5"
+        data-depth-rotate-x="14"
+        data-depth-translate-z="-110"
+      >Kontaktieren Sie uns jetzt.</h2>
       <a href="/kontakt" class="cta-banner__btn" data-magnetic>
         <span>Anfrage starten</span>
         <span class="cta-banner__btn-icon" aria-hidden="true">↗</span>
@@ -72,12 +87,16 @@ import SceneFrame from '@components/shared/SceneFrame.astro';
 <style>
   /* ── Studio Teaser ────────────────────────────── */
   .studio-teaser {
+    position: relative; /* Container für Particle-Canvas */
     padding-block: clamp(4rem, 8vw, 7rem);
     padding-inline: var(--container-pad);
     border-top: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+    overflow: hidden;
   }
 
   .studio-teaser__inner {
+    position: relative; /* über dem Particle-Canvas */
+    z-index: 1;
     max-width: var(--container-max);
     margin-inline: auto;
     display: flex;
@@ -177,7 +196,7 @@ import SceneFrame from '@components/shared/SceneFrame.astro';
     overflow: hidden;
   }
 
-  /* subtiler Glow-Hintergrund */
+  /* subtiler Glow-Hintergrund — hinter Particles und Content */
   .cta-banner::before {
     content: '';
     position: absolute;
@@ -188,10 +207,12 @@ import SceneFrame from '@components/shared/SceneFrame.astro';
       transparent 70%
     );
     pointer-events: none;
+    z-index: 0;
   }
 
   .cta-banner__inner {
     position: relative;
+    z-index: 2; /* über Particle-Canvas und ::before-Glow */
     display: flex;
     flex-direction: column;
     align-items: center;

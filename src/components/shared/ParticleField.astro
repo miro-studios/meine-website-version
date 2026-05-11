@@ -1,0 +1,139 @@
+---
+/**
+ * <ParticleField />
+ *
+ * Canvas-basiertes High-End-Background-Particle-System. Lightweight
+ * (kein WebGL), GPU-freundlich, mobile-optimiert, prefers-reduced-motion
+ * respected.
+ *
+ * Verwendung:
+ *   <section class="hero">
+ *     <ParticleField count={90} color="var(--color-text)" connections reactive />
+ *     <h1>...</h1>
+ *   </section>
+ *
+ * Wichtig: Eltern-Element braucht `position: relative` und das Canvas
+ * füllt es per absolute positioning. pointer-events: none, damit
+ * Klicks/Hover auf Inhalt darunter durchgehen.
+ */
+
+interface Props {
+  /** Anzahl Particles (Desktop). Mobile wird automatisch reduziert. */
+  count?: number;
+  /** Particle-Größe in px (variiert) */
+  size?: number;
+  /** Particle-Farbe — hex or rgb. Default: kuratiert pro Theme via CSS-Var. */
+  color?: string;
+  /** Optional Connection-Lines zwischen nahen Particles */
+  connections?: boolean;
+  /** Reagiert auf Scroll-Velocity (Parallax-Drift) */
+  reactive?: boolean;
+  /** Maus-Repulsion-Radius (Desktop). 0 = aus. */
+  interactionRadius?: number;
+  /** Geschwindigkeit (px/s) */
+  speed?: number;
+  /** Zusätzliche Klassen */
+  class?: string;
+}
+
+const {
+  count = 90,
+  size = 1.6,
+  color,
+  connections = true,
+  reactive = true,
+  interactionRadius = 120,
+  speed = 18,
+  class: className = '',
+} = Astro.props;
+---
+
+<div
+  class:list={['particle-field', className]}
+  data-particle-field
+  data-count={count}
+  data-size={size}
+  data-color={color ?? ''}
+  data-connections={connections ? 'true' : 'false'}
+  data-reactive={reactive ? 'true' : 'false'}
+  data-interaction-radius={interactionRadius}
+  data-speed={speed}
+  aria-hidden="true"
+>
+  <canvas class="particle-field__canvas" data-particle-canvas></canvas>
+</div>
+
+<style>
+  .particle-field {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .particle-field__canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<script>
+  import { initParticleField } from '@lib/particle-field';
+
+  const cleanups = new WeakMap<HTMLElement, () => void>();
+
+  const start = (root: HTMLElement) => {
+    if (cleanups.has(root)) return;
+    const canvas = root.querySelector<HTMLCanvasElement>('[data-particle-canvas]');
+    if (!canvas) return;
+
+    // CSS-Color resolution: falls Farbe als CSS-Var angegeben war
+    let color = root.dataset.color ?? '';
+    if (color.startsWith('var(')) {
+      // var(--name) → resolve via computed style auf dem Parent
+      const varName = color.match(/--[\w-]+/)?.[0];
+      if (varName) {
+        color = getComputedStyle(root).getPropertyValue(varName).trim() || color;
+      }
+    }
+    if (!color) color = '#F0EDE4';
+
+    const count = parseInt(root.dataset.count ?? '90', 10);
+    const size = parseFloat(root.dataset.size ?? '1.6');
+    const connections = root.dataset.connections === 'true';
+    const reactive = root.dataset.reactive === 'true';
+    const interactionRadius = parseFloat(root.dataset.interactionRadius ?? '120');
+    const speed = parseFloat(root.dataset.speed ?? '18');
+
+    const cleanup = initParticleField(canvas, {
+      count,
+      size,
+      color,
+      connections,
+      reactive,
+      interactionRadius,
+      speed,
+    });
+    cleanups.set(root, cleanup);
+  };
+
+  const stopAll = () => {
+    document.querySelectorAll<HTMLElement>('[data-particle-field]').forEach((root) => {
+      cleanups.get(root)?.();
+      cleanups.delete(root);
+    });
+  };
+
+  const startAll = () => {
+    document.querySelectorAll<HTMLElement>('[data-particle-field]').forEach(start);
+  };
+
+  startAll();
+  document.addEventListener('astro:page-load', () => {
+    stopAll();
+    startAll();
+  });
+  document.addEventListener('astro:before-swap', stopAll);
+</script>
