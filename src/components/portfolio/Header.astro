@@ -367,9 +367,21 @@ const navItems = [
     opacity: 1;
   }
 
-  /* Body-Scroll Lock wenn Menu offen */
+  /*
+   * Body-Scroll-Lock wenn Menu offen.
+   * Auf iOS reicht `overflow: hidden` nicht — Safari bouncy-scrollt
+   * trotzdem den ganzen Body. Pattern: position fixed + saved scroll-Y
+   * als negative top, beim Schließen wird die Position via window.scrollTo
+   * wiederhergestellt.
+   */
   :global(body.menu-open) {
+    position: fixed;
+    top: calc(var(--menu-scroll-y, 0px) * -1);
+    left: 0;
+    right: 0;
+    width: 100%;
     overflow: hidden;
+    overscroll-behavior: contain;
   }
 
   @media (max-width: 768px) {
@@ -399,6 +411,8 @@ const navItems = [
 </style>
 
 <script>
+  import { stopLenis, startLenis } from '@lib/lenis';
+
   const init = () => {
     const header = document.querySelector<HTMLElement>('[data-site-header]');
     if (!header) return;
@@ -420,12 +434,37 @@ const navItems = [
     const menu = header.querySelector<HTMLElement>('[data-mobile-menu]');
     const body = document.body;
 
+    /**
+     * Scroll-Position beim Öffnen sichern, beim Schließen wiederherstellen.
+     * Verhindert das "Bildschirm friert ein"-Problem auf Mobile, wenn
+     * Lenis-Smooth-Scroll und CSS-Body-Lock gegeneinander arbeiten.
+     */
+    let savedScrollY = 0;
+
     const setOpen = (open: boolean) => {
       if (!toggle || !menu) return;
       toggle.setAttribute('aria-expanded', String(open));
       toggle.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
       menu.setAttribute('aria-hidden', String(!open));
-      body.classList.toggle('menu-open', open);
+
+      if (open) {
+        // 1. Lenis-Smooth-Scroll pausieren (sonst kämpft er gegen den Body-Lock)
+        stopLenis();
+        // 2. Aktuelle Scroll-Position merken
+        savedScrollY = window.scrollY || window.pageYOffset || 0;
+        // 3. Position als CSS-Var, body bekommt position:fixed via .menu-open
+        body.style.setProperty('--menu-scroll-y', `${savedScrollY}px`);
+        body.classList.add('menu-open');
+      } else {
+        // 1. Body-Lock entfernen
+        body.classList.remove('menu-open');
+        body.style.removeProperty('--menu-scroll-y');
+        // 2. Scroll-Position wiederherstellen (instant, sonst springt es)
+        window.scrollTo(0, savedScrollY);
+        // 3. Lenis nach einem Tick wieder starten — sonst könnte er
+        //    kurz die alte Position zurücksetzen
+        requestAnimationFrame(() => startLenis());
+      }
     };
 
     toggle?.addEventListener('click', () => {
@@ -460,6 +499,7 @@ const navItems = [
       document.removeEventListener('keydown', onKey);
       window.removeEventListener('resize', onResize);
       body.classList.remove('menu-open');
+      body.style.removeProperty('--menu-scroll-y');
       delete header.dataset.initialized;
     };
 
