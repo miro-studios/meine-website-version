@@ -40,3 +40,21 @@ const {
 
   <slot />
 </BaseLayout>
+
+<script>
+  import { initScrollDepth } from '@lib/scroll-depth';
+
+  let cleanup: (() => void) | null = null;
+
+  const start = () => {
+    cleanup?.();
+    cleanup = initScrollDepth('[data-scroll-depth]');
+  };
+
+  start();
+  document.addEventListener('astro:page-load', start);
+  document.addEventListener('astro:before-swap', () => {
+    cleanup?.();
+    cleanup = null;
+  });
+</script>
