@@ -6,7 +6,7 @@ import ScrollStory from '@components/portfolio/ScrollStory.astro';
 import Pricing from '@components/portfolio/Pricing.astro';
 import Footer from '@components/portfolio/Footer.astro';
 import Marquee from '@components/shared/Marquee.astro';
-import ParticleField from '@components/shared/ParticleField.astro';
+import AmbientBackdrop from '@components/shared/AmbientBackdrop.astro';
 ---
 
 <PortfolioLayout
@@ -14,6 +14,11 @@ import ParticleField from '@components/shared/ParticleField.astro';
   description="Webdesign-Studio aus Lüdenscheid. Websites mit Editorial-Qualität für Pizzerien, Friseure, Handwerksbetriebe und lokale Dienstleister in NRW — Design & Development aus einer Hand."
   active="index"
 >
+  <!-- Filmischer fixed-Background-Layer (Aurora-Orbs + Stars + Wireframe).
+       Aktiviert sich automatisch beim Erreichen der ScrollStory-Section,
+       läuft fixed bis zum Footer durch. -->
+  <AmbientBackdrop triggerSelector="[data-scroll-story]" />
+
   <Hero />
 
   <Marquee
@@ -37,9 +42,10 @@ import ParticleField from '@components/shared/ParticleField.astro';
 
   <Pricing />
 
-  <!-- Studio-Teaser vor dem Footer -->
+  <!-- Studio-Teaser vor dem Footer
+       (ParticleField entfernt — Ambient-Backdrop deckt diese Section
+       jetzt einheitlich ab) -->
   <section class="studio-teaser" data-studio-teaser>
-    <ParticleField count={70} size={1.5} connections reactive interactionRadius={140} />
     <div class="studio-teaser__inner">
       <p class="studio-teaser__label">Das Studio</p>
       <h2
@@ -57,9 +63,9 @@ import ParticleField from '@components/shared/ParticleField.astro';
     </div>
   </section>
 
-  <!-- CTA-Banner vor dem Footer -->
+  <!-- CTA-Banner vor dem Footer
+       (ParticleField entfernt — Ambient-Backdrop läuft hier durch) -->
   <section class="cta-banner" data-cta-banner>
-    <ParticleField count={110} size={1.8} connections reactive interactionRadius={160} speed={22} />
     <div class="cta-banner__inner">
       <p class="cta-banner__label">Bereit loszulegen?</p>
       <h2
