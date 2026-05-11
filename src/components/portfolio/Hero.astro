@@ -370,11 +370,30 @@ import HeroScene from './HeroScene.astro';
     position: relative;
     z-index: 1;
     text-align: center;
+    /* width:100% + min-width:0 verhindert dass die min-content-width
+       der Headline-Rotator-Wörter (white-space:nowrap) das Element
+       über die Viewport-Breite hinaus pusht. */
+    width: 100%;
+    min-width: 0;
     max-width: 1200px;
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 1s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)),
                 transform 1s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+  }
+
+  /* Headline + Lines: auf Mobile kleinere Schrift damit auch lange
+     Rotator-Wörter ("für dein Restaurant") nicht überlaufen. */
+  .hero__headline {
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+  @media (max-width: 480px) {
+    .hero__headline,
+    :global(.hero__line) {
+      font-size: clamp(1.85rem, 8.8vw, 2.6rem) !important;
+      letter-spacing: -0.035em !important;
+    }
   }
   .hero__center.is-on {
     opacity: 1;
@@ -567,10 +586,29 @@ import HeroScene from './HeroScene.astro';
 
   .hero__actions {
     margin-top: var(--space-4);
-    display: inline-flex;
+    /* display:flex (statt inline-flex) übernimmt 100% des Parents
+       und erlaubt sauberes wrap auf Mobile. inline-flex hätte
+       content-width genommen → "Projekt starten" ragte raus. */
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
     gap: 0.75rem;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Auf Mobile: Buttons stacken vertikal, jeweils full-width
+     (max 18rem damit sie nicht extreme breit werden auf Tablets) */
+  @media (max-width: 520px) {
+    .hero__actions {
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .hero__actions :global(.magnetic-btn) {
+      width: 100%;
+      max-width: 18rem;
+    }
   }
 
   .hero__scroll-line {
