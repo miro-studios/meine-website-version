@@ -31,6 +31,19 @@ html {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-feature-settings: "kern" 1, "liga" 1;
+  /*
+   * Wichtig: overflow-x AUCH auf html — sonst können position:fixed-
+   * Elemente (Header, Mobile-Menu, ScrollProgress, PageTransition) die
+   * über den viewport hinausragen, das Layout-Bounding nach rechts
+   * expandieren. body allein reicht nicht, weil fixed positioning sich
+   * vom ICB (=html) ausrichtet.
+   *
+   * `clip` ist die modernere Variante (kein scroll-container) und
+   * funktioniert in Chrome/Edge/Safari/Firefox aktueller Versionen.
+   * Browser, die clip nicht kennen, nehmen den hidden-Fallback davor.
+   */
+  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
@@ -41,6 +54,7 @@ body {
   line-height: 1.5;
   min-height: 100vh;
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 img,
