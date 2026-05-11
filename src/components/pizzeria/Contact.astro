@@ -1,0 +1,922 @@
+---
+/**
+ * Bella Notte — Section 6: Kontakt / Reservierung + Footer
+ *
+ * Großzügiges Editorial-Layout — kein eingequetschter Form-Block.
+ *  - links:  Mega-Headline + Alternative Kontakt-Wege (Tel, Mail, WhatsApp)
+ *  - rechts: Reservierungsformular mit
+ *           - Validierung (client + simulated server)
+ *           - Honeypot + Turnstile-Slot (Demo)
+ *           - DSGVO-Checkbox + Datenschutz-Link
+ *           - Inline-Success-Animation (kein Reload)
+ *
+ *  Footer integriert unten (große Wortmarke + Impressum + Social).
+ *
+ * Hinweis: Für echte Kunden Formspree-URL oder Cloudflare-Worker
+ * + echten Turnstile-Site-Key eintragen.
+ */
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+import SplitText from '@components/shared/SplitText.astro';
+import MagneticButton from '@components/shared/MagneticButton.astro';
+---
+
+<section class="bn-contact" id="reservieren" data-bn-contact>
+  <div class="bn-contact__inner">
+    <!-- ── Links: Headline + alternative Kontakt-Wege ───────────────── -->
+    <div class="bn-contact__col-left">
+      <p class="bn-contact__eyebrow"><span aria-hidden="true">06 ·</span> Reservieren</p>
+
+      <h2 class="bn-contact__headline">
+        <span class="bn-contact__headline-line">
+          <SplitText by="words" stagger={0.06}>Einen Tisch,</SplitText>
+        </span>
+        <span class="bn-contact__headline-line bn-contact__headline-line--alt">
+          <SplitText by="words" stagger={0.06} delay={0.15}>einen Abend.</SplitText>
+        </span>
+      </h2>
+
+      <p class="bn-contact__lead">
+        Wir bestätigen jede Anfrage persönlich — meistens innerhalb von
+        zwei Stunden, spätestens am gleichen Tag.
+      </p>
+
+      <RevealOnScroll y={28} duration={0.85} stagger={0.1} class="bn-contact__alt">
+        <a href="tel:+4923519876543" class="bn-contact__alt-block">
+          <span class="bn-contact__alt-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72a2 2 0 0 1 1.72 2z" />
+            </svg>
+          </span>
+          <div class="bn-contact__alt-text">
+            <span class="bn-contact__alt-label">Lieber anrufen?</span>
+            <span class="bn-contact__alt-value">02351 / 98 76 543</span>
+          </div>
+          <span class="bn-contact__alt-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a href="https://wa.me/4923519876543" target="_blank" rel="noopener noreferrer" class="bn-contact__alt-block">
+          <span class="bn-contact__alt-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.3c1.4.8 3.1 1.3 4.8 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2z" />
+            </svg>
+          </span>
+          <div class="bn-contact__alt-text">
+            <span class="bn-contact__alt-label">Spontan?</span>
+            <span class="bn-contact__alt-value">WhatsApp schreiben</span>
+          </div>
+          <span class="bn-contact__alt-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a href="mailto:ciao@bella-notte-luedenscheid.de" class="bn-contact__alt-block">
+          <span class="bn-contact__alt-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="14" rx="2" />
+              <path d="m3 7 9 6 9-6" />
+            </svg>
+          </span>
+          <div class="bn-contact__alt-text">
+            <span class="bn-contact__alt-label">Für Anlässe & Gruppen</span>
+            <span class="bn-contact__alt-value">ciao@bella-notte-luedenscheid.de</span>
+          </div>
+          <span class="bn-contact__alt-arrow" aria-hidden="true">↗</span>
+        </a>
+      </RevealOnScroll>
+    </div>
+
+    <!-- ── Rechts: Formular ─────────────────────────────────────────── -->
+    <div class="bn-contact__col-right">
+      <form class="bn-form" data-bn-form novalidate>
+        <p class="bn-form__title">
+          <span class="bn-form__title-num">06.1</span>
+          Tisch reservieren
+        </p>
+
+        <!-- Honeypot: für Bots sichtbar, für Menschen nicht -->
+        <div class="bn-form__honeypot" aria-hidden="true">
+          <label for="bn-website">Webseite (bitte leer lassen)</label>
+          <input id="bn-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="bn-form__row">
+          <label class="bn-form__field">
+            <span class="bn-form__label">Name *</span>
+            <input type="text" name="name" required minlength="2" autocomplete="name" />
+            <span class="bn-form__error" data-error-for="name"></span>
+          </label>
+
+          <label class="bn-form__field">
+            <span class="bn-form__label">E-Mail *</span>
+            <input type="email" name="email" required autocomplete="email" />
+            <span class="bn-form__error" data-error-for="email"></span>
+          </label>
+        </div>
+
+        <div class="bn-form__row">
+          <label class="bn-form__field">
+            <span class="bn-form__label">Telefon</span>
+            <input type="tel" name="phone" autocomplete="tel" placeholder="optional" />
+          </label>
+
+          <label class="bn-form__field">
+            <span class="bn-form__label">Anlass</span>
+            <select name="occasion">
+              <option value="abendessen">Abendessen</option>
+              <option value="geburtstag">Geburtstag</option>
+              <option value="familie">Familie / Feier</option>
+              <option value="geschaeftlich">Geschäftlich</option>
+              <option value="sonstiges">Etwas anderes</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="bn-form__row">
+          <label class="bn-form__field">
+            <span class="bn-form__label">Datum</span>
+            <input type="date" name="date" />
+          </label>
+
+          <label class="bn-form__field">
+            <span class="bn-form__label">Personen</span>
+            <select name="people">
+              <option value="2">2 Personen</option>
+              <option value="3">3 Personen</option>
+              <option value="4">4 Personen</option>
+              <option value="5">5 Personen</option>
+              <option value="6">6 Personen</option>
+              <option value="7+">7 oder mehr</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="bn-form__field bn-form__field--full">
+          <span class="bn-form__label">Nachricht *</span>
+          <textarea
+            name="message"
+            rows="4"
+            required
+            minlength="5"
+            placeholder="Wunschuhrzeit, Allergien, Geburtstagsdetails — alles, was wir wissen sollten."
+          ></textarea>
+          <span class="bn-form__error" data-error-for="message"></span>
+        </label>
+
+        <!-- DSGVO-Checkbox -->
+        <label class="bn-form__consent">
+          <input type="checkbox" name="consent" required />
+          <span class="bn-form__consent-mark" aria-hidden="true">
+            <svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 7l3.5 3.5L12 4" />
+            </svg>
+          </span>
+          <span class="bn-form__consent-text">
+            Ich habe die <a href="/demos/pizzeria/datenschutz">Datenschutzerklärung</a>
+            gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung
+            der Anfrage zu. *
+          </span>
+          <span class="bn-form__error bn-form__error--consent" data-error-for="consent"></span>
+        </label>
+
+        <!-- Turnstile-Slot (Demo). Für Live-Betrieb echten Site-Key einsetzen. -->
+        <div class="bn-form__turnstile" aria-hidden="true">
+          <span class="bn-form__turnstile-mark">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 8l3 3 7-7" />
+            </svg>
+          </span>
+          <span class="bn-form__turnstile-label">Spam-Schutz aktiv</span>
+          <span class="bn-form__turnstile-brand">Cloudflare Turnstile</span>
+        </div>
+
+        <div class="bn-form__footer">
+          <p class="bn-form__hint">
+            Wir melden uns in der Regel innerhalb von zwei Stunden zurück.
+          </p>
+
+          <MagneticButton type="submit" strength={0.3} variant="primary" class="bn-form__submit">
+            <span class="bn-form__submit-label">Anfrage senden</span>
+            <span class="bn-form__submit-arrow" aria-hidden="true">→</span>
+          </MagneticButton>
+        </div>
+
+        <!-- Inline-Success — keine Page-Navigation -->
+        <div class="bn-form__success" data-bn-form-success aria-live="polite">
+          <span class="bn-form__success-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" width="38" height="38" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 17l6 6L27 9" />
+            </svg>
+          </span>
+          <p class="bn-form__success-title">Grazie — wir haben deine Anfrage.</p>
+          <p class="bn-form__success-text">
+            Wir bestätigen den Tisch per Mail oder Anruf, sobald wir den
+            Platz für dich blockiert haben. <em>A presto!</em>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── Footer (integriert) ───────────────────────────────────────── -->
+  <footer class="bn-footer">
+    <div class="bn-footer__wordmark" aria-hidden="true">
+      <span>Bella Notte</span>
+    </div>
+
+    <div class="bn-footer__inner">
+      <div class="bn-footer__brand-block">
+        <p class="bn-footer__brand-name">
+          <span class="bn-footer__brand-it">Bella</span> Notte
+        </p>
+        <p class="bn-footer__brand-tag">
+          Trattoria · Lüdenscheid · Familie Caruso, seit 1972
+        </p>
+      </div>
+
+      <nav class="bn-footer__nav" aria-label="Footer">
+        <a href="/demos/pizzeria/impressum">Impressum</a>
+        <a href="/demos/pizzeria/datenschutz">Datenschutz</a>
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+        <a href="https://maps.google.com/?q=Knapper+Weg+47+Lüdenscheid" target="_blank" rel="noopener noreferrer">Google ↗</a>
+      </nav>
+
+      <p class="bn-footer__copy">
+        © {new Date().getFullYear()} Bella Notte GbR · gebaut von
+        <a href="/" class="bn-footer__credit">miro-studios</a>
+      </p>
+    </div>
+  </footer>
+</section>
+
+<style>
+  .bn-contact {
+    background: var(--color-bg);
+    color: var(--color-text);
+    padding-block: clamp(5rem, 10vw, 9rem) 0;
+    padding-inline: var(--bn-gutter);
+    border-top: 1px solid var(--color-rule);
+    position: relative;
+  }
+
+  .bn-contact__inner {
+    max-width: var(--bn-container);
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(3rem, 6vw, 5rem);
+    padding-bottom: clamp(4rem, 8vw, 7rem);
+  }
+
+  @media (min-width: 960px) {
+    .bn-contact__inner {
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: clamp(3rem, 7vw, 6rem);
+      align-items: start;
+    }
+  }
+
+  /* ── Left ─────────────────────────────────────────────────────── */
+  .bn-contact__col-left {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .bn-contact__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-primary);
+  }
+
+  .bn-contact__headline {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6.5vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+
+  .bn-contact__headline-line {
+    display: block;
+    overflow: hidden;
+  }
+
+  .bn-contact__headline-line--alt {
+    color: var(--color-primary);
+    font-style: italic;
+    padding-left: clamp(0.5rem, 3vw, 2.5rem);
+  }
+
+  .bn-contact__lead {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+    color: var(--color-muted);
+    max-width: 36ch;
+    line-height: 1.5;
+  }
+
+  .bn-contact__alt {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .bn-contact__alt-block {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--color-cream);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-md);
+    transition:
+      border-color 0.3s ease,
+      transform 0.4s var(--ease-out-expo),
+      background-color 0.3s ease;
+    color: var(--color-text);
+  }
+
+  .bn-contact__alt-block:hover {
+    border-color: var(--color-primary);
+    transform: translateX(3px);
+  }
+
+  .bn-contact__alt-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--color-primary) 14%, transparent);
+    color: var(--color-primary);
+  }
+
+  .bn-contact__alt-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+
+  .bn-contact__alt-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--color-muted);
+  }
+
+  .bn-contact__alt-value {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--color-text);
+    word-break: break-word;
+  }
+
+  .bn-contact__alt-arrow {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--color-muted);
+    transition: color 0.3s ease, transform 0.4s var(--ease-out-expo);
+  }
+
+  .bn-contact__alt-block:hover .bn-contact__alt-arrow {
+    color: var(--color-primary);
+    transform: translate(3px, -3px);
+  }
+
+  /* ── Form ─────────────────────────────────────────────────────── */
+  .bn-form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    background: var(--color-cream);
+    padding: clamp(1.5rem, 3.5vw, 2.75rem);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-lg);
+    isolation: isolate;
+  }
+
+  .bn-form__title {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 1.6vw, 1.5rem);
+    color: var(--color-text);
+    margin-bottom: 0.25rem;
+  }
+
+  .bn-form__title-num {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-accent);
+    letter-spacing: 0.14em;
+  }
+
+  .bn-form__honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .bn-form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  @media (max-width: 520px) {
+    .bn-form__row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .bn-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .bn-form__label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--color-muted);
+  }
+
+  .bn-form input[type="text"],
+  .bn-form input[type="email"],
+  .bn-form input[type="tel"],
+  .bn-form input[type="date"],
+  .bn-form select,
+  .bn-form textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-text);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    appearance: none;
+  }
+
+  .bn-form input:focus,
+  .bn-form select:focus,
+  .bn-form textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    background: color-mix(in srgb, var(--color-bg) 70%, var(--color-cream));
+  }
+
+  .bn-form textarea {
+    resize: vertical;
+    min-height: 120px;
+    font-family: var(--font-body);
+  }
+
+  .bn-form__error {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--color-primary);
+    min-height: 1em;
+    letter-spacing: 0.04em;
+  }
+
+  .bn-form__field.is-error input,
+  .bn-form__field.is-error textarea {
+    border-color: var(--color-primary);
+    background: color-mix(in srgb, var(--color-primary) 6%, var(--color-bg));
+  }
+
+  /* ── Consent / Checkbox ───────────────────────────────────────── */
+  .bn-form__consent {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    gap: 0.4rem 0.85rem;
+    align-items: start;
+    cursor: pointer;
+  }
+
+  .bn-form__consent input[type="checkbox"] {
+    appearance: none;
+    margin: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .bn-form__consent-mark {
+    grid-row: 1;
+    grid-column: 1;
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid var(--color-rule-strong);
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    background: var(--color-bg);
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .bn-form__consent input[type="checkbox"]:checked + .bn-form__consent-mark {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-cream);
+  }
+
+  .bn-form__consent input[type="checkbox"]:focus-visible + .bn-form__consent-mark {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+
+  .bn-form__consent-text {
+    grid-row: 1;
+    grid-column: 2;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--color-muted);
+    line-height: 1.5;
+  }
+
+  .bn-form__consent-text a {
+    color: var(--color-primary);
+    border-bottom: 1px solid currentColor;
+  }
+
+  .bn-form__error--consent {
+    grid-row: 2;
+    grid-column: 1 / -1;
+  }
+
+  /* ── Turnstile (Demo-Slot) ────────────────────────────────────── */
+  .bn-form__turnstile {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.5rem 0.85rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-sm);
+    align-self: flex-start;
+    color: var(--color-muted);
+  }
+
+  .bn-form__turnstile-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--color-secondary) 25%, transparent);
+    color: var(--color-secondary);
+  }
+
+  .bn-form__turnstile-label {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  .bn-form__turnstile-brand {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-muted);
+  }
+
+  /* ── Footer (innerhalb der Form-Karte) ────────────────────────── */
+  .bn-form__footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.4rem;
+  }
+
+  .bn-form__hint {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+    max-width: 30ch;
+  }
+
+  .bn-form__submit {
+    --pad-x: 1.85rem;
+    --pad-y: 1rem;
+    background-color: var(--color-primary);
+    color: var(--color-cream);
+    font-size: 0.95rem;
+  }
+
+  .bn-form__submit:hover {
+    background-color: var(--color-deep);
+    color: var(--color-cream);
+  }
+
+  .bn-form__submit-arrow {
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+
+  .bn-form__submit:hover .bn-form__submit-arrow {
+    transform: translateX(4px);
+  }
+
+  /* ── Success-State ────────────────────────────────────────────── */
+  .bn-form__success {
+    position: absolute;
+    inset: 0;
+    background: var(--color-cream);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s var(--ease-out-expo), visibility 0.5s;
+  }
+
+  .bn-form.is-success .bn-form__success {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .bn-form__success-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: var(--color-cream);
+    margin-bottom: 1.5rem;
+    transform: scale(0);
+    transition: transform 0.7s var(--ease-spring) 0.15s;
+  }
+
+  .bn-form.is-success .bn-form__success-mark {
+    transform: scale(1);
+  }
+
+  .bn-form__success-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    line-height: 1.1;
+    color: var(--color-text);
+    margin-bottom: 0.85rem;
+    font-style: italic;
+  }
+
+  .bn-form__success-text {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-muted);
+    max-width: 38ch;
+    line-height: 1.55;
+  }
+
+  .bn-form__success-text em {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--color-primary);
+  }
+
+  /* ── Footer ───────────────────────────────────────────────────── */
+  .bn-footer {
+    position: relative;
+    background: var(--color-text);
+    color: var(--color-cream);
+    overflow: hidden;
+    margin-inline: calc(var(--bn-gutter) * -1);
+    padding-inline: var(--bn-gutter);
+  }
+
+  .bn-footer__wordmark {
+    position: relative;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(5rem, 18vw, 18rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    color: color-mix(in srgb, var(--color-accent) 35%, transparent);
+    text-align: center;
+    margin-top: clamp(2rem, 4vw, 4rem);
+    margin-bottom: -0.15em;
+    user-select: none;
+    pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .bn-footer__wordmark span {
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-accent) 50%, transparent) 0%,
+      transparent 90%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .bn-footer__inner {
+    max-width: var(--bn-container);
+    margin-inline: auto;
+    padding-block: clamp(2rem, 4vw, 3rem) clamp(2rem, 3vw, 2.5rem);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    position: relative;
+    border-top: 1px solid color-mix(in srgb, var(--color-cream) 14%, transparent);
+  }
+
+  .bn-footer__brand-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .bn-footer__brand-name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+    color: var(--color-cream);
+  }
+
+  .bn-footer__brand-it {
+    font-style: italic;
+    color: var(--color-accent);
+  }
+
+  .bn-footer__brand-tag {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: color-mix(in srgb, var(--color-cream) 60%, transparent);
+  }
+
+  .bn-footer__nav {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .bn-footer__nav a {
+    display: inline-block;
+    padding-block: 0.5rem;
+    margin-block: -0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: color-mix(in srgb, var(--color-cream) 65%, transparent);
+    transition: color 0.3s ease;
+    border-bottom: 1px solid transparent;
+  }
+
+  .bn-footer__nav a:hover {
+    color: var(--color-accent);
+    border-bottom-color: currentColor;
+  }
+
+  .bn-footer__copy {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: color-mix(in srgb, var(--color-cream) 50%, transparent);
+    letter-spacing: 0.04em;
+    flex-basis: 100%;
+    margin-top: 0.25rem;
+  }
+
+  .bn-footer__credit {
+    display: inline-block;
+    padding-block: 0.4rem;
+    margin-block: -0.4rem;
+    color: var(--color-accent);
+    border-bottom: 1px solid currentColor;
+  }
+</style>
+
+<script>
+  type FieldName = 'name' | 'email' | 'message' | 'consent';
+
+  const ERR: Record<FieldName, { required: string; invalid: string }> = {
+    name:    { required: 'Bitte deinen Namen.',         invalid: 'Mindestens zwei Zeichen.' },
+    email:   { required: 'Bitte deine E-Mail-Adresse.', invalid: 'Das sieht nicht nach einer E-Mail aus.' },
+    message: { required: 'Was sollen wir wissen?',      invalid: 'Mindestens fünf Zeichen.' },
+    consent: { required: 'Bitte bestätige die Datenschutzerklärung.', invalid: '' },
+  };
+
+  function validateField(input: HTMLInputElement | HTMLTextAreaElement, name: FieldName): string {
+    if (name === 'consent') {
+      return (input as HTMLInputElement).checked ? '' : ERR.consent.required;
+    }
+    const v = input.value.trim();
+    if (!v) return ERR[name].required;
+    if (name === 'email') {
+      const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+      if (!ok) return ERR.email.invalid;
+    } else {
+      const min = (input as HTMLInputElement).minLength;
+      if (min > 0 && v.length < min) return ERR[name].invalid;
+    }
+    return '';
+  }
+
+  function setError(form: HTMLFormElement, name: FieldName, msg: string) {
+    const errEl = form.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+    const inputEl = form.querySelector<HTMLElement>(`[name="${name}"]`);
+    const field = inputEl?.closest('.bn-form__field, .bn-form__consent');
+    if (errEl) errEl.textContent = msg;
+    if (field) field.classList.toggle('is-error', !!msg);
+  }
+
+  function init() {
+    const form = document.querySelector<HTMLFormElement>('[data-bn-form]');
+    if (!form) return;
+
+    const fieldNames: FieldName[] = ['name', 'email', 'message', 'consent'];
+
+    fieldNames.forEach((name) => {
+      const input = form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[name="${name}"]`);
+      if (!input) return;
+      const event = name === 'consent' ? 'change' : 'blur';
+      input.addEventListener(event, () => setError(form, name, validateField(input, name)));
+      input.addEventListener('input', () => {
+        const field = input.closest('.bn-form__field, .bn-form__consent');
+        if (field?.classList.contains('is-error')) {
+          setError(form, name, validateField(input, name));
+        }
+      });
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Honeypot — schweigend abbrechen
+      const hp = (form.elements.namedItem('website') as HTMLInputElement | null)?.value;
+      if (hp) return;
+
+      // Validate alle Pflichtfelder
+      let hasError = false;
+      fieldNames.forEach((name) => {
+        const input = form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[name="${name}"]`);
+        if (!input) return;
+        const msg = validateField(input, name);
+        setError(form, name, msg);
+        if (msg) hasError = true;
+      });
+
+      if (hasError) {
+        const firstError = form.querySelector<HTMLElement>('.is-error input, .is-error textarea');
+        firstError?.focus();
+        return;
+      }
+
+      const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      if (submit) {
+        submit.disabled = true;
+        const label = submit.querySelector('.bn-form__submit-label');
+        if (label) label.textContent = 'Wird gesendet…';
+      }
+
+      // Demo-Submit: simuliert Netzwerk-Roundtrip.
+      // In Produktion: fetch zu Formspree / Cloudflare Worker + Turnstile-Token mitsenden.
+      const data = Object.fromEntries(new FormData(form).entries());
+      // eslint-disable-next-line no-console
+      console.info('[Bella Notte — Reservierungsanfrage]', data);
+
+      await new Promise((r) => setTimeout(r, 800));
+      form.classList.add('is-success');
+    });
+  }
+
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

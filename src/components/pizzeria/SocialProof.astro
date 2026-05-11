@@ -1,0 +1,508 @@
+---
+/**
+ * Bella Notte — Section 4: Social Proof
+ *
+ * Editorial-Layout mit drei zusammenhängenden Trust-Bausteinen:
+ *  - oben:    Press-Logos in S/W (Auszeichnungen, Erwähnungen)
+ *  - Mitte:   Google-Score + 3 Stat-Counter
+ *  - asymm.:  3 Testimonials im versetzten Grid (kein Karussell)
+ *  - unten:   großes Marquee "BUONA PIZZA · BUONA VITA ..."
+ *
+ * Pflicht-Effekte:
+ *  - NumberCounter beim In-View (3 Stats)
+ *  - Reveal-on-Scroll mit Stagger auf Testimonials
+ *  - Marquee als kinetisches Signature-Element
+ */
+import NumberCounter from '@components/shared/NumberCounter.astro';
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+import Marquee from '@components/shared/Marquee.astro';
+
+interface Testimonial {
+  quote: string;
+  author: string;
+  source: string;
+  detail: string;
+}
+
+const testimonials: Testimonial[] = [
+  {
+    quote: 'Die Margherita schmeckt wie in Neapel. Die Atmosphäre wie bei meiner Tante. Ich war jetzt vier Mal in zwei Wochen.',
+    author: 'Tobias W.',
+    source: 'Google · ★★★★★',
+    detail: 'Lokal-Guide, 14 Bewertungen',
+  },
+  {
+    quote: 'Familie Caruso macht keine schicke Show. Sie macht ehrliche italienische Küche — und das sieht und schmeckt man.',
+    author: 'Anna M.',
+    source: 'Google · ★★★★★',
+    detail: 'Stammgast seit 2019',
+  },
+  {
+    quote: 'Hier passt alles. Der Teig, die Soßen, die Bedienung. Das Tiramisu nehmen wir mittlerweile portionsweise mit nach Hause.',
+    author: 'Klaus & Birgit S.',
+    source: 'TripAdvisor · 5 / 5',
+    detail: 'Lüdenscheid',
+  },
+];
+
+const presses = [
+  'Gault & Millau',
+  'Lüdenscheider Nachrichten',
+  'Sauerland Genuss',
+  'Slow Food',
+  'Falstaff',
+];
+---
+
+<section class="bn-proof" id="auszeichnungen" data-bn-proof>
+  <div class="bn-proof__inner">
+    <!-- ── Head ──────────────────────────────────────────────────────── -->
+    <header class="bn-proof__head">
+      <p class="bn-proof__eyebrow"><span aria-hidden="true">04 ·</span> Stimmen</p>
+      <h2 class="bn-proof__headline">
+        Was die Gäste <span class="bn-proof__headline-it">erzählen.</span>
+      </h2>
+    </header>
+
+    <!-- ── Press-Strip (S/W Logos) ──────────────────────────────────── -->
+    <RevealOnScroll y={20} duration={0.9} stagger={0.08} class="bn-proof__press">
+      <p class="bn-proof__press-label">erwähnt in</p>
+      <ul class="bn-proof__press-list" role="list">
+        {presses.map((p) => (
+          <li class="bn-proof__press-item">{p}</li>
+        ))}
+      </ul>
+    </RevealOnScroll>
+
+    <!-- ── Google-Score + Stats ─────────────────────────────────────── -->
+    <div class="bn-proof__score">
+      <div class="bn-proof__score-google">
+        <div class="bn-proof__score-head">
+          <span class="bn-proof__score-label">Google-Bewertungen</span>
+          <span class="bn-proof__score-stamp">Live aktualisiert · 11.05.2026</span>
+        </div>
+
+        <div class="bn-proof__score-main">
+          <span class="bn-proof__score-value">
+            <NumberCounter to={4.9} duration={2} decimals={1} />
+          </span>
+          <span class="bn-proof__score-stars" aria-label="4,9 von 5 Sternen">
+            <svg viewBox="0 0 100 16" width="100" height="16" aria-hidden="true">
+              {[0, 20, 40, 60, 80].map((x) => (
+                <path
+                  d={`M${x + 10} 1 L${x + 12.6} 6.4 L${x + 18.5} 7 L${x + 14.2} 11 L${x + 15.4} 16 L${x + 10} 13 L${x + 4.6} 16 L${x + 5.8} 11 L${x + 1.5} 7 L${x + 7.4} 6.4 Z`}
+                  fill="currentColor"
+                />
+              ))}
+            </svg>
+          </span>
+        </div>
+
+        <p class="bn-proof__score-note">
+          aus <strong><NumberCounter to={312} duration={1.8} /></strong> verifizierten Google-Bewertungen
+        </p>
+      </div>
+
+      <ul class="bn-proof__stats" role="list">
+        <li class="bn-proof__stat">
+          <span class="bn-proof__stat-num">
+            <NumberCounter to={52} duration={1.8} />
+          </span>
+          <span class="bn-proof__stat-label">Jahre am Knapper Weg</span>
+        </li>
+        <li class="bn-proof__stat">
+          <span class="bn-proof__stat-num">
+            <NumberCounter to={1820} duration={2.2} />
+          </span>
+          <span class="bn-proof__stat-label">Pizzen aus dem Holzofen pro Monat</span>
+        </li>
+        <li class="bn-proof__stat">
+          <span class="bn-proof__stat-num">
+            <NumberCounter to={3} duration={1.4} />
+          </span>
+          <span class="bn-proof__stat-label">Generationen Familie Caruso</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ── Testimonials (asymmetrisches Grid) ────────────────────────── -->
+    <RevealOnScroll y={40} duration={1} stagger={0.18} class="bn-proof__testimonials">
+      {testimonials.map((t, i) => (
+        <figure
+          class:list={[
+            'bn-proof__testimonial',
+            i === 0 && 'bn-proof__testimonial--lead',
+            i === 1 && 'bn-proof__testimonial--shift-down',
+            i === 2 && 'bn-proof__testimonial--shift-up',
+          ]}
+        >
+          <span class="bn-proof__quote-mark" aria-hidden="true">"</span>
+          <blockquote class="bn-proof__quote">
+            <p>{t.quote}</p>
+          </blockquote>
+          <figcaption class="bn-proof__cite">
+            <span class="bn-proof__cite-author">— {t.author}</span>
+            <span class="bn-proof__cite-source">{t.source}</span>
+            <span class="bn-proof__cite-detail">{t.detail}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </RevealOnScroll>
+  </div>
+
+  <!-- ── Marquee (kinetisches Signature-Element) ───────────────────── -->
+  <div class="bn-proof__marquee-wrap" aria-hidden="true">
+    <Marquee
+      items={['Buona Pizza', 'Buona Vita', 'Buona Sera', 'Buona Notte', 'Mangia Bene']}
+      speed={70}
+      separator="·"
+      class="bn-proof__marquee"
+    />
+  </div>
+</section>
+
+<style>
+  .bn-proof {
+    background: var(--color-bg);
+    color: var(--color-text);
+    padding-block: clamp(5rem, 10vw, 9rem) 0;
+    border-top: 1px solid var(--color-rule);
+    position: relative;
+  }
+
+  .bn-proof__inner {
+    max-width: var(--bn-container);
+    margin-inline: auto;
+    padding-inline: var(--bn-gutter);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3rem, 6vw, 5rem);
+  }
+
+  /* ── Head ──────────────────────────────────────────────────────── */
+  .bn-proof__head {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .bn-proof__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-primary);
+  }
+
+  .bn-proof__headline {
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 7vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    max-width: 16ch;
+  }
+
+  .bn-proof__headline-it {
+    font-style: italic;
+    color: var(--color-primary);
+  }
+
+  /* ── Press ─────────────────────────────────────────────────────── */
+  .bn-proof__press {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-block: 1.5rem;
+    border-block: 1px solid var(--color-rule);
+  }
+
+  .bn-proof__press-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-muted);
+  }
+
+  .bn-proof__press-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    list-style: none;
+  }
+
+  .bn-proof__press-item {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+    color: var(--color-text);
+    opacity: 0.65;
+    transition: opacity 0.4s ease, color 0.4s ease;
+    letter-spacing: -0.01em;
+  }
+
+  .bn-proof__press-item:hover {
+    opacity: 1;
+    color: var(--color-primary);
+  }
+
+  /* ── Score + Stats ────────────────────────────────────────────── */
+  .bn-proof__score {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    padding: clamp(1.75rem, 4vw, 3rem);
+    background: var(--color-cream);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-lg);
+  }
+
+  @media (min-width: 860px) {
+    .bn-proof__score {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      align-items: stretch;
+    }
+  }
+
+  .bn-proof__score-google {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-right: 0;
+    border-right: none;
+  }
+
+  @media (min-width: 860px) {
+    .bn-proof__score-google {
+      padding-right: clamp(1.5rem, 3vw, 2.5rem);
+      border-right: 1px solid var(--color-rule);
+    }
+  }
+
+  .bn-proof__score-head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .bn-proof__score-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-primary);
+  }
+
+  .bn-proof__score-stamp {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .bn-proof__score-main {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .bn-proof__score-value {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 9vw, 7rem);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bn-proof__score-stars {
+    color: var(--color-accent);
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .bn-proof__score-note {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--color-muted);
+  }
+
+  .bn-proof__score-note strong {
+    color: var(--color-text);
+    font-family: var(--font-display);
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+  }
+
+  /* Stats */
+  .bn-proof__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1rem, 2.5vw, 2rem);
+    list-style: none;
+  }
+
+  @media (max-width: 520px) {
+    .bn-proof__stats {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .bn-proof__stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .bn-proof__stat-num {
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 5.5vw, 4rem);
+    line-height: 1;
+    color: var(--color-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bn-proof__stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-muted);
+    line-height: 1.5;
+    max-width: 22ch;
+  }
+
+  /* ── Testimonials ─────────────────────────────────────────────── */
+  .bn-proof__testimonials {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  @media (min-width: 780px) {
+    .bn-proof__testimonials {
+      grid-template-columns: repeat(3, 1fr);
+      align-items: start;
+    }
+  }
+
+  .bn-proof__testimonial {
+    position: relative;
+    background: var(--color-cream);
+    border: 1px solid var(--color-rule);
+    padding: clamp(1.5rem, 2.5vw, 2.25rem);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: transform 0.5s var(--ease-out-expo), border-color 0.4s ease, box-shadow 0.5s var(--ease-out-expo);
+    isolation: isolate;
+  }
+
+  .bn-proof__testimonial:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
+    box-shadow: 0 24px 50px -24px color-mix(in srgb, var(--color-deep) 30%, transparent);
+  }
+
+  /* Asymmetrisches Versatz */
+  @media (min-width: 780px) {
+    .bn-proof__testimonial--lead {
+      transform: translateY(-1.5rem);
+    }
+    .bn-proof__testimonial--shift-down {
+      transform: translateY(2rem);
+    }
+    .bn-proof__testimonial--shift-up {
+      transform: translateY(0);
+    }
+    .bn-proof__testimonial--lead:hover {
+      transform: translateY(calc(-1.5rem - 4px));
+    }
+    .bn-proof__testimonial--shift-down:hover {
+      transform: translateY(calc(2rem - 4px));
+    }
+  }
+
+  .bn-proof__quote-mark {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(4rem, 6vw, 5rem);
+    line-height: 0.7;
+    color: var(--color-primary);
+    opacity: 0.35;
+    user-select: none;
+    margin-bottom: -1rem;
+  }
+
+  .bn-proof__quote {
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+    line-height: 1.45;
+    color: var(--color-text);
+    font-style: italic;
+  }
+
+  .bn-proof__quote p {
+    margin: 0;
+  }
+
+  .bn-proof__cite {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-rule);
+    margin-top: auto;
+  }
+
+  .bn-proof__cite-author {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--color-text);
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  .bn-proof__cite-source {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-accent);
+  }
+
+  .bn-proof__cite-detail {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Marquee ──────────────────────────────────────────────────── */
+  .bn-proof__marquee-wrap {
+    margin-top: clamp(4rem, 7vw, 6rem);
+    background: var(--color-primary);
+    color: var(--color-cream);
+    padding-block: clamp(1rem, 2vw, 1.5rem);
+    border-block: 1px solid var(--color-deep);
+    overflow: hidden;
+  }
+
+  .bn-proof__marquee :global(.marquee) {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(2.5rem, 7vw, 6rem);
+    text-transform: none;
+    letter-spacing: -0.02em;
+  }
+
+  .bn-proof__marquee :global(.marquee__sep) {
+    color: var(--color-accent);
+    opacity: 1;
+    font-style: normal;
+  }
+</style>

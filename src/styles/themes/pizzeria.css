@@ -1,0 +1,58 @@
+/* ==========================================================================
+   Theme: Bella Notte — Demo für das Growth-Onepager-Paket
+   --------------------------------------------------------------------------
+   Italienisches Restaurant, traditionell, familiengeführt (Lüdenscheid).
+   Aesthetic: Editorial-Magazine meets warmes Restaurant-Branding.
+   Wärme, Papier, Handwerk — wie ein hochwertiger Bildband über
+   italienische Küche.
+   ========================================================================== */
+
+[data-theme="pizzeria"] {
+  /* -- Brand ---------------------------------------------------------------- */
+  --color-bg: #F8F2E8;            /* Cremeweiß mit warmen Untertönen */
+  --color-surface: #F0E8D8;       /* leicht abgesetzte Surface (Pergament) */
+  --color-text: #1F1410;          /* tiefer Espresso-Anthrazit */
+  --color-muted: #7a5a3f;         /* warmer Karamell */
+  --color-primary: #A8261B;       /* Tomatenrot — Markenfarbe 1 */
+  --color-secondary: #5C6B3D;     /* Olivgrün — Markenfarbe 2 */
+  --color-accent: #E8B547;        /* Goldgelb — Pasta-Highlight */
+  --color-deep: #6B1A12;          /* dunkler Burgund für Hover & Schatten */
+  --color-cream: #FBF6EC;         /* helleres Cream für Karten-Boards */
+
+  /* -- Hairline / Divider --------------------------------------------------- */
+  --color-rule: color-mix(in srgb, var(--color-text) 16%, transparent);
+  --color-rule-strong: color-mix(in srgb, var(--color-text) 28%, transparent);
+
+  /* -- Typo ---------------------------------------------------------------- */
+  /* Display: Fraunces (high-contrast Serif, perfekt italienisch-editorial)   */
+  /* Body:    Bricolage Grotesque (warmer Geometric Sans)                    */
+  --font-display: "Fraunces", "Tiempos Headline", ui-serif, Georgia, serif;
+  --font-body: "Bricolage Grotesque", system-ui, -apple-system, sans-serif;
+  --font-mono: "Bricolage Grotesque", ui-monospace, monospace;
+
+  /* -- Container ----------------------------------------------------------- */
+  --bn-container: 1320px;
+  --bn-gutter: clamp(1.25rem, 4vw, 3rem);
+
+  /* -- Paper-Grain Pattern (für editoriale Wärme) -------------------------- */
+  --bn-grain:
+    radial-gradient(circle at 20% 30%, color-mix(in srgb, var(--color-deep) 4%, transparent) 0, transparent 60%),
+    radial-gradient(circle at 80% 70%, color-mix(in srgb, var(--color-accent) 6%, transparent) 0, transparent 50%);
+}
+
+/* Page-Body Klasse für die Pizzeria-Demo */
+body.bn-page {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+
+body.bn-page ::selection {
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+}
+
+body.bn-page :focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+}

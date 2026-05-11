@@ -1,0 +1,209 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Datenschutz — Bella Notte"
+  description="Datenschutzerklärung der Trattoria Bella Notte — wie wir mit Ihren Daten umgehen."
+  theme="pizzeria"
+  bodyClass="bn-page bn-legal"
+>
+  <main class="bn-legal__page">
+    <a href="/demos/pizzeria/" class="bn-legal__back">← Zurück zur Startseite</a>
+
+    <h1 class="bn-legal__title">Datenschutz</h1>
+
+    <p class="bn-legal__lead">
+      Wir nehmen den Schutz Ihrer persönlichen Daten ernst und behandeln sie
+      vertraulich, nach den gesetzlichen Vorschriften und dieser
+      Datenschutzerklärung.
+    </p>
+
+    <section class="bn-legal__block">
+      <h2>Verantwortlich</h2>
+      <p>
+        Bella Notte GbR<br />
+        Knapper Weg 47, 58507 Lüdenscheid<br />
+        E-Mail: <a href="mailto:ciao@bella-notte-luedenscheid.de">ciao@bella-notte-luedenscheid.de</a>
+      </p>
+    </section>
+
+    <section class="bn-legal__block">
+      <h2>Reservierungsanfragen</h2>
+      <p>
+        Wenn Sie über das Reservierungsformular auf unserer Seite Kontakt
+        aufnehmen, erheben wir die von Ihnen angegebenen Daten (Name,
+        E-Mail-Adresse, ggf. Telefonnummer, gewünschtes Datum, Personenzahl,
+        Anlass, Nachricht). Diese Daten verwenden wir ausschließlich zur
+        Bearbeitung Ihrer Reservierungsanfrage. Sie werden nach Abschluss der
+        Anfrage gelöscht, spätestens nach 6 Monaten.
+      </p>
+      <p>
+        Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragsanbahnung)
+        sowie Art. 6 Abs. 1 lit. a DSGVO (Einwilligung über die Checkbox).
+      </p>
+    </section>
+
+    <section class="bn-legal__block">
+      <h2>Spam-Schutz (Cloudflare Turnstile)</h2>
+      <p>
+        Zum Schutz vor automatisierten Anfragen setzen wir
+        <strong>Cloudflare Turnstile</strong> ein. Dieser Dienst arbeitet
+        privacy-freundlich ohne Cookies und ohne Auswertung von
+        biometrischen Daten. Es wird ein technischer Token an Cloudflare
+        übermittelt, der ausschließlich zur Bot-Abwehr dient.
+      </p>
+      <p>
+        Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse
+        an einem funktionsfähigen Webformular ohne Spam).
+      </p>
+    </section>
+
+    <section class="bn-legal__block">
+      <h2>Server-Logfiles</h2>
+      <p>
+        Beim Aufruf unserer Seite werden technisch notwendige Daten
+        (IP-Adresse, Browser-Typ, abgerufene Seite, Zeitpunkt) für maximal
+        7 Tage gespeichert. Eine Auswertung zu Marketingzwecken findet
+        nicht statt.
+      </p>
+    </section>
+
+    <section class="bn-legal__block">
+      <h2>Karten-Einbindung (OpenStreetMap)</h2>
+      <p>
+        Auf unserer Seite zeigen wir zunächst eine eigene
+        Karten-Vorschau-Grafik an. Erst wenn Sie aktiv auf
+        <em>"Karte laden"</em> klicken, wird ein Karten-Ausschnitt von
+        <strong>OpenStreetMap</strong> nachgeladen. Dabei wird Ihre
+        IP-Adresse an OpenStreetMap übertragen. Es werden keine Cookies
+        gesetzt.
+      </p>
+    </section>
+
+    <section class="bn-legal__block">
+      <h2>Cookies & Tracking</h2>
+      <p>
+        Diese Seite setzt keine Tracking-Cookies, keine Marketing-Cookies und
+        keine externen Analyse-Skripte ein. Eine Web-Analyse erfolgt — wenn
+        überhaupt — ausschließlich serverseitig und anonymisiert.
+      </p>
+    </section>
+
+    <section class="bn-legal__block">
+      <h2>Externe Links</h2>
+      <p>
+        Beim Klick auf "Route planen", "Instagram" oder "WhatsApp schreiben"
+        werden Sie zu externen Diensten weitergeleitet. Es gelten die
+        jeweiligen Datenschutzbestimmungen der Anbieter.
+      </p>
+    </section>
+
+    <section class="bn-legal__block">
+      <h2>Ihre Rechte</h2>
+      <p>
+        Sie haben das Recht auf Auskunft, Berichtigung, Löschung,
+        Einschränkung der Verarbeitung, Datenübertragbarkeit und
+        Widerspruch. Wenden Sie sich dazu formlos an die oben angegebene
+        E-Mail-Adresse.
+      </p>
+    </section>
+
+    <section class="bn-legal__block">
+      <h2>Hinweis zur Demo</h2>
+      <p>
+        Diese Seite ist eine Demo-Veröffentlichung des Studios miro-studios.
+        Bella Notte ist ein fiktives Beispielunternehmen — es findet
+        keinerlei reale Datenverarbeitung statt. Auch das Reservierungs-Formular
+        sendet keine echten Anfragen, sondern simuliert lediglich den
+        End-to-End-Flow für Demonstrationszwecke.
+      </p>
+    </section>
+  </main>
+</BaseLayout>
+
+<style is:global>
+  body.bn-legal {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+  }
+</style>
+
+<style>
+  .bn-legal__page {
+    max-width: 720px;
+    margin-inline: auto;
+    padding-inline: var(--bn-gutter);
+    padding-block: clamp(3rem, 8vw, 6rem);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .bn-legal__back {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--color-primary);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
+    align-self: flex-start;
+    padding-block: 0.5rem;
+    margin-block: -0.5rem;
+  }
+
+  .bn-legal__back:hover {
+    border-bottom-color: currentColor;
+  }
+
+  .bn-legal__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--color-text);
+  }
+
+  .bn-legal__lead {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+    color: var(--color-muted);
+    max-width: 56ch;
+    line-height: 1.5;
+  }
+
+  .bn-legal__block h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-primary);
+    font-style: italic;
+  }
+
+  .bn-legal__block p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: color-mix(in srgb, var(--color-text) 85%, transparent);
+  }
+
+  .bn-legal__block p + p {
+    margin-top: 0.75rem;
+  }
+
+  .bn-legal__block p strong,
+  .bn-legal__block p em {
+    color: var(--color-text);
+  }
+
+  .bn-legal__block p em {
+    font-family: var(--font-display);
+    font-style: italic;
+  }
+
+  .bn-legal__block a {
+    color: var(--color-primary);
+    border-bottom: 1px solid currentColor;
+  }
+</style>

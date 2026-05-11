@@ -1,0 +1,123 @@
+---
+/**
+ * Bella Notte — Demo-Onepager (Growth-Paket)
+ *
+ * Showcase für miro-studios "Growth"-Paket (€1.299 + €34,99/Monat).
+ * Genau 6 Sections nach PAKET-02-Brief:
+ *  1. Hero
+ *  2. Promise (Versprechen)
+ *  3. Speisekarte (Leistungen)
+ *  4. Social Proof
+ *  5. Standort / Anfahrt
+ *  6. Kontakt / Reservierung + Footer
+ *
+ * Bella Notte ist ein fiktives Beispielunternehmen — alle Angaben frei
+ * erfunden. Diese Seite dient ausschließlich als Verkaufs-Demo.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/pizzeria/Hero.astro';
+import Promise from '@components/pizzeria/Promise.astro';
+import Menu from '@components/pizzeria/Menu.astro';
+import SocialProof from '@components/pizzeria/SocialProof.astro';
+import Location from '@components/pizzeria/Location.astro';
+import Contact from '@components/pizzeria/Contact.astro';
+
+const businessName = 'Bella Notte';
+const businessTag = 'Trattoria · La Vera Pizza aus dem Holzofen · Lüdenscheid';
+
+// JSON-LD: LocalBusiness Schema mit allen Pflicht-Properties (Paket-02)
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Restaurant',
+  '@id': 'https://miro-studios.de/demos/pizzeria/#restaurant',
+  name: businessName,
+  description:
+    'Familiengeführte italienische Trattoria mitten in Lüdenscheid. Pizza aus dem Holzofen, hausgemachte Pasta, Tiramisu nach Großmutters Rezept. Familie Caruso, seit 1972.',
+  url: 'https://miro-studios.de/demos/pizzeria/',
+  telephone: '+49 2351 98 76 543',
+  email: 'ciao@bella-notte-luedenscheid.de',
+  image: 'https://miro-studios.de/og-default.jpg',
+  priceRange: '€€',
+  servesCuisine: ['Italienisch', 'Pizza', 'Pasta', 'Mediterran'],
+  acceptsReservations: true,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Knapper Weg 47',
+    postalCode: '58507',
+    addressLocality: 'Lüdenscheid',
+    addressRegion: 'NRW',
+    addressCountry: 'DE',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 51.21978,
+    longitude: 7.62576,
+  },
+  areaServed: [
+    {
+      '@type': 'City',
+      name: 'Lüdenscheid',
+    },
+    {
+      '@type': 'AdministrativeArea',
+      name: 'Märkischer Kreis',
+    },
+  ],
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday'],
+      opens: '17:30',
+      closes: '22:30',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Friday', 'Saturday'],
+      opens: '17:30',
+      closes: '23:30',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: 'Sunday',
+      opens: '12:00',
+      closes: '22:00',
+    },
+  ],
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.9',
+    bestRating: '5',
+    worstRating: '1',
+    ratingCount: '312',
+  },
+  potentialAction: {
+    '@type': 'ReserveAction',
+    target: 'https://miro-studios.de/demos/pizzeria/#reservieren',
+    name: 'Tisch reservieren',
+  },
+};
+---
+
+<BaseLayout
+  title={`${businessName} — ${businessTag}`}
+  description="Bella Notte: La Vera Pizza aus dem Holzofen, hausgemachte Pasta und Tiramisu nach Großmutters Rezept. Familiengeführte Trattoria in Lüdenscheid seit 1972."
+  theme="pizzeria"
+  bodyClass="bn-page"
+  canonical="/demos/pizzeria/"
+>
+  <!-- JSON-LD Restaurant/LocalBusiness Schema (SEO) -->
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(jsonLd)}
+  />
+
+  <main>
+    <Hero />
+    <Promise />
+    <Menu />
+    <SocialProof />
+    <Location />
+    <Contact />
+  </main>
+</BaseLayout>
