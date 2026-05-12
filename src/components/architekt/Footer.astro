@@ -1,0 +1,292 @@
+---
+const base = '/demos/architekt';
+const year = new Date().getFullYear();
+---
+
+<footer class="av-footer">
+  <div class="av-footer__bp" aria-hidden="true"></div>
+
+  <div class="av-footer__inner">
+    <div class="av-footer__bar">
+      <span class="av-footer__bar-n">N° 99</span>
+      <span class="av-footer__bar-line" aria-hidden="true"></span>
+      <span class="av-footer__bar-k">FOOTER / SHEET 99/99</span>
+    </div>
+
+    <div class="av-footer__top">
+      <div class="av-footer__copy">
+        <h2 class="av-footer__h">
+          EIN BRIEF.<br />
+          EIN ANRUF.<br />
+          <span class="av-footer__accent">EIN TERMIN.</span>
+        </h2>
+        <a href={`${base}/kontakt/`} class="av-footer__cta">
+          <span>PROJEKT BESPRECHEN</span>
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
+        </a>
+      </div>
+
+      <div class="av-footer__meta">
+        <div class="av-footer__col">
+          <span class="av-footer__label">ATELIER</span>
+          <address>
+            Atelier Vossen GmbH<br />
+            Knapper Straße 47<br />
+            58507 Lüdenscheid
+          </address>
+        </div>
+        <div class="av-footer__col">
+          <span class="av-footer__label">DIRECT</span>
+          <p>
+            <a href="tel:+4923514781200">+49 2351 478 12 00</a><br />
+            <a href="mailto:hallo@atelier-vossen.de">hallo@atelier-vossen.de</a>
+          </p>
+        </div>
+        <div class="av-footer__col">
+          <span class="av-footer__label">HOURS</span>
+          <p>
+            MO–DO · 09:00–17:30<br />
+            FR · 09:00–14:00<br />
+            <span class="av-footer__muted">TERMINE N. V.</span>
+          </p>
+        </div>
+        <div class="av-footer__col">
+          <span class="av-footer__label">SITEMAP</span>
+          <ul>
+            <li><a href={`${base}/`}>00 · Start</a></li>
+            <li><a href={`${base}/buero/`}>01 · Büro</a></li>
+            <li><a href={`${base}/leistungen/`}>02 · Leistungen</a></li>
+            <li><a href={`${base}/projekte/`}>03 · Projekte</a></li>
+            <li><a href={`${base}/kontakt/`}>04 · Kontakt</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="av-footer__wordmark" aria-hidden="true">
+      <span>VOSSEN</span>
+    </div>
+
+    <div class="av-footer__bottom">
+      <p class="av-footer__legal">© {year} ATELIER VOSSEN GMBH — ALL RIGHTS RESERVED</p>
+      <ul class="av-footer__legal-links">
+        <li><a href={`${base}/impressum/`}>IMPRESSUM</a></li>
+        <li><a href={`${base}/datenschutz/`}>DATENSCHUTZ</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .av-footer {
+    position: relative;
+    background: var(--color-text);
+    color: var(--color-bg);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .av-footer__bp {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--color-bg) 8%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-bg) 8%, transparent) 1px, transparent 1px);
+    background-size: clamp(40px, 6vw, 72px) clamp(40px, 6vw, 72px);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .av-footer__inner {
+    max-width: var(--av-container);
+    margin-inline: auto;
+    padding: clamp(3rem, 6vw, 5rem) var(--av-gutter) 1.5rem;
+  }
+
+  .av-footer__bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    padding-bottom: 2.5rem;
+    color: color-mix(in srgb, var(--color-bg) 60%, transparent);
+  }
+
+  .av-footer__bar-n {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .av-footer__bar-line {
+    flex: 1;
+    height: 1px;
+    background: color-mix(in srgb, var(--color-bg) 20%, transparent);
+  }
+
+  .av-footer__bar-k {
+    font-weight: 500;
+  }
+
+  .av-footer__top {
+    display: grid;
+    gap: clamp(3rem, 6vw, 5rem);
+    grid-template-columns: 1fr;
+    padding-bottom: clamp(2.5rem, 5vw, 4rem);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-bg) 18%, transparent);
+  }
+
+  @media (min-width: 900px) {
+    .av-footer__top {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+      align-items: start;
+    }
+  }
+
+  .av-footer__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .av-footer__h {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    margin: 0;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .av-footer__accent {
+    color: var(--color-accent);
+  }
+
+  .av-footer__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 1.5rem;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-decoration: none;
+    width: max-content;
+    transition: background-color 0.3s, color 0.3s, gap 0.4s var(--ease-out-expo);
+  }
+
+  .av-footer__cta:hover {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    gap: 1rem;
+  }
+
+  .av-footer__cta svg { width: 14px; height: 14px; }
+
+  .av-footer__meta {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 720px) {
+    .av-footer__meta { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .av-footer__col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--color-bg) 82%, transparent);
+  }
+
+  .av-footer__col address { font-style: normal; }
+
+  .av-footer__col a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, color 0.3s;
+  }
+
+  .av-footer__col a:hover {
+    color: var(--color-bg);
+    border-bottom-color: currentColor;
+  }
+
+  .av-footer__col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .av-footer__label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .av-footer__muted {
+    color: color-mix(in srgb, var(--color-bg) 50%, transparent);
+  }
+
+  .av-footer__wordmark {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(5rem, 22vw, 22rem);
+    line-height: 0.85;
+    letter-spacing: -0.06em;
+    margin: clamp(2.5rem, 5vw, 4rem) 0 1rem;
+    color: color-mix(in srgb, var(--color-bg) 14%, transparent);
+    user-select: none;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .av-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-bg) 18%, transparent);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    color: color-mix(in srgb, var(--color-bg) 60%, transparent);
+  }
+
+  .av-footer__legal { margin: 0; }
+
+  .av-footer__legal-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .av-footer__legal-links a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .av-footer__legal-links a:hover {
+    color: var(--color-accent);
+  }
+</style>

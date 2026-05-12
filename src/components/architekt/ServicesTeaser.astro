@@ -1,0 +1,308 @@
+---
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+
+const services = [
+  {
+    n: '01',
+    title: 'NEUBAU',
+    text: 'Einfamilienhäuser, Doppelhäuser, kleine Geschosswohnungen. Vom Vorentwurf bis zur Schlüsselübergabe — HOAI 1–9.',
+    items: ['Vorentwurf', 'Genehmigung', 'Ausschreibung', 'Bauleitung'],
+  },
+  {
+    n: '02',
+    title: 'SANIERUNG',
+    text: 'Bestand ehrlich weiterdenken — Energetik, Statik, Grundriss. Spezialisiert auf Bauten der 50er bis 80er Jahre.',
+    items: ['Bestandsaufnahme', 'KfW-Förderung', 'Energieausweis'],
+  },
+  {
+    n: '03',
+    title: 'INNENARCHITEKTUR',
+    text: 'Wenn die Hülle steht, beginnt der eigentliche Raum. Materialwahl, Lichtplanung, Möblierung und Detailzeichnungen.',
+    items: ['Material-Konzept', 'Lichtplanung', 'Maßmöbel'],
+  },
+  {
+    n: '04',
+    title: 'GEWERBEBAU',
+    text: 'Praxen, Kanzleien, kleine Produktion und Showrooms. Funktion zuerst, Repräsentation als Folge — nicht andersherum.',
+    items: ['Praxisbau', 'Büro & Coworking', 'Retail Small Scale'],
+  },
+];
+---
+
+<section class="av-svc-t av-section" id="leistungen">
+  <div class="av-container">
+    <div class="av-svc-t__bar">
+      <span class="av-svc-t__bar-n">N° 03</span>
+      <span class="av-svc-t__bar-line" aria-hidden="true"></span>
+      <span class="av-svc-t__bar-k">LEISTUNGEN / 4 DISZIPLINEN</span>
+    </div>
+
+    <RevealOnScroll class="av-svc-t__head">
+      <h2 class="av-svc-t__title">
+        VIER DISZIPLINEN.<br />
+        <span class="av-svc-t__accent">EIN MASSSTAB.</span>
+      </h2>
+      <p class="av-svc-t__lead">
+        Wir arbeiten nicht in Stilen, sondern in Aufgaben. Was uns interessiert,
+        ist die richtige Antwort auf Ort, Programm und Budget.
+      </p>
+    </RevealOnScroll>
+
+    <ul class="av-svc-t__grid">
+      {services.map(s => (
+        <li class="av-svc-t__item">
+          <a href="/demos/architekt/leistungen/" class="av-svc-t__link">
+            <div class="av-svc-t__top">
+              <span class="av-svc-t__n">{s.n}</span>
+              <span class="av-svc-t__arrow" aria-hidden="true">
+                <svg viewBox="0 0 16 16"><path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
+              </span>
+            </div>
+            <h3 class="av-svc-t__h">{s.title}</h3>
+            <p class="av-svc-t__text">{s.text}</p>
+            <ul class="av-svc-t__tags">
+              {s.items.map(tag => <li>{tag}</li>)}
+            </ul>
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <RevealOnScroll class="av-svc-t__footer">
+      <a href="/demos/architekt/leistungen/" class="av-svc-t__all">
+        <span>ALLE LEISTUNGEN IM DETAIL</span>
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
+      </a>
+    </RevealOnScroll>
+  </div>
+</section>
+
+<style>
+  .av-svc-t {
+    border-top: 1px solid var(--color-rule);
+    background: color-mix(in srgb, var(--color-surface) 40%, transparent);
+  }
+
+  .av-svc-t__bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    padding-bottom: 2.5rem;
+  }
+
+  .av-svc-t__bar-n {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .av-svc-t__bar-line {
+    flex: 1;
+    height: 1px;
+    background: var(--color-rule-strong);
+  }
+
+  .av-svc-t__bar-k {
+    color: var(--color-muted);
+    font-weight: 500;
+  }
+
+  .av-svc-t__head {
+    max-width: 800px;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+
+  .av-svc-t__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 7vw, 6rem);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    margin: 0 0 1.5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .av-svc-t__accent {
+    color: var(--color-primary);
+  }
+
+  .av-svc-t__lead {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.3vw, 1.15rem);
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    max-width: 56ch;
+    margin: 0;
+  }
+
+  .av-svc-t__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+    grid-template-columns: 1fr;
+    border: 1px solid var(--color-rule-strong);
+  }
+
+  @media (min-width: 720px) {
+    .av-svc-t__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .av-svc-t__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .av-svc-t__item {
+    position: relative;
+    border-right: 1px solid var(--color-rule-strong);
+    border-bottom: 1px solid var(--color-rule-strong);
+  }
+
+  .av-svc-t__item:last-child { border-right: none; border-bottom: none; }
+
+  @media (min-width: 720px) and (max-width: 1099.98px) {
+    .av-svc-t__item:nth-child(2n) { border-right: none; }
+    .av-svc-t__item:nth-last-child(-n+2) { border-bottom: none; }
+  }
+
+  @media (min-width: 1100px) {
+    .av-svc-t__item { border-bottom: none; }
+    .av-svc-t__item:last-child { border-right: none; }
+  }
+
+  .av-svc-t__link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: clamp(1.5rem, 2.5vw, 2.25rem);
+    height: 100%;
+    background: var(--color-bg);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: background-color 0.4s var(--ease-out-expo), color 0.4s ease;
+  }
+
+  .av-svc-t__link:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .av-svc-t__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .av-svc-t__n {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--color-accent);
+  }
+
+  .av-svc-t__arrow {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+    transition: background-color 0.3s, color 0.3s, transform 0.4s var(--ease-out-expo);
+  }
+
+  .av-svc-t__arrow svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .av-svc-t__link:hover .av-svc-t__arrow {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-bg);
+    transform: translate(2px, -2px);
+  }
+
+  .av-svc-t__h {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 2.3vw, 2.1rem);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    margin: 0.75rem 0 0.25rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .av-svc-t__text {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin: 0;
+    color: color-mix(in srgb, currentColor 80%, transparent);
+    flex: 1;
+  }
+
+  .av-svc-t__tags {
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 1rem 0 0;
+    border-top: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+  }
+
+  .av-svc-t__tags li {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: color-mix(in srgb, currentColor 72%, transparent);
+    position: relative;
+    padding-left: 0.7rem;
+  }
+
+  .av-svc-t__tags li::before {
+    content: '+';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+  }
+
+  .av-svc-t__footer {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+    text-align: center;
+  }
+
+  .av-svc-t__all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 1.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--color-bg);
+    text-decoration: none;
+    background: var(--color-text);
+    transition: background-color 0.3s, gap 0.4s var(--ease-out-expo);
+  }
+
+  .av-svc-t__all:hover {
+    background: var(--color-accent);
+    gap: 1rem;
+  }
+
+  .av-svc-t__all svg {
+    width: 14px;
+    height: 14px;
+  }
+</style>

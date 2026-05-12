@@ -1,0 +1,43 @@
+/* ==========================================================================
+   Theme: Atelier Vossen — Demo für das Basic Multi-Page-Paket
+   --------------------------------------------------------------------------
+   Architektur & Innenarchitektur, Lüdenscheid.
+
+   Bewusst KEIN Editorial-Magazin-Look. Stattdessen: Planset / Blueprint /
+   Brutalist-Tech — kalte Off-White-Beton-Töne, tiefes Blueprint-Indigo,
+   technisches Elektro-Blau als Akzent. Display: Space Grotesk (architek-
+   tonisch, kein Serif). Mono prominent für Maße, IDs, Daten.
+
+   Keine Italic-Serifen. Keine warmen Cream-Töne. Keine Editorial-Drop-Caps.
+   ========================================================================== */
+
+[data-theme="architekt"] {
+  /* -- Brand -------------------------------------------------------------- */
+  --color-bg: #E5E4DF;            /* kalter Beton-Off-White */
+  --color-surface: #D6D4CD;       /* Beton-Surface, leicht abgesetzt */
+  --color-text: #0F1116;          /* near-black mit Blau-Untertönen */
+  --color-muted: #6A6E75;         /* kaltes Grau */
+  --color-primary: #142A52;       /* tiefes Blueprint-Indigo — Markenfarbe */
+  --color-secondary: #2B2F3A;     /* dunkles Anthrazit */
+  --color-accent: #2A55E3;        /* elektrisches Blueprint-Blau — Akzent */
+
+  /* -- Hairline ---------------------------------------------------------- */
+  --color-rule: color-mix(in srgb, var(--color-text) 22%, transparent);
+  --color-rule-strong: color-mix(in srgb, var(--color-text) 40%, transparent);
+
+  /* -- Typo --------------------------------------------------------------- */
+  /* Display: Space Grotesk (technisch-architektonisch, KEIN Serif)        */
+  /* Body:    Inter Tight (klar, geometrisch)                              */
+  /* Mono:    JetBrains Mono (prominent für Maße, IDs, Spezifikationen)    */
+  --font-display: "Space Grotesk", "Inter Tight", system-ui, -apple-system, sans-serif;
+  --font-body: "Inter Tight", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* -- Container --------------------------------------------------------- */
+  --av-container: 1440px;
+  --av-gutter: clamp(1.25rem, 3.5vw, 3rem);
+
+  /* -- Drawing-Tokens ---------------------------------------------------- */
+  --av-grid-line: color-mix(in srgb, var(--color-text) 8%, transparent);
+  --av-blueprint-grid: color-mix(in srgb, var(--color-accent) 14%, transparent);
+}

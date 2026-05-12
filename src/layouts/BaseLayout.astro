@@ -7,12 +7,13 @@ import '@styles/global.css';
 import '@styles/themes/portfolio.css';
 import '@styles/themes/cafe-starter.css';
 import '@styles/themes/pizzeria.css';
+import '@styles/themes/architekt.css';
 
 // Hinweis: Elektro/Friseur/Handwerker sind statische HTML-Demos
 // unter public/demos/<demo>/index.html und brauchen kein Astro-Theme.
-// Café Nordlicht (Starter) und Bella Notte (Growth) sind echte
-// Astro-Demos und benötigen das Theme hier.
-export type Theme = 'portfolio' | 'cafe-starter' | 'pizzeria';
+// Café Nordlicht (Starter), Bella Notte (Growth) und Atelier Vossen
+// (Basic Multi-Page) sind echte Astro-Demos und benötigen das Theme hier.
+export type Theme = 'portfolio' | 'cafe-starter' | 'pizzeria' | 'architekt';
 
 interface Props {
   title: string;

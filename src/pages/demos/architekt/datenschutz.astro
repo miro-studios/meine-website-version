@@ -1,0 +1,177 @@
+---
+import ArchitektLayout from '@layouts/ArchitektLayout.astro';
+---
+
+<ArchitektLayout
+  title="Atelier Vossen — Datenschutzerklärung"
+  description="Datenschutzerklärung der Atelier Vossen GmbH gemäß DSGVO."
+>
+  <section class="av-legal av-section">
+    <div class="av-container av-legal__inner">
+      <p class="av-eyebrow">Art. 13 DSGVO</p>
+      <h1 class="av-legal__h">Datenschutz</h1>
+      <p class="av-legal__intro">
+        Wir nehmen den Schutz Ihrer personenbezogenen Daten ernst und behandeln sie
+        vertraulich gemäß den gesetzlichen Datenschutzvorschriften (DSGVO, BDSG) sowie
+        dieser Datenschutzerklärung. Stand: <time datetime="2026-05-12">12. Mai 2026</time>.
+      </p>
+
+      <div class="av-legal__body">
+        <section>
+          <h2>1. Verantwortlicher</h2>
+          <p>
+            Atelier Vossen GmbH<br />
+            Knapper Straße 47, 58507 Lüdenscheid<br />
+            <a href="mailto:hallo@atelier-vossen.de">hallo@atelier-vossen.de</a> · +49 2351 478 12 00
+          </p>
+        </section>
+
+        <section>
+          <h2>2. Zugriffsdaten beim Besuch der Website</h2>
+          <p>
+            Beim Aufruf dieser Website werden technische Daten (IP-Adresse gekürzt,
+            Datum, Browser-Typ, Betriebssystem, Referrer) in Server-Logs für maximal 7 Tage
+            gespeichert. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO. Zweck: Sicherstellung
+            des Betriebs und der Sicherheit der Website.
+          </p>
+        </section>
+
+        <section>
+          <h2>3. Kontaktformular</h2>
+          <p>
+            Wenn Sie uns über das Anfrageformular kontaktieren, werden die dort angegebenen
+            Daten (Name, E-Mail, Telefon, Projekt-Details) zur Bearbeitung der Anfrage und
+            für etwaige Anschlussfragen gespeichert. Rechtsgrundlage: Art. 6 Abs. 1 lit. b
+            DSGVO (vorvertragliche Maßnahmen). Die Daten werden gelöscht, sobald sie zur
+            Erreichung des Zwecks nicht mehr erforderlich sind, spätestens jedoch nach Ablauf
+            gesetzlicher Aufbewahrungsfristen.
+          </p>
+        </section>
+
+        <section>
+          <h2>4. Schriftarten</h2>
+          <p>
+            Diese Website nutzt Schriftarten von <a href="https://fonts.bunny.net" target="_blank" rel="noopener">Bunny Fonts</a>,
+            einem datenschutzkonformen Spiegel der Google-Fonts-API mit Servern in der EU.
+            Es werden keine Cookies gesetzt und keine personenbezogenen Daten an Dritte übertragen.
+          </p>
+        </section>
+
+        <section>
+          <h2>5. Cookies</h2>
+          <p>
+            Diese Website verwendet keine Cookies, die einer Einwilligung bedürfen.
+            Es werden keine Tracking- oder Marketing-Tools eingesetzt.
+          </p>
+        </section>
+
+        <section>
+          <h2>6. Hosting</h2>
+          <p>
+            Die Website wird bei Cloudflare Pages gehostet (Cloudflare, Inc., 101 Townsend Street,
+            San Francisco, CA 94107, USA). Zwischen uns und Cloudflare besteht ein Vertrag zur
+            Auftragsverarbeitung. Cloudflare nutzt Server in der EU. Übermittlungen in
+            Drittländer sind durch Standardvertragsklauseln abgesichert.
+          </p>
+        </section>
+
+        <section>
+          <h2>7. Ihre Rechte</h2>
+          <p>
+            Sie haben das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16), Löschung
+            (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20)
+            sowie auf Widerspruch (Art. 21 DSGVO). Es besteht zudem ein Beschwerderecht bei der
+            Aufsichtsbehörde (LDI NRW). Anfragen richten Sie bitte an
+            <a href="mailto:hallo@atelier-vossen.de">hallo@atelier-vossen.de</a>.
+          </p>
+        </section>
+
+        <section>
+          <h2>8. Datensicherheit</h2>
+          <p>
+            Die Website nutzt durchgehend HTTPS-Verschlüsselung (TLS). Anfragen über das
+            Formular werden serverseitig auf Spam-Muster geprüft.
+          </p>
+        </section>
+
+        <section>
+          <h2>9. Hinweis</h2>
+          <p>
+            Dies ist eine Demo-Website der miro-studios GbR. Die Daten der „Atelier Vossen GmbH"
+            sind frei erfunden und dienen ausschließlich Demonstrationszwecken.
+          </p>
+        </section>
+      </div>
+    </div>
+  </section>
+</ArchitektLayout>
+
+<style>
+  .av-legal {
+    padding-block: clamp(4rem, 7vw, 6rem);
+  }
+
+  .av-legal__inner {
+    max-width: 760px;
+  }
+
+  .av-legal__h {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    line-height: 1;
+    letter-spacing: -0.035em;
+    margin: 1.25rem 0 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .av-legal__intro {
+    font-family: var(--font-body);
+    font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--color-text) 82%, transparent);
+    margin: 0 0 3rem;
+    max-width: 60ch;
+  }
+
+  .av-legal__body {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .av-legal__body section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .av-legal__body h2 {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    margin: 0;
+    letter-spacing: 0.14em;
+    color: var(--color-accent);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .av-legal__body p {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 0;
+    color: color-mix(in srgb, var(--color-text) 85%, transparent);
+  }
+
+  .av-legal__body a {
+    color: var(--color-text);
+    border-bottom: 1px solid currentColor;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .av-legal__body a:hover {
+    color: var(--color-accent);
+  }
+</style>

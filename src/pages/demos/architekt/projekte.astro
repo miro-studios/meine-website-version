@@ -1,0 +1,443 @@
+---
+import ArchitektLayout from '@layouts/ArchitektLayout.astro';
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+import SplitText from '@components/shared/SplitText.astro';
+import MagneticButton from '@components/shared/MagneticButton.astro';
+
+const projects = [
+  {
+    n: '142', year: '2024',
+    name: 'HAUS AM HANG', place: 'Hagen-Hohenlimburg',
+    type: 'NEUBAU', use: 'Einfamilienhaus, 142 m²',
+    text: 'Holz-Beton-Hybrid, kragend in den Steilhang gesetzt. Die untere Ebene ist betonsichtig in den Berg geschoben, das Wohngeschoss schwebt — Aussicht über die Lenne in voller Glasbreite.',
+    bg: 'linear-gradient(135deg, #142A52 0%, #1F3D7A 100%)',
+  },
+  {
+    n: '138', year: '2024',
+    name: 'SCHEUNE SUNDERN', place: 'Sundern, Sauerland',
+    type: 'SANIERUNG', use: 'Umnutzung Wirtschaftsgebäude, 210 m²',
+    text: 'Eine Fachwerk-Scheune aus 1894 wird Wohnhaus. Wir haben die Konstruktion entkernt, das Eichenwerk dokumentiert und neu eingebaut — die Wohnung steht als Holzbox frei im Volumen, ohne den Originalraum zu zerschneiden.',
+    bg: 'linear-gradient(135deg, #2B2F3A 0%, #4A4D5A 100%)',
+  },
+  {
+    n: '133', year: '2023',
+    name: 'PRAXIS VOLMESTRASSE', place: 'Lüdenscheid',
+    type: 'GEWERBE', use: 'Hausarztpraxis, 380 m²',
+    text: 'Ein zurückhaltender, fast monastischer Empfangsraum aus geöltem Esche-Holz und Putz. Vier identische Behandlungsräume mit Tageslicht von oben — keine Hierarchie zwischen Patienten.',
+    bg: 'linear-gradient(135deg, #D6D4CD 0%, #ABA89E 100%)', light: true,
+  },
+  {
+    n: '129', year: '2023',
+    name: 'DOPPELHAUS KIERSPE', place: 'Kierspe',
+    type: 'NEUBAU', use: 'Doppelhaus, 2 × 118 m²',
+    text: 'Zwei Familien, eine Mauer. Spiegelsymmetrisch geplant, aber innen vollständig unterschiedlich konfiguriert. KfW-40 mit Erdwärmesonden.',
+    bg: 'linear-gradient(135deg, #1A1E2A 0%, #142A52 100%)',
+  },
+  {
+    n: '124', year: '2022',
+    name: 'HAUS BIRKE', place: 'Iserlohn',
+    type: 'SANIERUNG', use: 'EFH aus 1962, 145 m²',
+    text: 'Energetische Sanierung eines typischen 60er-Jahre-Hauses. Wir haben die Hülle gedämmt, das Dach neu gedacht und einen Anbau aus geräucherter Lärche angesetzt — der Bestand bleibt lesbar, der Bruch ist bewusst gesetzt.',
+    bg: 'linear-gradient(135deg, #3A3D4A 0%, #2A55E3 130%)',
+  },
+  {
+    n: '118', year: '2022',
+    name: 'KANZLEI ADLER', place: 'Altena',
+    type: 'GEWERBE', use: 'Anwaltskanzlei, 270 m²',
+    text: 'Umbau einer Villa aus 1908 zur Anwaltskanzlei. Wir haben Stuck und Parkett restauriert und neue Funktionen in stillen, neu gesetzten Boxen aus Eiche und schwarzem Stahl untergebracht.',
+    bg: 'linear-gradient(135deg, #0F1116 0%, #2B2F3A 100%)',
+  },
+];
+
+const categories = ['ALLE', 'NEUBAU', 'SANIERUNG', 'GEWERBE'];
+---
+
+<ArchitektLayout
+  title="Atelier Vossen — Projekte"
+  description="Auswahl realisierter Projekte 2022–2024: Neubau, Sanierung und Gewerbebau im Sauerland und Bergischen Land."
+>
+  <section class="av-pg-hero av-section">
+    <div class="av-container">
+      <div class="av-bar">
+        <span class="av-bar-n">N° 03</span>
+        <span class="av-bar-line" aria-hidden="true"></span>
+        <span class="av-bar-k">PAGE / PROJEKTE.IDX</span>
+      </div>
+      <h1 class="av-pg-hero__h">
+        <span class="av-pg-hero__line"><SplitText by="words" stagger={0.05}>SECHS HÄUSER,</SplitText></span>
+        <span class="av-pg-hero__line av-pg-hero__line--alt"><SplitText by="words" stagger={0.05} delay={0.2}>ZWEI JAHRE.</SplitText></span>
+      </h1>
+      <p class="av-pg-hero__lead">
+        Eine Auswahl aus 2022 bis 2024. Wir veröffentlichen nicht jedes Projekt —
+        nur diejenigen, deren Bauherren das ausdrücklich freigeben. Das vollständige
+        Archiv zeigen wir gerne im Atelier.
+      </p>
+
+      <div class="av-filter" role="tablist" aria-label="Projektkategorie">
+        <span class="av-filter__label">FILTER</span>
+        {categories.map((c, i) => (
+          <button
+            type="button"
+            class:list={['av-filter__btn', { 'is-active': i === 0 }]}
+            data-filter={c.toLowerCase()}
+            role="tab"
+            aria-selected={i === 0}
+          >
+            {c}
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Grid -->
+  <section class="av-prj">
+    <div class="av-container">
+      <ul class="av-prj__grid">
+        {projects.map((p, i) => (
+          <li class="av-prj__item" data-cat={p.type.toLowerCase()} style={`--i: ${i}`}>
+            <article>
+              <div class="av-prj__visual" style={`background: ${p.bg};`}>
+                <div class="av-prj__grid-lines" aria-hidden="true"></div>
+                <span class="av-prj__tag">N° {p.n}</span>
+                <span class="av-prj__year">{p.year}</span>
+                <span class="av-prj__corner" aria-hidden="true"></span>
+              </div>
+              <div class="av-prj__meta">
+                <div class="av-prj__head">
+                  <span class="av-prj__type">{p.type}</span>
+                  <span class="av-prj__id">N° {p.n}</span>
+                </div>
+                <h2 class="av-prj__name">{p.name}</h2>
+                <p class="av-prj__use">{p.use} · {p.place}</p>
+                <p class="av-prj__text">{p.text}</p>
+              </div>
+            </article>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Press -->
+  <section class="av-press av-section">
+    <div class="av-container">
+      <div class="av-bar">
+        <span class="av-bar-n">N° 04</span>
+        <span class="av-bar-line" aria-hidden="true"></span>
+        <span class="av-bar-k">PRESSE / AUSZEICHNUNGEN</span>
+      </div>
+      <table class="av-press__list">
+        <tbody>
+          <tr><td class="av-press__year">2024</td><td class="av-press__name">HÄUSER DES JAHRES — SHORTLIST</td><td class="av-press__src">CALLWEY VERLAG</td></tr>
+          <tr><td class="av-press__year">2024</td><td class="av-press__name">ARCHITEKTURPREIS NRW — ANERKENNUNG</td><td class="av-press__src">ARCHITEKTENKAMMER NRW</td></tr>
+          <tr><td class="av-press__year">2023</td><td class="av-press__name">„BAUEN IM BESTAND" PORTRÄT</td><td class="av-press__src">DB DEUTSCHE BAUZEITUNG</td></tr>
+          <tr><td class="av-press__year">2022</td><td class="av-press__name">SAUERLÄNDER HEIMATPREIS</td><td class="av-press__src">MÄRKISCHER KREIS</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="av-prj-cta av-section">
+    <div class="av-container">
+      <RevealOnScroll>
+        <h2 class="av-prj-cta__h">IHR VORHABEN HIER IN ZWEI JAHREN?</h2>
+        <MagneticButton href="/demos/architekt/kontakt/" strength={0.4} variant="primary" class="av-prj-cta__btn">
+          <span>ERSTGESPRÄCH ANFRAGEN</span>
+          <span aria-hidden="true">→</span>
+        </MagneticButton>
+      </RevealOnScroll>
+    </div>
+  </section>
+</ArchitektLayout>
+
+<style>
+  .av-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    margin-bottom: 2.5rem;
+  }
+  .av-bar-n { color: var(--color-accent); font-weight: 700; }
+  .av-bar-line { flex: 1; height: 1px; background: var(--color-rule-strong); }
+  .av-bar-k { color: var(--color-muted); font-weight: 500; }
+
+  .av-pg-hero { padding-block: clamp(3rem, 6vw, 5rem) clamp(3rem, 6vw, 5rem); }
+  .av-pg-hero__h {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 11vw, 10rem);
+    line-height: 0.88;
+    letter-spacing: -0.04em;
+    margin: 0 0 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .av-pg-hero__line { display: block; overflow: hidden; }
+  .av-pg-hero__line--alt { color: var(--color-primary); }
+  .av-pg-hero__lead {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    line-height: 1.65;
+    max-width: 55ch;
+    color: color-mix(in srgb, var(--color-text) 82%, transparent);
+    margin: 0 0 3rem;
+  }
+
+  /* Filter */
+  .av-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    border-top: 1px solid var(--color-rule-strong);
+    padding-top: 2rem;
+  }
+  .av-filter__label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    color: var(--color-muted);
+    margin-right: 0.5rem;
+    font-weight: 700;
+  }
+  .av-filter__btn {
+    padding: 0.55rem 1rem;
+    background: transparent;
+    border: 1px solid var(--color-rule-strong);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--color-text);
+    cursor: pointer;
+    transition: all 0.3s var(--ease-out-expo);
+  }
+  .av-filter__btn:hover { border-color: var(--color-text); }
+  .av-filter__btn.is-active {
+    background: var(--color-text);
+    border-color: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  /* Grid */
+  .av-prj { border-top: 1px solid var(--color-rule); padding-block: clamp(3rem, 5vw, 5rem); }
+  .av-prj__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: clamp(2.5rem, 5vw, 4rem);
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 760px) {
+    .av-prj__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .av-prj__item[hidden] { display: none; }
+  @media (min-width: 760px) {
+    .av-prj__item:nth-child(odd) { transform: translateY(3rem); }
+  }
+  .av-prj__item article {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .av-prj__visual {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    color: var(--color-bg);
+    isolation: isolate;
+    transition: transform 0.6s var(--ease-out-expo);
+  }
+  .av-prj__item article:hover .av-prj__visual {
+    transform: scale(0.985);
+  }
+  .av-prj__grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, currentColor 14%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, currentColor 14%, transparent) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+  .av-prj__tag {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    padding: 0.3rem 0.65rem;
+    border: 1px solid currentColor;
+    z-index: 1;
+  }
+  .av-prj__year {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    z-index: 1;
+    opacity: 0.7;
+  }
+  .av-prj__corner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 32px;
+    height: 32px;
+    background:
+      linear-gradient(225deg, transparent 50%, currentColor 50%);
+    opacity: 0.4;
+  }
+
+  .av-prj__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .av-prj__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+  }
+  .av-prj__type {
+    color: var(--color-accent);
+  }
+  .av-prj__id { color: var(--color-muted); }
+  .av-prj__name {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    margin: 0.25rem 0 0;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .av-prj__use {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    margin: 0;
+  }
+  .av-prj__text {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    margin: 0.5rem 0 0;
+    max-width: 48ch;
+  }
+
+  /* Press */
+  .av-press {
+    border-top: 1px solid var(--color-rule);
+    background: color-mix(in srgb, var(--color-surface) 50%, transparent);
+  }
+  .av-press__list {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-mono);
+    border-top: 1px solid var(--color-rule-strong);
+  }
+  .av-press__list tr {
+    border-bottom: 1px solid var(--color-rule);
+    transition: background-color 0.3s;
+  }
+  .av-press__list tr:hover {
+    background: color-mix(in srgb, var(--color-text) 5%, transparent);
+  }
+  .av-press__list td {
+    padding: 1.25rem 0.5rem;
+    vertical-align: baseline;
+  }
+  .av-press__year {
+    width: 5rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--color-accent);
+  }
+  .av-press__name {
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+    letter-spacing: -0.005em;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-text);
+  }
+  .av-press__src {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: var(--color-muted);
+    text-align: right;
+    font-weight: 500;
+  }
+
+  /* CTA */
+  .av-prj-cta {
+    border-top: 1px solid var(--color-rule);
+    text-align: center;
+  }
+  .av-prj-cta__h {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin: 0 0 2.5rem;
+    color: var(--color-primary);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .av-prj-cta__btn {
+    background: var(--color-primary);
+    color: var(--color-bg);
+    border-radius: 0;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 1.15rem 1.75rem;
+  }
+  .av-prj-cta__btn:hover {
+    background: var(--color-accent);
+  }
+</style>
+
+<script>
+  function init() {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+    const items = document.querySelectorAll<HTMLElement>('.av-prj__item');
+    if (!buttons.length) return;
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cat = btn.dataset.filter ?? 'alle';
+        buttons.forEach(b => {
+          b.classList.toggle('is-active', b === btn);
+          b.setAttribute('aria-selected', String(b === btn));
+        });
+        items.forEach(item => {
+          const itemCat = item.dataset.cat ?? '';
+          const show = cat === 'alle' || itemCat === cat;
+          if (show) item.removeAttribute('hidden');
+          else item.setAttribute('hidden', '');
+        });
+      });
+    });
+  }
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

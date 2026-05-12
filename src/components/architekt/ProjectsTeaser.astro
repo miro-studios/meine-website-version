@@ -1,0 +1,331 @@
+---
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+
+const projects = [
+  {
+    n: '142',
+    year: '2024',
+    name: 'Haus am Hang',
+    place: 'Hagen-Hohenlimburg',
+    type: 'NEUBAU',
+    spec: '142 m² · KFW-40 · HOLZ-BETON-HYBRID',
+    bg: 'linear-gradient(135deg, #142A52 0%, #1F3D7A 100%)',
+  },
+  {
+    n: '138',
+    year: '2024',
+    name: 'Scheune Sundern',
+    place: 'Sundern, Sauerland',
+    type: 'SANIERUNG',
+    spec: '210 m² · BJ 1894 · FACHWERK',
+    bg: 'linear-gradient(135deg, #2B2F3A 0%, #4A4D5A 100%)',
+  },
+  {
+    n: '133',
+    year: '2023',
+    name: 'Praxis Volmestraße',
+    place: 'Lüdenscheid',
+    type: 'GEWERBE',
+    spec: '380 m² · HAUSARZTPRAXIS · BARRIEREFREI',
+    bg: 'linear-gradient(135deg, #D6D4CD 0%, #ABA89E 100%)',
+    light: true,
+  },
+];
+---
+
+<section class="av-prj-t av-section">
+  <div class="av-container">
+    <div class="av-prj-t__bar">
+      <span class="av-prj-t__bar-n">N° 04</span>
+      <span class="av-prj-t__bar-line" aria-hidden="true"></span>
+      <span class="av-prj-t__bar-k">AUSWAHL · LFD. JAHR</span>
+    </div>
+
+    <RevealOnScroll class="av-prj-t__head">
+      <h2 class="av-prj-t__title">
+        AKTUELL<br />
+        <span class="av-prj-t__accent">IM BAU.</span>
+      </h2>
+      <a href="/demos/architekt/projekte/" class="av-prj-t__all">
+        <span>ARCHIV ANSEHEN</span>
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
+      </a>
+    </RevealOnScroll>
+
+    <ul class="av-prj-t__list">
+      {projects.map((p, i) => (
+        <li class="av-prj-t__row">
+          <a href="/demos/architekt/projekte/" class:list={['av-prj-t__link', { 'is-light': p.light }]}>
+            <div class="av-prj-t__index">
+              <span>{String(i + 1).padStart(2, '0')}</span>
+            </div>
+            <div class="av-prj-t__meta">
+              <div class="av-prj-t__head-row">
+                <span class="av-prj-t__n">N° {p.n} / {p.year}</span>
+                <span class="av-prj-t__type">{p.type}</span>
+              </div>
+              <h3 class="av-prj-t__name">{p.name}</h3>
+              <span class="av-prj-t__place">{p.place}</span>
+              <span class="av-prj-t__spec">{p.spec}</span>
+            </div>
+            <div class="av-prj-t__visual" style={`background: ${p.bg};`}>
+              <div class="av-prj-t__visual-grid" aria-hidden="true"></div>
+              <span class="av-prj-t__visual-tag">N° {p.n}</span>
+              <span class="av-prj-t__arrow" aria-hidden="true">
+                <svg viewBox="0 0 16 16"><path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
+              </span>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .av-prj-t {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .av-prj-t__bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    padding-bottom: 2.5rem;
+  }
+
+  .av-prj-t__bar-n {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .av-prj-t__bar-line {
+    flex: 1;
+    height: 1px;
+    background: var(--color-rule-strong);
+  }
+
+  .av-prj-t__bar-k {
+    color: var(--color-muted);
+    font-weight: 500;
+  }
+
+  .av-prj-t__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .av-prj-t__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 7vw, 6rem);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    margin: 0;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .av-prj-t__accent {
+    color: var(--color-primary);
+  }
+
+  .av-prj-t__all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.85rem 1.25rem;
+    border: 1px solid var(--color-text);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s, gap 0.3s var(--ease-out-expo);
+  }
+
+  .av-prj-t__all:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+    gap: 0.9rem;
+  }
+
+  .av-prj-t__all svg { width: 14px; height: 14px; }
+
+  .av-prj-t__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--color-rule-strong);
+  }
+
+  .av-prj-t__row {
+    border-bottom: 1px solid var(--color-rule-strong);
+  }
+
+  .av-prj-t__link {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1rem;
+    padding: clamp(1.5rem, 3vw, 2.5rem) 0;
+    color: var(--color-text);
+    text-decoration: none;
+    align-items: center;
+    transition: padding-left 0.5s var(--ease-out-expo), background-color 0.3s;
+  }
+
+  @media (min-width: 760px) {
+    .av-prj-t__link {
+      grid-template-columns: 3.5rem minmax(0, 1fr) minmax(0, 0.9fr);
+      gap: clamp(1.5rem, 3vw, 3.5rem);
+    }
+  }
+
+  .av-prj-t__link:hover {
+    padding-left: clamp(0.5rem, 2vw, 1.5rem);
+  }
+
+  .av-prj-t__index {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    letter-spacing: 0.1em;
+  }
+
+  .av-prj-t__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .av-prj-t__head-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+  }
+
+  .av-prj-t__n { color: var(--color-muted); }
+
+  .av-prj-t__type {
+    color: var(--color-text);
+    background: color-mix(in srgb, var(--color-text) 8%, transparent);
+    padding: 0.25rem 0.55rem;
+    font-weight: 700;
+  }
+
+  .av-prj-t__name {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    margin: 0.25rem 0 0;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .av-prj-t__link:hover .av-prj-t__name {
+    color: var(--color-primary);
+  }
+
+  .av-prj-t__place {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--color-text);
+    margin-top: 0.15rem;
+  }
+
+  .av-prj-t__spec {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--color-muted);
+    letter-spacing: 0.12em;
+    margin-top: 0.5rem;
+  }
+
+  .av-prj-t__visual {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    color: var(--color-bg);
+    isolation: isolate;
+    grid-column: 2 / -1;
+    margin-top: 1.25rem;
+  }
+
+  @media (min-width: 760px) {
+    .av-prj-t__visual {
+      grid-column: auto;
+      aspect-ratio: 4 / 3;
+      margin-top: 0;
+    }
+  }
+
+  .av-prj-t__link.is-light .av-prj-t__visual {
+    color: var(--color-text);
+  }
+
+  .av-prj-t__visual-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, currentColor 12%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, currentColor 12%, transparent) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+  }
+
+  .av-prj-t__visual-tag {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    padding: 0.3rem 0.6rem;
+    background: color-mix(in srgb, currentColor 12%, transparent);
+    border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+    z-index: 1;
+  }
+
+  .av-prj-t__arrow {
+    position: absolute;
+    bottom: 0.85rem;
+    right: 0.85rem;
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: currentColor;
+    z-index: 1;
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+
+  .av-prj-t__arrow svg {
+    width: 14px;
+    height: 14px;
+    color: var(--color-bg);
+  }
+
+  .av-prj-t__link.is-light .av-prj-t__arrow svg {
+    color: var(--color-text);
+  }
+
+  .av-prj-t__link:hover .av-prj-t__arrow {
+    transform: translate(3px, -3px);
+  }
+</style>
