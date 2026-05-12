@@ -1,0 +1,274 @@
+---
+/**
+ * /pakete — eigene Seite mit allen Paketen (One-Pager + Multi-Page)
+ *
+ * Aus der Home-Seite ausgegliedert, damit der One-Pager nicht zu lang
+ * wird. Eigener Hero stellt das Thema vor, dann die volle Pricing-
+ * Komponente mit Toggle One-Pager / Multi-Page.
+ */
+import PortfolioLayout from '@layouts/PortfolioLayout.astro';
+import SplitText from '@components/shared/SplitText.astro';
+import Pricing from '@components/portfolio/Pricing.astro';
+import Footer from '@components/portfolio/Footer.astro';
+import MagneticButton from '@components/shared/MagneticButton.astro';
+---
+
+<PortfolioLayout
+  title="Pakete & Preise — miro-studios"
+  description="Alle miro-studios Pakete im Überblick: One-Pager ab 599 €, Multi-Page ab 1.499 €. Domain, Hosting und Support inklusive. Keine Vertragsfalle, klare Preise."
+  active="pakete"
+>
+  <main class="pakete-page">
+    <!-- Hero ─────────────────────────────────────────────────────────── -->
+    <section class="pakete-hero">
+      <div class="pakete-hero__inner">
+        <p class="pakete-hero__eyebrow">
+          <span class="pakete-hero__eyebrow-line" aria-hidden="true"></span>
+          Pakete &amp; Preise
+        </p>
+
+        <SplitText
+          as="h1"
+          by="words"
+          stagger={0.05}
+          class="pakete-hero__title"
+        >
+          Klare Preise.
+        </SplitText>
+
+        <p class="pakete-hero__tagline">
+          <span>Sechs Pakete</span>
+          <span class="pakete-hero__tagline-italic">— eines für dein Projekt.</span>
+        </p>
+
+        <p class="pakete-hero__lede">
+          Zwei Formate, jeweils drei Stufen — vom fokussierten Einstieg
+          bis zum vollumfänglichen Multi-Page-Auftritt. Domain, Hosting
+          und Support sind in jedem Paket enthalten. Keine
+          Vertragsfalle, keine versteckten Aufschläge.
+        </p>
+
+        <a href="/arbeiten" class="pakete-hero__secondary">
+          <span class="pakete-hero__secondary-line">
+            <span>Demos ansehen</span>
+            <span aria-hidden="true">→</span>
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Pricing-Komponente ──────────────────────────────────────────── -->
+    <div id="preise">
+      <Pricing />
+    </div>
+
+    <!-- Final-CTA ────────────────────────────────────────────────────── -->
+    <section class="pakete-cta" data-cta-banner>
+      <div class="pakete-cta__inner">
+        <p class="pakete-cta__label">Noch unsicher?</p>
+        <h2 class="pakete-cta__heading">
+          Lass uns kurz sprechen.
+        </h2>
+        <p class="pakete-cta__sub">
+          Im 15-Minuten-Gespräch finden wir gemeinsam heraus, welches
+          Paket zu deinem Vorhaben passt — kostenlos und unverbindlich.
+        </p>
+        <MagneticButton href="/kontakt" variant="primary" strength={0.3} class="pakete-cta__btn">
+          <span>Anfrage starten</span>
+          <span aria-hidden="true">↗</span>
+        </MagneticButton>
+      </div>
+    </section>
+
+    <Footer />
+  </main>
+</PortfolioLayout>
+
+<style>
+  /* ── Pakete-Hero ────────────────────────────────────────────────────── */
+  .pakete-hero {
+    position: relative;
+    padding-block: clamp(6rem, 14vw, 11rem) clamp(3rem, 6vw, 5rem);
+    padding-inline: var(--container-pad);
+    background:
+      radial-gradient(
+        ellipse 80% 50% at 75% 20%,
+        color-mix(in srgb, var(--color-accent) 12%, transparent),
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 60% 40% at 15% 80%,
+        color-mix(in srgb, var(--color-accent) 6%, transparent),
+        transparent 60%
+      ),
+      var(--color-bg);
+    border-bottom: 1px solid var(--color-rule);
+    overflow: hidden;
+  }
+
+  .pakete-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: 0.07;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  .pakete-hero__inner {
+    position: relative;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+
+  .pakete-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--color-muted);
+  }
+
+  .pakete-hero__eyebrow-line {
+    display: inline-block;
+    width: 2.5rem;
+    height: 1px;
+    background-color: var(--color-accent);
+  }
+
+  :global(.pakete-hero__title) {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 9vw, 7.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    font-weight: 400;
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  .pakete-hero__tagline {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.5vw + 0.5rem, 2.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: color-mix(in srgb, var(--color-text) 60%, transparent);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+  }
+
+  .pakete-hero__tagline-italic {
+    font-style: italic;
+    color: var(--color-accent);
+  }
+
+  .pakete-hero__lede {
+    margin: 0;
+    font-size: clamp(1rem, 0.9vw + 0.55rem, 1.2rem);
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+    max-width: 60ch;
+  }
+
+  /* Demos-Link */
+  .pakete-hero__secondary {
+    margin-top: 1rem;
+    align-self: flex-start;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .pakete-hero__secondary:hover {
+    color: var(--color-accent);
+  }
+
+  .pakete-hero__secondary-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-style: italic;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 2px;
+  }
+
+  .pakete-hero__secondary-line span[aria-hidden] {
+    font-style: normal;
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+
+  .pakete-hero__secondary:hover .pakete-hero__secondary-line span[aria-hidden] {
+    transform: translateX(4px);
+  }
+
+  /* ── Final-CTA ──────────────────────────────────────────────────────── */
+  .pakete-cta {
+    position: relative;
+    padding-block: clamp(4rem, 9vw, 8rem);
+    padding-inline: var(--container-pad);
+    text-align: center;
+    background:
+      radial-gradient(
+        ellipse 80% 50% at 50% 100%,
+        color-mix(in srgb, var(--color-accent) 12%, transparent),
+        transparent 70%
+      ),
+      var(--color-bg);
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .pakete-cta__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(1.25rem, 2.5vw, 1.75rem);
+    max-width: 640px;
+    margin-inline: auto;
+  }
+
+  .pakete-cta__label {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-accent);
+  }
+
+  .pakete-cta__heading {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+    color: var(--color-text);
+    text-wrap: balance;
+  }
+
+  .pakete-cta__sub {
+    margin: 0;
+    font-size: clamp(1rem, 1vw + 0.5rem, 1.15rem);
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+    max-width: 50ch;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pakete-hero__secondary,
+    .pakete-hero__secondary-line span[aria-hidden] {
+      transition: none !important;
+    }
+  }
+</style>

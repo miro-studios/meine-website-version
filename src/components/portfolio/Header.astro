@@ -2,7 +2,7 @@
 import MagneticButton from '@components/shared/MagneticButton.astro';
 
 interface Props {
-  active?: 'index' | 'about' | 'kontakt' | 'impressum' | 'datenschutz' | 'faq' | 'arbeiten';
+  active?: 'index' | 'about' | 'kontakt' | 'impressum' | 'datenschutz' | 'faq' | 'arbeiten' | 'pakete';
 }
 
 const { active = 'index' }: Props = Astro.props;
@@ -10,6 +10,7 @@ const { active = 'index' }: Props = Astro.props;
 const navItems = [
   { label: 'Home', href: '/', match: 'index' },
   { label: 'Arbeiten', href: '/arbeiten', match: 'arbeiten' },
+  { label: 'Pakete', href: '/pakete', match: 'pakete' },
   { label: 'Studio', href: '/about', match: 'about' },
   { label: 'FAQ', href: '/faq', match: 'faq' },
   { label: 'Kontakt', href: '/kontakt', match: 'kontakt' },
