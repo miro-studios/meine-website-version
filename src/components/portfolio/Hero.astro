@@ -41,8 +41,7 @@ import HeroNetwork from './HeroNetwork.astro';
 
     <span class="hero__avail">
       <span class="hero__avail-dot" aria-hidden="true"></span>
-      <span class="hero__avail-label">Verfügbar für</span>
-      <span class="hero__avail-period">Q2 / Q3 2026</span>
+      <span class="hero__avail-label">Verfügbar</span>
     </span>
   </header>
 
@@ -418,7 +417,7 @@ import HeroNetwork from './HeroNetwork.astro';
   }
 
   .hero__avail-label {
-    color: color-mix(in srgb, var(--neon) 75%, transparent);
+    color: var(--neon-bright);
   }
 
   /* ══════════════════════════════════════════════════════════════════════

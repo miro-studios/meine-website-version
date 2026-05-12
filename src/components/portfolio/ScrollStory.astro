@@ -1,10 +1,11 @@
 ---
 /**
- * ScrollStory — Sticky-Sphere + statische Step-Liste.
+ * ScrollStory — vier nummerierte Steps, einspaltig.
  *
- * Kein Pin, kein erzwungenes Step-Swap. Sphere bleibt per `position: sticky`
- * neben den Step-Karten und reagiert auf Hover/Viewport-Mitte des aktiven
- * Steps via `story:progress`-Event.
+ * Reine Step-Liste mit großzügiger Editorial-Typografie. Beim Scrollen
+ * wird der Step, dessen Mitte am nächsten zum Viewport-Center ist, als
+ * `is-active` markiert (Akzent-Schiene links + Display-Titel in voller
+ * Farbe). Hover/Klick übersteuert kurz die Auto-Detection.
  */
 
 const steps = [
@@ -55,136 +56,32 @@ const steps = [
       </p>
     </header>
 
-    <div class="scroll-story__layout">
-      <!-- Linke Spalte: Sticky Editorial-Stage (Desktop-only) -->
-      <aside class="scroll-story__stage-wrap" data-stage-wrap>
-        <div class="scroll-story__stage" data-story-stage aria-hidden="true">
-          <!-- Grain-Overlay für Editorial-Texture -->
-          <div class="scroll-story__grain" aria-hidden="true"></div>
+    <ol class="scroll-story__steps" data-story-steps role="list">
+      {steps.map((step, i) => (
+        <li>
+          <button
+            type="button"
+            class:list={['story-step', { 'is-active': i === 0 }]}
+            data-story-step
+            data-step-index={i}
+            data-step-meta={step.meta}
+            data-cursor-hover
+            aria-label={`Schritt ${step.index}: ${step.title}`}
+            aria-current={i === 0 ? 'step' : 'false'}
+          >
+            <span class="story-step__rail" aria-hidden="true"></span>
 
-          <!-- Vertikales Mono-Label am linken Rand -->
-          <span class="scroll-story__rail-label" aria-hidden="true">
-            Process · 2026
-          </span>
+            <header class="story-step__head">
+              <span class="story-step__index">{step.index}</span>
+              <span class="story-step__meta">{step.meta}</span>
+            </header>
 
-          <!-- Top-Meta: Phase x / total -->
-          <div class="scroll-story__meta">
-            <span class="scroll-story__meta-label">
-              <span class="scroll-story__meta-dot" aria-hidden="true"></span>
-              Phase
-            </span>
-            <span class="scroll-story__meta-count">
-              <span data-story-current>01</span>
-              <span class="scroll-story__meta-sep">/</span>
-              <span class="scroll-story__meta-total">0{steps.length}</span>
-            </span>
-          </div>
-
-          <!-- Mega-Number mit Morph + Ambient-Ringe -->
-          <div class="scroll-story__num-wrap" data-stage-tilt>
-            <!-- Doppelter Ring: ambient drehend + Progress-Bogen -->
-            <svg
-              class="scroll-story__rings"
-              viewBox="0 0 100 100"
-              fill="none"
-              aria-hidden="true"
-            >
-              <!-- Äußerer Ring: dezent gestrichelt, dreht ambient -->
-              <g class="scroll-story__ring-spin">
-                <circle
-                  cx="50" cy="50" r="48"
-                  stroke="currentColor"
-                  stroke-width="0.25"
-                  stroke-dasharray="0.5 3"
-                  opacity="0.4"
-                />
-              </g>
-              <!-- Innerer Ring: feste gestrichelte Bahn -->
-              <circle
-                cx="50" cy="50" r="44"
-                stroke="currentColor"
-                stroke-width="0.3"
-                stroke-dasharray="2 4"
-                opacity="0.25"
-              />
-              <!-- Progress-Bogen: füllt sich mit Step -->
-              <circle
-                class="scroll-story__arc-progress"
-                cx="50" cy="50" r="44"
-                stroke="currentColor"
-                stroke-width="1.1"
-                stroke-linecap="round"
-                pathLength="100"
-                data-story-arc
-              />
-              <!-- Marker-Punkt am Ende des Bogens -->
-              <circle
-                class="scroll-story__arc-dot"
-                r="1.4"
-                fill="currentColor"
-                data-story-arc-dot
-              />
-            </svg>
-
-            <div class="scroll-story__num-stack" data-story-num-stack>
-              {steps.map((step, i) => (
-                <span
-                  class:list={['scroll-story__num', { 'is-active': i === 0 }]}
-                  data-num-index={i}
-                >{step.index}</span>
-              ))}
-            </div>
-          </div>
-
-          <!-- Footer: 4 Segmente + Label -->
-          <div class="scroll-story__progress">
-            <div class="scroll-story__segments" data-story-segments aria-hidden="true">
-              {steps.map((_, i) => (
-                <span
-                  class:list={['scroll-story__segment', { 'is-active': i === 0 }]}
-                  data-segment-index={i}
-                ></span>
-              ))}
-            </div>
-            <span class="scroll-story__phase-label-wrap" aria-hidden="true">
-              <span class="scroll-story__phase-arrow">→</span>
-              <span
-                class="scroll-story__phase-label"
-                data-story-current-label
-              >Briefing · Recherche</span>
-            </span>
-          </div>
-        </div>
-      </aside>
-
-      <!-- Rechte Spalte: alle Steps gleichzeitig sichtbar -->
-      <ol class="scroll-story__steps" data-story-steps role="list">
-        {steps.map((step, i) => (
-          <li>
-            <button
-              type="button"
-              class:list={['story-step', { 'is-active': i === 0 }]}
-              data-story-step
-              data-step-index={i}
-              data-step-meta={step.meta}
-              data-cursor-hover
-              aria-label={`Schritt ${step.index}: ${step.title}`}
-              aria-current={i === 0 ? 'step' : 'false'}
-            >
-              <span class="story-step__rail" aria-hidden="true"></span>
-
-              <header class="story-step__head">
-                <span class="story-step__index">{step.index}</span>
-                <span class="story-step__meta">{step.meta}</span>
-              </header>
-
-              <h3 class="story-step__title">{step.title}</h3>
-              <p class="story-step__body">{step.body}</p>
-            </button>
-          </li>
-        ))}
-      </ol>
-    </div>
+            <h3 class="story-step__title">{step.title}</h3>
+            <p class="story-step__body">{step.body}</p>
+          </button>
+        </li>
+      ))}
+    </ol>
   </div>
 </section>
 
@@ -252,327 +149,6 @@ const steps = [
     color: color-mix(in srgb, var(--color-text) 70%, transparent);
   }
 
-  /* ===== Layout: 2 columns, sticky sphere left, steps right ============== */
-  .scroll-story__layout {
-    display: grid;
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
-    gap: clamp(1.5rem, 4vw, 4rem);
-    align-items: start;
-  }
-
-  /* Mobile: Stage komplett raus, nur Steps full-width */
-  @media (max-width: 900px) {
-    .scroll-story__layout {
-      grid-template-columns: 1fr;
-    }
-    .scroll-story__stage-wrap {
-      display: none;
-    }
-  }
-
-  .scroll-story__stage-wrap {
-    position: sticky;
-    top: clamp(5rem, 10vh, 8rem);
-    align-self: start;
-  }
-
-  .scroll-story__stage {
-    --stage-pad: clamp(1.5rem, 2.6vw, 2.25rem);
-    position: relative;
-    aspect-ratio: 1 / 1;
-    padding: var(--stage-pad);
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    gap: clamp(1rem, 1.8vw, 1.5rem);
-    overflow: hidden;
-    /* Kein harter Rahmen — wirkt floating-editorial */
-    background:
-      radial-gradient(
-        ellipse at 25% 18%,
-        color-mix(in srgb, var(--color-accent) 7%, transparent) 0%,
-        transparent 55%
-      ),
-      radial-gradient(
-        ellipse at 80% 90%,
-        color-mix(in srgb, var(--color-text) 5%, transparent) 0%,
-        transparent 60%
-      );
-    isolation: isolate;
-  }
-
-  /* Subtile Eck-Markierungen — editorial frame */
-  .scroll-story__stage::before,
-  .scroll-story__stage::after {
-    content: "";
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    border-color: color-mix(in srgb, var(--color-text) 30%, transparent);
-    border-style: solid;
-    border-width: 0;
-    pointer-events: none;
-  }
-  .scroll-story__stage::before {
-    top: 14px;
-    left: 14px;
-    border-top-width: 1px;
-    border-left-width: 1px;
-  }
-  .scroll-story__stage::after {
-    bottom: 14px;
-    right: 14px;
-    border-bottom-width: 1px;
-    border-right-width: 1px;
-  }
-
-  /* Grain-Overlay */
-  .scroll-story__grain {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-    opacity: 0.05;
-    mix-blend-mode: multiply;
-  }
-
-  /* Vertikales Mono-Label am linken Rand */
-  .scroll-story__rail-label {
-    position: absolute;
-    left: 14px;
-    bottom: 50%;
-    transform: rotate(-90deg) translateX(50%);
-    transform-origin: left bottom;
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    text-transform: uppercase;
-    letter-spacing: 0.3em;
-    color: color-mix(in srgb, var(--color-text) 35%, transparent);
-    white-space: nowrap;
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  /* ── Top-Meta ─────────────────────────────────────────────────────── */
-  .scroll-story__meta {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-  }
-
-  .scroll-story__meta-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    color: color-mix(in srgb, var(--color-text) 50%, transparent);
-  }
-
-  .scroll-story__meta-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--color-accent);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 18%, transparent);
-    animation: stage-dot-pulse 2.4s ease-in-out infinite;
-  }
-
-  @keyframes stage-dot-pulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50%      { transform: scale(0.7); opacity: 0.6; }
-  }
-
-  .scroll-story__meta-count {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 0.45em;
-    color: var(--color-text);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .scroll-story__meta-sep,
-  .scroll-story__meta-total {
-    color: color-mix(in srgb, var(--color-text) 35%, transparent);
-  }
-
-  /* ── Mega-Number + Ringe ──────────────────────────────────────────── */
-  .scroll-story__num-wrap {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    place-items: center;
-    min-height: 0;
-    transform-style: preserve-3d;
-    transform: perspective(900px)
-               rotateX(var(--tilt-x, 0deg))
-               rotateY(var(--tilt-y, 0deg));
-    transition: transform 0.6s var(--ease-out-expo);
-  }
-
-  .scroll-story__rings {
-    position: absolute;
-    inset: -8%;
-    width: 116%;
-    height: 116%;
-    color: var(--color-accent);
-    pointer-events: none;
-    transform: rotate(-90deg);
-  }
-
-  .scroll-story__ring-spin {
-    transform-origin: 50% 50%;
-    animation: stage-ring-spin 38s linear infinite;
-  }
-
-  @keyframes stage-ring-spin {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-  }
-
-  .scroll-story__arc-progress {
-    stroke-dasharray: 100;
-    stroke-dashoffset: 100;
-    transition: stroke-dashoffset 0.9s var(--ease-out-expo);
-    filter: drop-shadow(0 0 4px color-mix(in srgb, var(--color-accent) 50%, transparent));
-  }
-
-  .scroll-story__arc-dot {
-    transition: transform 0.9s var(--ease-out-expo);
-    filter: drop-shadow(0 0 6px color-mix(in srgb, var(--color-accent) 70%, transparent));
-  }
-
-  .scroll-story__num-stack {
-    position: relative;
-    display: grid;
-    grid-template-areas: "stack";
-    line-height: 1;
-  }
-
-  .scroll-story__num {
-    grid-area: stack;
-    font-family: var(--font-display);
-    font-size: clamp(8rem, 16vw, 13rem);
-    line-height: 0.85;
-    letter-spacing: -0.07em;
-    font-weight: 400;
-    color: var(--color-text);
-    font-variant-numeric: tabular-nums;
-    opacity: 0;
-    transform: translateY(0.3em) scale(0.96);
-    filter: blur(14px);
-    transition:
-      opacity 0.55s var(--ease-out-expo),
-      transform 0.8s var(--ease-out-expo),
-      filter 0.55s ease;
-    pointer-events: none;
-    user-select: none;
-  }
-
-  .scroll-story__num.is-active {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
-    transition:
-      opacity 0.7s 0.06s var(--ease-out-expo),
-      transform 0.9s 0.06s var(--ease-out-expo),
-      filter 0.7s 0.06s ease;
-  }
-
-  /* ── Footer: Segmente + Label ─────────────────────────────────────── */
-  .scroll-story__progress {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-  }
-
-  .scroll-story__segments {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.4rem;
-  }
-
-  .scroll-story__segment {
-    position: relative;
-    height: 2px;
-    background: color-mix(in srgb, var(--color-text) 10%, transparent);
-    overflow: hidden;
-    border-radius: 2px;
-  }
-
-  .scroll-story__segment::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      90deg,
-      var(--color-accent),
-      color-mix(in srgb, var(--color-accent) 55%, var(--color-text))
-    );
-    transform: translateX(-101%);
-    transition: transform 0.7s var(--ease-out-expo);
-    box-shadow: 0 0 10px color-mix(in srgb, var(--color-accent) 40%, transparent);
-  }
-
-  .scroll-story__segment.is-active::after,
-  .scroll-story__segment.is-passed::after {
-    transform: translateX(0);
-  }
-
-  .scroll-story__phase-label-wrap {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--color-accent);
-    overflow: hidden;
-  }
-
-  .scroll-story__phase-arrow {
-    display: inline-block;
-    transition: transform 0.5s var(--ease-out-expo);
-  }
-
-  .scroll-story__phase-label {
-    display: inline-block;
-    transition:
-      opacity 0.35s var(--ease-out-expo),
-      transform 0.5s var(--ease-out-expo);
-  }
-
-  .scroll-story__phase-label.is-leaving {
-    opacity: 0;
-    transform: translateY(-0.4em);
-  }
-  .scroll-story__phase-label.is-entering {
-    opacity: 0;
-    transform: translateY(0.4em);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .scroll-story__ring-spin,
-    .scroll-story__meta-dot {
-      animation: none;
-    }
-    .scroll-story__num,
-    .scroll-story__arc-progress,
-    .scroll-story__arc-dot,
-    .scroll-story__num-wrap,
-    .scroll-story__phase-label,
-    .scroll-story__segment::after {
-      transition: none;
-    }
-  }
-
   /* ===== Step-Liste ===================================================== */
   .scroll-story__steps {
     list-style: none;
@@ -581,6 +157,7 @@ const steps = [
     display: flex;
     flex-direction: column;
     gap: 0;
+    max-width: 64rem;
   }
 
   .scroll-story__steps li {
@@ -596,7 +173,7 @@ const steps = [
     border: none;
     color: inherit;
     cursor: pointer;
-    padding: clamp(1.25rem, 2.5vw, 2rem) 0 clamp(1.25rem, 2.5vw, 2rem)
+    padding: clamp(1.5rem, 3vw, 2.25rem) 0 clamp(1.5rem, 3vw, 2.25rem)
       clamp(1.25rem, 2.5vw, 2rem);
     border-top: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
     display: flex;
@@ -664,7 +241,7 @@ const steps = [
   .story-step__title {
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+    font-size: clamp(1.65rem, 3vw, 2.6rem);
     line-height: 1.1;
     letter-spacing: -0.02em;
     font-weight: 500;
@@ -682,7 +259,7 @@ const steps = [
     font-size: var(--text-base);
     line-height: 1.55;
     color: color-mix(in srgb, var(--color-text) 60%, transparent);
-    max-width: 52ch;
+    max-width: 60ch;
     transition: color 0.4s var(--ease-out-expo);
   }
 
@@ -694,8 +271,7 @@ const steps = [
     .story-step,
     .story-step__rail,
     .story-step__title,
-    .story-step__body,
-    .scroll-story__phase-label {
+    .story-step__body {
       transition: none;
     }
   }
@@ -704,151 +280,15 @@ const steps = [
 <script>
   import { initScrollStories } from '@lib/scroll-story';
 
-  type Cleanup = () => void;
-
-  function initStoryStageTypo(): Cleanup {
-    const sections = Array.from(
-      document.querySelectorAll<HTMLElement>('[data-scroll-story]'),
-    );
-    const teardowns: Cleanup[] = [];
-
-    for (const section of sections) {
-      const stack = section.querySelector<HTMLElement>('[data-story-num-stack]');
-      const arc = section.querySelector<SVGElement>('[data-story-arc]');
-      const arcDot = section.querySelector<SVGElement>('[data-story-arc-dot]');
-      const segments = Array.from(
-        section.querySelectorAll<HTMLElement>('[data-story-segments] .scroll-story__segment'),
-      );
-      const labelEl = section.querySelector<HTMLElement>('[data-story-current-label]');
-      const tiltEl = section.querySelector<HTMLElement>('[data-stage-tilt]');
-      if (!stack && !arc && segments.length === 0 && !labelEl) continue;
-
-      const nums = stack
-        ? Array.from(stack.querySelectorAll<HTMLElement>('.scroll-story__num'))
-        : [];
-      const steps = Array.from(
-        section.querySelectorAll<HTMLElement>('[data-story-step]'),
-      );
-      const stepCount = steps.length || 1;
-
-      let lastIdx = -1;
-      let labelTimer: number | null = null;
-
-      const onProgress = (e: Event) => {
-        const detail = (e as CustomEvent<{ progress: number }>).detail;
-        if (!detail) return;
-        const p = detail.progress;
-        const idx = Math.min(stepCount - 1, Math.round(p * (stepCount - 1)));
-        if (idx === lastIdx) return;
-
-        // Number-Stack
-        nums.forEach((el, i) => el.classList.toggle('is-active', i === idx));
-
-        // Segmente: alle bis idx als passed/active markieren
-        segments.forEach((seg, i) => {
-          seg.classList.toggle('is-passed', i < idx);
-          seg.classList.toggle('is-active', i === idx);
-        });
-
-        // Progress-Bogen
-        const progressPct = (idx + 1) / stepCount;
-        if (arc) {
-          const offset = 100 - progressPct * 100;
-          (arc as SVGElement).style.strokeDashoffset = String(offset);
-        }
-
-        // Marker-Punkt am Ende des Bogens positionieren.
-        // SVG-Circle-Stroke startet bei 3-Uhr lokal; Parent ist um -90° gedreht,
-        // also erscheint Start oben. Dot und Stroke teilen sich die Rotation —
-        // wir rechnen die lokale Position direkt aus.
-        if (arcDot) {
-          const angle = progressPct * Math.PI * 2;
-          const cx = 50 + Math.cos(angle) * 44;
-          const cy = 50 + Math.sin(angle) * 44;
-          arcDot.setAttribute('cx', String(cx));
-          arcDot.setAttribute('cy', String(cy));
-        }
-
-        // Label-Morph
-        if (labelEl) {
-          const newText = steps[idx]?.dataset.stepMeta ?? labelEl.textContent ?? '';
-          if (newText !== labelEl.textContent) {
-            labelEl.classList.add('is-leaving');
-            if (labelTimer != null) window.clearTimeout(labelTimer);
-            labelTimer = window.setTimeout(() => {
-              labelEl.textContent = newText;
-              labelEl.classList.remove('is-leaving');
-              labelEl.classList.add('is-entering');
-              requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                  labelEl.classList.remove('is-entering');
-                });
-              });
-            }, 200);
-          }
-        }
-
-        lastIdx = idx;
-      };
-
-      section.addEventListener('story:progress', onProgress);
-      teardowns.push(() => {
-        section.removeEventListener('story:progress', onProgress);
-        if (labelTimer != null) window.clearTimeout(labelTimer);
-      });
-
-      // Mouse-Parallax-Tilt auf die Zahl (nur Desktop / fine pointer)
-      if (
-        tiltEl &&
-        !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
-        !window.matchMedia('(hover: none), (pointer: coarse)').matches
-      ) {
-        const stage = section.querySelector<HTMLElement>('.scroll-story__stage');
-        if (stage) {
-          let raf = 0;
-          let tx = 0, ty = 0, cx = 0, cy = 0;
-          const onMove = (ev: MouseEvent) => {
-            const rect = stage.getBoundingClientRect();
-            tx = ((ev.clientX - rect.left) / rect.width) * 2 - 1;
-            ty = ((ev.clientY - rect.top) / rect.height) * 2 - 1;
-          };
-          const onLeave = () => { tx = 0; ty = 0; };
-          const tick = () => {
-            cx += (tx - cx) * 0.08;
-            cy += (ty - cy) * 0.08;
-            tiltEl.style.setProperty('--tilt-y', `${cx * 6}deg`);
-            tiltEl.style.setProperty('--tilt-x', `${-cy * 4}deg`);
-            raf = requestAnimationFrame(tick);
-          };
-          stage.addEventListener('mousemove', onMove);
-          stage.addEventListener('mouseleave', onLeave);
-          tick();
-          teardowns.push(() => {
-            stage.removeEventListener('mousemove', onMove);
-            stage.removeEventListener('mouseleave', onLeave);
-            cancelAnimationFrame(raf);
-          });
-        }
-      }
-    }
-
-    return () => teardowns.forEach((fn) => fn());
-  }
-
-  let cleanupStory: Cleanup | null = null;
-  let cleanupStage: Cleanup | null = null;
+  let cleanup: (() => void) | null = null;
 
   const start = () => {
-    cleanupStory?.();
-    cleanupStage?.();
-    cleanupStory = initScrollStories();
-    cleanupStage = initStoryStageTypo();
+    cleanup?.();
+    cleanup = initScrollStories();
   };
   const stop = () => {
-    cleanupStory?.();
-    cleanupStage?.();
-    cleanupStory = null;
-    cleanupStage = null;
+    cleanup?.();
+    cleanup = null;
   };
 
   start();
