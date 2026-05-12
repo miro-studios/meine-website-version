@@ -695,6 +695,10 @@ const categories = [
   gsap.registerPlugin(ScrollTrigger);
 
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Mobile / Touch-Geräte: 3D-Effekte aus, sauberer Fade-Cross statt
+  // Curtain + Cube-Twist + 3D-Card-Flight. Reactive auf Resize.
+  const mobileMQ = window.matchMedia('(max-width: 768px), (pointer: coarse)');
+  const isMobileLike = () => mobileMQ.matches;
 
   // ─── Elements ──────────────────────────────────────────────
   const tabsWrap    = document.querySelector<HTMLElement>('.faq__tabs')!;
@@ -897,7 +901,18 @@ const categories = [
     tabs.forEach(t => { t.classList.remove('is-active'); t.setAttribute('aria-selected', 'false'); });
     targetTab?.classList.add('is-active');
     targetTab?.setAttribute('aria-selected', 'true');
-    if (targetTab) positionIndicator(targetTab);
+    if (targetTab) {
+      positionIndicator(targetTab);
+      // Auf Mobile: aktive Tab in den sichtbaren Bereich scrollen, damit
+      // der orange Indicator-Strich nie unsichtbar nach rechts wandert.
+      const tabsScroller = document.querySelector<HTMLElement>('.faq__tabs-wrap');
+      if (tabsScroller) {
+        const tabRect = targetTab.getBoundingClientRect();
+        const scRect = tabsScroller.getBoundingClientRect();
+        const offset = tabRect.left + tabRect.width / 2 - scRect.left - scRect.width / 2;
+        tabsScroller.scrollBy({ left: offset, behavior: 'smooth' });
+      }
+    }
 
     if (prefersReduced) {
       prevPanel?.classList.remove('is-active');
@@ -910,7 +925,63 @@ const categories = [
       return;
     }
 
-    // Fire parallel decorative animations
+    // ─────────────────────────────────────────────────────────────
+    // Mobile / Touch: einfacher Fade-Cross, keine 3D-Choreografie
+    // ─────────────────────────────────────────────────────────────
+    if (isMobileLike()) {
+      // Vorher: alle inline-Styles auf Items beider Panels resetten — sonst
+      // bleiben Reste aus früheren Animationen kleben und das Layout zappelt.
+      const allItems = document.querySelectorAll<HTMLElement>(
+        '.faq__panel .faq-item',
+      );
+      gsap.killTweensOf(allItems);
+      gsap.set(allItems, { clearProps: 'all' });
+
+      // Meta-Texte sofort tauschen (keine Counter-Flip-Animation, kein Ghost-Wipe)
+      counterNum.textContent = num;
+      catLabel.textContent   = label;
+      ghostNum.textContent   = num;
+
+      const prevItems = prevPanel
+        ? Array.from(prevPanel.querySelectorAll<HTMLElement>('.faq-item'))
+        : [];
+
+      gsap.to(prevItems.length ? prevItems : prevPanel!, {
+        opacity: 0,
+        y: -6,
+        duration: 0.18,
+        ease: 'power2.in',
+        onComplete: () => {
+          if (prevPanel) {
+            prevPanel.classList.remove('is-active');
+            prevPanel.style.display = '';
+          }
+          nextPanel.classList.add('is-active');
+
+          const nextItems = Array.from(
+            nextPanel.querySelectorAll<HTMLElement>('.faq-item'),
+          );
+          gsap.fromTo(nextItems,
+            { opacity: 0, y: 10 },
+            {
+              opacity: 1, y: 0,
+              duration: 0.32,
+              ease: 'expo.out',
+              stagger: 0.035,
+              clearProps: 'transform,opacity',
+              onComplete: () => { isAnimating = false; },
+            },
+          );
+        },
+      });
+
+      currentIdx = targetIdx;
+      return;
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // Desktop: volle 3D-Choreografie
+    // ─────────────────────────────────────────────────────────────
     animateGhost(num, goingRight);
     flipCounter(num);
     swapCatLabel(label, goingRight);
@@ -956,8 +1027,8 @@ const categories = [
     tab.addEventListener('click', () => switchTab(tab.dataset.tab!, i));
   });
 
-  // ─── Tab hover: 3D tilt + lift ─────────────────────────────
-  if (!prefersReduced) {
+  // ─── Tab hover: 3D tilt + lift (Desktop only) ──────────────
+  if (!prefersReduced && !isMobileLike()) {
     tabs.forEach(tab => {
       tab.addEventListener('mousemove', (e) => {
         const r  = tab.getBoundingClientRect();
