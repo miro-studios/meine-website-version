@@ -1,20 +1,58 @@
 /* ==========================================================================
-   Theme: Portfolio "Studio"
-   Editorial-Studio meets Tech-Forward. Dunkel, smart, bold.
+   Theme: Portfolio "miro-studios"
+   --------------------------------------------------------------------------
+   Editorial-Studio meets warmer Eleganz. Off-White Hintergrund, tiefes
+   Anthrazit als Text, gebranntes Terrakotta als ruhiger Akzent.
+
+   Bewusst hell und ruhig: das Portfolio verkauft an Pizzerien, Friseure,
+   Handwerker — also auch an Geschäftsinhaber jeder Altersgruppe. Klarheit
+   und Lesbarkeit schlagen Tech-Bro-Aesthetic.
    ========================================================================== */
 
 [data-theme="portfolio"] {
-  --color-bg: #0A0A0A;
-  --color-surface: #131313;
-  --color-text: #F4F2EE;
-  --color-muted: #6e6c68;
-  --color-primary: #F4F2EE;
-  --color-accent: #FF4D1C;
+  /* -- Farben ---------------------------------------------------------------
+     Hintergrund:  warmes Cremeweiß  (#F5F1EA) — kein steriles Weiß, atmet
+     Surface:      etwas reiner       (#FBF8F2) — für Cards / Sub-Surfaces
+     Text:         tiefes Warmschwarz (#1A1716) — angenehm zu lesen
+     Muted:        sanftes Steingrau  (#7A7670)
+     Linien:       dezent             (#E5DFD3)
+     Akzent:       Terrakotta gebrannt(#B85A2C) — warm, edel, nie aufdringlich
+     Akzent-Deep:  tiefer Burgund      (#7A2B1F) — für Hover / Press
+  */
+  --color-bg: #F5F1EA;
+  --color-surface: #FBF8F2;
+  --color-text: #1A1716;
+  --color-muted: #7A7670;
+  --color-rule: #E5DFD3;
+  --color-primary: #1A1716;
+  --color-accent: #B85A2C;
+  --color-accent-deep: #7A2B1F;
 
-  /* Display: PP Editorial New / Migra / Editorial Old (selfhosted woff2)   */
-  /* Body:    Geist / Söhne                                                  */
-  /* Mono:    JetBrains Mono                                                 */
-  --font-display: "Editorial", "PP Editorial New", ui-serif, Georgia, serif;
-  --font-body: "Geist", "Söhne", system-ui, -apple-system, sans-serif;
+  /* -- Fonts ---------------------------------------------------------------
+     Display: Editorial Serif mit Charakter (Fraunces als kostenlose Wahl,
+              fällt zurück auf System-Serifen wenn nicht geladen).
+     Body:    Inter Tight — sehr gut lesbar, neutral, modern.
+     Mono:    JetBrains Mono für technische Labels (Lieferzeit, Standort).
+  */
+  --font-display: "Fraunces", "PP Editorial New", ui-serif, Georgia, serif;
+  --font-body: "Inter Tight", "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+}
+
+/* Body Selection & Focus für Portfolio-Theme */
+[data-theme="portfolio"] body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+
+[data-theme="portfolio"] ::selection {
+  background-color: var(--color-accent);
+  color: #FFF;
+}
+
+[data-theme="portfolio"] :focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: 2px;
 }

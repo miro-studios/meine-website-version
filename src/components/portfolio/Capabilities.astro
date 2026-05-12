@@ -5,45 +5,45 @@ import SplitText from '@components/shared/SplitText.astro';
 const capabilities = [
   {
     index: '01',
-    title: 'Web Design',
+    title: 'Design',
     description:
-      'Editorial, mit Charakter. Wir entwerfen Sites die wirken wie sie etwas zu sagen haben — keine Theme-Schablonen.',
-    tools: ['Figma', 'Typografie', 'Art Direction'],
+      'Jede Website wird einzeln entworfen — passend zu deiner Marke, deiner Branche, deinen Kunden. Keine fertigen Vorlagen, keine WordPress-Themes.',
+    tools: ['Individuelles Layout', 'Typografie', 'Farbwelt'],
   },
   {
     index: '02',
-    title: 'Development',
+    title: 'Entwicklung',
     description:
-      'Sauberer Code, blitzschnell, accessible. Astro für Content-driven Sites, Component-Architektur die wartbar bleibt.',
-    tools: ['Astro', 'TypeScript', 'Tailwind', 'GSAP'],
+      'Selbst geschriebener Code, der schnell lädt und sauber funktioniert — auf Handy, Tablet und Laptop. Keine Plugins die irgendwann brechen.',
+    tools: ['Astro', 'TypeScript', 'Modern Frontend'],
   },
   {
     index: '03',
-    title: 'Brand & Identity',
+    title: 'Inhalte selbst pflegen',
     description:
-      'Wortmarke, Bildsprache, Farbsystem. Als Mini-Branding-Paket inklusive, oder eigenständig vor dem Web-Projekt.',
-    tools: ['Logo', 'Visual Language', 'Brand Guide'],
+      'Wenn du Texte, Bilder oder Öffnungszeiten regelmäßig ändern willst, bauen wir dir einen einfachen Editor — ohne dass du Code anfassen musst.',
+    tools: ['Einfacher Editor', 'Klare Anleitung'],
   },
   {
     index: '04',
-    title: 'Animation & Motion',
+    title: 'Bilder & Bildregie',
     description:
-      'Smooth Scroll, Custom Cursor, Page Transitions, Scroll-Storytelling. Jede Bewegung dient der Lesbarkeit.',
-    tools: ['GSAP + ScrollTrigger', 'Lenis', 'View Transitions'],
+      'Bildauswahl, Lizenzklärung, Beschnitt und Optimierung. Auf Wunsch koordinieren wir auch ein Foto-Shooting in deinen Räumen.',
+    tools: ['Bildrecherche', 'Optimierung', 'Bildregie'],
   },
   {
     index: '05',
-    title: 'CMS & Redaktion',
+    title: 'Gefunden werden (SEO)',
     description:
-      'Wenn deine Inhalte regelmäßig wechseln: Headless-CMS-Anbindung mit dem Editor-Setup, das zu deinem Team passt.',
-    tools: ['Sanity', 'Astro Content Collections', 'Markdown'],
+      'Damit deine Kunden dich bei Google finden: technische Grundlagen, lokale Optimierung, sauberes Meta-Setup. Keine leeren Versprechen, ehrliche Arbeit.',
+    tools: ['Lokales SEO', 'Google-Sichtbarkeit', 'Strukturierte Daten'],
   },
   {
     index: '06',
-    title: 'Performance & SEO',
+    title: 'Hosting & Pflege',
     description:
-      'Lighthouse 90+ ist Standard, nicht Ziel. Selfhosted Fonts, AVIF/WebP, semantisches HTML, strukturierte Daten.',
-    tools: ['Core Web Vitals', 'Schema.org', 'Open Graph'],
+      'Domain, Hosting und SSL inklusive. Updates, Backups, kleine Änderungen — ein Ansprechpartner, keine Hotline.',
+    tools: ['Domain inklusive', 'Hosting', 'Persönlicher Support'],
   },
 ] as const;
 ---
@@ -62,8 +62,13 @@ const capabilities = [
       class="capabilities__title"
       id="capabilities-title"
     >
-      Was wir machen.
+      Was wir für dich machen.
     </SplitText>
+
+    <p class="capabilities__lede">
+      Eine Website ist mehr als ein paar schöne Bilder. Wir kümmern uns
+      um alles, was dazugehört — von der ersten Idee bis zur laufenden Pflege.
+    </p>
   </header>
 
   <RevealOnScroll class="capabilities__list" stagger={0.06} y={30}>
@@ -121,12 +126,20 @@ const capabilities = [
     background-color: currentColor;
   }
 
-  .capabilities__title {
+  .capabilities :global(.capabilities__title) {
     font-family: var(--font-display);
-    font-size: clamp(3rem, 8vw, 7rem);
-    line-height: 0.95;
-    letter-spacing: -0.04em;
-    font-weight: 500;
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+  }
+
+  .capabilities__lede {
+    margin: 0.5rem 0 0;
+    font-size: clamp(1rem, 1.1vw + 0.5rem, 1.25rem);
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+    max-width: 52ch;
   }
 
   .capabilities__list {
@@ -141,7 +154,7 @@ const capabilities = [
     padding-block: clamp(1.5rem, 3vw, 2.5rem);
     border-bottom: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
     align-items: start;
-    cursor: none;
+    cursor: pointer;
     transition: padding 0.4s var(--ease-out-expo),
       background-color 0.4s var(--ease-out-expo);
   }

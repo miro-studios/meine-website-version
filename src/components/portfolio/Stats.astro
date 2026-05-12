@@ -1,0 +1,209 @@
+---
+/**
+ * Stats — ehrliche Zahlen, keine Werbe-Stats.
+ *
+ * Wir verkaufen kein "10.000+ glückliche Kunden" Theater. Stattdessen
+ * zeigen wir was wirklich stimmt: 1 Person, 2 Live-Demos, kein Outsourcing,
+ * direkter Draht zum Designer/Entwickler.
+ *
+ * Strikt nur reale Werte. Vor jedem Online-Gang nachprüfen.
+ */
+---
+
+<section class="stats" aria-labelledby="stats-title">
+  <div class="stats__inner">
+    <header class="stats__head">
+      <span class="stats__eyebrow">
+        <span class="stats__eyebrow-line" aria-hidden="true"></span>
+        Wer steckt dahinter
+      </span>
+      <h2 id="stats-title" class="stats__title">
+        Ehrliche Zahlen.<br />
+        <span class="stats__title-italic">Kein Marketing-Sprech.</span>
+      </h2>
+    </header>
+
+    <dl class="stats__list">
+      <div class="stat">
+        <dt class="stat__label">Designer &amp; Entwickler</dt>
+        <dd class="stat__value">01</dd>
+        <dd class="stat__detail">
+          Du sprichst direkt mit der Person, die deine Website auch baut.
+        </dd>
+      </div>
+
+      <div class="stat">
+        <dt class="stat__label">Live-Demos zum Anschauen</dt>
+        <dd class="stat__value">02</dd>
+        <dd class="stat__detail">
+          Café Nordlicht und Bella Notte — fertig, online, klickbar.
+        </dd>
+      </div>
+
+      <div class="stat">
+        <dt class="stat__label">Lieferzeit ab</dt>
+        <dd class="stat__value">
+          05<span class="stat__value-unit"> Tage</span>
+        </dd>
+        <dd class="stat__detail">
+          Onepager innerhalb von einer Woche. Komplexere Sites länger, klar.
+        </dd>
+      </div>
+
+      <div class="stat">
+        <dt class="stat__label">Selbst geschrieben</dt>
+        <dd class="stat__value">
+          100<span class="stat__value-unit"> %</span>
+        </dd>
+        <dd class="stat__detail">
+          Kein WordPress, keine Page-Builder, keine Plugin-Lotterie.
+        </dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<style>
+  .stats {
+    position: relative;
+    padding-block: clamp(4rem, 8vw, 7rem);
+    padding-inline: var(--container-pad);
+    background-color: color-mix(in srgb, var(--color-text) 3%, var(--color-bg));
+    border-top: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .stats__inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .stats__head {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 56rem;
+  }
+
+  .stats__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-muted);
+  }
+
+  .stats__eyebrow-line {
+    display: inline-block;
+    width: 2.5rem;
+    height: 1px;
+    background-color: var(--color-accent);
+  }
+
+  .stats__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+    margin: 0;
+    color: var(--color-text);
+    text-wrap: balance;
+  }
+
+  .stats__title-italic {
+    font-style: italic;
+    color: var(--color-accent);
+  }
+
+  /* ── Stats-Grid ─────────────────────────────────────────────────────── */
+  .stats__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .stat {
+    padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1rem, 2vw, 1.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    border-right: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+    transition: background-color 0.4s ease;
+  }
+
+  .stat:hover {
+    background-color: color-mix(in srgb, var(--color-accent) 4%, transparent);
+  }
+
+  /* letzter in jeder Zeile/letzte Spalte: kein Border rechts */
+  .stat:last-child {
+    border-right: none;
+  }
+
+  @media (min-width: 1080px) {
+    .stat:nth-child(4n) {
+      border-right: none;
+    }
+  }
+
+  @media (min-width: 700px) and (max-width: 1079px) {
+    .stat:nth-child(2n) {
+      border-right: none;
+    }
+  }
+
+  @media (max-width: 699px) {
+    .stat {
+      border-right: none;
+    }
+  }
+
+  .stat__label {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-muted);
+    margin: 0;
+  }
+
+  .stat__value {
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 5vw, 4.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: 400;
+    color: var(--color-text);
+    margin: 0;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.15em;
+  }
+
+  .stat__value-unit {
+    font-size: 0.45em;
+    color: var(--color-muted);
+    letter-spacing: 0;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+  }
+
+  .stat__detail {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: color-mix(in srgb, var(--color-text) 70%, transparent);
+    margin: 0;
+    max-width: 28ch;
+  }
+</style>

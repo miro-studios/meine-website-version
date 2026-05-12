@@ -1,0 +1,369 @@
+---
+/**
+ * Works — Single-Card-Section, die zur /arbeiten-Übersicht leitet.
+ *
+ * Eine prominente Hero-CTA-Card mit Glow + gefächertem Demo-Thumb-Stack
+ * rechts, plus auffälligem Button zu /arbeiten. Keine doppelten Demo-Cards
+ * mehr — die echten Demos leben auf der /arbeiten-Seite.
+ */
+import { demos } from '@/data/demos';
+
+const liveDemos = demos.filter((d) => d.status === 'live');
+---
+
+<section class="works" id="arbeiten" aria-labelledby="works-title">
+  <div class="works__inner">
+    <div class="works-hero" data-works-hero>
+      <span class="works-hero__glow" aria-hidden="true"></span>
+
+      <div class="works-hero__content">
+        <span class="works-hero__eyebrow">
+          <span class="works-hero__dot" aria-hidden="true"></span>
+          {liveDemos.length} Live-Demos · weitere in Arbeit
+        </span>
+
+        <h2 id="works-title" class="works-hero__title">
+          So sieht eine
+          <span class="works-hero__title-italic">miro-Site</span>
+          aus.
+        </h2>
+
+        <p class="works-hero__sub">
+          Pro Paket bauen wir eine Beispiel-Site — damit du genau weißt,
+          was du bekommst. Echte Beispielsites in voller Production-Qualität,
+          live im Browser.
+        </p>
+
+        <a href="/arbeiten" class="works-hero__cta">
+          <span class="works-hero__cta-label">Arbeiten ansehen</span>
+          <span class="works-hero__cta-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <!-- Gefächerter Demo-Thumb-Stack rechts -->
+      <span class="works-hero__stack" aria-hidden="true">
+        <span class="works-hero__thumb works-hero__thumb--cafe">
+          <span class="works-hero__thumb-label">Café</span>
+        </span>
+        <span class="works-hero__thumb works-hero__thumb--pizzeria">
+          <span class="works-hero__thumb-label">Pizza</span>
+        </span>
+        <span class="works-hero__thumb works-hero__thumb--elektro">
+          <span class="works-hero__thumb-label">Elektro</span>
+        </span>
+        <span class="works-hero__thumb works-hero__thumb--friseur">
+          <span class="works-hero__thumb-label">Friseur</span>
+        </span>
+      </span>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ── Container ──────────────────────────────────────────────────────── */
+  .works {
+    position: relative;
+    padding-block: clamp(4rem, 8vw, 7rem);
+    padding-inline: var(--container-pad);
+    background-color: var(--color-bg);
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .works__inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════
+     Works-Hero-CTA-Card
+     ══════════════════════════════════════════════════════════════════════ */
+  .works-hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4rem);
+    padding: clamp(2rem, 4vw, 3.25rem);
+    background:
+      linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--color-accent) 10%, var(--color-surface)) 0%,
+        color-mix(in srgb, var(--color-accent) 4%, var(--color-surface)) 100%
+      );
+    border: 1px solid color-mix(in srgb, var(--color-accent) 40%, transparent);
+    border-radius: var(--radius-lg);
+    color: var(--color-text);
+    isolation: isolate;
+    overflow: hidden;
+    /* Subtiles "Schweben" damit es im Auge bleibt */
+    animation: works-hero-bob 4s ease-in-out infinite;
+  }
+
+  @keyframes works-hero-bob {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-4px); }
+  }
+
+  /* Glow hinter der Karte (pulsierend) */
+  .works-hero__glow {
+    position: absolute;
+    inset: -40%;
+    z-index: -1;
+    background: radial-gradient(
+      ellipse at center,
+      color-mix(in srgb, var(--color-accent) 35%, transparent) 0%,
+      transparent 50%
+    );
+    filter: blur(40px);
+    opacity: 0.4;
+    animation: works-hero-glow-pulse 3.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes works-hero-glow-pulse {
+    0%, 100% { opacity: 0.3; transform: scale(0.95); }
+    50%      { opacity: 0.6;  transform: scale(1.05); }
+  }
+
+  /* ── Content (linke Spalte) ─────────────────────────── */
+  .works-hero__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 0;
+  }
+
+  .works-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--color-accent);
+  }
+
+  .works-hero__dot {
+    display: inline-block;
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 25%, transparent);
+    flex-shrink: 0;
+    animation: works-hero-pulse 2.4s var(--ease-in-out-quart) infinite;
+  }
+
+  @keyframes works-hero-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%      { transform: scale(0.7); opacity: 0.6; }
+  }
+
+  .works-hero__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    font-weight: 400;
+    color: var(--color-text);
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+
+  .works-hero__title-italic {
+    font-style: italic;
+    color: var(--color-accent);
+  }
+
+  .works-hero__sub {
+    margin: 0;
+    font-size: clamp(1rem, 0.9vw + 0.55rem, 1.15rem);
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    max-width: 50ch;
+  }
+
+  /* ── Auffälliger CTA-Button ─────────────────────────── */
+  .works-hero__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.85rem;
+    padding: 1.05rem 2.25rem;
+    background-color: var(--color-accent);
+    color: #FFF;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    border-radius: 100px;
+    text-decoration: none;
+    width: max-content;
+    box-shadow:
+      0 8px 24px -6px color-mix(in srgb, var(--color-accent) 50%, transparent),
+      0 0 0 0 color-mix(in srgb, var(--color-accent) 30%, transparent);
+    transition:
+      background-color 0.3s ease,
+      transform 0.4s var(--ease-out-expo),
+      box-shadow 0.4s var(--ease-out-expo);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Shimmer-Sweep über den Button (kontinuierlich) */
+  .works-hero__cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      110deg,
+      transparent 30%,
+      color-mix(in srgb, #fff 35%, transparent) 50%,
+      transparent 70%
+    );
+    transform: translateX(-110%);
+    animation: works-hero-cta-shine 3.5s ease-in-out infinite;
+    animation-delay: 1s;
+    pointer-events: none;
+  }
+
+  @keyframes works-hero-cta-shine {
+    0%   { transform: translateX(-110%); }
+    50%  { transform: translateX(110%); }
+    100% { transform: translateX(110%); }
+  }
+
+  .works-hero__cta:hover {
+    background-color: var(--color-accent-deep, #7A2B1F);
+    transform: translateY(-2px);
+    box-shadow:
+      0 14px 32px -6px color-mix(in srgb, var(--color-accent) 60%, transparent),
+      0 0 0 6px color-mix(in srgb, var(--color-accent) 15%, transparent);
+  }
+
+  .works-hero__cta-arrow {
+    display: inline-block;
+    font-size: 1.1em;
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+
+  .works-hero__cta:hover .works-hero__cta-arrow {
+    transform: translateX(5px);
+  }
+
+  /* ── Mini-Demo-Thumbnail-Stack (rechte Spalte) ─────── */
+  .works-hero__stack {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(180px, 18vw, 260px);
+    height: clamp(180px, 18vw, 260px);
+    flex-shrink: 0;
+  }
+
+  .works-hero__thumb {
+    position: absolute;
+    width: 110px;
+    height: 86px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: flex-end;
+    padding: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.08),
+      0 8px 22px -4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.6s var(--ease-out-expo);
+    backface-visibility: hidden;
+  }
+
+  /* Gefächerter Stack — Default-Positionen */
+  .works-hero__thumb--cafe {
+    background: linear-gradient(135deg, #F2EBDD 0%, #C2683A 110%);
+    color: #6B1F25;
+    transform: translate(-40px, -26px) rotate(-10deg);
+    z-index: 3;
+  }
+  .works-hero__thumb--pizzeria {
+    background: linear-gradient(135deg, #F8F2E8 0%, #C44536 110%);
+    color: #A8261B;
+    transform: translate(-15px, -8px) rotate(-3deg);
+    z-index: 4;
+  }
+  .works-hero__thumb--elektro {
+    background: linear-gradient(135deg, #1F1F1C 0%, #0E0E0C 100%);
+    color: #FFD60A;
+    transform: translate(15px, 8px) rotate(4deg);
+    z-index: 2;
+    opacity: 0.7;
+  }
+  .works-hero__thumb--friseur {
+    background: linear-gradient(135deg, #F8F4ED 0%, #F4C5B5 110%);
+    color: #3A2438;
+    transform: translate(40px, 26px) rotate(10deg);
+    z-index: 1;
+    opacity: 0.7;
+  }
+
+  /* Hover: Stack fächert sich auf */
+  .works-hero:hover .works-hero__thumb--cafe {
+    transform: translate(-72px, -48px) rotate(-18deg);
+  }
+  .works-hero:hover .works-hero__thumb--pizzeria {
+    transform: translate(-26px, -14px) rotate(-6deg);
+  }
+  .works-hero:hover .works-hero__thumb--elektro {
+    transform: translate(26px, 14px) rotate(8deg);
+  }
+  .works-hero:hover .works-hero__thumb--friseur {
+    transform: translate(72px, 48px) rotate(18deg);
+  }
+
+  .works-hero__thumb-label {
+    font-weight: 500;
+  }
+
+  /* Mobile: Stack runter (unter den Text) und schmaler */
+  @media (max-width: 720px) {
+    .works-hero {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .works-hero__stack {
+      width: 100%;
+      height: 120px;
+      justify-content: flex-start;
+      padding-left: 56px;
+    }
+    .works-hero__thumb {
+      width: 88px;
+      height: 68px;
+    }
+    .works-hero__cta {
+      width: 100%;
+      max-width: 22rem;
+      justify-content: center;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .works-hero,
+    .works-hero__glow,
+    .works-hero__dot,
+    .works-hero__cta::before {
+      animation: none !important;
+    }
+    .works-hero:hover .works-hero__thumb {
+      transform: inherit;
+    }
+    .works-hero__cta:hover {
+      transform: none;
+    }
+  }
+</style>

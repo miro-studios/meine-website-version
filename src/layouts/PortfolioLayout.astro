@@ -1,6 +1,5 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import CustomCursor from '@components/shared/CustomCursor.astro';
 import ScrollProgress from '@components/shared/ScrollProgress.astro';
 import PageTransition from '@components/shared/PageTransition.astro';
 import MicroInteractions from '@components/shared/MicroInteractions.astro';
@@ -32,7 +31,6 @@ const {
   canonical={canonical}
 >
   <ScrollProgress color="var(--color-accent)" height="2px" />
-  <CustomCursor blendMode="difference" hoverScale={2.6} />
   <PageTransition />
   <MicroInteractions />
 

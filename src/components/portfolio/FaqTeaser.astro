@@ -1,0 +1,271 @@
+---
+/**
+ * FAQ-Teaser — die 3 wichtigsten Erst-Interessenten-Fragen.
+ *
+ * Quelle: die volle FAQ-Seite (/faq). Hier nur die Top 3, mit Link
+ * zur kompletten Liste. Inhalte 1:1 aus Faq.astro übernommen — wenn
+ * sich dort etwas ändert, hier nachziehen.
+ */
+
+const teaserFaqs = [
+  {
+    q: 'Was kostet eine professionelle Website?',
+    a: 'One-Pager ab 599 € (Starter), 1.299 € (Growth) oder 2.299 € (Premium). Multi-Page ab 1.499 € (Basic), 2.799 € (Business) oder 4.499 € (Pro). Nach dem ersten kostenlosen Gespräch bekommst du eine genaue Zahl — keine vagen Angebote.',
+  },
+  {
+    q: 'Wie lange dauert es, bis meine Website fertig ist?',
+    a: 'One-Pager: 5–16 Werktage, je nach Paket. Multi-Page: 14 Werktage bis 8 Wochen. Mit klaren Inhalten von dir geht es schneller — bei Null starten dauert es etwas länger.',
+  },
+  {
+    q: 'Wird meine Website individuell designt?',
+    a: 'Ja, jede Seite ist ein Unikat. Kein Page-Builder, kein Template-Kauf, kein Drag & Drop. Alles wird speziell für dich konzipiert und entwickelt.',
+  },
+] as const;
+---
+
+<section class="faq-teaser" aria-labelledby="faq-teaser-title">
+  <div class="faq-teaser__inner">
+    <header class="faq-teaser__head">
+      <span class="faq-teaser__eyebrow">
+        <span class="faq-teaser__eyebrow-line" aria-hidden="true"></span>
+        Häufige Fragen
+      </span>
+      <h2 id="faq-teaser-title" class="faq-teaser__title">
+        Du hast Fragen.<br />
+        <span class="faq-teaser__title-italic">Wir auch &mdash; nur andere.</span>
+      </h2>
+      <p class="faq-teaser__lede">
+        Die drei häufigsten Fragen, die uns vor dem ersten Gespräch erreichen.
+        Alle weiteren auf der FAQ-Seite.
+      </p>
+    </header>
+
+    <ul class="faq-teaser__list" role="list">
+      {teaserFaqs.map((item, i) => (
+        <li class="faq-item">
+          <details class="faq-item__details">
+            <summary class="faq-item__summary">
+              <span class="faq-item__index">
+                {(i + 1).toString().padStart(2, '0')}
+              </span>
+              <span class="faq-item__question">{item.q}</span>
+              <span class="faq-item__icon" aria-hidden="true">
+                <svg viewBox="0 0 16 16" width="16" height="16">
+                  <line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.5" />
+                  <line x1="8" y1="2" x2="8" y2="14" stroke="currentColor" stroke-width="1.5" class="faq-item__icon-v" />
+                </svg>
+              </span>
+            </summary>
+            <p class="faq-item__answer">{item.a}</p>
+          </details>
+        </li>
+      ))}
+    </ul>
+
+    <a href="/faq" class="faq-teaser__more">
+      <span>Alle Fragen ansehen</span>
+      <span class="faq-teaser__more-arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .faq-teaser {
+    position: relative;
+    padding-block: clamp(4rem, 8vw, 7rem);
+    padding-inline: var(--container-pad);
+    background-color: var(--color-bg);
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .faq-teaser__inner {
+    max-width: 64rem;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+
+  .faq-teaser__head {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 56rem;
+  }
+
+  .faq-teaser__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-muted);
+  }
+
+  .faq-teaser__eyebrow-line {
+    display: inline-block;
+    width: 2.5rem;
+    height: 1px;
+    background-color: var(--color-accent);
+  }
+
+  .faq-teaser__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+    margin: 0;
+    color: var(--color-text);
+    text-wrap: balance;
+  }
+
+  .faq-teaser__title-italic {
+    font-style: italic;
+    color: var(--color-accent);
+  }
+
+  .faq-teaser__lede {
+    margin: 0;
+    font-size: clamp(1rem, 1vw + 0.5rem, 1.15rem);
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+    max-width: 50ch;
+  }
+
+  /* ── Liste ──────────────────────────────────────────────────────────── */
+  .faq-teaser__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .faq-item__details {
+    width: 100%;
+  }
+
+  .faq-item__summary {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: clamp(0.85rem, 2vw, 1.5rem);
+    padding-block: clamp(1.1rem, 2vw, 1.6rem);
+    cursor: pointer;
+    list-style: none;
+    transition: padding-left 0.4s var(--ease-out-expo),
+                color 0.3s ease;
+  }
+
+  .faq-item__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item__summary:hover {
+    padding-left: 0.5rem;
+    color: var(--color-accent);
+  }
+
+  .faq-item__index {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-muted);
+    letter-spacing: 0.08em;
+  }
+
+  .faq-item__question {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 1.6vw + 0.4rem, 1.5rem);
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    color: inherit;
+  }
+
+  .faq-item__icon {
+    display: inline-flex;
+    color: var(--color-accent);
+    transition: transform 0.3s var(--ease-out-expo);
+  }
+
+  .faq-item__icon-v {
+    transform-origin: center;
+    transition: transform 0.3s var(--ease-out-expo);
+  }
+
+  .faq-item__details[open] .faq-item__icon-v {
+    transform: scaleY(0);
+  }
+
+  .faq-item__answer {
+    margin: 0;
+    padding: 0 0 clamp(1.25rem, 2vw, 1.75rem)
+             calc(0.85rem + 2ch + clamp(0.85rem, 2vw, 1.5rem));
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--color-text) 78%, transparent);
+    max-width: 60ch;
+    animation: faq-answer-fade 0.4s var(--ease-out-expo);
+  }
+
+  @keyframes faq-answer-fade {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 640px) {
+    .faq-item__answer {
+      padding-left: 0;
+    }
+    .faq-item__summary {
+      grid-template-columns: auto 1fr auto;
+    }
+  }
+
+  /* ── "Alle Fragen ansehen" CTA ──────────────────────────────────────── */
+  .faq-teaser__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    align-self: flex-start;
+    padding: 0.9rem 1.85rem;
+    border: 1px solid var(--color-text);
+    border-radius: 100px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: background-color 0.3s ease,
+                color 0.3s ease;
+  }
+
+  .faq-teaser__more:hover {
+    background-color: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .faq-teaser__more-arrow {
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+
+  .faq-teaser__more:hover .faq-teaser__more-arrow {
+    transform: translateX(4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-item__answer { animation: none; }
+    .faq-item__summary,
+    .faq-item__icon,
+    .faq-item__icon-v,
+    .faq-teaser__more,
+    .faq-teaser__more-arrow {
+      transition: none !important;
+    }
+  }
+</style>
