@@ -35,28 +35,29 @@ const buildStage = (canvas: HTMLCanvasElement, sectionEl: HTMLElement): Stage | 
     background: null,
   });
 
-  const ambient = new THREE.AmbientLight(0xffffff, 0.35);
-  const key = new THREE.DirectionalLight(0xffe0c4, 1.4);
+  // Light-Theme: dunkles Wireframe auf hellem Surface, Terrakotta-Akzent
+  const ambient = new THREE.AmbientLight(0xffffff, 0.65);
+  const key = new THREE.DirectionalLight(0xfff4e0, 1.2);
   key.position.set(2.5, 3, 4);
-  const accent = new THREE.PointLight(0xff4d1c, 6, 12, 1.5);
+  const accent = new THREE.PointLight(0xb85a2c, 4.5, 12, 1.5);
   accent.position.set(-2, -1, 2);
 
   scene.add(ambient, key, accent);
 
   const baseGeometry = new THREE.IcosahedronGeometry(1.55, 1);
   const wireframeMat = new THREE.MeshStandardMaterial({
-    color: 0xf4f2ee,
-    metalness: 0.4,
-    roughness: 0.3,
+    color: 0x1a1716,
+    metalness: 0.2,
+    roughness: 0.5,
     wireframe: true,
-    emissive: 0xff4d1c,
+    emissive: 0xb85a2c,
     emissiveIntensity: 0.0,
   });
   const solidGeometry = new THREE.IcosahedronGeometry(1.4, 0);
   const solidMat = new THREE.MeshStandardMaterial({
-    color: 0x1a1a1a,
-    metalness: 0.6,
-    roughness: 0.4,
+    color: 0xb85a2c,
+    metalness: 0.4,
+    roughness: 0.5,
     flatShading: true,
   });
 
