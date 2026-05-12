@@ -56,15 +56,61 @@ const steps = [
     </header>
 
     <div class="scroll-story__layout">
-      <!-- Linke Spalte: Sticky-Sphere (folgt beim Scrollen) -->
+      <!-- Linke Spalte: Sticky Editorial-Stage -->
       <aside class="scroll-story__stage-wrap">
-        <div class="scroll-story__stage" data-story-stage>
-          <canvas class="scroll-story__canvas" data-story-canvas></canvas>
+        <div class="scroll-story__stage" data-story-stage aria-hidden="true">
+          <!-- Top-Meta: Phase x / total -->
+          <div class="scroll-story__meta">
+            <span class="scroll-story__meta-label">Phase</span>
+            <span class="scroll-story__meta-count">
+              <span data-story-current>01</span>
+              <span class="scroll-story__meta-sep">/</span>
+              <span>0{steps.length}</span>
+            </span>
+          </div>
 
-          <!-- Phase-Label überlagert die Kugel -->
-          <div class="scroll-story__phase" aria-hidden="true">
-            <span class="scroll-story__phase-num" data-story-current>01</span>
-            <span class="scroll-story__phase-total">/ 0{steps.length}</span>
+          <!-- Mega-Number mit Morph -->
+          <div class="scroll-story__num-wrap">
+            <div class="scroll-story__num-stack" data-story-num-stack>
+              {steps.map((step, i) => (
+                <span
+                  class:list={['scroll-story__num', { 'is-active': i === 0 }]}
+                  data-num-index={i}
+                >{step.index}</span>
+              ))}
+            </div>
+
+            <!-- Dezenter Akzent-Bogen rechts neben der Zahl -->
+            <svg
+              class="scroll-story__arc"
+              viewBox="0 0 100 100"
+              fill="none"
+              aria-hidden="true"
+            >
+              <circle
+                cx="50" cy="50" r="46"
+                stroke="currentColor"
+                stroke-width="0.4"
+                stroke-dasharray="2 4"
+                opacity="0.35"
+              />
+              <circle
+                class="scroll-story__arc-progress"
+                cx="50" cy="50" r="46"
+                stroke="currentColor"
+                stroke-width="0.9"
+                stroke-linecap="round"
+                pathLength="100"
+                data-story-arc
+              />
+            </svg>
+          </div>
+
+          <!-- Progress-Bar + Label -->
+          <div class="scroll-story__progress">
+            <div class="scroll-story__bar" aria-hidden="true">
+              <div class="scroll-story__bar-fill" data-story-bar></div>
+            </div>
             <span
               class="scroll-story__phase-label"
               data-story-current-label
@@ -203,58 +249,157 @@ const steps = [
     border-radius: var(--radius-lg);
     background:
       radial-gradient(
-        circle at 30% 30%,
-        color-mix(in srgb, var(--color-accent) 8%, transparent) 0%,
-        transparent 60%
+        circle at 30% 25%,
+        color-mix(in srgb, var(--color-accent) 6%, transparent) 0%,
+        transparent 55%
       ),
-      var(--color-surface, color-mix(in srgb, var(--color-text) 4%, var(--color-bg)));
-    overflow: hidden;
+      var(--color-surface, color-mix(in srgb, var(--color-text) 3%, var(--color-bg)));
     border: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+    padding: clamp(1.25rem, 2.4vw, 2rem);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: clamp(0.75rem, 1.5vw, 1.25rem);
+    overflow: hidden;
   }
 
-  .scroll-story__canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-
-  /* Overlay-Label auf der Kugel: "01 / 04 — Briefing · Recherche" */
-  .scroll-story__phase {
-    position: absolute;
-    bottom: clamp(1rem, 2vw, 1.5rem);
-    left: clamp(1rem, 2vw, 1.5rem);
-    right: clamp(1rem, 2vw, 1.5rem);
+  /* ── Top-Meta: PHASE 01 / 04 ──────────────────────────────────────── */
+  .scroll-story__meta {
     display: flex;
     align-items: baseline;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    justify-content: space-between;
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.16em;
     color: var(--color-muted);
-    z-index: 2;
   }
 
-  .scroll-story__phase-num {
-    font-family: var(--font-display);
-    font-size: clamp(1.5rem, 2.5vw, 2.25rem);
-    line-height: 1;
-    letter-spacing: -0.02em;
+  .scroll-story__meta-label {
+    color: color-mix(in srgb, var(--color-text) 45%, transparent);
+  }
+
+  .scroll-story__meta-count {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4em;
     color: var(--color-text);
     font-variant-numeric: tabular-nums;
   }
 
-  .scroll-story__phase-total {
+  .scroll-story__meta-sep {
     color: var(--color-muted);
+    opacity: 0.5;
+  }
+
+  /* ── Mega-Number Stack mit Morph ──────────────────────────────────── */
+  .scroll-story__num-wrap {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 0;
+  }
+
+  .scroll-story__num-stack {
+    position: relative;
+    display: grid;
+    grid-template-areas: "stack";
+    line-height: 1;
+  }
+
+  .scroll-story__num {
+    grid-area: stack;
+    font-family: var(--font-display);
+    font-size: clamp(7rem, 18vw, 14rem);
+    line-height: 0.85;
+    letter-spacing: -0.06em;
+    font-weight: 400;
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+    opacity: 0;
+    transform: translateY(0.25em);
+    filter: blur(10px);
+    transition:
+      opacity 0.5s var(--ease-out-expo),
+      transform 0.7s var(--ease-out-expo),
+      filter 0.5s ease;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .scroll-story__num.is-active {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    transition:
+      opacity 0.6s 0.05s var(--ease-out-expo),
+      transform 0.8s 0.05s var(--ease-out-expo),
+      filter 0.6s 0.05s ease;
+  }
+
+  /* Akzent-Bogen umgibt die Zahl */
+  .scroll-story__arc {
+    position: absolute;
+    inset: -6%;
+    width: 112%;
+    height: 112%;
+    color: var(--color-accent);
+    pointer-events: none;
+    transform: rotate(-90deg);
+  }
+
+  .scroll-story__arc-progress {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    transition: stroke-dashoffset 0.8s var(--ease-out-expo);
+  }
+
+  /* ── Progress-Bar + Phase-Label ───────────────────────────────────── */
+  .scroll-story__progress {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .scroll-story__bar {
+    position: relative;
+    height: 2px;
+    width: 100%;
+    background: color-mix(in srgb, var(--color-text) 10%, transparent);
+    overflow: hidden;
+    border-radius: 2px;
+  }
+
+  .scroll-story__bar-fill {
+    position: absolute;
+    inset: 0;
+    width: 25%;
+    background: linear-gradient(
+      90deg,
+      var(--color-accent),
+      color-mix(in srgb, var(--color-accent) 60%, var(--color-text))
+    );
+    transform-origin: left center;
+    transition: width 0.7s var(--ease-out-expo);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--color-accent) 45%, transparent);
   }
 
   .scroll-story__phase-label {
-    flex-basis: 100%;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
     color: var(--color-accent);
     transition: opacity 0.3s var(--ease-out-expo);
+  }
+
+  @media (max-width: 900px) {
+    .scroll-story__stage {
+      aspect-ratio: auto;
+      min-height: 18rem;
+    }
+    .scroll-story__num {
+      font-size: clamp(6rem, 28vw, 11rem);
+    }
   }
 
   /* ===== Step-Liste ===================================================== */
@@ -387,16 +532,65 @@ const steps = [
 
 <script>
   import { initScrollStories } from '@lib/scroll-story';
-  import { initStoryStage } from '@lib/scroll-story-stage';
 
-  let cleanupStory: (() => void) | null = null;
-  let cleanupStage: (() => void) | null = null;
+  type Cleanup = () => void;
+
+  function initStoryStageTypo(): Cleanup {
+    const sections = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-scroll-story]'),
+    );
+    const teardowns: Cleanup[] = [];
+
+    for (const section of sections) {
+      const stack = section.querySelector<HTMLElement>('[data-story-num-stack]');
+      const bar = section.querySelector<HTMLElement>('[data-story-bar]');
+      const arc = section.querySelector<SVGElement>('[data-story-arc]');
+      if (!stack && !bar && !arc) continue;
+
+      const nums = stack
+        ? Array.from(stack.querySelectorAll<HTMLElement>('.scroll-story__num'))
+        : [];
+      const stepCount = section.querySelectorAll('[data-story-step]').length || 1;
+
+      const onProgress = (e: Event) => {
+        const detail = (e as CustomEvent<{ progress: number }>).detail;
+        if (!detail) return;
+        const p = detail.progress;
+        const idx = Math.min(stepCount - 1, Math.round(p * (stepCount - 1)));
+
+        // Number-Stack: aktive Klasse setzen
+        nums.forEach((el, i) => {
+          el.classList.toggle('is-active', i === idx);
+        });
+
+        // Progress-Bar: width 0..100% (mind. 1/n damit der erste Step sichtbar ist)
+        if (bar) {
+          const pct = ((idx + 1) / stepCount) * 100;
+          bar.style.width = `${pct}%`;
+        }
+
+        // Akzent-Bogen: stroke-dashoffset 100..0
+        if (arc) {
+          const offset = 100 - ((idx + 1) / stepCount) * 100;
+          (arc as SVGElement).style.strokeDashoffset = String(offset);
+        }
+      };
+
+      section.addEventListener('story:progress', onProgress);
+      teardowns.push(() => section.removeEventListener('story:progress', onProgress));
+    }
+
+    return () => teardowns.forEach((fn) => fn());
+  }
+
+  let cleanupStory: Cleanup | null = null;
+  let cleanupStage: Cleanup | null = null;
 
   const start = () => {
     cleanupStory?.();
     cleanupStage?.();
     cleanupStory = initScrollStories();
-    cleanupStage = initStoryStage();
+    cleanupStage = initStoryStageTypo();
   };
   const stop = () => {
     cleanupStory?.();

@@ -311,11 +311,12 @@ import HeroNetwork from './HeroNetwork.astro';
     }
   }
 
-  @media (max-width: 640px) {
+  /* Mobile/Touch: Netzwerk komplett ausblenden — auf kleiner Fläche wirkt
+     das Knoten-Gewusel chaotisch, und `pointer-events: auto` würde Touch-
+     Scroll blockieren. */
+  @media (max-width: 768px), (hover: none), (pointer: coarse) {
     .hero > .hero__network {
-      bottom: 4rem;
-      width: 240px;
-      opacity: 0.35;
+      display: none;
     }
   }
 
