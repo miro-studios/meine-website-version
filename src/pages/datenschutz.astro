@@ -1,113 +1,308 @@
 ---
 import PortfolioLayout from '@layouts/PortfolioLayout.astro';
 import Footer from '@components/portfolio/Footer.astro';
+
+const lastUpdated = '11. Mai 2026';
 ---
 
 <PortfolioLayout
-  title="Datenschutz — Webdev Studio"
-  description="Datenschutzerklärung gemäß DSGVO."
+  title="Datenschutz — miro-studios"
+  description="Datenschutzerklärung gemäß DSGVO für miro-studios (Inhaber: David Rost, Kierspe). Hosting über Cloudflare Pages, Bunny Fonts, Kontaktformular via Web3Forms."
   active="datenschutz"
 >
   <main class="legal">
     <header class="legal__header">
       <span class="legal__eyebrow">
         <span class="dash" aria-hidden="true"></span>
-        DSGVO / TMG
+        DSGVO / BDSG / TMG
       </span>
       <h1 class="legal__title">Datenschutz</h1>
-      <p class="legal__sub">Stand: [Datum einfügen]</p>
+      <p class="legal__sub">Stand: {lastUpdated}</p>
     </header>
 
     <p class="legal__intro">
-      Wir nehmen den Schutz deiner persönlichen Daten ernst. Diese Erklärung
-      informiert über Art, Umfang und Zweck der erhobenen Daten beim Besuch
-      unserer Website — gemäß DSGVO und BDSG.
+      Ich nehme den Schutz deiner persönlichen Daten ernst. Diese Erklärung
+      informiert dich darüber, wer für die Datenverarbeitung verantwortlich
+      ist, welche Daten beim Besuch dieser Website verarbeitet werden, auf
+      welcher Rechtsgrundlage das geschieht und welche Rechte dir zustehen.
+      Sie gilt für die gesamte Domain <strong>miro-studios.de</strong>
+      einschließlich der Demo-Sub-Verzeichnisse unter <code>/demos/…</code>.
     </p>
 
+    <!-- ── 1. Verantwortlicher ────────────────────────────── -->
     <section class="legal__section">
-      <h2>1. Verantwortlicher</h2>
+      <h2>1. Verantwortlicher im Sinne der DSGVO</h2>
       <p>
-        miro-studios<br />
+        Verantwortlich für die Verarbeitung personenbezogener Daten
+        auf dieser Website ist:
+      </p>
+      <p>
         David Rost<br />
-        Kierspe · NRW<br />
+        Am Nöcklenberg 1<br />
+        58566 Kierspe · NRW · Deutschland<br />
+        Telefon: <a href="tel:+4917683206020">+49 176 83206020</a><br />
         E-Mail: <a href="mailto:info@miro-studios.de">info@miro-studios.de</a>
       </p>
-    </section>
-
-    <section class="legal__section">
-      <h2>2. Hosting</h2>
       <p>
-        Diese Website wird auf Servern von Cloudflare Pages gehostet
-        (Anbieter: Cloudflare, Inc.). Beim Aufruf werden technisch notwendige
-        Daten an Cloudflare übermittelt (IP-Adresse, Datum, User-Agent),
-        Rechtsgrundlage Art. 6 Abs. 1 lit. f DSGVO. Cloudflare ist
-        DSGVO-konform und unterliegt dem EU-US Data Privacy Framework.
+        Eine bestellte Datenschutzbeauftragte gibt es nicht — die
+        gesetzlichen Anforderungen nach § 38 BDSG sind für mich als
+        Einzelunternehmer nicht erfüllt. Anfragen rund um Datenschutz
+        richtest du direkt an die oben genannte E-Mail-Adresse.
       </p>
     </section>
 
+    <!-- ── 2. Hosting Cloudflare ──────────────────────────── -->
     <section class="legal__section">
-      <h2>3. Webfonts</h2>
+      <h2>2. Hosting — Cloudflare Pages</h2>
       <p>
-        Wir verwenden ausschließlich <strong>selfhosted Schriftarten</strong>.
-        Es findet <em>keine</em> Verbindung zu Google Fonts oder anderen
-        externen Schrift-CDNs statt.
+        Diese Website wird auf <strong>Cloudflare Pages</strong> gehostet.
+        Anbieter ist die Cloudflare, Inc. (101 Townsend St., San Francisco,
+        CA 94107, USA) sowie ihre EU-Tochter Cloudflare Germany GmbH
+        (Rosental 7, c/o Mindspace, 80331 München). Cloudflare unterhält
+        weltweit ein verteiltes Netzwerk; europäische Besucher werden
+        bevorzugt über Rechenzentren in der EU bedient.
+      </p>
+      <p>
+        Beim Aufruf der Website werden technisch notwendige Daten an
+        Cloudflare übermittelt und in Server-Logfiles verarbeitet:
+        IP-Adresse, Datum und Uhrzeit der Anfrage, aufgerufene URL,
+        Referer-URL, User-Agent (Browser-Typ und Betriebssystem),
+        HTTP-Statuscode und übertragene Datenmenge. Diese Verarbeitung
+        ist technisch erforderlich, um die Website überhaupt ausliefern
+        und Angriffe (z. B. DDoS) abwehren zu können.
+      </p>
+      <p>
+        Cloudflare ist nach dem
+        <a href="https://www.dataprivacyframework.gov/" target="_blank" rel="noopener noreferrer">EU-US Data Privacy Framework</a>
+        zertifiziert; für etwaige Datenübermittlungen in die USA bestehen
+        zusätzlich EU-Standardvertragsklauseln. Ein
+        Auftragsverarbeitungs­vertrag (AVV) mit Cloudflare nach Art. 28
+        DSGVO ist abgeschlossen. Details unter
+        <a href="https://www.cloudflare.com/de-de/privacypolicy/" target="_blank" rel="noopener noreferrer">cloudflare.com/de-de/privacypolicy</a>.
+      </p>
+      <p>
+        Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes
+        Interesse an einer technisch sicheren und schnellen Bereitstellung
+        der Website).
       </p>
     </section>
 
+    <!-- ── 3. Server-Logfiles ─────────────────────────────── -->
     <section class="legal__section">
-      <h2>4. Kontaktformular</h2>
+      <h2>3. Server-Logfiles</h2>
       <p>
-        Wenn du uns über das Kontaktformular oder per E-Mail
-        kontaktierst, werden deine Angaben (Name, E-Mail-Adresse,
-        Nachricht) zwecks Bearbeitung der Anfrage und für mögliche
-        Anschluss­fragen gespeichert. Rechtsgrundlage:
-        Art. 6 Abs. 1 lit. b DSGVO (Vertragsanbahnung).
-      </p>
-      <p>
-        Diese Daten werden nicht ohne deine Einwilligung weitergegeben und
-        spätestens nach Abschluss des Vorgangs gelöscht — sofern keine
-        gesetzlichen Aufbewahrungspflichten bestehen.
+        Die unter Punkt 2 genannten Zugriffsdaten werden ausschließlich
+        zur statistischen Auswertung, zur Sicherstellung des Betriebs und
+        zur Abwehr von Angriffen verwendet und nach spätestens 14 Tagen
+        gelöscht oder anonymisiert. Eine Zusammenführung mit anderen
+        personenbezogenen Daten findet nicht statt. Eine Auswertung zu
+        Marketing- oder Werbezwecken erfolgt nicht.
       </p>
     </section>
 
+    <!-- ── 4. Webfonts (Bunny Fonts) ─────────────────────── -->
     <section class="legal__section">
-      <h2>5. Cookies &amp; Tracking</h2>
+      <h2>4. Schriftarten — Bunny Fonts</h2>
       <p>
-        Diese Website setzt <strong>keine Tracking-Cookies</strong> und keine
-        Analyse-Tools wie Google Analytics ein. Es werden ausschließlich
-        technisch notwendige Cookies verwendet (z. B. für Session-Management
-        bei Formularen).
+        Auf dieser Website werden die Schriften <em>Fraunces</em> und
+        <em>Bricolage Grotesque</em> verwendet. Beide werden über
+        <strong>Bunny Fonts</strong> ausgeliefert (BunnyWay d.o.o., Cesta
+        komandanta Staneta 4A, 1215 Medvode, Slowenien) — einem
+        DSGVO-konformen Schrift-CDN mit ausschließlichem Hosting in der
+        Europäischen Union.
+      </p>
+      <p>
+        Bunny Fonts setzt keine Cookies, protokolliert keine IP-Adressen
+        zu Tracking-Zwecken und überträgt keine Daten in Drittländer
+        außerhalb der EU. Beim Laden einer Schriftdatei wird lediglich
+        die anonymisierte IP-Adresse im Rahmen des HTTP-Requests
+        verarbeitet — siehe
+        <a href="https://bunny.net/privacy" target="_blank" rel="noopener noreferrer">bunny.net/privacy</a>.
+      </p>
+      <p>
+        Eine Verbindung zu Google Fonts oder anderen US-basierten
+        Schrift-CDNs findet <strong>nicht</strong> statt.
+      </p>
+      <p>
+        Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes
+        Interesse an einer einheitlichen, professionellen Darstellung
+        der Website).
       </p>
     </section>
 
+    <!-- ── 5. Kontaktaufnahme ─────────────────────────────── -->
     <section class="legal__section">
-      <h2>6. Deine Rechte</h2>
+      <h2>5. Kontaktformular & E-Mail-Anfragen</h2>
       <p>
-        Du hast das Recht auf Auskunft, Berichtigung, Löschung,
-        Einschränkung der Verarbeitung, Datenübertragbarkeit sowie
-        Widerspruch gegen die Verarbeitung. Wende dich an
+        Wenn du mir über das Kontaktformular auf dieser Website oder per
+        E-Mail eine Anfrage zukommen lässt, werden deine Angaben (Name,
+        E-Mail-Adresse, gewähltes Paket, Budget-Rahmen, deine Nachricht)
+        gespeichert, um deine Anfrage zu bearbeiten und auf Anschluss­fragen
+        zu reagieren.
+      </p>
+      <p>
+        <strong>Versand-Dienstleister:</strong> Das Kontaktformular wird
+        technisch über
+        <a href="https://web3forms.com/" target="_blank" rel="noopener noreferrer">Web3Forms</a>
+        (Vlasta Innovations Private Limited, Indien) abgewickelt. Die
+        Formularinhalte werden über Web3Forms an meine E-Mail-Adresse
+        zugestellt; eine dauerhafte Speicherung der Inhalte bei Web3Forms
+        findet nach Aussage des Anbieters nicht statt. Da Web3Forms seinen
+        Sitz außerhalb der EU hat, erfolgt die Übermittlung auf Basis
+        der EU-Standardvertragsklauseln; Details siehe
+        <a href="https://web3forms.com/privacy" target="_blank" rel="noopener noreferrer">web3forms.com/privacy</a>.
+      </p>
+      <p>
+        <strong>Spam-Schutz:</strong> Das Formular nutzt einen technischen
+        Honeypot („botcheck"-Feld). Es werden keine biometrischen Verfahren
+        wie reCAPTCHA eingesetzt; eine Verbindung zu Google findet beim
+        Absenden des Formulars nicht statt.
+      </p>
+      <p>
+        <strong>Speicherdauer:</strong> Deine Anfrage und die zugehörige
+        Korrespondenz werden gespeichert, solange dies zur Bearbeitung
+        erforderlich ist. Anfragen, die nicht zu einer Geschäfts­beziehung
+        führen, werden spätestens nach 6 Monaten gelöscht. Erst nach
+        Abschluss der Gewerbeanmeldung (siehe Impressum) und Eintritt in
+        eine kostenpflichtige Geschäfts­beziehung greifen die gesetzlichen
+        Aufbewahrungs­pflichten (6 Jahre nach § 257 HGB / 10 Jahre nach
+        § 147 AO für steuerlich relevante Unterlagen).
+      </p>
+      <p>
+        Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Anbahnung bzw.
+        Erfüllung eines Vertrags) sowie Art. 6 Abs. 1 lit. f DSGVO
+        (berechtigtes Interesse an effizienter Anfrage-Bearbeitung).
+        Die Datenschutz-Checkbox unter dem Formular fungiert als
+        zusätzliche Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO.
+      </p>
+    </section>
+
+    <!-- ── 6. Cookies & Tracking ──────────────────────────── -->
+    <section class="legal__section">
+      <h2>6. Cookies, Tracking & Analyse</h2>
+      <p>
+        Diese Website setzt <strong>keine Tracking-Cookies</strong>,
+        keine Marketing-Cookies und keine externen Analyse-Dienste
+        ein (kein Google Analytics, kein Meta Pixel, kein Hotjar, etc.).
+      </p>
+      <p>
+        Es werden ausschließlich technisch zwingend erforderliche
+        Speichermechanismen verwendet — etwa zum Erhalt des Smooth-Scroll-
+        und View-Transitions-Zustands während eines Seitenbesuchs.
+        Eine Einwilligung nach § 25 Abs. 1 TTDSG ist dafür nicht
+        erforderlich (§ 25 Abs. 2 Nr. 2 TTDSG).
+      </p>
+    </section>
+
+    <!-- ── 7. OpenStreetMap (Demos) ──────────────────────── -->
+    <section class="legal__section">
+      <h2>7. Karten-Einbindung in Demo-Seiten</h2>
+      <p>
+        In einzelnen Demo-Seiten (z. B. <code>/demos/pizzeria/</code>) wird
+        eine Karte über <strong>OpenStreetMap</strong> bereitgestellt
+        (OpenStreetMap Foundation, St John's Innovation Centre, Cowley
+        Road, Cambridge, CB4 0WS, Großbritannien). Die Karte wird erst
+        nach <strong>aktivem Klick</strong> auf „Karte laden" geladen
+        („Click-to-Load"). Bis dahin findet keine Verbindung zu
+        OpenStreetMap-Servern statt.
+      </p>
+      <p>
+        Beim Laden der Karte werden technisch notwendige Daten an
+        OpenStreetMap übertragen (IP-Adresse, abgerufener Karten-Tile,
+        Browser-Information). Datenschutzerklärung von OpenStreetMap:
+        <a href="https://wiki.osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener noreferrer">
+          wiki.osmfoundation.org/wiki/Privacy_Policy
+        </a>.
+      </p>
+      <p>
+        Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (deine Einwilligung
+        durch den Klick auf „Karte laden").
+      </p>
+    </section>
+
+    <!-- ── 8. Externe Links ───────────────────────────────── -->
+    <section class="legal__section">
+      <h2>8. Externe Links & Social Media</h2>
+      <p>
+        Diese Website enthält Verlinkungen auf externe Dienste (u. a.
+        Instagram, GitHub, WhatsApp, Google Maps). Erst beim aktiven Klick
+        auf einen solchen Link verlässt du diese Website. Datenschutz­bestimmungen
+        der jeweiligen Anbieter:
+      </p>
+      <ul class="legal__list">
+        <li>Instagram / Meta: <a href="https://privacycenter.instagram.com/policy" target="_blank" rel="noopener noreferrer">privacycenter.instagram.com</a></li>
+        <li>GitHub: <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">docs.github.com</a></li>
+        <li>WhatsApp / Meta: <a href="https://www.whatsapp.com/legal/privacy-policy-eea" target="_blank" rel="noopener noreferrer">whatsapp.com/legal</a></li>
+        <li>Google Maps: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">policies.google.com/privacy</a></li>
+      </ul>
+      <p>
+        Eine automatische Einbettung externer Inhalte (Embeds, Pixel,
+        Likes-Buttons) findet auf dieser Website nicht statt.
+      </p>
+    </section>
+
+    <!-- ── 9. SSL ─────────────────────────────────────────── -->
+    <section class="legal__section">
+      <h2>9. SSL-/TLS-Verschlüsselung</h2>
+      <p>
+        Diese Website nutzt aus Sicherheits­gründen und zum Schutz der
+        Übertragung vertraulicher Inhalte eine
+        SSL-/TLS-Verschlüsselung (HTTPS). Eine verschlüsselte Verbindung
+        erkennst du am Schloss-Symbol in deiner Browser-Zeile.
+      </p>
+    </section>
+
+    <!-- ── 10. Deine Rechte ───────────────────────────────── -->
+    <section class="legal__section">
+      <h2>10. Deine Rechte als betroffene Person</h2>
+      <p>Du hast jederzeit das Recht auf:</p>
+      <ul class="legal__list">
+        <li><strong>Auskunft</strong> über die von mir gespeicherten Daten (Art. 15 DSGVO)</li>
+        <li><strong>Berichtigung</strong> unrichtiger Daten (Art. 16 DSGVO)</li>
+        <li><strong>Löschung</strong> deiner Daten („Recht auf Vergessenwerden", Art. 17 DSGVO)</li>
+        <li><strong>Einschränkung</strong> der Verarbeitung (Art. 18 DSGVO)</li>
+        <li><strong>Datenübertragbarkeit</strong> in einem strukturierten Format (Art. 20 DSGVO)</li>
+        <li><strong>Widerspruch</strong> gegen Verarbeitungen auf Grundlage berechtigter Interessen (Art. 21 DSGVO)</li>
+        <li><strong>Widerruf</strong> erteilter Einwilligungen mit Wirkung für die Zukunft (Art. 7 Abs. 3 DSGVO)</li>
+      </ul>
+      <p>
+        Für die Ausübung dieser Rechte genügt eine formlose Mail an
         <a href="mailto:info@miro-studios.de">info@miro-studios.de</a>.
       </p>
-      <p>
-        Außerdem hast du das Recht zur Beschwerde bei einer
-        Aufsichtsbehörde — z. B. der Landesbeauftragten für Datenschutz NRW.
-      </p>
     </section>
 
+    <!-- ── 11. Beschwerde ──────────────────────────────────── -->
     <section class="legal__section">
-      <h2>7. SSL-Verschlüsselung</h2>
+      <h2>11. Beschwerderecht bei der Aufsichtsbehörde</h2>
       <p>
-        Diese Website nutzt HTTPS-Verschlüsselung. Du erkennst eine
-        verschlüsselte Verbindung am Schloss-Symbol in deiner Browser-Zeile.
+        Unbeschadet anderer Rechtsbehelfe steht dir gemäß Art. 77 DSGVO
+        ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu —
+        insbesondere in dem Mitgliedstaat deines Aufenthaltsorts oder
+        des Orts der mutmaßlichen Verletzung.
+      </p>
+      <p>
+        Für mich als Sitz in Kierspe zuständig ist:<br />
+        <strong>Landesbeauftragte für Datenschutz und Informationsfreiheit
+        Nordrhein-Westfalen (LDI NRW)</strong><br />
+        Kavalleriestraße 2–4, 40213 Düsseldorf<br />
+        Telefon: 0211 38424-0<br />
+        E-Mail: <a href="mailto:poststelle@ldi.nrw.de">poststelle@ldi.nrw.de</a><br />
+        Web: <a href="https://www.ldi.nrw.de" target="_blank" rel="noopener noreferrer">www.ldi.nrw.de</a>
       </p>
     </section>
 
-    <p class="legal__note">
-      Hinweis: Diese Datenschutzerklärung ist eine
-      <strong>vorläufige Vorlage</strong> und nicht rechtsverbindlich.
-      Vor Veröffentlichung mit einem auf IT-Recht spezialisierten Anwalt
-      oder einer Datenschutz-Vorlage (z. B. eRecht24) prüfen lassen.
-    </p>
+    <!-- ── 12. Aktualität ─────────────────────────────────── -->
+    <section class="legal__section">
+      <h2>12. Aktualität und Änderung dieser Datenschutzerklärung</h2>
+      <p>
+        Diese Datenschutzerklärung hat den Stand <strong>{lastUpdated}</strong>.
+        Durch die Weiterentwicklung der Website oder geänderte
+        gesetzliche bzw. behördliche Vorgaben kann es notwendig werden,
+        diese Erklärung anzupassen. Die jeweils aktuelle Version ist
+        stets unter <a href="/datenschutz">miro-studios.de/datenschutz</a>
+        abrufbar.
+      </p>
+    </section>
   </main>
 
   <Footer />
@@ -163,10 +358,23 @@ import Footer from '@components/portfolio/Footer.astro';
 
   .legal__intro {
     font-size: var(--text-lg);
-    line-height: 1.5;
-    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--color-text) 78%, transparent);
     margin-bottom: var(--space-4);
     max-width: 64ch;
+  }
+
+  .legal__intro strong,
+  .legal__intro code {
+    color: var(--color-text);
+  }
+
+  .legal__intro code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    padding: 0.05em 0.3em;
+    background: color-mix(in srgb, var(--color-text) 8%, transparent);
+    border-radius: 4px;
   }
 
   .legal__section {
@@ -191,22 +399,55 @@ import Footer from '@components/portfolio/Footer.astro';
     max-width: 64ch;
   }
 
+  .legal__section p strong,
+  .legal__section li strong {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  .legal__section em {
+    color: var(--color-text);
+    font-style: italic;
+  }
+
   .legal__section a {
     color: var(--color-accent);
     text-decoration: underline;
     text-underline-offset: 2px;
   }
 
-  .legal__note {
-    margin-top: var(--space-6);
-    padding: 1.25rem;
-    border: 1px dashed color-mix(in srgb, var(--color-accent) 60%, transparent);
-    border-radius: var(--radius-md);
+  .legal__section code {
     font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    line-height: 1.6;
-    letter-spacing: 0.04em;
-    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    font-size: 0.92em;
+    padding: 0.1em 0.35em;
+    background: color-mix(in srgb, var(--color-text) 8%, transparent);
+    border-radius: 4px;
+  }
+
+  .legal__list {
+    list-style: none;
+    margin: 0.5rem 0 1rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
     max-width: 64ch;
+  }
+
+  .legal__list li {
+    position: relative;
+    padding-left: 1.4rem;
+    font-size: var(--text-base);
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+  }
+
+  .legal__list li::before {
+    content: '·';
+    position: absolute;
+    left: 0.4rem;
+    top: 0;
+    color: var(--color-accent);
+    font-weight: 700;
   }
 </style>

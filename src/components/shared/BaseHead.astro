@@ -8,7 +8,7 @@ interface Props {
 
 const {
   title,
-  description = 'Webdesign-Studio aus Lüdenscheid — wir bauen Websites mit Awwwards-Qualität für lokale Geschäfte.',
+  description = 'Webdesign-Studio aus Kierspe — wir bauen Websites mit Awwwards-Qualität für lokale Geschäfte in NRW.',
   image = '/og-default.jpg',
   canonical,
 } = Astro.props;
@@ -42,9 +42,13 @@ const canonicalURL = canonical
 
 <meta name="theme-color" content="#0E0E0C" />
 
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!--
+  Schriftarten via Bunny Fonts (https://fonts.bunny.net).
+  DSGVO-konformer 1:1-Mirror der Google-Fonts-API mit EU-Hosting (Slowenien),
+  ohne Cookies, ohne Tracking, ohne IP-Logging. Kein US-Datentransfer.
+-->
+<link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
 <link
-  href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,800&display=swap"
+  href="https://fonts.bunny.net/css?family=bricolage-grotesque:400,500,700,800&family=fraunces:400i,400,600i,600,800i,800&display=swap"
   rel="stylesheet"
 />
