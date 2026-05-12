@@ -40,24 +40,36 @@ const teaserFaqs = [
       </p>
     </header>
 
-    <ul class="faq-teaser__list" role="list">
+    <ul class="faq-teaser__list" role="list" data-faq-list>
       {teaserFaqs.map((item, i) => (
-        <li class="faq-item">
-          <details class="faq-item__details">
-            <summary class="faq-item__summary">
-              <span class="faq-item__index">
-                {(i + 1).toString().padStart(2, '0')}
-              </span>
-              <span class="faq-item__question">{item.q}</span>
-              <span class="faq-item__icon" aria-hidden="true">
-                <svg viewBox="0 0 16 16" width="16" height="16">
-                  <line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.5" />
-                  <line x1="8" y1="2" x2="8" y2="14" stroke="currentColor" stroke-width="1.5" class="faq-item__icon-v" />
-                </svg>
-              </span>
-            </summary>
+        <li class="faq-item" data-faq-item data-open="false">
+          <button
+            type="button"
+            class="faq-item__summary"
+            data-faq-toggle
+            aria-expanded="false"
+            aria-controls={`faq-answer-${i}`}
+          >
+            <span class="faq-item__index">
+              {(i + 1).toString().padStart(2, '0')}
+            </span>
+            <span class="faq-item__question">{item.q}</span>
+            <span class="faq-item__icon" aria-hidden="true">
+              <svg viewBox="0 0 16 16" width="16" height="16">
+                <line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                <line x1="8" y1="2" x2="8" y2="14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+            </span>
+          </button>
+          <div
+            class="faq-item__answer-wrap"
+            id={`faq-answer-${i}`}
+            data-faq-answer-wrap
+            role="region"
+            hidden
+          >
             <p class="faq-item__answer">{item.a}</p>
-          </details>
+          </div>
         </li>
       ))}
     </ul>
@@ -147,29 +159,34 @@ const teaserFaqs = [
     border-bottom: 1px solid var(--color-rule);
   }
 
-  .faq-item__details {
-    width: 100%;
-  }
-
   .faq-item__summary {
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
     gap: clamp(0.85rem, 2vw, 1.5rem);
+    width: 100%;
     padding-block: clamp(1.1rem, 2vw, 1.6rem);
+    padding-inline: 0;
+    background: none;
+    border: none;
+    color: inherit;
+    text-align: left;
     cursor: pointer;
-    list-style: none;
+    font: inherit;
     transition: padding-left 0.4s var(--ease-out-expo),
                 color 0.3s ease;
-  }
-
-  .faq-item__summary::-webkit-details-marker {
-    display: none;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .faq-item__summary:hover {
     padding-left: 0.5rem;
     color: var(--color-accent);
+  }
+
+  .faq-item__summary:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+    border-radius: 2px;
   }
 
   .faq-item__index {
@@ -190,16 +207,16 @@ const teaserFaqs = [
   .faq-item__icon {
     display: inline-flex;
     color: var(--color-accent);
-    transition: transform 0.3s var(--ease-out-expo);
   }
 
-  .faq-item__icon-v {
-    transform-origin: center;
-    transition: transform 0.3s var(--ease-out-expo);
-  }
-
-  .faq-item__details[open] .faq-item__icon-v {
-    transform: scaleY(0);
+  /* Answer-Wrapper: animierbare Höhe (JS-controlled), nur Padding/Text
+     Inhaltsstyle. Initial geschlossen (height 0, overflow hidden).
+     Die JS-Animation setzt height + opacity beim Öffnen/Schließen. */
+  .faq-item__answer-wrap {
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    will-change: height, opacity;
   }
 
   .faq-item__answer {
@@ -210,12 +227,25 @@ const teaserFaqs = [
     line-height: 1.6;
     color: color-mix(in srgb, var(--color-text) 78%, transparent);
     max-width: 60ch;
-    animation: faq-answer-fade 0.4s var(--ease-out-expo);
   }
 
-  @keyframes faq-answer-fade {
-    from { opacity: 0; transform: translateY(-4px); }
-    to   { opacity: 1; transform: translateY(0); }
+  /* Icon-Rotation: + zu × (45°) statt nur scaleY */
+  .faq-item__icon {
+    transform: rotate(0);
+    transition: transform 0.4s var(--ease-out-expo),
+                color 0.3s ease;
+  }
+
+  .faq-item[data-open="true"] .faq-item__icon {
+    transform: rotate(45deg);
+    color: var(--color-accent);
+  }
+
+  /* Fallback: wenn JS aus, native <details> nutzen (height auto) */
+  .faq-item.is-no-js .faq-item__answer-wrap {
+    height: auto;
+    opacity: 1;
+    overflow: visible;
   }
 
   @media (max-width: 640px) {
@@ -259,13 +289,178 @@ const teaserFaqs = [
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .faq-item__answer { animation: none; }
     .faq-item__summary,
     .faq-item__icon,
-    .faq-item__icon-v,
     .faq-teaser__more,
-    .faq-teaser__more-arrow {
+    .faq-teaser__more-arrow,
+    .faq-item__answer-wrap {
       transition: none !important;
     }
   }
 </style>
+
+<script>
+  /**
+   * FAQ-Akkordeon mit smooth Höhen-Animation.
+   *
+   * - Akkordeon-Verhalten: nur eine Frage gleichzeitig offen
+   * - Open + Close beide animiert (Höhe 0 ↔ scrollHeight, Opacity 0 ↔ 1)
+   * - Race-Safe: laufende Animation wird abgebrochen bei schnellem Toggle
+   * - Reduced-Motion: kein Tween, nur instant toggle
+   * - SSR-safe: Items starten geschlossen (hidden attribut)
+   */
+  type FaqState = {
+    item: HTMLElement;
+    btn: HTMLButtonElement;
+    wrap: HTMLElement;
+    inner: HTMLElement;
+    rafId: number;
+    cleanup: (() => void) | null;
+  };
+
+  const OPEN_DUR = 420;
+  const CLOSE_DUR = 360;
+  const EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
+
+  function initFaq() {
+    const list = document.querySelector<HTMLElement>('[data-faq-list]');
+    if (!list) return;
+    // Idempotent: bei doppeltem Aufruf (Module-Load + astro:page-load)
+    // würden sonst Click-Handler doppelt registriert → Open + Close im
+    // selben Event-Cycle.
+    if (list.dataset.initialized === 'true') return;
+    list.dataset.initialized = 'true';
+
+    const items = Array.from(list.querySelectorAll<HTMLElement>('[data-faq-item]'));
+    const states: FaqState[] = items.map((item) => {
+      const btn = item.querySelector<HTMLButtonElement>('[data-faq-toggle]')!;
+      const wrap = item.querySelector<HTMLElement>('[data-faq-answer-wrap]')!;
+      const inner = wrap.firstElementChild as HTMLElement;
+      return { item, btn, wrap, inner, rafId: 0, cleanup: null };
+    });
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const stopAnim = (s: FaqState) => {
+      if (s.cleanup) {
+        s.cleanup();
+        s.cleanup = null;
+      }
+      cancelAnimationFrame(s.rafId);
+    };
+
+    const open = (s: FaqState) => {
+      const wasHidden = s.wrap.hidden;
+      const currentH = wasHidden ? 0 : s.wrap.getBoundingClientRect().height;
+      const currentOp = wasHidden ? 0 : parseFloat(s.wrap.style.opacity || '0');
+
+      stopAnim(s);
+      s.item.dataset.open = 'true';
+      s.btn.setAttribute('aria-expanded', 'true');
+      s.wrap.hidden = false;
+
+      if (reduced) {
+        s.wrap.style.height = 'auto';
+        s.wrap.style.opacity = '1';
+        s.wrap.style.transition = '';
+        return;
+      }
+
+      // Explizit Start-State setzen (auch wenn mid-animation)
+      s.wrap.style.transition = 'none';
+      s.wrap.style.height = `${currentH}px`;
+      s.wrap.style.opacity = String(currentOp);
+
+      // Reflow erzwingen
+      void s.wrap.offsetHeight;
+
+      // Jetzt ist wrap sichtbar (display:block) → inner.scrollHeight stimmt
+      const targetH = s.inner.scrollHeight;
+
+      s.rafId = requestAnimationFrame(() => {
+        s.wrap.style.transition =
+          `height ${OPEN_DUR}ms ${EASE}, opacity ${OPEN_DUR - 120}ms ease-out 80ms`;
+        s.wrap.style.height = `${targetH}px`;
+        s.wrap.style.opacity = '1';
+      });
+
+      const onEnd = (e: TransitionEvent) => {
+        if (e.propertyName !== 'height') return;
+        // Höhe auf auto setzen damit responsive Resize funktioniert
+        s.wrap.style.height = 'auto';
+        s.wrap.style.transition = '';
+        s.wrap.removeEventListener('transitionend', onEnd);
+        s.cleanup = null;
+      };
+      s.wrap.addEventListener('transitionend', onEnd);
+      s.cleanup = () => s.wrap.removeEventListener('transitionend', onEnd);
+    };
+
+    const close = (s: FaqState) => {
+      const currentH = s.wrap.getBoundingClientRect().height;
+
+      stopAnim(s);
+      s.item.dataset.open = 'false';
+      s.btn.setAttribute('aria-expanded', 'false');
+
+      if (reduced) {
+        s.wrap.hidden = true;
+        s.wrap.style.height = '';
+        s.wrap.style.opacity = '';
+        s.wrap.style.transition = '';
+        return;
+      }
+
+      // Start-State (fixe Pixel-Höhe statt auto, damit Transition greift)
+      s.wrap.style.transition = 'none';
+      s.wrap.style.height = `${currentH}px`;
+      s.wrap.style.opacity = s.wrap.style.opacity || '1';
+
+      void s.wrap.offsetHeight;
+
+      s.rafId = requestAnimationFrame(() => {
+        s.wrap.style.transition =
+          `height ${CLOSE_DUR}ms ${EASE}, opacity ${CLOSE_DUR - 100}ms ease-in`;
+        s.wrap.style.height = '0px';
+        s.wrap.style.opacity = '0';
+      });
+
+      const onEnd = (e: TransitionEvent) => {
+        if (e.propertyName !== 'height') return;
+        s.wrap.hidden = true;
+        s.wrap.style.transition = '';
+        s.wrap.removeEventListener('transitionend', onEnd);
+        s.cleanup = null;
+      };
+      s.wrap.addEventListener('transitionend', onEnd);
+      s.cleanup = () => s.wrap.removeEventListener('transitionend', onEnd);
+    };
+
+    states.forEach((s) => {
+      s.btn.addEventListener('click', () => {
+        const isOpen = s.item.dataset.open === 'true';
+        if (isOpen) {
+          close(s);
+        } else {
+          // Akkordeon: alle anderen schließen
+          states.forEach((other) => {
+            if (other !== s && other.item.dataset.open === 'true') {
+              close(other);
+            }
+          });
+          open(s);
+        }
+      });
+    });
+
+    // Cleanup auf view-transition (Astro)
+    const dispose = () => {
+      states.forEach(stopAnim);
+      delete list.dataset.initialized;
+    };
+    document.addEventListener('astro:before-swap', dispose, { once: true });
+  }
+
+  initFaq();
+  document.addEventListener('astro:page-load', initFaq);
+</script>

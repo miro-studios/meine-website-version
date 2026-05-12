@@ -1,0 +1,293 @@
+---
+/**
+ * HeroNetwork — animiertes Knotenpunkt-Netzwerk als Hero-Akzent.
+ *
+ * Ersetzt den alten "est. 2026"-Stempel rechts im Hero. Reine 2D-Canvas-
+ * Animation: 18 Knoten driften langsam durch einen quadratischen Bereich,
+ * nahe Knoten verbinden sich automatisch mit Linien. Knoten reagieren
+ * sanft auf den Mauszeiger (werden zur Maus gezogen).
+ *
+ * Performance: ein einziger requestAnimationFrame-Loop, DPR-aware, pausiert
+ * wenn das Canvas nicht sichtbar ist (IntersectionObserver). Reduced-Motion
+ * zeigt einen statischen Snapshot ohne Animation.
+ */
+interface Props {
+  /** Anzahl der Knoten */
+  nodes?: number;
+  /** Maximale Distanz für Verbindungen (in CSS-px) */
+  maxDist?: number;
+  /** Drift-Geschwindigkeit (Pixel pro Sekunde Basis) */
+  speed?: number;
+}
+
+const { nodes = 18, maxDist = 110, speed = 18 } = Astro.props;
+---
+
+<canvas
+  class="hero-network"
+  data-hero-network
+  data-nodes={nodes}
+  data-max-dist={maxDist}
+  data-speed={speed}
+  aria-hidden="true"
+></canvas>
+
+<style>
+  .hero-network {
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: auto;
+  }
+</style>
+
+<script>
+  type Node = { x: number; y: number; vx: number; vy: number };
+
+  interface NetworkInstance {
+    canvas: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D;
+    nodes: Node[];
+    maxDist: number;
+    speed: number;
+    width: number;
+    height: number;
+    dpr: number;
+    mouse: { x: number; y: number; active: boolean };
+    rafId: number;
+    last: number;
+    active: boolean;
+    accent: { r: number; g: number; b: number };
+    textColor: { r: number; g: number; b: number };
+    cleanupFns: Array<() => void>;
+  }
+
+  const instances = new WeakMap<HTMLCanvasElement, NetworkInstance>();
+
+  /** Parse CSS-Farbe (rgb / hex / color()-Variants vom Browser) zu RGB-Tripel */
+  function parseColor(input: string): { r: number; g: number; b: number } {
+    // Browser computed style ist meist "rgb(r, g, b)" oder "rgba(...)"
+    const m = input.match(/rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)/);
+    if (m) {
+      return { r: +m[1], g: +m[2], b: +m[3] };
+    }
+    // Hex Fallback
+    const h = input.replace('#', '');
+    if (h.length === 6) {
+      return {
+        r: parseInt(h.slice(0, 2), 16),
+        g: parseInt(h.slice(2, 4), 16),
+        b: parseInt(h.slice(4, 6), 16),
+      };
+    }
+    return { r: 184, g: 90, b: 44 }; // Terrakotta-Fallback
+  }
+
+  function readThemeColors(el: HTMLElement) {
+    const cs = getComputedStyle(el);
+    // CSS-Variablen liegen auf [data-theme="portfolio"] — wir lesen über
+    // einen Probe-Trick: cs.getPropertyValue('--color-accent')
+    const accentRaw = cs.getPropertyValue('--color-accent').trim() || '#B85A2C';
+    const textRaw = cs.getPropertyValue('--color-text').trim() || '#1A1716';
+    return {
+      accent: parseColor(accentRaw),
+      text: parseColor(textRaw),
+    };
+  }
+
+  function resize(inst: NetworkInstance) {
+    const rect = inst.canvas.getBoundingClientRect();
+    inst.dpr = Math.min(window.devicePixelRatio || 1, 2);
+    inst.width = rect.width;
+    inst.height = rect.height;
+    inst.canvas.width = Math.round(rect.width * inst.dpr);
+    inst.canvas.height = Math.round(rect.height * inst.dpr);
+    inst.ctx.setTransform(inst.dpr, 0, 0, inst.dpr, 0, 0);
+  }
+
+  function spawn(inst: NetworkInstance) {
+    inst.nodes = [];
+    for (let i = 0; i < (inst.canvas.dataset.nodes ? +inst.canvas.dataset.nodes : 18); i++) {
+      const angle = Math.random() * Math.PI * 2;
+      inst.nodes.push({
+        x: Math.random() * inst.width,
+        y: Math.random() * inst.height,
+        vx: Math.cos(angle) * (0.4 + Math.random() * 0.6),
+        vy: Math.sin(angle) * (0.4 + Math.random() * 0.6),
+      });
+    }
+  }
+
+  function step(inst: NetworkInstance, now: number) {
+    const delta = Math.min((now - inst.last) / 1000, 0.05);
+    inst.last = now;
+
+    const { ctx, nodes, width, height, maxDist, speed, mouse, accent, textColor } = inst;
+    ctx.clearRect(0, 0, width, height);
+
+    // Update node positions
+    for (const n of nodes) {
+      n.x += n.vx * speed * delta;
+      n.y += n.vy * speed * delta;
+
+      // Wall-Bounce
+      if (n.x < 0) { n.x = 0; n.vx = Math.abs(n.vx); }
+      if (n.x > width) { n.x = width; n.vx = -Math.abs(n.vx); }
+      if (n.y < 0) { n.y = 0; n.vy = Math.abs(n.vy); }
+      if (n.y > height) { n.y = height; n.vy = -Math.abs(n.vy); }
+
+      // Maus-Anziehung
+      if (mouse.active) {
+        const dx = mouse.x - n.x;
+        const dy = mouse.y - n.y;
+        const d = Math.hypot(dx, dy);
+        if (d < 90 && d > 0.1) {
+          const force = (1 - d / 90) * 0.08;
+          n.x += (dx / d) * force * 8;
+          n.y += (dy / d) * force * 8;
+        }
+      }
+    }
+
+    // Connections
+    ctx.lineWidth = 1;
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i];
+        const b = nodes[j];
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        const d = Math.hypot(dx, dy);
+        if (d < maxDist) {
+          const alpha = (1 - d / maxDist) * 0.55;
+          ctx.strokeStyle = `rgba(${textColor.r}, ${textColor.g}, ${textColor.b}, ${alpha * 0.55})`;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Nodes (mit subtilem Glow in Akzentfarbe)
+    for (const n of nodes) {
+      // Glow-Halo
+      const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, 14);
+      grad.addColorStop(0, `rgba(${accent.r}, ${accent.g}, ${accent.b}, 0.45)`);
+      grad.addColorStop(1, `rgba(${accent.r}, ${accent.g}, ${accent.b}, 0)`);
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, 14, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Solid dot
+      ctx.fillStyle = `rgb(${accent.r}, ${accent.g}, ${accent.b})`;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, 2.4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function loop(inst: NetworkInstance) {
+    if (!inst.active) return;
+    inst.rafId = requestAnimationFrame((now) => {
+      step(inst, now);
+      loop(inst);
+    });
+  }
+
+  function init(canvas: HTMLCanvasElement) {
+    if (instances.has(canvas)) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const colors = readThemeColors(canvas);
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const inst: NetworkInstance = {
+      canvas,
+      ctx,
+      nodes: [],
+      maxDist: canvas.dataset.maxDist ? +canvas.dataset.maxDist : 110,
+      speed: canvas.dataset.speed ? +canvas.dataset.speed : 18,
+      width: 0,
+      height: 0,
+      dpr: 1,
+      mouse: { x: 0, y: 0, active: false },
+      rafId: 0,
+      last: performance.now(),
+      active: false,
+      accent: colors.accent,
+      textColor: colors.text,
+      cleanupFns: [],
+    };
+
+    instances.set(canvas, inst);
+
+    resize(inst);
+    spawn(inst);
+
+    // Bei reduced-motion: einen statischen Frame zeichnen, kein Loop
+    if (reduce) {
+      step(inst, performance.now());
+      return;
+    }
+
+    // Mouse-Interaktion
+    const onMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      inst.mouse.x = e.clientX - rect.left;
+      inst.mouse.y = e.clientY - rect.top;
+      inst.mouse.active = true;
+    };
+    const onLeave = () => { inst.mouse.active = false; };
+    canvas.addEventListener('mousemove', onMove);
+    canvas.addEventListener('mouseleave', onLeave);
+    inst.cleanupFns.push(() => canvas.removeEventListener('mousemove', onMove));
+    inst.cleanupFns.push(() => canvas.removeEventListener('mouseleave', onLeave));
+
+    // Resize-Handling
+    const onResize = () => { resize(inst); spawn(inst); };
+    window.addEventListener('resize', onResize, { passive: true });
+    inst.cleanupFns.push(() => window.removeEventListener('resize', onResize));
+
+    // Pause wenn nicht sichtbar
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          if (!inst.active) {
+            inst.active = true;
+            inst.last = performance.now();
+            loop(inst);
+          }
+        } else {
+          inst.active = false;
+          cancelAnimationFrame(inst.rafId);
+        }
+      }
+    }, { threshold: 0.05 });
+    io.observe(canvas);
+    inst.cleanupFns.push(() => io.disconnect());
+  }
+
+  function destroy(canvas: HTMLCanvasElement) {
+    const inst = instances.get(canvas);
+    if (!inst) return;
+    inst.active = false;
+    cancelAnimationFrame(inst.rafId);
+    inst.cleanupFns.forEach((fn) => fn());
+    instances.delete(canvas);
+  }
+
+  function initAll() {
+    document.querySelectorAll<HTMLCanvasElement>('[data-hero-network]').forEach(init);
+  }
+
+  function destroyAll() {
+    document.querySelectorAll<HTMLCanvasElement>('[data-hero-network]').forEach(destroy);
+  }
+
+  initAll();
+  document.addEventListener('astro:page-load', initAll);
+  document.addEventListener('astro:before-swap', destroyAll);
+</script>
