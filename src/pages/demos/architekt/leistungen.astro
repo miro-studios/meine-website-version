@@ -1,0 +1,532 @@
+---
+import ArchitektLayout from '@layouts/ArchitektLayout.astro';
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+import SplitText from '@components/shared/SplitText.astro';
+import MagneticButton from '@components/shared/MagneticButton.astro';
+
+const services = [
+  {
+    n: '01',
+    title: 'NEUBAU',
+    sub: 'Einfamilienhäuser · Doppelhäuser · kleine Geschosswohnungen',
+    text: 'Vom ersten Skizzenblock bis zur Schlüsselübergabe begleiten wir alle neun Leistungsphasen der HOAI. Wir entwerfen Häuser, die nicht aussehen wollen, sondern funktionieren — mit kompakten Grundrissen, sinnvollem Tageslicht und einer Statik, die Mehraufwand vermeidet.',
+    items: ['Bauherrenberatung & Grundstücksprüfung', 'Entwurf, Genehmigungs- & Werkplanung', 'Ausschreibung, Vergabe, Bauleitung', 'KfW-/BEG-konforme Energiekonzepte'],
+    note: 'AB HZ III · HOAI 1–9',
+  },
+  {
+    n: '02',
+    title: 'SANIERUNG',
+    sub: 'Bestandsbauten · Denkmäler · Hofhäuser',
+    text: 'Bestand ist immer der schwerere und der schönere Auftrag. Wir vermessen, prüfen Statik und Bauphysik, klären Schadstoffe und entwickeln eine Strategie, die das Gute behält und das Faule entfernt — energetisch sauber, rechtlich abgesichert, finanziell ehrlich.',
+    items: ['Bestandsaufnahme inkl. 3D-Aufmaß', 'Energieausweis & Sanierungsfahrplan', 'Förderung KfW, BEG, Denkmal', 'Holz-, Putz- und Lehmsanierung'],
+    note: 'SPEZ. 50–80ER & HOFHAEUSER',
+  },
+  {
+    n: '03',
+    title: 'INNENARCHITEKTUR',
+    sub: 'Material · Licht · Möbel',
+    text: 'Wenn die Hülle steht, beginnt der Raum. Wir planen Materialwahl, Akustik, Lichtführung und feste Möblierung im Haus — und arbeiten dafür mit Tischlern, Lichtbauern und Metallern aus der Region, die wir seit Jahren kennen.',
+    items: ['Materialkonzept & Bemusterung', 'Lichtplanung (DIALux)', 'Maßmöbel & Einbauküchen', 'Detail- & Werkplanung Innen'],
+    note: 'AUCH ALS EIGENSTAENDIGER AUFTRAG',
+  },
+  {
+    n: '04',
+    title: 'GEWERBEBAU',
+    sub: 'Praxen · Kanzleien · Retail Small Scale',
+    text: 'Wer einen Arzt empfängt, einen Anwalt mandatiert oder eine Manufaktur besucht, soll den Raum lesen können bevor das Gespräch beginnt. Wir bauen für kleine und mittlere Betriebe, bei denen Funktion zuerst kommt und Repräsentation als Folge — nicht andersherum.',
+    items: ['Funktionsplanung & Patientenflüsse', 'Brandschutz, Hygiene, Barrierefreiheit', 'Corporate Architecture', 'Mietvertrag-Beratung'],
+    note: 'BIS CA. 600 M² NUTZFLAECHE',
+  },
+];
+
+const process = [
+  { n: '01', label: 'ERSTGESPRÄCH', text: 'Eine Stunde, kostenfrei, ohne Verpflichtung. Wir hören zu und sagen ehrlich, ob wir die Richtigen für Ihr Vorhaben sind.' },
+  { n: '02', label: 'ANALYSE', text: 'Grundstück, Bestand, Budget, Förderung. Wir prüfen alles, bevor irgendwer einen Strich zeichnet.' },
+  { n: '03', label: 'VORENTWURF', text: 'Zwei bis drei Varianten in 1:200. Wir entscheiden gemeinsam, nicht für Sie.' },
+  { n: '04', label: 'PLANUNG', text: 'Werkplanung, Statik, Energie, Ausschreibung. Hier wird aus dem Bild ein Bauwerk.' },
+  { n: '05', label: 'BAULEITUNG', text: 'Wöchentliche Baubesprechung, Kosten- und Terminkontrolle. Sie hören jede Woche von uns.' },
+  { n: '06', label: 'ÜBERGABE', text: 'Mängelfrei, dokumentiert, mit fünfjähriger Nachsorge. Wir verschwinden nicht nach Bezug.' },
+];
+
+const faq = [
+  { q: 'Was kostet ein Architekt eigentlich?', a: 'Unser Honorar richtet sich nach der HOAI und liegt für Wohnbau in Honorarzone III bei ca. 10–14 % der anrechenbaren Baukosten. Das klingt nach viel — rechnet sich aber, weil eine gute Planung im Bau das Vielfache spart.' },
+  { q: 'Begleiten Sie auch nur einzelne Leistungsphasen?', a: 'Ja. Wir übernehmen auch nur die Genehmigungsplanung, nur die Bauleitung oder nur den Innenausbau. Wir sagen Ihnen offen, wann das sinnvoll ist und wann nicht.' },
+  { q: 'Wie lange dauert ein Einfamilienhaus von Anfang bis Einzug?', a: '14–24 Monate sind realistisch, abhängig von Grundstück, Baugenehmigung und Witterung. Sanierungen sind in der Regel schneller, Denkmal-Projekte deutlich länger.' },
+  { q: 'Arbeiten Sie auch außerhalb des Sauerlands?', a: 'Standard-Einzugsgebiet ist ein Umkreis von 100 km um Lüdenscheid. Für Spezialaufgaben — etwa Denkmal — kommen wir auch weiter raus, müssen dann aber Anreisen berechnen.' },
+];
+---
+
+<ArchitektLayout
+  title="Atelier Vossen — Leistungen"
+  description="Neubau, Sanierung, Innenarchitektur und Gewerbebau. Alle Leistungsphasen HOAI 1–9, mit klarer Stimme pro Projekt."
+>
+  <section class="av-pg-hero av-section">
+    <div class="av-container">
+      <div class="av-bar">
+        <span class="av-bar-n">N° 02</span>
+        <span class="av-bar-line" aria-hidden="true"></span>
+        <span class="av-bar-k">PAGE / LEISTUNGEN.MD</span>
+      </div>
+      <h1 class="av-pg-hero__h">
+        <span class="av-pg-hero__line"><SplitText by="words" stagger={0.05}>WAS WIR</SplitText></span>
+        <span class="av-pg-hero__line av-pg-hero__line--alt"><SplitText by="words" stagger={0.05} delay={0.2}>TATSÄCHLICH TUN.</SplitText></span>
+      </h1>
+      <p class="av-pg-hero__lead">
+        Vier Disziplinen, ein Maßstab. Wir sind keine Generalisten — wir sind
+        spezialisiert auf Bauen im Bestand und auf das ehrliche Einfamilienhaus.
+        Alles andere passt nur dann, wenn es zu diesen beiden Wurzeln passt.
+      </p>
+    </div>
+  </section>
+
+  <!-- Services Detail -->
+  <section class="av-svc">
+    <div class="av-container">
+      {services.map((s) => (
+        <article class="av-svc__row">
+          <div class="av-svc__meta">
+            <span class="av-svc__n">N° {s.n}</span>
+            <h2 class="av-svc__h">{s.title}</h2>
+            <p class="av-svc__sub">{s.sub}</p>
+            <span class="av-svc__note">{s.note}</span>
+          </div>
+          <div class="av-svc__body">
+            <RevealOnScroll>
+              <p class="av-svc__text">{s.text}</p>
+              <ul class="av-svc__items">
+                {s.items.map(it => (
+                  <li>
+                    <span class="av-svc__check" aria-hidden="true">+</span>
+                    <span>{it}</span>
+                  </li>
+                ))}
+              </ul>
+              <a href="/demos/architekt/kontakt/" class="av-svc__cta">
+                <span>{s.title} ANFRAGEN</span>
+                <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
+              </a>
+            </RevealOnScroll>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- Prozess -->
+  <section class="av-proc av-section">
+    <div class="av-container">
+      <div class="av-bar">
+        <span class="av-bar-n">N° 03</span>
+        <span class="av-bar-line" aria-hidden="true"></span>
+        <span class="av-bar-k">ABLAUF / 6 SCHRITTE</span>
+      </div>
+      <RevealOnScroll>
+        <h2 class="av-proc__h">
+          VOM ERSTEN ANRUF<br />
+          <span class="av-proc__h-alt">BIS ZUM SCHLÜSSEL.</span>
+        </h2>
+      </RevealOnScroll>
+
+      <ol class="av-proc__list">
+        {process.map(p => (
+          <li class="av-proc__step">
+            <span class="av-proc__step-n">{p.n}</span>
+            <h3>{p.label}</h3>
+            <p>{p.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="av-faq av-section">
+    <div class="av-container">
+      <div class="av-bar">
+        <span class="av-bar-n">N° 04</span>
+        <span class="av-bar-line" aria-hidden="true"></span>
+        <span class="av-bar-k">FAQ / HAEUFIGE FRAGEN</span>
+      </div>
+      <RevealOnScroll>
+        <h2 class="av-faq__h">BEVOR SIE ANRUFEN.</h2>
+      </RevealOnScroll>
+
+      <div class="av-faq__list">
+        {faq.map((item, i) => (
+          <details class="av-faq__item" open={i === 0}>
+            <summary>
+              <span class="av-faq__q-n">[{String(i + 1).padStart(2, '0')}]</span>
+              <span class="av-faq__q">{item.q}</span>
+              <span class="av-faq__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+              </span>
+            </summary>
+            <p>{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="av-svc-cta av-section">
+    <div class="av-container">
+      <RevealOnScroll>
+        <h2 class="av-svc-cta__h">KLINGT DAS NACH IHREM PROJEKT?</h2>
+        <p class="av-svc-cta__lead">
+          Das Erstgespräch ist kostenfrei. Eine Stunde, in der wir zuhören und ehrlich antworten.
+        </p>
+        <MagneticButton href="/demos/architekt/kontakt/" strength={0.4} variant="primary" class="av-svc-cta__btn">
+          <span>ANFRAGE STARTEN</span>
+          <span aria-hidden="true">→</span>
+        </MagneticButton>
+      </RevealOnScroll>
+    </div>
+  </section>
+</ArchitektLayout>
+
+<style>
+  .av-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    margin-bottom: 2.5rem;
+  }
+  .av-bar-n { color: var(--color-accent); font-weight: 700; }
+  .av-bar-line { flex: 1; height: 1px; background: var(--color-rule-strong); }
+  .av-bar-k { color: var(--color-muted); font-weight: 500; }
+
+  .av-pg-hero { padding-block: clamp(3rem, 6vw, 5rem) clamp(3rem, 6vw, 5rem); }
+  .av-pg-hero__h {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 11vw, 10rem);
+    line-height: 0.88;
+    letter-spacing: -0.04em;
+    margin: 0 0 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .av-pg-hero__line { display: block; overflow: hidden; }
+  .av-pg-hero__line--alt { color: var(--color-primary); }
+  .av-pg-hero__lead {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    line-height: 1.65;
+    max-width: 55ch;
+    color: color-mix(in srgb, var(--color-text) 82%, transparent);
+    margin: 0;
+  }
+
+  /* Services Detail */
+  .av-svc {
+    border-top: 1px solid var(--color-rule);
+  }
+  .av-svc__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    padding: clamp(2.5rem, 5vw, 4.5rem) 0;
+    border-bottom: 1px solid var(--color-rule-strong);
+  }
+  .av-svc__row:last-child { border-bottom: none; }
+
+  @media (min-width: 900px) {
+    .av-svc__row {
+      grid-template-columns: minmax(240px, 0.85fr) minmax(0, 1.4fr);
+      gap: clamp(3rem, 6vw, 6rem);
+    }
+  }
+  .av-svc__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: sticky;
+    top: 5rem;
+    align-self: start;
+  }
+  .av-svc__n {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--color-accent);
+  }
+  .av-svc__h {
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 6vw, 5rem);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    margin: 0.5rem 0 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .av-svc__sub {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--color-muted);
+    margin: 0;
+  }
+  .av-svc__note {
+    margin-top: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    color: var(--color-text);
+    padding: 0.4rem 0.7rem;
+    background: color-mix(in srgb, var(--color-text) 8%, transparent);
+    border: 1px solid var(--color-rule-strong);
+    width: max-content;
+    max-width: 100%;
+    font-weight: 700;
+  }
+  .av-svc__text {
+    font-family: var(--font-body);
+    font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+    line-height: 1.6;
+    color: var(--color-text);
+    max-width: 55ch;
+    margin: 0 0 2rem;
+  }
+  .av-svc__items {
+    list-style: none;
+    margin: 0 0 2rem;
+    padding: 0;
+    display: grid;
+    gap: 0;
+    grid-template-columns: 1fr;
+    border-top: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+  }
+  @media (min-width: 600px) {
+    .av-svc__items { grid-template-columns: repeat(2, 1fr); }
+  }
+  .av-svc__items li {
+    display: grid;
+    grid-template-columns: 1.5rem 1fr;
+    gap: 0.65rem;
+    align-items: baseline;
+    padding: 0.95rem 0;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    line-height: 1.45;
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .av-svc__items li:last-child { border-bottom: none; }
+  @media (min-width: 600px) {
+    .av-svc__items li:nth-last-child(-n+2) { border-bottom: none; }
+  }
+  .av-svc__check {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+  .av-svc__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.9rem 1.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-text);
+    text-decoration: none;
+    border: 1px solid var(--color-text);
+    transition: background-color 0.3s, color 0.3s, gap 0.3s var(--ease-out-expo);
+  }
+  .av-svc__cta:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+    gap: 0.9rem;
+  }
+  .av-svc__cta svg { width: 14px; height: 14px; }
+
+  /* Prozess */
+  .av-proc {
+    border-top: 1px solid var(--color-rule);
+    background: color-mix(in srgb, var(--color-surface) 50%, transparent);
+  }
+  .av-proc__h {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 6vw, 5rem);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .av-proc__h-alt { color: var(--color-primary); }
+
+  .av-proc__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+    grid-template-columns: 1fr;
+    border: 1px solid var(--color-rule-strong);
+  }
+  @media (min-width: 720px) {
+    .av-proc__list { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1100px) {
+    .av-proc__list { grid-template-columns: repeat(3, 1fr); }
+  }
+  .av-proc__step {
+    background: var(--color-bg);
+    padding: clamp(1.5rem, 3vw, 2rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    position: relative;
+    border-right: 1px solid var(--color-rule-strong);
+    border-bottom: 1px solid var(--color-rule-strong);
+    transition: background-color 0.4s var(--ease-out-expo);
+  }
+  .av-proc__step:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+  .av-proc__step:last-child { border-right: none; }
+  @media (min-width: 1100px) {
+    .av-proc__step:nth-child(3n) { border-right: none; }
+    .av-proc__step:nth-last-child(-n+3) { border-bottom: none; }
+  }
+
+  .av-proc__step-n {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    line-height: 1;
+    color: var(--color-accent);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+  .av-proc__step h3 {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    margin: 0;
+    letter-spacing: -0.01em;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .av-proc__step p {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin: 0;
+    color: color-mix(in srgb, currentColor 78%, transparent);
+  }
+
+  /* FAQ */
+  .av-faq { border-top: 1px solid var(--color-rule); }
+  .av-faq__h {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .av-faq__list { border-top: 1px solid var(--color-rule-strong); }
+  .av-faq__item { border-bottom: 1px solid var(--color-rule-strong); }
+  .av-faq__item summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 1.5rem 0;
+    display: grid;
+    grid-template-columns: 3rem 1fr auto;
+    align-items: center;
+    gap: 1.5rem;
+    transition: padding-left 0.4s var(--ease-out-expo), color 0.3s;
+  }
+  .av-faq__item summary::-webkit-details-marker { display: none; }
+  .av-faq__item summary::marker { display: none; }
+  .av-faq__item summary:hover {
+    padding-left: 1rem;
+    color: var(--color-primary);
+  }
+  .av-faq__q-n {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-accent);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+  .av-faq__q {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    font-weight: 600;
+  }
+  .av-faq__icon {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    color: var(--color-accent);
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+  .av-faq__item[open] .av-faq__icon { transform: rotate(180deg); }
+  .av-faq__item p {
+    padding: 0 0 1.75rem 4.5rem;
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: color-mix(in srgb, var(--color-text) 78%, transparent);
+    max-width: 65ch;
+  }
+
+  /* CTA */
+  .av-svc-cta {
+    background: var(--color-text);
+    color: var(--color-bg);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .av-svc-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--color-bg) 7%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-bg) 7%, transparent) 1px, transparent 1px);
+    background-size: 56px 56px;
+    pointer-events: none;
+  }
+  .av-svc-cta .av-container { position: relative; z-index: 1; }
+  .av-svc-cta__h {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 6vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    margin: 0 0 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .av-svc-cta__lead {
+    font-family: var(--font-body);
+    font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+    color: color-mix(in srgb, var(--color-bg) 80%, transparent);
+    margin: 0 0 2.5rem;
+    line-height: 1.55;
+  }
+  .av-svc-cta__btn {
+    background: var(--color-bg);
+    color: var(--color-text);
+    border-radius: 0;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 1.15rem 1.75rem;
+  }
+  .av-svc-cta__btn:hover {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+</style>

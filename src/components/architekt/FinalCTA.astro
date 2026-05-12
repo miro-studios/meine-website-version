@@ -1,0 +1,238 @@
+---
+import MagneticButton from '@components/shared/MagneticButton.astro';
+import SplitText from '@components/shared/SplitText.astro';
+---
+
+<section class="av-final av-section">
+  <div class="av-container">
+    <div class="av-final__bar">
+      <span class="av-final__bar-n">N° 05</span>
+      <span class="av-final__bar-line" aria-hidden="true"></span>
+      <span class="av-final__bar-k">CONTACT / ERSTGESPRAECH</span>
+    </div>
+
+    <div class="av-final__content">
+      <h2 class="av-final__title">
+        <span class="av-final__line">
+          <SplitText by="words" stagger={0.06}>ERZÄHLEN SIE UNS</SplitText>
+        </span>
+        <span class="av-final__line av-final__line--alt">
+          <SplitText by="words" stagger={0.06} delay={0.15}>VON IHREM ORT.</SplitText>
+        </span>
+      </h2>
+
+      <div class="av-final__body">
+        <p class="av-final__lead">
+          Wir kommen zum Erstgespräch ohne Berechnung zu Ihnen — vor Ort, im
+          Atelier oder digital. Eine Stunde, in der wir zuhören, Fragen stellen
+          und ehrlich sagen, ob wir die richtigen Architekten für Ihr Vorhaben sind.
+        </p>
+
+        <table class="av-final__data">
+          <tbody>
+            <tr>
+              <th>DAUER</th>
+              <td>60 MIN</td>
+            </tr>
+            <tr>
+              <th>KOSTEN</th>
+              <td>EUR 0,00</td>
+            </tr>
+            <tr>
+              <th>RÜCKMELDUNG</th>
+              <td>≤ 2 WT</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="av-final__actions">
+        <MagneticButton href="/demos/architekt/kontakt/" strength={0.4} variant="primary" class="av-final__cta">
+          <span>ERSTGESPRÄCH ANFRAGEN</span>
+          <span aria-hidden="true">→</span>
+        </MagneticButton>
+        <a href="tel:+4923514781200" class="av-final__phone">
+          <span class="av-final__phone-k">TEL</span>
+          <span class="av-final__phone-v">+49 2351 478 12 00</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .av-final {
+    border-top: 1px solid var(--color-rule);
+    background: var(--color-text);
+    color: var(--color-bg);
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .av-final::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--color-bg) 10%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-bg) 10%, transparent) 1px, transparent 1px);
+    background-size: clamp(40px, 6vw, 72px) clamp(40px, 6vw, 72px);
+    mask-image: radial-gradient(ellipse 60% 80% at 50% 50%, black 30%, transparent 90%);
+    -webkit-mask-image: radial-gradient(ellipse 60% 80% at 50% 50%, black 30%, transparent 90%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .av-final__bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    padding-bottom: 3rem;
+    color: color-mix(in srgb, var(--color-bg) 70%, transparent);
+  }
+
+  .av-final__bar-n {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .av-final__bar-line {
+    flex: 1;
+    height: 1px;
+    background: color-mix(in srgb, var(--color-bg) 20%, transparent);
+  }
+
+  .av-final__bar-k { font-weight: 500; }
+
+  .av-final__content {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+
+  .av-final__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 10vw, 9rem);
+    line-height: 0.88;
+    letter-spacing: -0.045em;
+    margin: 0;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .av-final__line { display: block; overflow: hidden; }
+
+  .av-final__line--alt {
+    color: var(--color-accent);
+  }
+
+  .av-final__body {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3rem);
+    grid-template-columns: 1fr;
+    padding-top: 1.5rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-bg) 18%, transparent);
+  }
+
+  @media (min-width: 800px) {
+    .av-final__body {
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+      align-items: start;
+    }
+  }
+
+  .av-final__lead {
+    font-family: var(--font-body);
+    font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--color-bg) 85%, transparent);
+    max-width: 56ch;
+    margin: 0;
+  }
+
+  .av-final__data {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-mono);
+    border-top: 1px solid color-mix(in srgb, var(--color-bg) 20%, transparent);
+  }
+
+  .av-final__data tr {
+    border-bottom: 1px solid color-mix(in srgb, var(--color-bg) 20%, transparent);
+  }
+
+  .av-final__data th,
+  .av-final__data td {
+    padding: 0.85rem 0.5rem;
+    text-align: left;
+    vertical-align: baseline;
+  }
+
+  .av-final__data th {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: color-mix(in srgb, var(--color-bg) 65%, transparent);
+  }
+
+  .av-final__data td {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--color-bg);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .av-final__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem 2.5rem;
+  }
+
+  .av-final__cta {
+    background: var(--color-bg);
+    color: var(--color-text);
+    border-radius: 0;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 1.15rem 1.75rem;
+  }
+
+  .av-final__cta:hover {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  .av-final__phone {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    color: var(--color-bg);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    transition: color 0.3s;
+  }
+
+  .av-final__phone:hover {
+    color: var(--color-accent);
+  }
+
+  .av-final__phone-k {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    color: color-mix(in srgb, var(--color-bg) 60%, transparent);
+  }
+
+  .av-final__phone-v {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+  }
+</style>

@@ -1,0 +1,278 @@
+---
+const base = '/demos/architekt';
+const nav = [
+  { href: `${base}/`, label: 'START', n: '00' },
+  { href: `${base}/buero/`, label: 'BÜRO', n: '01' },
+  { href: `${base}/leistungen/`, label: 'LEISTUNGEN', n: '02' },
+  { href: `${base}/projekte/`, label: 'PROJEKTE', n: '03' },
+  { href: `${base}/kontakt/`, label: 'KONTAKT', n: '04' },
+];
+
+const path = Astro.url.pathname.replace(/\/$/, '');
+---
+
+<header class="av-header" data-av-header>
+  <div class="av-header__inner">
+    <a href={`${base}/`} class="av-header__brand" aria-label="Atelier Vossen — Startseite">
+      <span class="av-header__brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 28 28" fill="none">
+          <rect x="1.5" y="1.5" width="25" height="25" stroke="currentColor" stroke-width="1.2" />
+          <path d="M5 22 L14 6 L23 22" stroke="currentColor" stroke-width="1.5" stroke-linejoin="miter" fill="none" />
+          <line x1="5" y1="22" x2="23" y2="22" stroke="currentColor" stroke-width="0.6" stroke-dasharray="2 2" />
+        </svg>
+      </span>
+      <span class="av-header__brand-text">
+        <span class="av-header__brand-name">ATELIER VOSSEN</span>
+        <span class="av-header__brand-sub">ARCH · LDS · 1998</span>
+      </span>
+    </a>
+
+    <nav class="av-header__nav" aria-label="Hauptnavigation">
+      <ul>
+        {nav.map(item => {
+          const itemPath = item.href.replace(/\/$/, '');
+          const active = path === itemPath;
+          return (
+            <li>
+              <a href={item.href} class:list={['av-header__link', { 'is-active': active }]}>
+                <span class="av-header__link-n">{item.n}</span>
+                <span class="av-header__link-l">{item.label}</span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+
+    <button
+      class="av-header__burger"
+      type="button"
+      aria-label="Menü öffnen"
+      aria-expanded="false"
+      data-av-burger
+    >
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="av-header__drawer" data-av-drawer hidden>
+    <nav aria-label="Mobile Navigation">
+      <ul>
+        {nav.map(item => {
+          const itemPath = item.href.replace(/\/$/, '');
+          const active = path === itemPath;
+          return (
+            <li>
+              <a href={item.href} class:list={['av-header__drawer-link', { 'is-active': active }]}>
+                <span class="av-header__drawer-n">{item.n}</span>
+                <span>{item.label}</span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .av-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .av-header__inner {
+    max-width: var(--av-container);
+    margin-inline: auto;
+    padding: 0.85rem var(--av-gutter);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .av-header__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .av-header__brand-mark {
+    width: 28px;
+    height: 28px;
+    color: var(--color-primary);
+  }
+
+  .av-header__brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    gap: 3px;
+  }
+
+  .av-header__brand-name {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .av-header__brand-sub {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    color: var(--color-muted);
+    font-weight: 500;
+  }
+
+  .av-header__nav { display: none; }
+
+  @media (min-width: 900px) {
+    .av-header__nav { display: block; }
+  }
+
+  .av-header__nav ul {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--color-rule);
+  }
+
+  .av-header__link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.65rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-text);
+    text-decoration: none;
+    border-right: 1px solid var(--color-rule);
+    transition: background-color 0.3s var(--ease-out-expo), color 0.3s ease;
+  }
+
+  .av-header__nav li:last-child .av-header__link { border-right: none; }
+
+  .av-header__link-n {
+    color: var(--color-muted);
+    font-size: 0.62rem;
+  }
+
+  .av-header__link:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .av-header__link:hover .av-header__link-n {
+    color: var(--color-accent);
+  }
+
+  .av-header__link.is-active {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .av-header__link.is-active .av-header__link-n {
+    color: var(--color-accent);
+  }
+
+  .av-header__burger {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: 1px solid var(--color-rule-strong);
+    padding: 9px 10px;
+    cursor: pointer;
+    color: var(--color-text);
+  }
+
+  .av-header__burger span {
+    display: block;
+    width: 18px;
+    height: 1.5px;
+    background: currentColor;
+    transition: transform 0.3s var(--ease-out-expo), opacity 0.2s;
+  }
+
+  .av-header__burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .av-header__burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .av-header__burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  @media (min-width: 900px) {
+    .av-header__burger { display: none; }
+  }
+
+  .av-header__drawer {
+    border-top: 1px solid var(--color-rule);
+    padding: 1.5rem var(--av-gutter) 2.5rem;
+    background: var(--color-bg);
+  }
+
+  .av-header__drawer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .av-header__drawer-link {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1rem 0;
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: var(--color-text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-rule);
+    text-transform: uppercase;
+    transition: color 0.3s ease, padding-left 0.4s var(--ease-out-expo);
+  }
+
+  .av-header__drawer-link:hover,
+  .av-header__drawer-link.is-active {
+    color: var(--color-primary);
+    padding-left: 0.6rem;
+  }
+
+  .av-header__drawer-n {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+</style>
+
+<script>
+  function init() {
+    const burger = document.querySelector<HTMLButtonElement>('[data-av-burger]');
+    const drawer = document.querySelector<HTMLElement>('[data-av-drawer]');
+    if (!burger || !drawer) return;
+
+    burger.addEventListener('click', () => {
+      const open = burger.getAttribute('aria-expanded') === 'true';
+      burger.setAttribute('aria-expanded', String(!open));
+      burger.setAttribute('aria-label', !open ? 'Menü schließen' : 'Menü öffnen');
+      if (open) drawer.setAttribute('hidden', '');
+      else drawer.removeAttribute('hidden');
+    });
+  }
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

@@ -1,0 +1,156 @@
+---
+import ArchitektLayout from '@layouts/ArchitektLayout.astro';
+---
+
+<ArchitektLayout
+  title="Atelier Vossen — Impressum"
+  description="Impressum und Anbieterkennzeichnung der Atelier Vossen GmbH, Lüdenscheid."
+>
+  <section class="av-legal av-section">
+    <div class="av-container av-legal__inner">
+      <p class="av-eyebrow">Pflichtangaben · § 5 TMG</p>
+      <h1 class="av-legal__h">Impressum</h1>
+
+      <div class="av-legal__body">
+        <section>
+          <h2>Anbieter</h2>
+          <p>
+            Atelier Vossen GmbH<br />
+            Knapper Straße 47<br />
+            58507 Lüdenscheid<br />
+            Deutschland
+          </p>
+        </section>
+
+        <section>
+          <h2>Vertretungsberechtigt</h2>
+          <p>
+            Mareike Vossen, Geschäftsführerin<br />
+            Tilo Brand, Geschäftsführer
+          </p>
+        </section>
+
+        <section>
+          <h2>Kontakt</h2>
+          <p>
+            Telefon: +49 2351 478 12 00<br />
+            E-Mail: <a href="mailto:hallo@atelier-vossen.de">hallo@atelier-vossen.de</a>
+          </p>
+        </section>
+
+        <section>
+          <h2>Registereintrag</h2>
+          <p>
+            Amtsgericht Iserlohn<br />
+            HRB 11842<br />
+            USt-ID gemäß § 27a UStG: DE 287 142 690
+          </p>
+        </section>
+
+        <section>
+          <h2>Berufsrechtliche Angaben</h2>
+          <p>
+            Berufsbezeichnung: Architektin / Architekt (verliehen in der Bundesrepublik Deutschland)<br />
+            Zuständige Kammer: Architektenkammer Nordrhein-Westfalen,
+            Zollhof 1, 40221 Düsseldorf,
+            <a href="https://www.aknw.de" target="_blank" rel="noopener">www.aknw.de</a><br />
+            Es gelten die berufsrechtlichen Regelungen der AKNW.
+          </p>
+        </section>
+
+        <section>
+          <h2>Berufshaftpflicht</h2>
+          <p>
+            HDI Versicherung AG, HDI-Platz 1, 30659 Hannover<br />
+            Geltungsraum der Versicherung: weltweit, mit den im Versicherungsvertrag festgelegten Einschränkungen.
+          </p>
+        </section>
+
+        <section>
+          <h2>Inhaltlich verantwortlich (§ 18 Abs. 2 MStV)</h2>
+          <p>
+            Mareike Vossen, Anschrift wie oben.
+          </p>
+        </section>
+
+        <section>
+          <h2>EU-Streitschlichtung</h2>
+          <p>
+            Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung bereit:
+            <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener">https://ec.europa.eu/consumers/odr/</a><br />
+            Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
+          </p>
+        </section>
+
+        <section>
+          <h2>Hinweis</h2>
+          <p>
+            Dies ist eine Demo-Website der miro-studios GbR. Die hier dargestellten Daten der
+            „Atelier Vossen GmbH" sind frei erfunden und dienen ausschließlich Demonstrationszwecken.
+          </p>
+        </section>
+      </div>
+    </div>
+  </section>
+</ArchitektLayout>
+
+<style>
+  .av-legal {
+    padding-block: clamp(4rem, 7vw, 6rem);
+  }
+
+  .av-legal__inner {
+    max-width: 760px;
+  }
+
+  .av-legal__h {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    line-height: 1;
+    letter-spacing: -0.035em;
+    margin: 1.25rem 0 3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .av-legal__body {
+    display: flex;
+    flex-direction: column;
+    gap: 2.25rem;
+  }
+
+  .av-legal__body section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .av-legal__body h2 {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    margin: 0;
+    letter-spacing: 0.14em;
+    color: var(--color-accent);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .av-legal__body p {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 0;
+    color: color-mix(in srgb, var(--color-text) 85%, transparent);
+  }
+
+  .av-legal__body a {
+    color: var(--color-text);
+    border-bottom: 1px solid currentColor;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .av-legal__body a:hover {
+    color: var(--color-accent);
+  }
+</style>

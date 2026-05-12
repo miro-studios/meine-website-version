@@ -1,0 +1,84 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Header from '@components/architekt/Header.astro';
+import Footer from '@components/architekt/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  canonical?: string;
+}
+
+const { title, description, canonical } = Astro.props;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  theme="architekt"
+  bodyClass="av-page"
+>
+  <Header />
+  <main>
+    <slot />
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style is:global>
+  body.av-page {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body.av-page ::selection {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+  }
+
+  body.av-page :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+  }
+
+  body.av-page h1,
+  body.av-page h2,
+  body.av-page h3,
+  body.av-page h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  /* Helpers used across pages */
+  .av-container {
+    max-width: var(--av-container);
+    margin-inline: auto;
+    padding-inline: var(--av-gutter);
+  }
+
+  .av-section {
+    padding-block: clamp(4rem, 8vw, 8rem);
+  }
+
+  .av-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-muted);
+  }
+
+  .av-eyebrow::before {
+    content: '';
+    width: clamp(20px, 4vw, 48px);
+    height: 1px;
+    background: currentColor;
+  }
+</style>

@@ -15,7 +15,8 @@ export type DemoTheme =
   | 'pizzeria'
   | 'elektro'
   | 'friseur'
-  | 'handwerker';
+  | 'handwerker'
+  | 'architekt';
 
 export type PackageFormat = 'one-pager' | 'multi-page';
 export type PackageTier = 'starter' | 'featured' | 'premium';
@@ -105,14 +106,15 @@ export const demos: readonly Demo[] = [
     },
   },
   {
-    slug: 'handwerker',
-    name: 'Kruse Bau',
-    category: 'Handwerksbetrieb · Sanierung',
-    headline: 'Bauen mit Verstand.',
+    slug: 'architekt',
+    name: 'Atelier Vossen',
+    category: 'Architektur & Innenarchitektur · Lüdenscheid',
+    headline: 'RÄUME MIT HALTUNG.',
     blurb:
-      'Handwerksbetrieb mit Erdton-Palette. Vorher-Nachher-Slider als Highlight, Projektgalerie mit Case-Studies.',
-    theme: 'handwerker',
-    status: 'in-progress',
+      'Architekturbüro im Planset-Stil — Blueprint-Indigo, technisches Mono-Raster, Maßlinien-Hero. Fünf Seiten mit Filter, Stats-Counter und Anfrageformular.',
+    theme: 'architekt',
+    status: 'live',
+    href: '/demos/architekt/',
     package: {
       format: 'multi-page',
       tier: 'starter',

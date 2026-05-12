@@ -1,0 +1,161 @@
+---
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+---
+
+<section class="av-about-t av-section">
+  <div class="av-container">
+    <div class="av-about-t__bar">
+      <span class="av-about-t__bar-n">N° 02</span>
+      <span class="av-about-t__bar-line" aria-hidden="true"></span>
+      <span class="av-about-t__bar-k">FILE / BUERO.MD</span>
+    </div>
+
+    <div class="av-about-t__grid">
+      <RevealOnScroll class="av-about-t__head">
+        <h2 class="av-about-t__title">
+          KEIN MAGAZIN.<br />
+          <span class="av-about-t__accent">EIN GEBRAUCHSGEGENSTAND.</span>
+        </h2>
+      </RevealOnScroll>
+
+      <RevealOnScroll class="av-about-t__body">
+        <p class="av-about-t__lead">
+          Wir bauen nicht für Magazine — wir bauen für Menschen, die vierzig
+          Jahre darin wohnen wollen.
+        </p>
+        <p class="av-about-t__text">
+          Atelier Vossen wurde 1998 in einer ehemaligen Schmiede in Lüdenscheid
+          gegründet. Heute arbeitet ein siebenköpfiges Team an Wohnhäusern,
+          Sanierungen denkmalgeschützter Substanz und gewerblichen Bauten
+          zwischen Volme, Lenne und Ruhr.
+        </p>
+        <p class="av-about-t__text">
+          Unsere Arbeit ist ruhig, präzise und materiell ehrlich. Klare
+          Grundrisse, Tageslicht, Materialien die altern dürfen statt
+          veralten zu müssen.
+        </p>
+        <a href="/demos/architekt/buero/" class="av-about-t__more">
+          <span>BUERO IM DETAIL</span>
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
+        </a>
+      </RevealOnScroll>
+    </div>
+  </div>
+</section>
+
+<style>
+  .av-about-t {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .av-about-t__bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    padding-bottom: 2.5rem;
+  }
+
+  .av-about-t__bar-n {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .av-about-t__bar-line {
+    flex: 1;
+    height: 1px;
+    background: var(--color-rule-strong);
+  }
+
+  .av-about-t__bar-k {
+    color: var(--color-muted);
+    font-weight: 500;
+  }
+
+  .av-about-t__grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 900px) {
+    .av-about-t__grid {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      align-items: start;
+    }
+  }
+
+  .av-about-t__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 7vw, 6rem);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    margin: 0;
+    text-transform: uppercase;
+    font-weight: 700;
+    max-width: 14ch;
+  }
+
+  .av-about-t__accent {
+    color: var(--color-primary);
+  }
+
+  .av-about-t__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-top: clamp(0rem, 2vw, 1.5rem);
+  }
+
+  .av-about-t__lead {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+    line-height: 1.4;
+    color: var(--color-text);
+    margin: 0;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    padding-left: 1rem;
+    border-left: 2px solid var(--color-accent);
+  }
+
+  .av-about-t__text {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.65;
+    color: color-mix(in srgb, var(--color-text) 82%, transparent);
+    margin: 0;
+    max-width: 50ch;
+  }
+
+  .av-about-t__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-top: 1rem;
+    padding: 0.85rem 1.25rem;
+    border: 1px solid var(--color-text);
+    background: transparent;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s, gap 0.3s var(--ease-out-expo);
+    width: max-content;
+  }
+
+  .av-about-t__more:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+    gap: 0.9rem;
+  }
+
+  .av-about-t__more svg {
+    width: 14px;
+    height: 14px;
+  }
+</style>
