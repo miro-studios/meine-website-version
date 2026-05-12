@@ -5,45 +5,45 @@ import SplitText from '@components/shared/SplitText.astro';
 const capabilities = [
   {
     index: '01',
-    title: 'Design',
+    title: 'Individuelles Design',
     description:
-      'Jede Website wird einzeln entworfen — passend zu deiner Marke, deiner Branche, deinen Kunden. Keine fertigen Vorlagen, keine WordPress-Themes.',
-    tools: ['Individuelles Layout', 'Typografie', 'Farbwelt'],
+      'Jede Seite ist ein Unikat. Kein Page-Builder, kein Template-Kauf, kein Drag & Drop. Layout, Typografie und Farben werden speziell für deine Marke entwickelt — in Figma, bevor die erste Codezeile entsteht.',
+    tools: ['Eigenes Layout', 'Typografie', 'Figma', 'Mobile-First'],
   },
   {
     index: '02',
-    title: 'Entwicklung',
+    title: 'Selbst geschriebener Code',
     description:
-      'Selbst geschriebener Code, der schnell lädt und sauber funktioniert — auf Handy, Tablet und Laptop. Keine Plugins die irgendwann brechen.',
-    tools: ['Astro', 'TypeScript', 'Modern Frontend'],
+      'Astro statt WordPress. Weniger Plugins, weniger Angriffsfläche, deutlich schneller. Lighthouse mindestens 90 auf Mobile — getestet auf 3G-Drosselung, von 320 px bis 4K.',
+    tools: ['Astro', 'TypeScript', 'Cloudflare Pages'],
   },
   {
     index: '03',
-    title: 'Inhalte selbst pflegen',
+    title: 'DSGVO sauber von Anfang an',
     description:
-      'Wenn du Texte, Bilder oder Öffnungszeiten regelmäßig ändern willst, bauen wir dir einen einfachen Editor — ohne dass du Code anfassen musst.',
-    tools: ['Einfacher Editor', 'Klare Anleitung'],
+      'Schriften über Bunny Fonts (EU-CDN, kein Tracking), kein Google Analytics, Hosting auf Cloudflare-Rechenzentren in der EU. Datenschutzerklärung und Impressum bauen wir mit ein.',
+    tools: ['Bunny Fonts', 'EU-Hosting', 'DSGVO-Setup'],
   },
   {
     index: '04',
-    title: 'Bilder & Bildregie',
+    title: 'Bei Google gefunden werden',
     description:
-      'Bildauswahl, Lizenzklärung, Beschnitt und Optimierung. Auf Wunsch koordinieren wir auch ein Foto-Shooting in deinen Räumen.',
-    tools: ['Bildrecherche', 'Optimierung', 'Bildregie'],
+      'Technisches SEO (Ladezeit, Meta-Tags, strukturiertes HTML, Sitemap) ist immer dabei. Für lokale Suchen wie „Friseur Kierspe" oder „Elektriker Sauerland" richten wir auf Wunsch dein Google-Unternehmensprofil ein.',
+    tools: ['Lokales SEO', 'Google Business', 'Strukturierte Daten'],
   },
   {
     index: '05',
-    title: 'Gefunden werden (SEO)',
+    title: 'Landingpages für Werbung',
     description:
-      'Damit deine Kunden dich bei Google finden: technische Grundlagen, lokale Optimierung, sauberes Meta-Setup. Keine leeren Versprechen, ehrliche Arbeit.',
-    tools: ['Lokales SEO', 'Google-Sichtbarkeit', 'Strukturierte Daten'],
+      'Conversion-optimierte Seiten für Google Ads oder Meta Ads. Ein Fokus, ein Ziel, keine Ablenkung — damit jeder Klick aus deinem Werbe-Budget eine Chance auf eine Anfrage bekommt.',
+    tools: ['Google Ads', 'Meta Ads', 'Conversion-Setup'],
   },
   {
     index: '06',
-    title: 'Hosting & Pflege',
+    title: 'Hosting & laufende Pflege',
     description:
-      'Domain, Hosting und SSL inklusive. Updates, Backups, kleine Änderungen — ein Ansprechpartner, keine Hotline.',
-    tools: ['Domain inklusive', 'Hosting', 'Persönlicher Support'],
+      'Optionales Paket für 34,99 € pro Monat: Domain (.de oder .com), Cloudflare-Hosting mit DDoS-Schutz, SSL automatisch erneuert, Inhalts-Änderungen, Bug-Fixes und technischer Support. Monatlich kündbar — keine Vertragsfalle.',
+    tools: ['Domain inklusive', 'Cloudflare', 'Monatlich kündbar'],
   },
 ] as const;
 ---
@@ -66,8 +66,8 @@ const capabilities = [
     </SplitText>
 
     <p class="capabilities__lede">
-      Eine Website ist mehr als ein paar schöne Bilder. Wir kümmern uns
-      um alles, was dazugehört — von der ersten Idee bis zur laufenden Pflege.
+      Sechs Bereiche, die wir komplett selbst abdecken — kein Outsourcing,
+      kein „das geht auch noch". Was hier steht, machen wir wirklich.
     </p>
   </header>
 
