@@ -912,14 +912,14 @@ const totalCount = demos.length;
 
   /* ── Theme-Tokens pro Demo (treiben --stage-bg / --stage-text / --stage-overlay) ── */
   .work-card--cafe-starter {
-    --stage-bg: #F2EBDD;
-    --stage-text: #6B1F25;
+    --stage-bg: #E4E6E0;
+    --stage-text: #1F4434;
     --stage-display: 'Fraunces', ui-serif, Georgia, serif;
     --stage-italic: italic;
     --stage-overlay:
-      radial-gradient(circle at 80% 20%, #C2683A 0%, transparent 55%),
-      radial-gradient(circle at 20% 80%, #6B1F25 0%, transparent 55%);
-    --stage-overlay-opacity: 0.18;
+      radial-gradient(circle at 80% 20%, #4A7C8C 0%, transparent 55%),
+      radial-gradient(circle at 20% 80%, #1F4434 0%, transparent 55%);
+    --stage-overlay-opacity: 0.22;
   }
 
   .work-card--pizzeria {
@@ -1084,6 +1084,9 @@ const totalCount = demos.length;
 </style>
 
 <script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
   function init() {
     const toggle = document.querySelector<HTMLElement>('.works-toggle[data-toggle]');
     const options = toggle
@@ -1117,6 +1120,17 @@ const totalCount = demos.length;
         const matches = filter === 'all' || card.dataset.format === filter;
         card.classList.toggle('is-hidden', !matches);
       });
+
+      // Reveal-on-Scroll-Trigger sind an die *ursprüngliche* Karten-Position
+      // gekoppelt. Nach dem Filter rutschen die sichtbaren Karten nach oben —
+      // ohne refresh blieben sie unsichtbar bis man bis zur Ur-Position scrollt.
+      // 1) Jetzt-sichtbare Karten sofort auf "revealed" setzen, damit nichts hängt.
+      // 2) ScrollTrigger neu vermessen, damit der Toggle-Back beim Re-Filter wieder greift.
+      gsap.set(
+        Array.from(cards).filter((c) => !c.classList.contains('is-hidden')),
+        { opacity: 1, y: 0, clearProps: 'transform' },
+      );
+      ScrollTrigger.refresh();
     };
 
     options.forEach((opt) => {

@@ -68,7 +68,10 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="av-footer__bottom">
-      <p class="av-footer__legal">© {year} ATELIER VOSSEN GMBH — ALL RIGHTS RESERVED</p>
+      <p class="av-footer__legal">
+        © {year} ATELIER VOSSEN GMBH · GEBAUT VON
+        <a href="/" class="av-footer__credit">MIRO-STUDIOS</a>
+      </p>
       <ul class="av-footer__legal-links">
         <li><a href={`${base}/impressum/`}>IMPRESSUM</a></li>
         <li><a href={`${base}/datenschutz/`}>DATENSCHUTZ</a></li>
@@ -271,6 +274,19 @@ const year = new Date().getFullYear();
   }
 
   .av-footer__legal { margin: 0; }
+
+  .av-footer__credit {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+    margin-left: 0.25rem;
+    font-weight: 700;
+  }
+
+  .av-footer__credit:hover {
+    border-bottom-color: currentColor;
+  }
 
   .av-footer__legal-links {
     list-style: none;

@@ -87,8 +87,8 @@ const { nodes = 18, maxDist = 110, speed = 18 } = Astro.props;
     const cs = getComputedStyle(el);
     // CSS-Variablen liegen auf [data-theme="portfolio"] — wir lesen über
     // einen Probe-Trick: cs.getPropertyValue('--color-accent')
-    const accentRaw = cs.getPropertyValue('--color-accent').trim() || '#B85A2C';
-    const textRaw = cs.getPropertyValue('--color-text').trim() || '#1A1716';
+    const accentRaw = cs.getPropertyValue('--color-accent').trim() || '#E8B547';
+    const textRaw = cs.getPropertyValue('--color-text').trim() || '#EDE7DA';
     return {
       accent: parseColor(accentRaw),
       text: parseColor(textRaw),
