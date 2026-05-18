@@ -2693,23 +2693,39 @@ const process = [
       });
     }
 
-    // Pin-Section für Prozess (nur Desktop, sonst überlappt es mit den Karten)
+    // Pin-Section für Prozess — Step-Reveal via IntersectionObserver.
+    // (gsap.from + ScrollTrigger hatte einen Race-Condition mit Lenis, der
+    // dazu führte, dass die Steps unsichtbar blieben wenn man schnell
+    // gescrollt hat. IO ist hier zuverlässiger und braucht keine GSAP-
+    // Initialisierung.)
     const proc = document.querySelector<HTMLElement>('[data-hk-proc]');
-    const procHead = document.querySelector<HTMLElement>('[data-hk-proc-head]');
-    if (proc && procHead && window.matchMedia('(min-width: 900px)').matches) {
-      // Sticky-Behaviour ist über CSS bereits gesetzt — ScrollTrigger nur für
-      // sanften Reveal der einzelnen Step-Karten.
-      const steps = proc.querySelectorAll<HTMLElement>('.hk-proc__step');
+    if (proc && window.matchMedia('(min-width: 900px)').matches) {
+      const steps = Array.from(proc.querySelectorAll<HTMLElement>('.hk-proc__step'));
       steps.forEach((step, i) => {
-        gsap.from(step, {
-          opacity: 0,
-          y: 40,
-          duration: 0.8,
-          ease: 'expo.out',
-          scrollTrigger: { trigger: step, start: 'top 85%', once: true },
-          delay: i * 0.05,
-        });
+        step.style.opacity = '0';
+        step.style.transform = 'translateY(32px)';
+        step.style.transition = `opacity 0.7s var(--ease-out-expo) ${i * 0.06}s, transform 0.7s var(--ease-out-expo) ${i * 0.06}s`;
       });
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+            io.unobserve(el);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
+      steps.forEach((step) => io.observe(step));
+
+      // Safety-Net: nach 1,5 s alle Steps zwingend sichtbar machen
+      // (falls IO aus irgendeinem Grund nicht feuert)
+      setTimeout(() => {
+        steps.forEach((step) => {
+          step.style.opacity = '1';
+          step.style.transform = 'translateY(0)';
+        });
+      }, 1500);
     }
   }
 

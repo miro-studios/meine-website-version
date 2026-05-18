@@ -97,18 +97,18 @@ const { title, description, canonical } = Astro.props;
   }
 
   /* ── Astro View Transitions: Yellow-Sweep zwischen Routen ──────── */
-  /* Beim Routenwechsel zieht sich eine gelbe Fläche von unten über
-     den Bildschirm, der neue Inhalt sliced danach von oben rein.    */
+  /* Schnell (≤ 550ms gesamt) — old fadet runter, sheet fliegt durch,
+     new sliced rein. Maximaler Premium-Eindruck bei minimaler Wartezeit. */
   body.hk-page::view-transition-old(root),
   body.hk-page::view-transition-new(root) {
     animation: none;
     mix-blend-mode: normal;
   }
   body.hk-page::view-transition-old(root) {
-    animation: hk-view-out 0.55s var(--ease-in-out-quart) forwards;
+    animation: hk-view-out 0.3s var(--ease-in-out-quart) forwards;
   }
   body.hk-page::view-transition-new(root) {
-    animation: hk-view-in 0.7s var(--ease-out-expo) 0.25s forwards;
+    animation: hk-view-in 0.35s var(--ease-out-expo) 0.18s forwards;
   }
 
   @keyframes hk-view-out {
@@ -127,12 +127,12 @@ const { title, description, canonical } = Astro.props;
     inset: 0;
     background: var(--color-accent);
     z-index: 1;
-    animation: hk-view-sheet 0.95s var(--ease-in-out-quart) forwards;
+    animation: hk-view-sheet 0.55s var(--ease-in-out-quart) forwards;
     pointer-events: none;
   }
   @keyframes hk-view-sheet {
     0%, 100% { transform: translateY(105%); }
-    35%, 55% { transform: translateY(0); }
+    30%, 55% { transform: translateY(0); }
   }
 
   @media (prefers-reduced-motion: reduce) {
