@@ -51,6 +51,9 @@ const services = [
   { n: '06', t: '24H NOTDIENST', sub: 'Strom & Wärme · MK-Gebiet', text: 'Wenn die Sicherung knallt oder die Heizung ausfällt, sind wir innerhalb von 90 Minuten beim Kunden — Tag, Nacht, Wochenende.' },
 ];
 
+type ServiceIcon = 'panel' | 'pump' | 'pv' | 'knx' | 'wallbox' | 'siren';
+const serviceIcons: ServiceIcon[] = ['panel', 'pump', 'pv', 'knx', 'wallbox', 'siren'];
+
 const process = [
   { n: '01', label: 'ANFRAGE', text: 'Sie rufen an oder schicken eine Mail. Wir reagieren innerhalb von 24 Stunden mit einem Termin-Vorschlag.' },
   { n: '02', label: 'ORTSTERMIN', text: 'Wir kommen vorbei, hören zu, messen und prüfen — kostenfrei für Privatkunden, klärt Machbarkeit und Förderfähigkeit.' },
@@ -69,11 +72,56 @@ const process = [
     set:html={JSON.stringify(jsonLd)}
   />
 
-  <!-- ── HERO ──────────────────────────────────────────────────────── -->
+  <!-- ── HERO (Premium-Upgrade) ───────────────────────────────────── -->
   <section class="hk-hero" data-hk-hero>
     <div class="hk-hero__grid" aria-hidden="true"></div>
 
-    <!-- Spec-Bar oben -->
+    <!-- Animated Circuit-Bolt SVG im Hintergrund -->
+    <svg class="hk-hero__bolt" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="hk-bolt-grad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="var(--color-accent)" stop-opacity="0.55"/>
+          <stop offset="55%" stop-color="var(--color-accent)" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="var(--color-accent)" stop-opacity="0"/>
+        </linearGradient>
+        <filter id="hk-bolt-glow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="8" />
+        </filter>
+      </defs>
+
+      <!-- Diagonal lightning path (premium accent) -->
+      <path
+        d="M 1340 -40 L 980 280 L 1110 280 L 720 700 L 880 700 L 540 980"
+        fill="none"
+        stroke="url(#hk-bolt-grad)"
+        stroke-width="60"
+        stroke-linecap="square"
+        stroke-linejoin="miter"
+        filter="url(#hk-bolt-glow)"
+        opacity="0.8"
+        data-hk-bolt
+      />
+      <path
+        d="M 1340 -40 L 980 280 L 1110 280 L 720 700 L 880 700 L 540 980"
+        fill="none"
+        stroke="var(--color-accent)"
+        stroke-width="1.2"
+        stroke-linecap="square"
+        stroke-linejoin="miter"
+        opacity="0.65"
+      />
+
+      <!-- Scan-Line die langsam vertical durchläuft -->
+      <line
+        class="hk-hero__scanline"
+        x1="0" y1="0" x2="1440" y2="0"
+        stroke="var(--color-accent)"
+        stroke-width="1"
+        opacity="0.35"
+      />
+    </svg>
+
+    <!-- Spec-Bar oben (mit Live-Ticker) -->
     <div class="hk-hero__spec hk-container">
       <span class="hk-hero__spec-cell">
         <span class="hk-hero__spec-k">FILE</span>
@@ -86,6 +134,16 @@ const process = [
       <span class="hk-hero__spec-cell">
         <span class="hk-hero__spec-k">VDE</span>
         <span class="hk-hero__spec-v">0100 · 0105 · 0701</span>
+      </span>
+      <span class="hk-hero__spec-cell hk-hero__spec-cell--ticker" data-hk-ticker>
+        <span class="hk-hero__spec-k">LIVE</span>
+        <span class="hk-hero__spec-v hk-hero__ticker">
+          <span class="hk-hero__ticker-item is-active">PV-INSTALLATION · ISERLOHN</span>
+          <span class="hk-hero__ticker-item">WALLBOX-MONTAGE · LÜDENSCHEID</span>
+          <span class="hk-hero__ticker-item">WÄRMEPUMPE · HALVER</span>
+          <span class="hk-hero__ticker-item">SMART-HOME · MEINERZHAGEN</span>
+          <span class="hk-hero__ticker-item">E-CHECK · KIERSPE</span>
+        </span>
       </span>
       <span class="hk-hero__spec-cell hk-hero__spec-cell--push">
         <span class="hk-hero__spec-dot" aria-hidden="true"></span>
@@ -100,13 +158,22 @@ const process = [
           <span class="hk-hero__index-n">N°</span>
           <span class="hk-hero__index-v">00</span>
           <span class="hk-hero__index-line" aria-hidden="true"></span>
-          <span class="hk-hero__index-k">START / HOME</span>
+          <span class="hk-hero__index-k">START / HOME · MAY · 2026</span>
         </div>
 
         <h1 class="hk-hero__h">
-          <span class="hk-hero__line"><SplitText by="chars" stagger={0.025} delay={0.05} onScroll={false}>STROM.</SplitText></span>
-          <span class="hk-hero__line hk-hero__line--y"><SplitText by="chars" stagger={0.025} delay={0.4} onScroll={false}>WÄRME.</SplitText></span>
-          <span class="hk-hero__line"><SplitText by="chars" stagger={0.025} delay={0.75} onScroll={false}>ZUKUNFT.</SplitText></span>
+          <span class="hk-hero__line">
+            <span class="hk-hero__line-shadow" aria-hidden="true">STROM.</span>
+            <SplitText by="chars" stagger={0.025} delay={0.05} onScroll={false}>STROM.</SplitText>
+          </span>
+          <span class="hk-hero__line hk-hero__line--y">
+            <span class="hk-hero__line-shadow" aria-hidden="true">WÄRME.</span>
+            <SplitText by="chars" stagger={0.025} delay={0.4} onScroll={false}>WÄRME.</SplitText>
+          </span>
+          <span class="hk-hero__line">
+            <span class="hk-hero__line-shadow" aria-hidden="true">ZUKUNFT.</span>
+            <SplitText by="chars" stagger={0.025} delay={0.75} onScroll={false}>ZUKUNFT.</SplitText>
+          </span>
         </h1>
 
         <div class="hk-hero__caption">
@@ -119,38 +186,48 @@ const process = [
         </div>
 
         <div class="hk-hero__actions">
-          <MagneticButton href="/demos/elektro/kontakt/" strength={0.35} variant="primary" class="hk-hero__cta">
+          <MagneticButton href="/demos/elektro/kontakt/" strength={0.35} variant="primary" class="hk-hero__cta" data-cursor-hover>
             <span>PROJEKT ANFRAGEN</span>
             <span aria-hidden="true">→</span>
           </MagneticButton>
-          <a href="/demos/elektro/leistungen/" class="hk-hero__link">
+          <a href="/demos/elektro/leistungen/" class="hk-hero__link" data-cursor-hover>
             <span>Was wir bauen</span>
             <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
           </a>
         </div>
       </div>
 
-      <!-- Plakat-Stats -->
+      <!-- Premium-Stats-Panel mit Corner-Brackets + Live-Bar -->
       <aside class="hk-hero__plate" data-hk-hero-plate>
+        <span class="hk-hero__plate-bracket hk-hero__plate-bracket--tl" aria-hidden="true"></span>
+        <span class="hk-hero__plate-bracket hk-hero__plate-bracket--tr" aria-hidden="true"></span>
+        <span class="hk-hero__plate-bracket hk-hero__plate-bracket--bl" aria-hidden="true"></span>
+        <span class="hk-hero__plate-bracket hk-hero__plate-bracket--br" aria-hidden="true"></span>
+
         <div class="hk-hero__plate-head">
-          <span>STAND · Q2/2026</span>
+          <span class="hk-hero__plate-head-dot" aria-hidden="true"></span>
+          <span>BETRIEBSTELEMETRIE · Q2/2026</span>
           <span class="hk-hero__plate-id">REV·08</span>
         </div>
+
         <dl class="hk-hero__plate-data">
           <div>
             <dt>JAHRE</dt>
             <dd><NumberCounter to={37} duration={1.6} /></dd>
             <span>BETRIEBSGESCHICHTE</span>
+            <span class="hk-hero__plate-bar" style="--w: 92%" aria-hidden="true"></span>
           </div>
           <div>
             <dt>PROJEKTE</dt>
             <dd><NumberCounter to={2400} duration={2.2} />+</dd>
             <span>ABGESCHLOSSEN</span>
+            <span class="hk-hero__plate-bar" style="--w: 88%" aria-hidden="true"></span>
           </div>
           <div>
             <dt>TEAM</dt>
             <dd><NumberCounter to={14} duration={1.4} /></dd>
             <span>GESELLEN & MEISTER</span>
+            <span class="hk-hero__plate-bar" style="--w: 64%" aria-hidden="true"></span>
           </div>
           <div>
             <dt>NOTRUF</dt>
@@ -159,39 +236,85 @@ const process = [
               <span class="hk-hero__plate-unit">MIN</span>
             </dd>
             <span>REAKTIONSZEIT MK</span>
+            <span class="hk-hero__plate-bar hk-hero__plate-bar--inverse" style="--w: 18%" aria-hidden="true"></span>
           </div>
         </dl>
+
+        <!-- Power-Indikator unten -->
+        <div class="hk-hero__plate-power">
+          <span class="hk-hero__plate-power-k">POWER</span>
+          <div class="hk-hero__plate-power-bars" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <span class="hk-hero__plate-power-v">100<span>%</span></span>
+        </div>
+
         <div class="hk-hero__plate-foot">
           INNUNG · E-CHECK · ZERTIFIZIERT
         </div>
       </aside>
     </div>
 
-    <!-- Marquee unten -->
-    <div class="hk-hero__strip" aria-hidden="true">
-      <div class="hk-hero__strip-track">
-        <span>ELEKTROINSTALLATION</span><span>+</span>
-        <span>WÄRMEPUMPE</span><span>+</span>
-        <span>PHOTOVOLTAIK</span><span>+</span>
-        <span>KNX-SMART-HOME</span><span>+</span>
-        <span>WALLBOX</span><span>+</span>
-        <span>NOTSTROM</span><span>+</span>
-        <span>BLITZSCHUTZ</span><span>+</span>
-        <span>E-CHECK</span><span>+</span>
-        <span>ELEKTROINSTALLATION</span><span>+</span>
-        <span>WÄRMEPUMPE</span><span>+</span>
-        <span>PHOTOVOLTAIK</span><span>+</span>
-        <span>KNX-SMART-HOME</span><span>+</span>
-        <span>WALLBOX</span><span>+</span>
-        <span>NOTSTROM</span><span>+</span>
-        <span>BLITZSCHUTZ</span><span>+</span>
-        <span>E-CHECK</span><span>+</span>
+    <!-- Doppel-Marquee (gegenläufig) — Top in Gelb, Bottom mit gelben Punkten -->
+    <div class="hk-hero__strip-wrap" aria-hidden="true">
+      <div class="hk-hero__strip hk-hero__strip--y">
+        <div class="hk-hero__strip-track">
+          <span>ELEKTROINSTALLATION</span><span>·</span>
+          <span>WÄRMEPUMPE</span><span>·</span>
+          <span>PHOTOVOLTAIK</span><span>·</span>
+          <span>KNX-SMART-HOME</span><span>·</span>
+          <span>WALLBOX</span><span>·</span>
+          <span>NOTSTROM</span><span>·</span>
+          <span>BLITZSCHUTZ</span><span>·</span>
+          <span>E-CHECK</span><span>·</span>
+          <span>ELEKTROINSTALLATION</span><span>·</span>
+          <span>WÄRMEPUMPE</span><span>·</span>
+          <span>PHOTOVOLTAIK</span><span>·</span>
+          <span>KNX-SMART-HOME</span><span>·</span>
+          <span>WALLBOX</span><span>·</span>
+          <span>NOTSTROM</span><span>·</span>
+          <span>BLITZSCHUTZ</span><span>·</span>
+          <span>E-CHECK</span><span>·</span>
+        </div>
+      </div>
+      <div class="hk-hero__strip hk-hero__strip--dark">
+        <div class="hk-hero__strip-track hk-hero__strip-track--reverse">
+          <span>SEIT 1989</span><span class="hk-hero__strip-dot">●</span>
+          <span>LÜDENSCHEID</span><span class="hk-hero__strip-dot">●</span>
+          <span>HWK MK 47/13</span><span class="hk-hero__strip-dot">●</span>
+          <span>3 MEISTER · 4 AZUBI</span><span class="hk-hero__strip-dot">●</span>
+          <span>184 BEWERTUNGEN · 4,9★</span><span class="hk-hero__strip-dot">●</span>
+          <span>VDE-FACHBETRIEB</span><span class="hk-hero__strip-dot">●</span>
+          <span>SEIT 1989</span><span class="hk-hero__strip-dot">●</span>
+          <span>LÜDENSCHEID</span><span class="hk-hero__strip-dot">●</span>
+          <span>HWK MK 47/13</span><span class="hk-hero__strip-dot">●</span>
+          <span>3 MEISTER · 4 AZUBI</span><span class="hk-hero__strip-dot">●</span>
+          <span>184 BEWERTUNGEN · 4,9★</span><span class="hk-hero__strip-dot">●</span>
+          <span>VDE-FACHBETRIEB</span><span class="hk-hero__strip-dot">●</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ── MANIFEST ──────────────────────────────────────────────────── -->
+  <!-- Section-Divider-Tag -->
+  <div class="hk-tag" aria-hidden="true">
+    <span class="hk-tag__inner">
+      <span class="hk-tag__dot"></span>
+      <span class="hk-tag__k">STEP</span>
+      <span class="hk-tag__v">01 · MANIFEST</span>
+    </span>
+  </div>
+
+  <!-- ── MANIFEST (Editorial-Treatment) ───────────────────────────── -->
   <section class="hk-manifest hk-section">
+    <!-- Marginalia: Rotated Side-Label links -->
+    <span class="hk-manifest__margin" aria-hidden="true">
+      <span class="hk-manifest__margin-line"></span>
+      MANIFEST · MAI 2026 · FOLIO 01
+      <span class="hk-manifest__margin-line"></span>
+    </span>
+
     <div class="hk-container">
       <div class="hk-bar">
         <span class="hk-bar-n">N° 01</span>
@@ -203,32 +326,112 @@ const process = [
         <SplitText by="words" stagger={0.05}>Wir verlegen keine Kabel — wir bauen Anlagen, die in 25&nbsp;Jahren noch sauber funktionieren.</SplitText>
       </h2>
 
+      <!-- Pull-Quote im Editorial-Stil -->
+      <RevealOnScroll y={30}>
+        <blockquote class="hk-manifest__quote">
+          <span class="hk-manifest__quote-mark" aria-hidden="true">„</span>
+          <p>
+            Wenn du sauber arbeitest und pünktlich bist, kommen die
+            nächsten zwölf Kunden von allein.
+          </p>
+          <footer>
+            <span class="hk-manifest__quote-cite">WERNER HOLTKAMP</span>
+            <span class="hk-manifest__quote-role">Gründer · 1989</span>
+          </footer>
+        </blockquote>
+      </RevealOnScroll>
+
       <div class="hk-manifest__cols">
         <RevealOnScroll y={40}>
-          <p>
-            Elektro und Heizung sind keine Bereiche, die man trennen sollte —
-            wer Wärme plant, plant Strom mit. Wir haben deshalb beide
-            Gewerke unter einem Dach. Eine Ansprechperson, ein Termin,
-            eine Rechnung.
-          </p>
+          <div class="hk-manifest__col">
+            <span class="hk-manifest__col-n">01</span>
+            <p class="hk-manifest__col-text hk-dropcap">
+              Elektro und Heizung sind keine Bereiche, die man trennen sollte —
+              wer Wärme plant, plant Strom mit. Wir haben deshalb beide
+              Gewerke unter einem Dach. Eine Ansprechperson, ein Termin,
+              eine Rechnung.
+            </p>
+          </div>
         </RevealOnScroll>
         <RevealOnScroll y={40}>
-          <p>
-            Wir arbeiten ausschließlich mit Materialien, die wir auch im
-            eigenen Haus verbauen würden. Markenkomponenten, dokumentierte
-            Herkunft, Garantien, die Bestand haben. Das kostet mehr — und
-            spart in Summe, weil nichts in zehn Jahren wieder raus muss.
-          </p>
+          <div class="hk-manifest__col">
+            <span class="hk-manifest__col-n">02</span>
+            <p class="hk-manifest__col-text">
+              Wir arbeiten ausschließlich mit Materialien, die wir auch im
+              eigenen Haus verbauen würden. Markenkomponenten, dokumentierte
+              Herkunft, Garantien, die Bestand haben. <em>Das kostet mehr —
+              und spart in Summe</em>, weil nichts in zehn Jahren wieder
+              raus muss.
+            </p>
+          </div>
         </RevealOnScroll>
         <RevealOnScroll y={40}>
-          <p>
-            Familienbetrieb, dritte Generation. Werner Holtkamp hat den
-            Betrieb 1989 gegründet, sein Sohn führt heute die Geschäfte,
-            seine Enkelin ist seit 2024 Meisterin. Das heißt: Sie kennen
-            uns, und wir verschwinden nicht.
-          </p>
+          <div class="hk-manifest__col">
+            <span class="hk-manifest__col-n">03</span>
+            <p class="hk-manifest__col-text">
+              Familienbetrieb, dritte Generation. Werner Holtkamp hat den
+              Betrieb 1989 gegründet, sein Sohn führt heute die Geschäfte,
+              seine Enkelin ist seit 2024 Meisterin. Das heißt: <em>Sie
+              kennen uns, und wir verschwinden nicht.</em>
+            </p>
+          </div>
         </RevealOnScroll>
       </div>
+    </div>
+  </section>
+
+  <!-- Section-Divider-Tag -->
+  <div class="hk-tag" aria-hidden="true">
+    <span class="hk-tag__inner">
+      <span class="hk-tag__dot"></span>
+      <span class="hk-tag__k">STEP</span>
+      <span class="hk-tag__v">02 · IN ZAHLEN</span>
+    </span>
+  </div>
+
+  <!-- ── MEGA NUMBERS ──────────────────────────────────────────────── -->
+  <section class="hk-numbers" data-hk-numbers>
+    <div class="hk-container">
+      <div class="hk-bar">
+        <span class="hk-bar-n">N° 02</span>
+        <span class="hk-bar-line" aria-hidden="true"></span>
+        <span class="hk-bar-k">DATEN / IM SCHNITT</span>
+      </div>
+
+      <ol class="hk-numbers__list">
+        <li class="hk-numbers__row">
+          <span class="hk-numbers__idx">01</span>
+          <span class="hk-numbers__n" data-hk-mega>
+            <NumberCounter to={37} duration={2} />
+          </span>
+          <span class="hk-numbers__lbl">JAHRE BETRIEB</span>
+          <span class="hk-numbers__sub">Familiengeführt. Eigentümergeführt geblieben. Werner Holtkamp ist heute noch beratend dabei.</span>
+        </li>
+        <li class="hk-numbers__row">
+          <span class="hk-numbers__idx">02</span>
+          <span class="hk-numbers__n" data-hk-mega>
+            <NumberCounter to={2400} duration={2.4} />+
+          </span>
+          <span class="hk-numbers__lbl">PROJEKTE FERTIG</span>
+          <span class="hk-numbers__sub">Vom Einfamilienhaus mit 12-kWp-Anlage bis zur 1.200-m²-Industriehalle mit 800-A-Verteilung.</span>
+        </li>
+        <li class="hk-numbers__row">
+          <span class="hk-numbers__idx">03</span>
+          <span class="hk-numbers__n" data-hk-mega>
+            <NumberCounter to={90} duration={1.6} /><span class="hk-numbers__unit">MIN</span>
+          </span>
+          <span class="hk-numbers__lbl">REAKTIONSZEIT NOTDIENST</span>
+          <span class="hk-numbers__sub">Im Märkischen Kreis. Tag, Nacht, Wochenende, Feiertag. 0&nbsp;23&nbsp;51 / 60&nbsp;80&nbsp;21.</span>
+        </li>
+        <li class="hk-numbers__row">
+          <span class="hk-numbers__idx">04</span>
+          <span class="hk-numbers__n" data-hk-mega>
+            <NumberCounter to={4.9} duration={1.6} decimals={1} /><span class="hk-numbers__unit">/5</span>
+          </span>
+          <span class="hk-numbers__lbl">KUNDEN-SCHNITT</span>
+          <span class="hk-numbers__sub">Aus 184 öffentlichen Bewertungen über Google, ProvenExpert und MyHammer. Stand Mai 2026.</span>
+        </li>
+      </ol>
     </div>
   </section>
 
@@ -308,7 +511,7 @@ const process = [
           <li><strong>11</strong> Gesellen mit langjähriger Erfahrung</li>
           <li><strong>4</strong> Auszubildende in laufender Ausbildung</li>
         </ul>
-        <a href="/demos/elektro/ueber-uns/" class="hk-about__link">
+        <a href="/demos/elektro/ueber-uns/" class="hk-about__link" data-cursor-hover>
           <span>BETRIEB ANSEHEN</span>
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
         </a>
@@ -316,11 +519,20 @@ const process = [
     </div>
   </section>
 
+  <!-- Section-Divider-Tag -->
+  <div class="hk-tag" aria-hidden="true">
+    <span class="hk-tag__inner">
+      <span class="hk-tag__dot"></span>
+      <span class="hk-tag__k">STEP</span>
+      <span class="hk-tag__v">04 · GEWERKE</span>
+    </span>
+  </div>
+
   <!-- ── LEISTUNGEN TEASER ─────────────────────────────────────────── -->
   <section class="hk-svc hk-section">
     <div class="hk-container">
       <div class="hk-bar">
-        <span class="hk-bar-n">N° 02</span>
+        <span class="hk-bar-n">N° 04</span>
         <span class="hk-bar-line" aria-hidden="true"></span>
         <span class="hk-bar-k">LEISTUNGEN / 6 GEWERKE</span>
       </div>
@@ -333,27 +545,219 @@ const process = [
       </RevealOnScroll>
 
       <ul class="hk-svc__grid">
-        {services.map(s => (
-          <li class="hk-svc__cell">
-            <div class="hk-svc__cell-n">{s.n}</div>
+        {services.map((s, i) => {
+          const icon = serviceIcons[i];
+          return (
+          <li class:list={['hk-svc__cell', i === 0 && 'hk-svc__cell--feature']} data-cursor-hover>
+            <div class="hk-svc__cell-head">
+              <span class="hk-svc__cell-n">N° {s.n}</span>
+              {i === 0 && <span class="hk-svc__cell-tag">KERN-GEWERK</span>}
+            </div>
+
+            <div class:list={['hk-svc__cell-visual', i !== 0 && 'hk-svc__cell-visual--mini']} aria-hidden="true">
+              {icon === 'panel' && (
+                <svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet">
+                  <defs>
+                    <pattern id="svc-grid-panel" width="20" height="20" patternUnits="userSpaceOnUse">
+                      <path d="M20 0H0V20" fill="none" stroke="currentColor" stroke-width="0.4" opacity="0.25"/>
+                    </pattern>
+                  </defs>
+                  <rect width="320" height="200" fill="url(#svc-grid-panel)" />
+                  <rect x="40" y="40" width="240" height="120" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                  <line x1="40" y1="80" x2="280" y2="80" stroke="currentColor" stroke-width="0.8" opacity="0.6"/>
+                  <line x1="40" y1="120" x2="280" y2="120" stroke="currentColor" stroke-width="0.8" opacity="0.6"/>
+                  <g stroke="currentColor" stroke-width="1" fill="none">
+                    <rect x="55" y="55" width="16" height="18"/><line x1="63" y1="58" x2="63" y2="70"/>
+                    <rect x="80" y="55" width="16" height="18"/><line x1="88" y1="58" x2="88" y2="70"/>
+                    <rect x="105" y="55" width="16" height="18"/><line x1="113" y1="62" x2="113" y2="70"/>
+                    <rect x="130" y="55" width="16" height="18"/><line x1="138" y1="58" x2="138" y2="70"/>
+                    <rect x="155" y="55" width="16" height="18"/><line x1="163" y1="62" x2="163" y2="70"/>
+                    <rect x="180" y="55" width="16" height="18"/><line x1="188" y1="58" x2="188" y2="70"/>
+                    <rect x="205" y="55" width="16" height="18"/><line x1="213" y1="62" x2="213" y2="70"/>
+                    <rect x="230" y="55" width="16" height="18"/><line x1="238" y1="58" x2="238" y2="70"/>
+                    <rect x="255" y="55" width="16" height="18"/><line x1="263" y1="62" x2="263" y2="70"/>
+                  </g>
+                  <circle cx="263" cy="98" r="4" fill="var(--color-accent)">
+                    <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
+                  </circle>
+                  <text x="48" y="148" font-family="JetBrains Mono, monospace" font-size="8" font-weight="700" fill="currentColor" opacity="0.7" letter-spacing="1">SUB-VERTEILUNG · 63 A</text>
+                </svg>
+              )}
+
+              {icon === 'pump' && (
+                <svg viewBox="0 0 96 64" preserveAspectRatio="xMidYMid meet">
+                  <!-- Wärmepumpen-Modul -->
+                  <rect x="6" y="14" width="46" height="42" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                  <line x1="6" y1="26" x2="52" y2="26" stroke="currentColor" stroke-width="0.6" opacity="0.6"/>
+                  <!-- Lüfterrad -->
+                  <circle cx="29" cy="38" r="11" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                  <g stroke="currentColor" stroke-width="1" fill="none" transform="translate(29 38)">
+                    <path d="M0 -8 A 4 4 0 0 1 4 0"/>
+                    <path d="M0 8 A 4 4 0 0 1 -4 0"/>
+                    <path d="M-8 0 A 4 4 0 0 1 0 -4"/>
+                    <path d="M8 0 A 4 4 0 0 1 0 4"/>
+                  </g>
+                  <circle cx="29" cy="38" r="1.5" fill="currentColor"/>
+                  <!-- Wärme-Wellen rechts -->
+                  <g stroke="var(--color-accent)" stroke-width="1.4" fill="none">
+                    <path d="M58 22 q-3 -6 0 -12 q3 -6 0 -12">
+                      <animate attributeName="opacity" values="0.4;1;0.4" dur="2.4s" repeatCount="indefinite"/>
+                    </path>
+                    <path d="M68 30 q-3 -6 0 -12 q3 -6 0 -12">
+                      <animate attributeName="opacity" values="1;0.4;1" dur="2.4s" repeatCount="indefinite"/>
+                    </path>
+                    <path d="M78 26 q-3 -6 0 -12 q3 -6 0 -12">
+                      <animate attributeName="opacity" values="0.4;1;0.4" dur="2.4s" begin="0.6s" repeatCount="indefinite"/>
+                    </path>
+                  </g>
+                  <text x="6" y="62" font-family="JetBrains Mono, monospace" font-size="6" font-weight="700" fill="currentColor" opacity="0.6" letter-spacing="1">WP · COP 4,3</text>
+                </svg>
+              )}
+
+              {icon === 'pv' && (
+                <svg viewBox="0 0 96 64" preserveAspectRatio="xMidYMid meet">
+                  <!-- Sonne -->
+                  <g stroke="var(--color-accent)" fill="none" stroke-width="1.4">
+                    <circle cx="74" cy="14" r="7"/>
+                    <line x1="74" y1="3" x2="74" y2="6"/>
+                    <line x1="74" y1="22" x2="74" y2="25"/>
+                    <line x1="63" y1="14" x2="66" y2="14"/>
+                    <line x1="82" y1="14" x2="85" y2="14"/>
+                    <line x1="66" y1="6" x2="68" y2="8"/>
+                    <line x1="80" y1="20" x2="82" y2="22"/>
+                    <line x1="68" y1="20" x2="66" y2="22"/>
+                    <line x1="82" y1="6" x2="80" y2="8"/>
+                  </g>
+                  <!-- PV-Dach (perspective) -->
+                  <polygon points="6,52 38,28 76,40 50,56" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                  <!-- Module-Grid -->
+                  <g stroke="currentColor" stroke-width="0.6" opacity="0.5">
+                    <line x1="17" y1="46" x2="56" y2="56"/>
+                    <line x1="28" y1="40" x2="62" y2="50"/>
+                    <line x1="38" y1="34" x2="68" y2="44"/>
+                    <line x1="20" y1="42" x2="32" y2="60"/>
+                    <line x1="34" y1="34" x2="46" y2="56"/>
+                    <line x1="48" y1="30" x2="58" y2="52"/>
+                  </g>
+                  <!-- Module-Highlight -->
+                  <polygon points="20,42 32,34 44,38 32,46" fill="var(--color-accent)" opacity="0.5"/>
+                  <polygon points="34,46 46,38 58,42 46,50" fill="var(--color-accent)" opacity="0.7">
+                    <animate attributeName="opacity" values="0.4;0.9;0.4" dur="2.6s" repeatCount="indefinite"/>
+                  </polygon>
+                  <text x="6" y="62" font-family="JetBrains Mono, monospace" font-size="6" font-weight="700" fill="currentColor" opacity="0.6" letter-spacing="1">12,4 KWP · 10 KWH</text>
+                </svg>
+              )}
+
+              {icon === 'knx' && (
+                <svg viewBox="0 0 96 64" preserveAspectRatio="xMidYMid meet">
+                  <!-- Central Hub mit Bus-Lines -->
+                  <rect x="36" y="22" width="24" height="20" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                  <circle cx="48" cy="32" r="2.5" fill="var(--color-accent)">
+                    <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite"/>
+                  </circle>
+                  <text x="48" y="50" font-family="JetBrains Mono, monospace" font-size="5" font-weight="700" fill="currentColor" text-anchor="middle" letter-spacing="0.5">KNX</text>
+                  <!-- Bus-Lines -->
+                  <g stroke="currentColor" stroke-width="1" fill="none">
+                    <path d="M36 28 L18 28 L18 12"/>
+                    <path d="M36 36 L18 36 L18 52"/>
+                    <path d="M60 28 L78 28 L78 12"/>
+                    <path d="M60 36 L78 36 L78 52"/>
+                  </g>
+                  <!-- Endknoten -->
+                  <g stroke="currentColor" stroke-width="1.2" fill="var(--color-bg)">
+                    <rect x="14" y="6" width="8" height="8"/>
+                    <rect x="14" y="50" width="8" height="8"/>
+                    <rect x="74" y="6" width="8" height="8"/>
+                    <rect x="74" y="50" width="8" height="8"/>
+                  </g>
+                  <!-- Indikatoren in den Knoten -->
+                  <circle cx="18" cy="10" r="1.5" fill="var(--color-accent)"/>
+                  <circle cx="78" cy="10" r="1.5" fill="currentColor" opacity="0.5"/>
+                  <circle cx="18" cy="54" r="1.5" fill="currentColor" opacity="0.5"/>
+                  <circle cx="78" cy="54" r="1.5" fill="var(--color-accent)">
+                    <animate attributeName="opacity" values="0.3;1;0.3" dur="2.2s" repeatCount="indefinite"/>
+                  </circle>
+                </svg>
+              )}
+
+              {icon === 'wallbox' && (
+                <svg viewBox="0 0 96 64" preserveAspectRatio="xMidYMid meet">
+                  <!-- Wallbox -->
+                  <rect x="14" y="14" width="24" height="36" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                  <line x1="14" y1="22" x2="38" y2="22" stroke="currentColor" stroke-width="0.6" opacity="0.6"/>
+                  <!-- Bolt-Icon -->
+                  <path d="M30 26 L20 38 L25 38 L23 46 L33 34 L28 34 Z" fill="var(--color-accent)"/>
+                  <!-- Display-LED -->
+                  <circle cx="34" cy="18" r="1.4" fill="var(--color-accent)">
+                    <animate attributeName="opacity" values="1;0.3;1" dur="1.6s" repeatCount="indefinite"/>
+                  </circle>
+                  <!-- Ladekabel (curved) -->
+                  <path d="M38 38 Q 56 38 60 46 Q 64 54 78 54" stroke="currentColor" stroke-width="1.6" fill="none"/>
+                  <!-- Auto-Schnittstelle -->
+                  <circle cx="78" cy="54" r="3.5" fill="var(--color-accent)" stroke="currentColor" stroke-width="1"/>
+                  <!-- Auto-Andeutung (Felge) -->
+                  <circle cx="84" cy="54" r="2" fill="none" stroke="currentColor" stroke-width="0.6" opacity="0.4"/>
+                  <text x="14" y="62" font-family="JetBrains Mono, monospace" font-size="6" font-weight="700" fill="currentColor" opacity="0.6" letter-spacing="1">11 KW · TYP 2</text>
+                </svg>
+              )}
+
+              {icon === 'siren' && (
+                <svg viewBox="0 0 96 64" preserveAspectRatio="xMidYMid meet">
+                  <!-- Telefon-Symbol mit Pulse-Ringen -->
+                  <g transform="translate(48 32)">
+                    <!-- Pulse rings -->
+                    <circle cx="0" cy="0" r="22" fill="none" stroke="var(--color-accent)" stroke-width="1" opacity="0">
+                      <animate attributeName="r" values="14;26" dur="2s" repeatCount="indefinite"/>
+                      <animate attributeName="opacity" values="0.6;0" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="0" cy="0" r="18" fill="none" stroke="var(--color-accent)" stroke-width="1" opacity="0">
+                      <animate attributeName="r" values="12;22" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+                      <animate attributeName="opacity" values="0.6;0" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+                    </circle>
+                    <!-- Phone-Receiver -->
+                    <g transform="rotate(-30)">
+                      <rect x="-4" y="-9" width="8" height="18" rx="2" fill="var(--color-accent)" stroke="none"/>
+                      <rect x="-2" y="-7" width="4" height="14" rx="1" fill="var(--color-bg)" stroke="none"/>
+                    </g>
+                  </g>
+                  <!-- 24H Badge oben rechts -->
+                  <g transform="translate(76 12)">
+                    <rect x="-12" y="-7" width="24" height="14" fill="var(--color-accent)"/>
+                    <text x="0" y="3" font-family="JetBrains Mono, monospace" font-size="7" font-weight="700" fill="var(--color-bg)" text-anchor="middle" letter-spacing="0.5">24H</text>
+                  </g>
+                  <text x="6" y="62" font-family="JetBrains Mono, monospace" font-size="6" font-weight="700" fill="currentColor" opacity="0.6" letter-spacing="1">⌀ 90 MIN · MK</text>
+                </svg>
+              )}
+            </div>
+
             <h3 class="hk-svc__cell-t" set:html={s.t} />
             <p class="hk-svc__cell-sub">{s.sub}</p>
             <p class="hk-svc__cell-text">{s.text}</p>
-            <a href="/demos/elektro/leistungen/" class="hk-svc__cell-link">
+            <a href="/demos/elektro/leistungen/" class="hk-svc__cell-link" data-cursor-hover>
               <span>Details</span>
               <span aria-hidden="true">→</span>
             </a>
           </li>
-        ))}
+          );
+        })}
       </ul>
     </div>
   </section>
+
+  <!-- Section-Divider-Tag -->
+  <div class="hk-tag" aria-hidden="true">
+    <span class="hk-tag__inner">
+      <span class="hk-tag__dot"></span>
+      <span class="hk-tag__k">STEP</span>
+      <span class="hk-tag__v">05 · IM EINSATZ</span>
+    </span>
+  </div>
 
   <!-- ── CASE-STUDY SHOWCASE ───────────────────────────────────────── -->
   <section class="hk-case hk-section">
     <div class="hk-container">
       <div class="hk-bar">
-        <span class="hk-bar-n">N° 03</span>
+        <span class="hk-bar-n">N° 05</span>
         <span class="hk-bar-line" aria-hidden="true"></span>
         <span class="hk-bar-k">REFERENZ / AUSGEWÄHLT</span>
       </div>
@@ -455,7 +859,7 @@ const process = [
               </div>
             </dl>
 
-            <a href="/demos/elektro/referenzen/" class="hk-case__link">
+            <a href="/demos/elektro/referenzen/" class="hk-case__link" data-cursor-hover>
               <span>ALLE REFERENZEN</span>
               <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
             </a>
@@ -470,7 +874,7 @@ const process = [
     <div class="hk-container hk-proc__inner">
       <div class="hk-proc__head" data-hk-proc-head>
         <div class="hk-bar">
-          <span class="hk-bar-n">N° 04</span>
+          <span class="hk-bar-n">N° 06</span>
           <span class="hk-bar-line" aria-hidden="true"></span>
           <span class="hk-bar-k">ABLAUF / 4 SCHRITTE</span>
         </div>
@@ -501,7 +905,7 @@ const process = [
   <section class="hk-proof hk-section">
     <div class="hk-container">
       <div class="hk-bar">
-        <span class="hk-bar-n">N° 05</span>
+        <span class="hk-bar-n">N° 07</span>
         <span class="hk-bar-line" aria-hidden="true"></span>
         <span class="hk-bar-k">STIMMEN / KUNDEN</span>
       </div>
@@ -560,7 +964,7 @@ const process = [
   <section class="hk-journal hk-section">
     <div class="hk-container">
       <div class="hk-bar">
-        <span class="hk-bar-n">N° 06</span>
+        <span class="hk-bar-n">N° 08</span>
         <span class="hk-bar-line" aria-hidden="true"></span>
         <span class="hk-bar-k">JOURNAL / NEU IM BLOG</span>
       </div>
@@ -575,19 +979,19 @@ const process = [
           <span class="hk-journal__cat">FÖRDERUNG · 2026</span>
           <h3 class="hk-journal__t">BAFA-Förderung 2026 — was sich geändert hat und was bleibt.</h3>
           <p class="hk-journal__d">12 MAI 2026 · 6 MIN LESEZEIT</p>
-          <a href="/demos/elektro/blog/" class="hk-journal__link"><span>Lesen</span><span aria-hidden="true">→</span></a>
+          <a href="/demos/elektro/blog/" class="hk-journal__link" data-cursor-hover><span>Lesen</span><span aria-hidden="true">→</span></a>
         </li>
         <li class="hk-journal__cell">
           <span class="hk-journal__cat">PHOTOVOLTAIK</span>
           <h3 class="hk-journal__t">Lohnt sich eine PV-Anlage ohne Speicher noch? Eine ehrliche Rechnung.</h3>
           <p class="hk-journal__d">28 APR 2026 · 8 MIN LESEZEIT</p>
-          <a href="/demos/elektro/blog/" class="hk-journal__link"><span>Lesen</span><span aria-hidden="true">→</span></a>
+          <a href="/demos/elektro/blog/" class="hk-journal__link" data-cursor-hover><span>Lesen</span><span aria-hidden="true">→</span></a>
         </li>
         <li class="hk-journal__cell">
           <span class="hk-journal__cat">WÄRMEPUMPE</span>
           <h3 class="hk-journal__t">Wärmepumpe im Altbau — was wirklich zählt, und was Verkäufer gern verschweigen.</h3>
           <p class="hk-journal__d">14 APR 2026 · 11 MIN LESEZEIT</p>
-          <a href="/demos/elektro/blog/" class="hk-journal__link"><span>Lesen</span><span aria-hidden="true">→</span></a>
+          <a href="/demos/elektro/blog/" class="hk-journal__link" data-cursor-hover><span>Lesen</span><span aria-hidden="true">→</span></a>
         </li>
       </ul>
     </div>
@@ -608,7 +1012,7 @@ const process = [
           Machbarkeit und Förderung — und sagen ehrlich, ob wir die
           Richtigen sind oder nicht.
         </p>
-        <MagneticButton href="/demos/elektro/kontakt/" strength={0.45} variant="primary" class="hk-final__cta">
+        <MagneticButton href="/demos/elektro/kontakt/" strength={0.45} variant="primary" class="hk-final__cta" data-cursor-hover>
           <span>ANFRAGE STARTEN</span>
           <span aria-hidden="true">→</span>
         </MagneticButton>
@@ -642,6 +1046,44 @@ const process = [
     pointer-events: none;
   }
 
+  /* Lightning-Bolt SVG im Hintergrund — die "premium" Schicht */
+  .hk-hero__bolt {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+  [data-hk-bolt] {
+    stroke-dasharray: 2400;
+    stroke-dashoffset: 2400;
+    animation: hk-bolt-draw 5s ease-out 0.6s forwards,
+               hk-bolt-pulse 4s ease-in-out 5.6s infinite;
+  }
+  @keyframes hk-bolt-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes hk-bolt-pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.95; }
+  }
+
+  /* Scan-Line die durch den Hero wandert */
+  .hk-hero__scanline {
+    transform: translateY(0);
+    animation: hk-scanline 8s linear infinite;
+    opacity: 0.0;
+  }
+  @keyframes hk-scanline {
+    0% { transform: translateY(0); opacity: 0; }
+    8% { opacity: 0.5; }
+    50% { transform: translateY(900px); opacity: 0.5; }
+    58% { opacity: 0; }
+    100% { transform: translateY(900px); opacity: 0; }
+  }
+
   .hk-hero__spec {
     display: flex;
     flex-wrap: wrap;
@@ -666,6 +1108,37 @@ const process = [
 
   .hk-hero__spec-k { color: var(--color-muted); font-weight: 500; }
   .hk-hero__spec-v { color: var(--color-text); font-weight: 700; }
+
+  /* Live-Ticker — rotating Mini-Telemetrie */
+  .hk-hero__spec-cell--ticker {
+    min-width: 280px;
+    overflow: hidden;
+  }
+  .hk-hero__spec-cell--ticker .hk-hero__spec-k { color: var(--color-accent); }
+  .hk-hero__ticker {
+    position: relative;
+    display: inline-block;
+    height: 1.2em;
+    min-width: 240px;
+    overflow: hidden;
+    vertical-align: bottom;
+  }
+  .hk-hero__ticker-item {
+    position: absolute;
+    inset: 0;
+    transform: translateY(120%);
+    opacity: 0;
+    transition: transform 0.6s var(--ease-out-expo), opacity 0.4s linear;
+    white-space: nowrap;
+  }
+  .hk-hero__ticker-item.is-active {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .hk-hero__ticker-item.is-out {
+    transform: translateY(-120%);
+    opacity: 0;
+  }
 
   .hk-hero__spec-dot {
     width: 7px;
@@ -735,11 +1208,28 @@ const process = [
 
   .hk-hero__line {
     display: block;
+    position: relative;
     overflow: hidden;
     padding-right: 0.04em;
   }
 
   .hk-hero__line--y { color: var(--color-accent); }
+
+  /* "Outline-Echo" hinter der Glyph-Stack — 3D-Layer-Look */
+  .hk-hero__line-shadow {
+    position: absolute;
+    inset: 0;
+    padding-right: inherit;
+    color: transparent;
+    -webkit-text-stroke: 1px color-mix(in srgb, var(--color-text) 14%, transparent);
+    transform: translate(0.06em, 0.06em);
+    pointer-events: none;
+    z-index: -1;
+    user-select: none;
+  }
+  .hk-hero__line--y .hk-hero__line-shadow {
+    -webkit-text-stroke: 1px color-mix(in srgb, var(--color-accent) 35%, transparent);
+  }
 
   /* Caption */
   .hk-hero__caption {
@@ -810,24 +1300,55 @@ const process = [
   .hk-hero__link svg { width: 14px; height: 14px; }
   .hk-hero__link:hover { color: var(--color-accent); gap: 0.85rem; }
 
-  /* Plate */
+  /* Plate (Premium-Upgrade) */
   .hk-hero__plate {
-    background: var(--color-surface);
+    background: linear-gradient(180deg,
+      var(--color-surface) 0%,
+      color-mix(in srgb, var(--color-surface-2) 80%, var(--color-bg)) 100%);
     border: 1px solid var(--color-rule-strong);
     color: var(--color-text);
     position: relative;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
+
+  /* Corner-Brackets — premium signal */
+  .hk-hero__plate-bracket {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: var(--color-accent);
+    border-style: solid;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .hk-hero__plate-bracket--tl { top: -5px; left: -5px; border-width: 1.5px 0 0 1.5px; }
+  .hk-hero__plate-bracket--tr { top: -5px; right: -5px; border-width: 1.5px 1.5px 0 0; }
+  .hk-hero__plate-bracket--bl { bottom: -5px; left: -5px; border-width: 0 0 1.5px 1.5px; }
+  .hk-hero__plate-bracket--br { bottom: -5px; right: -5px; border-width: 0 1.5px 1.5px 0; }
 
   .hk-hero__plate-head {
     display: flex;
-    justify-content: space-between;
-    padding: 0.6rem 0.9rem;
+    align-items: center;
+    gap: 0.6rem;
+    justify-content: flex-start;
+    padding: 0.7rem 0.95rem;
     background: var(--color-text);
     color: var(--color-bg);
     font-family: var(--font-mono);
-    font-size: 0.66rem;
+    font-size: 0.62rem;
     letter-spacing: 0.16em;
     font-weight: 700;
+  }
+  .hk-hero__plate-head > span:nth-child(2) { flex: 1; }
+  .hk-hero__plate-head-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 35%, transparent),
+                0 0 8px var(--color-accent);
+    animation: hk-pulse 2.4s ease-in-out infinite;
   }
   .hk-hero__plate-id { color: var(--color-accent); }
 
@@ -840,16 +1361,49 @@ const process = [
   }
 
   .hk-hero__plate-data > div {
-    padding: 1rem 0.5rem 1rem 0;
+    padding: 1.1rem 0.7rem 1rem 0.7rem;
     border-bottom: 1px solid var(--color-rule);
     border-right: 1px solid var(--color-rule);
-    padding-left: 0.6rem;
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s var(--ease-out-expo);
   }
-  .hk-hero__plate-data > div:nth-child(2n) { border-right: none; padding-right: 0; }
+  .hk-hero__plate-data > div:hover {
+    background: color-mix(in srgb, var(--color-accent) 5%, transparent);
+  }
+  .hk-hero__plate-data > div:nth-child(2n) { border-right: none; }
   .hk-hero__plate-data > div:nth-last-child(-n+2) { border-bottom: none; }
+
+  /* Progress-Bar pro KPI */
+  .hk-hero__plate-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: color-mix(in srgb, var(--color-text) 6%, transparent);
+    overflow: hidden;
+  }
+  .hk-hero__plate-bar::after {
+    content: '';
+    display: block;
+    width: var(--w);
+    height: 100%;
+    background: var(--color-accent);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--color-accent) 60%, transparent);
+    transform-origin: left;
+    animation: hk-bar-grow 1.6s var(--ease-out-expo) 0.6s both;
+  }
+  .hk-hero__plate-bar--inverse::after {
+    background: linear-gradient(90deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 40%, var(--color-text)));
+  }
+  @keyframes hk-bar-grow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
 
   .hk-hero__plate-data dt {
     font-family: var(--font-mono);
@@ -882,6 +1436,73 @@ const process = [
     letter-spacing: 0.1em !important;
   }
 
+  /* Power-Indikator (Audio-Style-Bars) */
+  .hk-hero__plate-power {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.9rem 0.95rem;
+    border-top: 1px solid var(--color-rule-strong);
+    background: var(--color-bg);
+  }
+  .hk-hero__plate-power-k {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    color: var(--color-muted);
+    font-weight: 700;
+  }
+  .hk-hero__plate-power-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 18px;
+  }
+  .hk-hero__plate-power-bars span {
+    flex: 1;
+    background: var(--color-accent);
+    box-shadow: 0 0 6px color-mix(in srgb, var(--color-accent) 50%, transparent);
+    animation: hk-power-bar 1.4s ease-in-out infinite;
+    transform-origin: bottom;
+  }
+  .hk-hero__plate-power-bars span:nth-child(1)  { animation-delay: 0.00s; height: 40%; }
+  .hk-hero__plate-power-bars span:nth-child(2)  { animation-delay: 0.07s; height: 65%; }
+  .hk-hero__plate-power-bars span:nth-child(3)  { animation-delay: 0.14s; height: 90%; }
+  .hk-hero__plate-power-bars span:nth-child(4)  { animation-delay: 0.21s; height: 55%; }
+  .hk-hero__plate-power-bars span:nth-child(5)  { animation-delay: 0.28s; height: 70%; }
+  .hk-hero__plate-power-bars span:nth-child(6)  { animation-delay: 0.35s; height: 100%; }
+  .hk-hero__plate-power-bars span:nth-child(7)  { animation-delay: 0.42s; height: 45%; }
+  .hk-hero__plate-power-bars span:nth-child(8)  { animation-delay: 0.49s; height: 85%; }
+  .hk-hero__plate-power-bars span:nth-child(9)  { animation-delay: 0.56s; height: 75%; }
+  .hk-hero__plate-power-bars span:nth-child(10) { animation-delay: 0.63s; height: 60%; }
+  .hk-hero__plate-power-bars span:nth-child(11) { animation-delay: 0.70s; height: 95%; }
+  .hk-hero__plate-power-bars span:nth-child(12) { animation-delay: 0.77s; height: 50%; }
+  .hk-hero__plate-power-bars span:nth-child(13) { animation-delay: 0.84s; height: 80%; }
+  .hk-hero__plate-power-bars span:nth-child(14) { animation-delay: 0.91s; height: 65%; }
+  .hk-hero__plate-power-bars span:nth-child(15) { animation-delay: 0.98s; height: 90%; }
+  .hk-hero__plate-power-bars span:nth-child(16) { animation-delay: 1.05s; height: 55%; }
+  .hk-hero__plate-power-bars span:nth-child(17) { animation-delay: 1.12s; height: 75%; }
+  .hk-hero__plate-power-bars span:nth-child(18) { animation-delay: 1.19s; height: 100%; }
+  .hk-hero__plate-power-bars span:nth-child(19) { animation-delay: 1.26s; height: 45%; }
+  .hk-hero__plate-power-bars span:nth-child(20) { animation-delay: 1.33s; height: 70%; }
+  @keyframes hk-power-bar {
+    0%, 100% { transform: scaleY(0.6); }
+    50% { transform: scaleY(1); }
+  }
+  .hk-hero__plate-power-v {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--color-accent);
+    line-height: 1;
+    letter-spacing: 0.005em;
+  }
+  .hk-hero__plate-power-v span {
+    font-size: 0.5em;
+    color: var(--color-muted);
+    margin-left: 0.15em;
+  }
+
   .hk-hero__plate-foot {
     padding: 0.7rem 0.9rem;
     border-top: 1px solid var(--color-rule);
@@ -894,15 +1515,24 @@ const process = [
     font-weight: 700;
   }
 
-  /* Strip */
-  .hk-hero__strip {
+  /* Double-Row Marquee — gegenläufig */
+  .hk-hero__strip-wrap {
     position: relative;
     z-index: 2;
+    border-top: 1px solid var(--color-bg);
+  }
+  .hk-hero__strip {
+    overflow: hidden;
+    padding-block: 0.85rem;
+  }
+  .hk-hero__strip--y {
     background: var(--color-accent);
     color: var(--color-bg);
-    border-top: 1px solid var(--color-bg);
-    overflow: hidden;
-    padding-block: 0.95rem;
+  }
+  .hk-hero__strip--dark {
+    background: var(--color-bg);
+    color: var(--color-text);
+    border-top: 1px solid var(--color-rule);
   }
 
   .hk-hero__strip-track {
@@ -910,23 +1540,69 @@ const process = [
     align-items: center;
     gap: 1.5rem;
     width: max-content;
-    animation: hk-strip 36s linear infinite;
     font-family: var(--font-mono);
     font-size: 0.82rem;
     font-weight: 700;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     white-space: nowrap;
+    animation: hk-strip 38s linear infinite;
+  }
+  .hk-hero__strip-track--reverse {
+    animation: hk-strip-reverse 44s linear infinite;
+  }
+  .hk-hero__strip--dark .hk-hero__strip-track span:not(.hk-hero__strip-dot) {
+    color: var(--color-text);
+  }
+  .hk-hero__strip-dot {
+    color: var(--color-accent);
+    font-size: 0.55em;
+    transform: translateY(-1px);
   }
 
   @keyframes hk-strip {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
   }
+  @keyframes hk-strip-reverse {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
+  }
 
-  /* ── MANIFEST ──────────────────────────────────────────────────── */
+  /* ── MANIFEST (Editorial-Treatment) ───────────────────────────── */
   .hk-manifest {
     border-top: 1px solid var(--color-rule);
+    position: relative;
+  }
+
+  /* Marginalia — rotierte Side-Label nur Desktop */
+  .hk-manifest__margin {
+    display: none;
+  }
+  @media (min-width: 1280px) {
+    .hk-manifest__margin {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.85rem;
+      position: absolute;
+      left: clamp(0.5rem, 1.5vw, 1.25rem);
+      top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+      transform-origin: left center;
+      white-space: nowrap;
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      letter-spacing: 0.28em;
+      color: var(--color-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+    .hk-manifest__margin-line {
+      width: 32px;
+      height: 1px;
+      background: var(--color-accent);
+    }
   }
 
   .hk-manifest__h {
@@ -936,10 +1612,69 @@ const process = [
     letter-spacing: 0.005em;
     text-transform: uppercase;
     font-weight: 400;
-    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+    margin: 0 0 clamp(2rem, 4vw, 3rem);
     max-width: 28ch;
   }
 
+  /* Pull-Quote */
+  .hk-manifest__quote {
+    position: relative;
+    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+    padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.5rem, 3vw, 2.5rem);
+    background: linear-gradient(180deg,
+      color-mix(in srgb, var(--color-accent) 6%, transparent),
+      transparent);
+    border-left: 2px solid var(--color-accent);
+    max-width: 60ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hk-manifest__quote-mark {
+    position: absolute;
+    top: -0.4rem;
+    left: 0.6rem;
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 8vw, 6.5rem);
+    line-height: 1;
+    color: var(--color-accent);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .hk-manifest__quote p {
+    margin: 0 0 1.25rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.5vw, 2.1rem);
+    line-height: 1.15;
+    letter-spacing: 0.005em;
+    color: var(--color-text);
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  .hk-manifest__quote footer {
+    display: flex;
+    align-items: baseline;
+    gap: 0.85rem;
+    border-top: 1px solid var(--color-rule);
+    padding-top: 0.85rem;
+  }
+  .hk-manifest__quote-cite {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+  .hk-manifest__quote-role {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    color: var(--color-muted);
+  }
+
+  /* Drei Spalten */
   .hk-manifest__cols {
     display: grid;
     grid-template-columns: 1fr;
@@ -949,13 +1684,171 @@ const process = [
     .hk-manifest__cols { grid-template-columns: repeat(3, 1fr); gap: clamp(2rem, 4vw, 3rem); }
   }
 
-  .hk-manifest__cols p {
+  .hk-manifest__col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 1.25rem;
+    border-top: 2px solid var(--color-accent);
+    position: relative;
+  }
+
+  .hk-manifest__col-n {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .hk-manifest__col-text {
     font-family: var(--font-body);
     font-size: 1rem;
     line-height: 1.65;
-    color: color-mix(in srgb, var(--color-text) 80%, transparent);
-    padding-top: 1.25rem;
-    border-top: 2px solid var(--color-accent);
+    color: color-mix(in srgb, var(--color-text) 82%, transparent);
+    margin: 0;
+  }
+  .hk-manifest__col-text em {
+    color: var(--color-text);
+    font-style: normal;
+    background-image: linear-gradient(transparent 55%, color-mix(in srgb, var(--color-accent) 30%, transparent) 55%, color-mix(in srgb, var(--color-accent) 30%, transparent) 90%, transparent 90%);
+    padding: 0 0.05em;
+  }
+
+  /* Drop-Cap auf der ersten Spalte */
+  .hk-dropcap::first-letter {
+    font-family: var(--font-display);
+    font-size: 3.4em;
+    line-height: 0.8;
+    float: left;
+    margin: 0.06em 0.18em 0 -0.04em;
+    color: var(--color-accent);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+
+  /* ── MEGA NUMBERS ─────────────────────────────────────────────── */
+  .hk-numbers {
+    border-top: 1px solid var(--color-rule);
+    padding-block: clamp(4rem, 8vw, 7rem);
+    position: relative;
+    overflow: hidden;
+  }
+  .hk-numbers::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to bottom, var(--hk-grid-line) 1px, transparent 1px);
+    background-size: 100% 80px;
+    pointer-events: none;
+    opacity: 0.5;
+    mask-image: linear-gradient(to bottom, black, transparent 70%);
+    -webkit-mask-image: linear-gradient(to bottom, black, transparent 70%);
+  }
+
+  .hk-numbers__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--color-rule-strong);
+  }
+
+  .hk-numbers__row {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1.4fr) minmax(0, 1fr);
+    grid-template-areas:
+      "idx num lbl"
+      "idx num sub";
+    column-gap: clamp(1rem, 2vw, 2.5rem);
+    row-gap: 0.4rem;
+    padding-block: clamp(1.75rem, 3.5vw, 2.75rem);
+    border-bottom: 1px solid var(--color-rule);
+    align-items: baseline;
+    position: relative;
+    transition: padding-left 0.6s var(--ease-out-expo);
+  }
+  .hk-numbers__row:hover { padding-left: clamp(0.5rem, 1.5vw, 1.25rem); }
+
+  /* Yellow rail that slides in on hover */
+  .hk-numbers__row::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--color-accent);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+  .hk-numbers__row:hover::before { transform: scaleY(1); }
+
+  @media (max-width: 720px) {
+    .hk-numbers__row {
+      grid-template-columns: 2.5rem 1fr;
+      grid-template-areas:
+        "idx num"
+        "idx lbl"
+        ".   sub";
+    }
+  }
+
+  .hk-numbers__idx {
+    grid-area: idx;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-accent);
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    align-self: flex-start;
+    padding-top: 0.4rem;
+  }
+
+  .hk-numbers__n {
+    grid-area: num;
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 12vw, 11rem);
+    line-height: 0.88;
+    letter-spacing: -0.005em;
+    font-weight: 400;
+    color: var(--color-text);
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.05em;
+    text-transform: uppercase;
+  }
+  .hk-numbers__row:nth-child(2n) .hk-numbers__n { color: var(--color-accent); }
+
+  .hk-numbers__unit {
+    font-size: 0.32em;
+    color: var(--color-muted);
+    letter-spacing: 0.12em;
+    margin-left: 0.05em;
+    font-weight: 400;
+  }
+
+  .hk-numbers__lbl {
+    grid-area: lbl;
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 1.6vw, 1.4rem);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text);
+    line-height: 1.1;
+    align-self: flex-end;
+    padding-bottom: 0.3rem;
+  }
+
+  .hk-numbers__sub {
+    grid-area: sub;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: var(--color-muted);
+    max-width: 38ch;
+    letter-spacing: 0.02em;
   }
 
   /* ── ABOUT TEASER ──────────────────────────────────────────────── */
@@ -1086,8 +1979,16 @@ const process = [
   @media (min-width: 720px) {
     .hk-svc__grid { grid-template-columns: repeat(2, 1fr); }
   }
+  /* Asymmetric: featured spans 2 columns, others span 1 (effective 4-col base) */
   @media (min-width: 1100px) {
-    .hk-svc__grid { grid-template-columns: repeat(3, 1fr); }
+    .hk-svc__grid {
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-flow: dense;
+    }
+    .hk-svc__cell--feature {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
   }
 
   .hk-svc__cell {
@@ -1099,6 +2000,29 @@ const process = [
     border-bottom: 1px solid var(--color-rule-strong);
     position: relative;
     transition: background-color 0.4s var(--ease-out-expo), color 0.4s var(--ease-out-expo);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  /* Diagonal accent line that grows on hover */
+  .hk-svc__cell::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-top: 14px solid var(--color-accent);
+    border-left: 14px solid transparent;
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-out-expo);
+    z-index: 2;
+  }
+  .hk-svc__cell:hover::after { opacity: 1; }
+
+  .hk-svc__cell--feature {
+    background: var(--color-surface);
+    padding: clamp(1.75rem, 3.5vw, 2.75rem);
   }
 
   .hk-svc__cell:hover {
@@ -1113,8 +2037,38 @@ const process = [
     .hk-svc__cell:last-child { border-bottom: none; }
   }
   @media (min-width: 1100px) {
-    .hk-svc__cell:nth-child(3n) { border-right: none; }
-    .hk-svc__cell:nth-last-child(-n+3) { border-bottom: none; }
+    /* 4-col grid mit feature(2x2) + 5 single-cells:
+       Row 1: [feature][feature][2][3]
+       Row 2: [feature][feature][4][5]
+       Row 3: [6][6 spanning rest of row?] — we have 6 cells total.
+       Actually: feature(span 2x2), cells 2-5 fill the top-right 2x2 area,
+       cell 6 spans the entire next row.
+    */
+    .hk-svc__cell:nth-child(2),
+    .hk-svc__cell:nth-child(3),
+    .hk-svc__cell:nth-child(4),
+    .hk-svc__cell:nth-child(5) {
+      grid-column: span 1;
+    }
+    .hk-svc__cell:nth-child(6) {
+      grid-column: span 4;
+    }
+    /* Borders: feature bottom + right are inside, no need to strip.
+       The cells in column 4 (i.e. nth(3) and nth(5)) lose right border. */
+    .hk-svc__cell:nth-child(3),
+    .hk-svc__cell:nth-child(5) { border-right: none; }
+    /* Row-2 cells lose bottom border (above row 3) */
+    .hk-svc__cell--feature,
+    .hk-svc__cell:nth-child(4),
+    .hk-svc__cell:nth-child(5) { border-bottom: 1px solid var(--color-rule-strong); }
+    .hk-svc__cell:nth-child(6) { border-right: none; border-bottom: none; }
+  }
+
+  .hk-svc__cell-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.75rem;
   }
 
   .hk-svc__cell-n {
@@ -1127,6 +2081,44 @@ const process = [
   }
   .hk-svc__cell:hover .hk-svc__cell-n { color: var(--color-bg); }
 
+  .hk-svc__cell-tag {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--color-bg);
+    background: var(--color-accent);
+    padding: 0.3rem 0.55rem;
+    letter-spacing: 0.16em;
+    font-weight: 700;
+  }
+  .hk-svc__cell:hover .hk-svc__cell-tag {
+    background: var(--color-bg);
+    color: var(--color-accent);
+  }
+
+  /* Feature-Cell Visual */
+  .hk-svc__cell-visual {
+    margin-block: 0.5rem 0.4rem;
+    color: var(--color-text);
+    border: 1px solid var(--color-rule);
+    padding: 0.6rem;
+    background: var(--color-bg);
+    transition: background 0.4s var(--ease-out-expo), border-color 0.4s var(--ease-out-expo);
+  }
+  .hk-svc__cell-visual svg { width: 100%; height: auto; display: block; }
+  .hk-svc__cell:hover .hk-svc__cell-visual {
+    background: var(--color-bg);
+    border-color: var(--color-bg);
+  }
+
+  /* Mini-Variante für die kleinen Cells */
+  .hk-svc__cell-visual--mini {
+    max-width: 110px;
+    align-self: flex-start;
+    padding: 0.45rem;
+    margin-block: 0.2rem 0.2rem;
+  }
+  .hk-svc__cell-visual--mini svg { aspect-ratio: 96 / 64; }
+
   .hk-svc__cell-t {
     font-family: var(--font-display);
     font-size: clamp(1.75rem, 3vw, 2.4rem);
@@ -1135,6 +2127,10 @@ const process = [
     text-transform: uppercase;
     margin: 0.3rem 0 0;
     font-weight: 400;
+  }
+  .hk-svc__cell--feature .hk-svc__cell-t {
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    margin-top: 0.5rem;
   }
 
   .hk-svc__cell-sub {
@@ -1647,8 +2643,15 @@ const process = [
 
   /* Reduced Motion */
   @media (prefers-reduced-motion: reduce) {
-    .hk-hero__strip-track { animation: none; }
-    .hk-hero__spec-dot { animation: none; }
+    .hk-hero__strip-track,
+    .hk-hero__spec-dot,
+    .hk-hero__plate-head-dot,
+    .hk-hero__plate-power-bars span,
+    .hk-hero__scanline,
+    [data-hk-bolt] {
+      animation: none !important;
+    }
+    [data-hk-bolt] { stroke-dashoffset: 0; opacity: 0.6; }
   }
 </style>
 
@@ -1657,7 +2660,28 @@ const process = [
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
 
+  let tickerInterval: number | undefined;
+
+  function startTicker() {
+    const ticker = document.querySelector<HTMLElement>('[data-hk-ticker] .hk-hero__ticker');
+    if (!ticker) return;
+    const items = Array.from(ticker.querySelectorAll<HTMLElement>('.hk-hero__ticker-item'));
+    if (items.length < 2) return;
+    let i = 0;
+    window.clearInterval(tickerInterval);
+    tickerInterval = window.setInterval(() => {
+      items[i].classList.remove('is-active');
+      items[i].classList.add('is-out');
+      i = (i + 1) % items.length;
+      items.forEach(it => it.classList.remove('is-out'));
+      // Ensure only the new one is active
+      items.forEach(it => it.classList.remove('is-active'));
+      items[i].classList.add('is-active');
+    }, 2800);
+  }
+
   function init() {
+    startTicker();
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const hero = document.querySelector<HTMLElement>('[data-hk-hero]');
     const plate = document.querySelector<HTMLElement>('[data-hk-hero-plate]');
@@ -1691,4 +2715,5 @@ const process = [
 
   init();
   document.addEventListener('astro:page-load', init);
+  document.addEventListener('astro:before-swap', () => window.clearInterval(tickerInterval));
 </script>

@@ -1,0 +1,310 @@
+---
+import ElektroLayout from '@layouts/ElektroLayout.astro';
+import SplitText from '@components/shared/SplitText.astro';
+import MagneticButton from '@components/shared/MagneticButton.astro';
+---
+
+<ElektroLayout
+  title="404 — Diese Schaltung führt ins Leere · Holtkamp Elektrotechnik"
+  description="Die gesuchte Seite existiert nicht. Zurück zur Startseite oder Notdienst-Hotline."
+>
+  <section class="hk-404">
+    <div class="hk-container hk-404__inner">
+      <!-- Linke Seite: Schematic mit gebrochenem Stromkreis -->
+      <div class="hk-404__visual" aria-hidden="true">
+        <svg viewBox="0 0 480 360" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <pattern id="hk404-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+              <path d="M24 0H0V24" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.2"/>
+            </pattern>
+          </defs>
+          <rect width="480" height="360" fill="url(#hk404-grid)" />
+
+          <!-- Stromkreis links -->
+          <g stroke="currentColor" stroke-width="1.6" fill="none">
+            <path d="M 40 80 L 180 80 L 180 180"/>
+            <path d="M 40 280 L 180 280 L 180 230"/>
+          </g>
+          <!-- Knoten -->
+          <g fill="currentColor">
+            <circle cx="40" cy="80" r="4"/>
+            <circle cx="40" cy="280" r="4"/>
+          </g>
+          <!-- Quelle Spannung -->
+          <g transform="translate(40 180)">
+            <line x1="-12" y1="-20" x2="12" y2="-20" stroke="currentColor" stroke-width="2"/>
+            <line x1="-6" y1="-10" x2="6" y2="-10" stroke="currentColor" stroke-width="2"/>
+            <line x1="-12" y1="0" x2="12" y2="0" stroke="currentColor" stroke-width="2"/>
+            <line x1="-6" y1="10" x2="6" y2="10" stroke="currentColor" stroke-width="2"/>
+            <text x="22" y="-12" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="var(--color-accent)" letter-spacing="1">230 V</text>
+            <text x="22" y="6" font-family="JetBrains Mono, monospace" font-size="8" font-weight="700" fill="currentColor" opacity="0.6" letter-spacing="1">L · N</text>
+          </g>
+
+          <!-- Defekte Stelle MITTE — Funkenflug -->
+          <g stroke="currentColor" stroke-width="1.6" fill="none">
+            <path d="M 180 180 L 200 180"/>
+            <path d="M 260 180 L 280 180"/>
+            <path d="M 180 230 L 200 230"/>
+            <path d="M 260 230 L 280 230"/>
+          </g>
+
+          <!-- Bruch-Linie mit Funken-Symbol -->
+          <g transform="translate(230 205)">
+            <!-- Bruch-Indikator -->
+            <line x1="-20" y1="-20" x2="20" y2="20" stroke="var(--color-accent)" stroke-width="2.5"/>
+            <line x1="-20" y1="20" x2="20" y2="-20" stroke="var(--color-accent)" stroke-width="2.5"/>
+            <!-- Funken-Pulse -->
+            <circle cx="0" cy="0" r="14" fill="none" stroke="var(--color-accent)" stroke-width="1" opacity="0">
+              <animate attributeName="r" values="10;28" dur="1.6s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.7;0" dur="1.6s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="0" cy="0" r="10" fill="none" stroke="var(--color-accent)" stroke-width="1" opacity="0">
+              <animate attributeName="r" values="8;22" dur="1.6s" begin="0.5s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.7;0" dur="1.6s" begin="0.5s" repeatCount="indefinite"/>
+            </circle>
+          </g>
+
+          <!-- Stromkreis rechts (tot) -->
+          <g stroke="currentColor" stroke-width="1.6" fill="none" opacity="0.35">
+            <path d="M 280 180 L 380 180 L 440 180"/>
+            <path d="M 280 230 L 380 230 L 440 230"/>
+            <path d="M 440 180 L 440 230"/>
+          </g>
+          <!-- Toter Verbraucher -->
+          <g transform="translate(440 205)" opacity="0.35">
+            <circle cx="0" cy="0" r="18" fill="none" stroke="currentColor" stroke-width="1.6"/>
+            <line x1="-9" y1="-9" x2="9" y2="9" stroke="currentColor" stroke-width="1.2"/>
+            <line x1="-9" y1="9" x2="9" y2="-9" stroke="currentColor" stroke-width="1.2"/>
+          </g>
+          <text x="412" y="262" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700" fill="currentColor" opacity="0.4" letter-spacing="1">404 · LAST</text>
+
+          <!-- Diagnose-Label -->
+          <g transform="translate(180 320)">
+            <rect x="0" y="0" width="156" height="22" fill="var(--color-accent)"/>
+            <text x="78" y="15" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="var(--color-bg)" text-anchor="middle" letter-spacing="1.5">LEITUNGSBRUCH</text>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Rechte Seite: Copy -->
+      <div class="hk-404__copy">
+        <div class="hk-bar">
+          <span class="hk-bar-n">ERROR · 404</span>
+          <span class="hk-bar-line" aria-hidden="true"></span>
+          <span class="hk-bar-k">DIAGNOSE / KEIN DURCHGANG</span>
+        </div>
+
+        <h1 class="hk-404__h">
+          <span class="hk-404__h-line"><SplitText by="words" stagger={0.04}>DIESE SCHALTUNG</SplitText></span>
+          <span class="hk-404__h-line hk-404__h-line--alt"><SplitText by="words" stagger={0.04} delay={0.18}>FÜHRT INS LEERE.</SplitText></span>
+        </h1>
+
+        <p class="hk-404__lead">
+          Die Seite, die Sie suchen, existiert nicht — oder wurde verschoben.
+          Das passiert. Hier sind drei Möglichkeiten, weiter zu kommen:
+        </p>
+
+        <ul class="hk-404__list">
+          <li>
+            <span class="hk-404__list-k">01</span>
+            <span class="hk-404__list-body">
+              <strong>Zurück zur Startseite</strong>
+              <span>Strom, Wärme, Zukunft — alles auf der Hauptseite.</span>
+            </span>
+            <a href="/demos/elektro/" class="hk-404__list-link" data-cursor-hover>
+              <span>HOME</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li>
+            <span class="hk-404__list-k">02</span>
+            <span class="hk-404__list-body">
+              <strong>Direkt zur Kontakt-Seite</strong>
+              <span>Erstgespräch kostenfrei, Antwort in 24 h.</span>
+            </span>
+            <a href="/demos/elektro/kontakt/" class="hk-404__list-link" data-cursor-hover>
+              <span>KONTAKT</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li>
+            <span class="hk-404__list-k">03</span>
+            <span class="hk-404__list-body">
+              <strong>Notfall? Direkt anrufen</strong>
+              <span>24/7 im Märkischen Kreis — ⌀ 90 Minuten Reaktionszeit.</span>
+            </span>
+            <a href="tel:+4923516080210" class="hk-404__list-link hk-404__list-link--accent" data-cursor-hover>
+              <span>NOTRUF</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="hk-404__cta">
+          <MagneticButton href="/demos/elektro/" strength={0.4} variant="primary" class="hk-404__btn" data-cursor-hover>
+            <span>ZURÜCK ZUR STARTSEITE</span>
+            <span aria-hidden="true">→</span>
+          </MagneticButton>
+        </div>
+      </div>
+    </div>
+  </section>
+</ElektroLayout>
+
+<style>
+  .hk-404 {
+    min-height: calc(100svh - 80px);
+    padding-block: clamp(3rem, 6vw, 5rem);
+    display: flex;
+    align-items: center;
+  }
+
+  .hk-404__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 5vw, 4rem);
+    align-items: center;
+    width: 100%;
+  }
+  @media (min-width: 900px) {
+    .hk-404__inner { grid-template-columns: 0.95fr 1.05fr; }
+  }
+
+  .hk-404__visual {
+    color: var(--color-text);
+    border: 1px solid var(--color-rule-strong);
+    padding: 1rem;
+    background: var(--color-surface);
+    position: relative;
+  }
+  .hk-404__visual::before,
+  .hk-404__visual::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-color: var(--color-accent);
+    border-style: solid;
+  }
+  .hk-404__visual::before { top: -1px; left: -1px; border-width: 1.5px 0 0 1.5px; }
+  .hk-404__visual::after { bottom: -1px; right: -1px; border-width: 0 1.5px 1.5px 0; }
+
+  .hk-404__visual svg { width: 100%; height: auto; display: block; }
+
+  .hk-404__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .hk-404__h {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    line-height: 0.9;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin: 0 0 0.5rem;
+  }
+  .hk-404__h-line { display: block; overflow: hidden; padding-right: 0.04em; }
+  .hk-404__h-line--alt { color: var(--color-accent); }
+
+  .hk-404__lead {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.2vw, 1.1rem);
+    line-height: 1.65;
+    color: color-mix(in srgb, var(--color-text) 82%, transparent);
+    max-width: 52ch;
+    margin: 0;
+  }
+
+  .hk-404__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--color-rule-strong);
+  }
+  .hk-404__list li {
+    display: grid;
+    grid-template-columns: 2.4rem 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--color-rule);
+    transition: padding-left 0.5s var(--ease-out-expo);
+  }
+  .hk-404__list li:hover { padding-left: 0.6rem; background: color-mix(in srgb, var(--color-accent) 5%, transparent); }
+
+  .hk-404__list-k {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-accent);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+  }
+  .hk-404__list-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .hk-404__list-body strong {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    font-weight: 400;
+  }
+  .hk-404__list-body span {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: var(--color-muted);
+    line-height: 1.55;
+  }
+
+  .hk-404__list-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.65rem 0.95rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--color-text);
+    border: 1px solid var(--color-rule-strong);
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s, gap 0.3s var(--ease-out-expo);
+  }
+  .hk-404__list-link:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+    gap: 0.7rem;
+    border-color: var(--color-text);
+  }
+  .hk-404__list-link--accent {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border-color: var(--color-accent);
+  }
+  .hk-404__list-link--accent:hover {
+    background: var(--color-text);
+    border-color: var(--color-text);
+  }
+
+  .hk-404__cta { margin-top: 0.5rem; }
+
+  .hk-404__btn {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border-radius: 0;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    padding: 1.1rem 1.75rem;
+  }
+  .hk-404__btn:hover { background: var(--color-text); color: var(--color-bg); }
+</style>
