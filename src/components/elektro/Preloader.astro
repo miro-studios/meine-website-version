@@ -141,7 +141,7 @@
     color: var(--color-accent);
     flex-shrink: 0;
     transform: translateX(-120%);
-    animation: hk-pre-mark 0.9s var(--ease-out-expo) 0.1s forwards;
+    animation: hk-pre-mark 0.5s var(--ease-out-expo) 0.05s forwards;
   }
 
   .hk-preloader__brand-text {
@@ -154,7 +154,7 @@
     font-weight: 400;
     /* Mask-reveal */
     clip-path: inset(0 100% 0 0);
-    animation: hk-pre-text 1.2s var(--ease-out-expo) 0.3s forwards;
+    animation: hk-pre-text 0.6s var(--ease-out-expo) 0.15s forwards;
   }
 
   @keyframes hk-pre-mark {
@@ -171,7 +171,7 @@
     color: var(--color-muted);
     text-transform: uppercase;
     opacity: 0;
-    animation: hk-pre-fade 0.8s ease-out 1.1s forwards;
+    animation: hk-pre-fade 0.4s ease-out 0.55s forwards;
   }
 
   @keyframes hk-pre-fade {
@@ -246,9 +246,9 @@
     opacity: 0;
   }
 
-  /* Outro: yellow sweep nach oben raus */
+  /* Outro: yellow sweep nach oben raus — schnell (≤ 500ms) */
   .hk-preloader.is-leaving {
-    animation: hk-pre-sweep 1s var(--ease-in-out-quart) forwards;
+    animation: hk-pre-sweep 0.5s var(--ease-in-out-quart) forwards;
   }
   .hk-preloader.is-leaving::before {
     content: '';
@@ -256,7 +256,7 @@
     inset: 0;
     background: var(--color-accent);
     z-index: 2;
-    animation: hk-pre-sweep-bg 0.9s var(--ease-in-out-quart) forwards;
+    animation: hk-pre-sweep-bg 0.5s var(--ease-in-out-quart) forwards;
   }
 
   @keyframes hk-pre-sweep {
@@ -265,7 +265,7 @@
   }
   @keyframes hk-pre-sweep-bg {
     0% { transform: translateY(100%); }
-    40%, 60% { transform: translateY(0); }
+    35%, 55% { transform: translateY(0); }
     100% { transform: translateY(-100%); }
   }
 
@@ -314,10 +314,11 @@
       preEl.querySelectorAll<HTMLElement>('[data-hk-pre-msg] .hk-preloader__msg-item'),
     );
 
-    const DURATION = 2400;
+    // Gesamt-Budget: ≤ 1.8 s inkl. Outro (max 1.1s Counter + 0.5s Sweep + 80ms Pad)
+    const DURATION = 1100;
     const start = performance.now();
     let currentMsg = 0;
-    const msgSwitchAt = [25, 55, 85, 100];
+    const msgSwitchAt = [30, 60, 85, 100];
 
     function step(now: number) {
       const t = Math.min(1, (now - start) / DURATION);
@@ -340,15 +341,15 @@
       if (t < 1) {
         requestAnimationFrame(step);
       } else {
-        // Outro
+        // Outro — schnell raus (≤ 600ms)
         setTimeout(() => {
           preEl.classList.add('is-leaving');
           setTimeout(() => {
             preEl.remove();
             document.body.style.overflow = '';
             sessionStorage.setItem('hk-preloader-seen', '1');
-          }, 1000);
-        }, 280);
+          }, 500);
+        }, 80);
       }
     }
 
