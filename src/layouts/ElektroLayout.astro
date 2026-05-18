@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
+import CustomCursor from '@components/shared/CustomCursor.astro';
+import ScrollProgress from '@components/shared/ScrollProgress.astro';
 import Header from '@components/elektro/Header.astro';
 import Footer from '@components/elektro/Footer.astro';
 
@@ -19,6 +21,18 @@ const { title, description, canonical } = Astro.props;
   theme="elektro"
   bodyClass="hk-page"
 >
+  <!-- Custom Cursor (Premium-Signal — yellow ring on interactive elements) -->
+  <CustomCursor dotSize={5} ringSize={32} blendMode="difference" hoverScale={2.4} />
+
+  <!-- Scroll-Progress oben (1px yellow line) -->
+  <ScrollProgress color="var(--color-accent)" />
+
+  <!-- Pixel-Grain Overlay über der gesamten Seite — Premium-Tactile -->
+  <div class="hk-grain" aria-hidden="true"></div>
+
+  <!-- Subtile gradiente Vignette + ambient yellow glow von unten -->
+  <div class="hk-ambient" aria-hidden="true"></div>
+
   <Header />
   <main>
     <slot />
@@ -26,12 +40,52 @@ const { title, description, canonical } = Astro.props;
   <Footer />
 </BaseLayout>
 
+<script is:inline>
+  // Custom-Cursor aktivieren — Premium-Signal
+  document.documentElement.dataset.cursorActive = '';
+  if (document.body) document.body.dataset.cursorActive = '';
+  document.addEventListener('astro:page-load', () => {
+    if (document.body) document.body.dataset.cursorActive = '';
+  });
+</script>
+
 <style is:global>
   body.hk-page {
     background-color: var(--color-bg);
     color: var(--color-text);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
+    cursor: none;
+  }
+
+  @media (hover: none), (pointer: coarse) {
+    body.hk-page { cursor: auto; }
+  }
+
+  /* ── Pixel-Grain (SVG-Noise) — high-end texture overlay ──────────── */
+  body.hk-page .hk-grain {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.94 0 0 0 0 0.93 0 0 0 0 0.89 0 0 0 0.7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.045;
+    mix-blend-mode: overlay;
+  }
+
+  /* ── Ambient: subtile yellow glow von unten + Vignette ──────────── */
+  body.hk-page .hk-ambient {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 110%,
+        color-mix(in srgb, var(--color-accent) 14%, transparent) 0%,
+        transparent 70%),
+      radial-gradient(ellipse 100% 80% at 50% 50%,
+        transparent 60%,
+        color-mix(in srgb, #000 60%, transparent) 100%);
   }
 
   body.hk-page ::selection {
