@@ -1,0 +1,328 @@
+---
+const base = '/demos/elektro';
+const nav = [
+  { href: `${base}/`, label: 'START', n: '00' },
+  { href: `${base}/ueber-uns/`, label: 'BETRIEB', n: '01' },
+  { href: `${base}/leistungen/`, label: 'LEISTUNGEN', n: '02' },
+  { href: `${base}/referenzen/`, label: 'REFERENZEN', n: '03' },
+  { href: `${base}/blog/`, label: 'JOURNAL', n: '04' },
+  { href: `${base}/kontakt/`, label: 'KONTAKT', n: '05' },
+];
+
+const path = Astro.url.pathname.replace(/\/$/, '');
+---
+
+<header class="hk-header" data-hk-header>
+  <div class="hk-header__inner">
+    <a href={`${base}/`} class="hk-header__brand" aria-label="Holtkamp Elektrotechnik — Startseite">
+      <span class="hk-header__brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none">
+          <rect x="1.5" y="1.5" width="29" height="29" stroke="currentColor" stroke-width="1.4" />
+          <path d="M18 6 L10 17 L15 17 L13 26 L22 14 L17 14 Z" fill="currentColor" />
+        </svg>
+      </span>
+      <span class="hk-header__brand-text">
+        <span class="hk-header__brand-name">HOLTKAMP</span>
+        <span class="hk-header__brand-sub">EL · MEISTERBETRIEB · 1989</span>
+      </span>
+    </a>
+
+    <div class="hk-header__live" aria-label="24-Stunden-Notdienst aktiv">
+      <span class="hk-header__live-dot" aria-hidden="true"></span>
+      <span class="hk-header__live-text">24H NOTDIENST · 0 23 51 / 60 80 21</span>
+    </div>
+
+    <nav class="hk-header__nav" aria-label="Hauptnavigation">
+      <ul>
+        {nav.map(item => {
+          const itemPath = item.href.replace(/\/$/, '');
+          const active = path === itemPath;
+          return (
+            <li>
+              <a href={item.href} class:list={['hk-header__link', { 'is-active': active }]}>
+                <span class="hk-header__link-n">{item.n}</span>
+                <span class="hk-header__link-l">{item.label}</span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+
+    <button
+      class="hk-header__burger"
+      type="button"
+      aria-label="Menü öffnen"
+      aria-expanded="false"
+      data-hk-burger
+    >
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="hk-header__drawer" data-hk-drawer hidden>
+    <nav aria-label="Mobile Navigation">
+      <ul>
+        {nav.map(item => {
+          const itemPath = item.href.replace(/\/$/, '');
+          const active = path === itemPath;
+          return (
+            <li>
+              <a href={item.href} class:list={['hk-header__drawer-link', { 'is-active': active }]}>
+                <span class="hk-header__drawer-n">{item.n}</span>
+                <span>{item.label}</span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .hk-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .hk-header__inner {
+    max-width: var(--hk-container);
+    margin-inline: auto;
+    padding: 0.85rem var(--hk-gutter);
+    display: grid;
+    grid-template-columns: auto auto 1fr auto;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 1099px) {
+    .hk-header__inner {
+      grid-template-columns: 1fr auto;
+    }
+  }
+
+  .hk-header__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .hk-header__brand-mark {
+    width: 32px;
+    height: 32px;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  .hk-header__brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    gap: 4px;
+  }
+
+  .hk-header__brand-name {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+
+  .hk-header__brand-sub {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    color: var(--color-muted);
+    font-weight: 500;
+  }
+
+  /* Live-Indicator */
+  .hk-header__live {
+    display: none;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0.8rem;
+    border: 1px solid var(--color-rule-strong);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--color-text);
+  }
+
+  @media (min-width: 1100px) {
+    .hk-header__live { display: inline-flex; }
+  }
+
+  .hk-header__live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 25%, transparent),
+                0 0 10px color-mix(in srgb, var(--color-accent) 60%, transparent);
+    animation: hk-pulse 2.4s ease-in-out infinite;
+  }
+
+  /* Desktop-Nav */
+  .hk-header__nav { display: none; justify-self: end; }
+
+  @media (min-width: 1100px) {
+    .hk-header__nav { display: block; }
+  }
+
+  .hk-header__nav ul {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--color-rule);
+  }
+
+  .hk-header__link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-text);
+    text-decoration: none;
+    border-right: 1px solid var(--color-rule);
+    transition: background-color 0.3s var(--ease-out-expo), color 0.3s ease;
+  }
+
+  .hk-header__nav li:last-child .hk-header__link { border-right: none; }
+
+  .hk-header__link-n {
+    color: var(--color-muted);
+    font-size: 0.6rem;
+  }
+
+  .hk-header__link:hover {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+  .hk-header__link:hover .hk-header__link-n { color: var(--color-bg); }
+
+  .hk-header__link.is-active {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+  .hk-header__link.is-active .hk-header__link-n { color: var(--color-accent); }
+
+  /* Burger */
+  .hk-header__burger {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: 1px solid var(--color-rule-strong);
+    padding: 9px 10px;
+    cursor: pointer;
+    color: var(--color-text);
+    justify-self: end;
+  }
+
+  .hk-header__burger span {
+    display: block;
+    width: 18px;
+    height: 1.5px;
+    background: currentColor;
+    transition: transform 0.3s var(--ease-out-expo), opacity 0.2s;
+  }
+
+  .hk-header__burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .hk-header__burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .hk-header__burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  @media (min-width: 1100px) {
+    .hk-header__burger { display: none; }
+  }
+
+  .hk-header__drawer {
+    border-top: 1px solid var(--color-rule);
+    padding: 1.5rem var(--hk-gutter) 2.5rem;
+    background: var(--color-bg);
+  }
+
+  .hk-header__drawer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hk-header__drawer-link {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1rem 0;
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    color: var(--color-text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-rule);
+    text-transform: uppercase;
+    transition: color 0.3s ease, padding-left 0.4s var(--ease-out-expo);
+  }
+
+  .hk-header__drawer-link:hover,
+  .hk-header__drawer-link.is-active {
+    color: var(--color-accent);
+    padding-left: 0.6rem;
+  }
+
+  .hk-header__drawer-n {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hk-header__live-dot { animation: none; }
+  }
+</style>
+
+<script>
+  function init() {
+    const header = document.querySelector<HTMLElement>('[data-hk-header]');
+    const burger = document.querySelector<HTMLButtonElement>('[data-hk-burger]');
+    const drawer = document.querySelector<HTMLElement>('[data-hk-drawer]');
+    if (!header || !burger || !drawer) return;
+    if (header.dataset.initialized === 'true') return;
+    header.dataset.initialized = 'true';
+
+    burger.addEventListener('click', () => {
+      const open = burger.getAttribute('aria-expanded') === 'true';
+      burger.setAttribute('aria-expanded', String(!open));
+      burger.setAttribute('aria-label', !open ? 'Menü schließen' : 'Menü öffnen');
+      if (open) drawer.setAttribute('hidden', '');
+      else drawer.removeAttribute('hidden');
+    });
+
+    document.addEventListener(
+      'astro:before-swap',
+      () => delete header.dataset.initialized,
+      { once: true },
+    );
+  }
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

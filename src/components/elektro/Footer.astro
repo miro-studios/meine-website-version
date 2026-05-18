@@ -1,0 +1,450 @@
+---
+const year = new Date().getFullYear();
+const base = '/demos/elektro';
+
+const navColumns = [
+  {
+    title: 'BETRIEB',
+    items: [
+      { href: `${base}/ueber-uns/`, label: 'Über uns' },
+      { href: `${base}/referenzen/`, label: 'Referenzen' },
+      { href: `${base}/blog/`, label: 'Journal' },
+      { href: `${base}/kontakt/`, label: 'Kontakt' },
+    ],
+  },
+  {
+    title: 'LEISTUNGEN',
+    items: [
+      { href: `${base}/leistungen/`, label: 'Elektroinstallation' },
+      { href: `${base}/leistungen/`, label: 'Heizung & Wärme' },
+      { href: `${base}/leistungen/`, label: 'Photovoltaik' },
+      { href: `${base}/leistungen/`, label: 'Smart Home' },
+      { href: `${base}/leistungen/`, label: 'E-Mobilität' },
+      { href: `${base}/leistungen/`, label: '24h Notdienst' },
+    ],
+  },
+  {
+    title: 'RECHTLICH',
+    items: [
+      { href: `${base}/impressum/`, label: 'Impressum' },
+      { href: `${base}/datenschutz/`, label: 'Datenschutz' },
+      { href: '/arbeiten/', label: 'Zurück zu miro-studios' },
+    ],
+  },
+];
+---
+
+<footer class="hk-footer">
+  <!-- Newsletter-Streifen -->
+  <section class="hk-footer__news">
+    <div class="hk-container hk-footer__news-inner">
+      <div class="hk-footer__news-copy">
+        <p class="hk-eyebrow">Journal · Quartalsweise</p>
+        <h2 class="hk-footer__news-h">
+          Förder-Tipps,<br />
+          die wirklich auszahlen.
+        </h2>
+        <p class="hk-footer__news-sub">
+          Vier Mal im Jahr eine kurze Mail — neue KfW-/BAFA-Programme, was sich
+          rechnet und was nicht. Kein Verkauf, kein Spam, jederzeit abbestellbar.
+        </p>
+      </div>
+
+      <form class="hk-footer__form" data-hk-newsletter onsubmit="event.preventDefault(); this.classList.add('is-success');">
+        <label class="hk-footer__form-row">
+          <span class="hk-footer__form-label">E-Mail-Adresse</span>
+          <input
+            type="email"
+            required
+            placeholder="ihre@firma.de"
+            class="hk-footer__form-input"
+            autocomplete="email"
+          />
+        </label>
+        <label class="hk-footer__form-consent">
+          <input type="checkbox" required />
+          <span>
+            Ja, ich möchte das Holtkamp-Journal erhalten und stimme der
+            <a href={`${base}/datenschutz/`}>Datenverarbeitung</a> zu.
+            Double-Opt-In, jederzeit kündbar.
+          </span>
+        </label>
+        <button type="submit" class="hk-footer__form-btn">
+          <span class="hk-footer__form-btn-default">EINTRAGEN →</span>
+          <span class="hk-footer__form-btn-success">EINGETRAGEN ✓</span>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Haupt-Footer -->
+  <section class="hk-footer__main">
+    <div class="hk-container hk-footer__main-inner">
+      <div class="hk-footer__brand">
+        <a href={`${base}/`} class="hk-footer__brand-link" aria-label="Holtkamp Elektrotechnik — Startseite">
+          <svg viewBox="0 0 32 32" fill="none" class="hk-footer__brand-mark">
+            <rect x="1.5" y="1.5" width="29" height="29" stroke="currentColor" stroke-width="1.4" />
+            <path d="M18 6 L10 17 L15 17 L13 26 L22 14 L17 14 Z" fill="currentColor" />
+          </svg>
+          <span>
+            <span class="hk-footer__brand-name">HOLTKAMP</span>
+            <span class="hk-footer__brand-sub">ELEKTROTECHNIK · MEISTERBETRIEB</span>
+          </span>
+        </a>
+        <p class="hk-footer__brand-blurb">
+          Familiengeführter Elektro- und Heizungsbau-Meisterbetrieb in Lüdenscheid.
+          Seit 1989 für Privat, Gewerbe und Industrie im Märkischen Kreis und
+          Sauerland.
+        </p>
+
+        <ul class="hk-footer__contact">
+          <li>
+            <span class="hk-footer__contact-k">RUF</span>
+            <a href="tel:+4923516080210">0 23 51 / 60 80 21</a>
+          </li>
+          <li>
+            <span class="hk-footer__contact-k">MAIL</span>
+            <a href="mailto:hallo@holtkamp-elektro.de">hallo@holtkamp-elektro.de</a>
+          </li>
+          <li>
+            <span class="hk-footer__contact-k">ORT</span>
+            <span>Volmestraße 47 · 58507 Lüdenscheid</span>
+          </li>
+        </ul>
+      </div>
+
+      <nav class="hk-footer__nav" aria-label="Footer-Navigation">
+        {navColumns.map(col => (
+          <div class="hk-footer__col">
+            <h3 class="hk-footer__col-h">{col.title}</h3>
+            <ul>
+              {col.items.map(it => (
+                <li><a href={it.href}>{it.label}</a></li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </nav>
+    </div>
+  </section>
+
+  <!-- Mega-Wortmarke -->
+  <section class="hk-footer__mega" aria-hidden="true">
+    <div class="hk-footer__mega-row">
+      <span>HOLT</span><span class="hk-footer__mega-y">·</span><span>KAMP</span>
+    </div>
+  </section>
+
+  <!-- Sub-Footer -->
+  <section class="hk-footer__sub">
+    <div class="hk-container hk-footer__sub-inner">
+      <p>© {year} Holtkamp Elektrotechnik GmbH · Demo für miro-studios</p>
+      <p class="hk-footer__credit">
+        Realisiert von <a href="/" class="hk-footer__credit-link">miro-studios</a>
+        · Business Multi-Page · € 2.799
+      </p>
+    </div>
+  </section>
+</footer>
+
+<style>
+  .hk-footer {
+    border-top: 1px solid var(--color-rule);
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  /* Newsletter */
+  .hk-footer__news {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    border-bottom: 1px solid var(--color-rule);
+    background: var(--color-surface);
+  }
+
+  .hk-footer__news-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .hk-footer__news-inner { grid-template-columns: 1fr 1fr; }
+  }
+
+  .hk-footer__news-h {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    line-height: 0.95;
+    margin: 1rem 0 1.25rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+
+  .hk-footer__news-sub {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+    max-width: 48ch;
+  }
+
+  .hk-footer__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .hk-footer__form-row { display: flex; flex-direction: column; gap: 0.4rem; }
+
+  .hk-footer__form-label {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    color: var(--color-muted);
+    text-transform: uppercase;
+  }
+
+  .hk-footer__form-input {
+    background: var(--color-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-rule-strong);
+    padding: 0.95rem 1rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: border-color 0.3s, background-color 0.3s;
+  }
+
+  .hk-footer__form-input::placeholder { color: var(--color-muted); }
+
+  .hk-footer__form-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+
+  .hk-footer__form-consent {
+    display: grid;
+    grid-template-columns: 1.2rem 1fr;
+    gap: 0.75rem;
+    align-items: start;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.55;
+    color: var(--color-muted);
+    letter-spacing: 0.02em;
+  }
+
+  .hk-footer__form-consent input {
+    margin-top: 0.2rem;
+    accent-color: var(--color-accent);
+  }
+
+  .hk-footer__form-consent a { color: var(--color-accent); text-decoration: underline; }
+
+  .hk-footer__form-btn {
+    align-self: start;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    padding: 1rem 1.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    transition: background-color 0.3s, transform 0.3s var(--ease-out-expo);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hk-footer__form-btn:hover {
+    transform: translateY(-2px);
+    background: color-mix(in srgb, var(--color-accent) 85%, white);
+  }
+
+  .hk-footer__form-btn-success { display: none; }
+  .hk-footer__form.is-success .hk-footer__form-btn-default { display: none; }
+  .hk-footer__form.is-success .hk-footer__form-btn-success { display: inline; }
+  .hk-footer__form.is-success .hk-footer__form-btn {
+    background: var(--color-text);
+    color: var(--color-bg);
+    pointer-events: none;
+  }
+
+  /* Main */
+  .hk-footer__main {
+    padding-block: clamp(3rem, 6vw, 5rem);
+  }
+
+  .hk-footer__main-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  @media (min-width: 900px) {
+    .hk-footer__main-inner { grid-template-columns: 1.2fr 1fr; }
+  }
+
+  .hk-footer__brand-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.95rem;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .hk-footer__brand-mark {
+    width: 36px;
+    height: 36px;
+    color: var(--color-accent);
+  }
+
+  .hk-footer__brand-name {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+
+  .hk-footer__brand-sub {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    color: var(--color-muted);
+    margin-top: 4px;
+  }
+
+  .hk-footer__brand-blurb {
+    margin-top: 1.5rem;
+    max-width: 46ch;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+  }
+
+  .hk-footer__contact {
+    list-style: none;
+    margin: 1.75rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+
+  .hk-footer__contact li {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 0.75rem;
+    align-items: baseline;
+  }
+
+  .hk-footer__contact-k {
+    color: var(--color-muted);
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .hk-footer__contact a {
+    color: var(--color-text);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, color 0.3s;
+  }
+
+  .hk-footer__contact a:hover {
+    color: var(--color-accent);
+    border-bottom-color: currentColor;
+  }
+
+  .hk-footer__nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem 2rem;
+  }
+
+  @media (max-width: 600px) {
+    .hk-footer__nav { grid-template-columns: 1fr 1fr; }
+  }
+
+  .hk-footer__col-h {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .hk-footer__col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .hk-footer__col a {
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+  }
+
+  .hk-footer__col a:hover { color: var(--color-accent); }
+
+  /* Mega-Wortmarke */
+  .hk-footer__mega {
+    border-top: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+    padding-block: clamp(2rem, 4vw, 3rem);
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .hk-footer__mega-row {
+    display: inline-flex;
+    align-items: baseline;
+    gap: clamp(1rem, 3vw, 3rem);
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 22vw, 22rem);
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    text-transform: uppercase;
+    user-select: none;
+  }
+
+  .hk-footer__mega-y {
+    color: var(--color-accent);
+    font-size: 0.55em;
+    line-height: 1;
+    transform: translateY(-0.18em);
+  }
+
+  /* Sub-Footer */
+  .hk-footer__sub {
+    padding-block: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-muted);
+    letter-spacing: 0.08em;
+  }
+
+  .hk-footer__sub-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .hk-footer__credit-link {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+  }
+</style>

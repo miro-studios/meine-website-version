@@ -1,0 +1,1694 @@
+---
+/**
+ * Holtkamp Elektrotechnik — Demo-Startseite
+ *
+ * Showcase für miro-studios "Business Multi-Page"-Paket (€ 2.799 + € 34,99/Mon).
+ * Sitemap: Start · Betrieb · Leistungen · Referenzen · Journal · Kontakt
+ *          + Impressum & Datenschutz.
+ *
+ * Industrial Brutalism mit Premium-Touch: tiefes Warm-Schwarz, warmer
+ * Cream-Text, elektrisches Gelb als Akzent. Anton (Display) + Manrope (Body)
+ * + JetBrains Mono (technische Labels).
+ *
+ * Dies ist eine Demo — kein realer Kunde.
+ */
+import ElektroLayout from '@layouts/ElektroLayout.astro';
+import SplitText from '@components/shared/SplitText.astro';
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+import MagneticButton from '@components/shared/MagneticButton.astro';
+import NumberCounter from '@components/shared/NumberCounter.astro';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': 'https://miro-studios.de/demos/elektro/#business',
+  name: 'Holtkamp Elektrotechnik',
+  description:
+    'Elektro- und Heizungsbau-Meisterbetrieb in Lüdenscheid. Installationen, Photovoltaik, Wärmepumpen und Smart Home für Privat und Gewerbe seit 1989.',
+  url: 'https://miro-studios.de/demos/elektro/',
+  telephone: '+49 2351 608021',
+  email: 'hallo@holtkamp-elektro.de',
+  priceRange: '€€',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Volmestraße 47',
+    postalCode: '58507',
+    addressLocality: 'Lüdenscheid',
+    addressRegion: 'NRW',
+    addressCountry: 'DE',
+  },
+  areaServed: ['Lüdenscheid', 'Märkischer Kreis', 'Sauerland', 'Hagen', 'Iserlohn'],
+  founder: 'Werner Holtkamp',
+  foundingDate: '1989',
+};
+
+const services = [
+  { n: '01', t: 'ELEKTRO­INSTALLATION', sub: 'Privat · Gewerbe · Industrie', text: 'Neuinstallationen, Sanierungen und Erweiterungen — von der Verteilung bis zur einzelnen Steckdose. VDE-konform, dokumentiert, mit Messprotokoll.' },
+  { n: '02', t: 'HEIZUNG & WÄRME', sub: 'Wärmepumpe · Hybrid · Solar', text: 'Wir planen und bauen Wärmepumpen-Systeme, hybride Heizungen und Solarthermie. Mit Heizlastberechnung, hydraulischem Abgleich und BAFA-Antrag.' },
+  { n: '03', t: 'PHOTOVOLTAIK', sub: 'Komplett-Anlagen mit Speicher', text: 'Auslegung, Montage, Anmeldung und Inbetriebnahme. Wir liefern wirtschaftliche Anlagen mit Wechselrichter, Speicher und Wallbox-Anbindung.' },
+  { n: '04', t: 'SMART HOME', sub: 'KNX · Loxone · Matter', text: 'Eine Anlage, die zentral schaltet, dimmt, regelt und meldet. Wir planen herstellerunabhängig und übergeben dokumentiert mit Wartungsvertrag.' },
+  { n: '05', t: 'E-MOBILITÄT', sub: 'Wallbox · Lastmanagement', text: 'Vom 11-kW-Heim­anschluss bis zur Firmen-Lade­infrastruktur mit dynamischem Lastmanagement und Abrechnungs-Backend.' },
+  { n: '06', t: '24H NOTDIENST', sub: 'Strom & Wärme · MK-Gebiet', text: 'Wenn die Sicherung knallt oder die Heizung ausfällt, sind wir innerhalb von 90 Minuten beim Kunden — Tag, Nacht, Wochenende.' },
+];
+
+const process = [
+  { n: '01', label: 'ANFRAGE', text: 'Sie rufen an oder schicken eine Mail. Wir reagieren innerhalb von 24 Stunden mit einem Termin-Vorschlag.' },
+  { n: '02', label: 'ORTSTERMIN', text: 'Wir kommen vorbei, hören zu, messen und prüfen — kostenfrei für Privatkunden, klärt Machbarkeit und Förderfähigkeit.' },
+  { n: '03', label: 'ANGEBOT', text: 'Sie bekommen ein schriftliches Festpreis-Angebot mit Leistungsverzeichnis. Keine Überraschungen auf der Rechnung.' },
+  { n: '04', label: 'AUSFÜHRUNG', text: 'Termingebunden, sauber, mit täglichem Status-Update. Wir hinterlassen die Baustelle besenrein.' },
+];
+---
+
+<ElektroLayout
+  title="Holtkamp Elektrotechnik — Strom. Wärme. Zukunft. · Lüdenscheid"
+  description="Holtkamp ist Elektro- und Heizungsbau-Meisterbetrieb in Lüdenscheid. Installationen, Photovoltaik, Wärmepumpen und Smart Home für Privat, Gewerbe und Industrie."
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(jsonLd)}
+  />
+
+  <!-- ── HERO ──────────────────────────────────────────────────────── -->
+  <section class="hk-hero" data-hk-hero>
+    <div class="hk-hero__grid" aria-hidden="true"></div>
+
+    <!-- Spec-Bar oben -->
+    <div class="hk-hero__spec hk-container">
+      <span class="hk-hero__spec-cell">
+        <span class="hk-hero__spec-k">FILE</span>
+        <span class="hk-hero__spec-v">HK-2026.HOME</span>
+      </span>
+      <span class="hk-hero__spec-cell">
+        <span class="hk-hero__spec-k">MEISTER</span>
+        <span class="hk-hero__spec-v">HWK MK · NR. 47 / 13</span>
+      </span>
+      <span class="hk-hero__spec-cell">
+        <span class="hk-hero__spec-k">VDE</span>
+        <span class="hk-hero__spec-v">0100 · 0105 · 0701</span>
+      </span>
+      <span class="hk-hero__spec-cell hk-hero__spec-cell--push">
+        <span class="hk-hero__spec-dot" aria-hidden="true"></span>
+        <span class="hk-hero__spec-v">24H NOTDIENST AKTIV</span>
+      </span>
+    </div>
+
+    <!-- Hero-Inhalt -->
+    <div class="hk-hero__inner hk-container">
+      <div class="hk-hero__copy">
+        <div class="hk-hero__index">
+          <span class="hk-hero__index-n">N°</span>
+          <span class="hk-hero__index-v">00</span>
+          <span class="hk-hero__index-line" aria-hidden="true"></span>
+          <span class="hk-hero__index-k">START / HOME</span>
+        </div>
+
+        <h1 class="hk-hero__h">
+          <span class="hk-hero__line"><SplitText by="chars" stagger={0.025} delay={0.05} onScroll={false}>STROM.</SplitText></span>
+          <span class="hk-hero__line hk-hero__line--y"><SplitText by="chars" stagger={0.025} delay={0.4} onScroll={false}>WÄRME.</SplitText></span>
+          <span class="hk-hero__line"><SplitText by="chars" stagger={0.025} delay={0.75} onScroll={false}>ZUKUNFT.</SplitText></span>
+        </h1>
+
+        <div class="hk-hero__caption">
+          <span class="hk-hero__caption-tag" aria-hidden="true"></span>
+          <p>
+            HOLTKAMP ELEKTROTECHNIK · MEISTERBETRIEB IN LÜDENSCHEID — SEIT 1989
+            PLANEN UND BAUEN WIR ELEKTRO-, HEIZUNGS- UND ENERGIETECHNIK FÜR
+            PRIVAT, GEWERBE UND INDUSTRIE IM SAUERLAND.
+          </p>
+        </div>
+
+        <div class="hk-hero__actions">
+          <MagneticButton href="/demos/elektro/kontakt/" strength={0.35} variant="primary" class="hk-hero__cta">
+            <span>PROJEKT ANFRAGEN</span>
+            <span aria-hidden="true">→</span>
+          </MagneticButton>
+          <a href="/demos/elektro/leistungen/" class="hk-hero__link">
+            <span>Was wir bauen</span>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Plakat-Stats -->
+      <aside class="hk-hero__plate" data-hk-hero-plate>
+        <div class="hk-hero__plate-head">
+          <span>STAND · Q2/2026</span>
+          <span class="hk-hero__plate-id">REV·08</span>
+        </div>
+        <dl class="hk-hero__plate-data">
+          <div>
+            <dt>JAHRE</dt>
+            <dd><NumberCounter to={37} duration={1.6} /></dd>
+            <span>BETRIEBSGESCHICHTE</span>
+          </div>
+          <div>
+            <dt>PROJEKTE</dt>
+            <dd><NumberCounter to={2400} duration={2.2} />+</dd>
+            <span>ABGESCHLOSSEN</span>
+          </div>
+          <div>
+            <dt>TEAM</dt>
+            <dd><NumberCounter to={14} duration={1.4} /></dd>
+            <span>GESELLEN & MEISTER</span>
+          </div>
+          <div>
+            <dt>NOTRUF</dt>
+            <dd>
+              <span class="hk-hero__plate-num">90</span>
+              <span class="hk-hero__plate-unit">MIN</span>
+            </dd>
+            <span>REAKTIONSZEIT MK</span>
+          </div>
+        </dl>
+        <div class="hk-hero__plate-foot">
+          INNUNG · E-CHECK · ZERTIFIZIERT
+        </div>
+      </aside>
+    </div>
+
+    <!-- Marquee unten -->
+    <div class="hk-hero__strip" aria-hidden="true">
+      <div class="hk-hero__strip-track">
+        <span>ELEKTROINSTALLATION</span><span>+</span>
+        <span>WÄRMEPUMPE</span><span>+</span>
+        <span>PHOTOVOLTAIK</span><span>+</span>
+        <span>KNX-SMART-HOME</span><span>+</span>
+        <span>WALLBOX</span><span>+</span>
+        <span>NOTSTROM</span><span>+</span>
+        <span>BLITZSCHUTZ</span><span>+</span>
+        <span>E-CHECK</span><span>+</span>
+        <span>ELEKTROINSTALLATION</span><span>+</span>
+        <span>WÄRMEPUMPE</span><span>+</span>
+        <span>PHOTOVOLTAIK</span><span>+</span>
+        <span>KNX-SMART-HOME</span><span>+</span>
+        <span>WALLBOX</span><span>+</span>
+        <span>NOTSTROM</span><span>+</span>
+        <span>BLITZSCHUTZ</span><span>+</span>
+        <span>E-CHECK</span><span>+</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MANIFEST ──────────────────────────────────────────────────── -->
+  <section class="hk-manifest hk-section">
+    <div class="hk-container">
+      <div class="hk-bar">
+        <span class="hk-bar-n">N° 01</span>
+        <span class="hk-bar-line" aria-hidden="true"></span>
+        <span class="hk-bar-k">MANIFEST / WAS UNS UNTERSCHEIDET</span>
+      </div>
+
+      <h2 class="hk-manifest__h">
+        <SplitText by="words" stagger={0.05}>Wir verlegen keine Kabel — wir bauen Anlagen, die in 25&nbsp;Jahren noch sauber funktionieren.</SplitText>
+      </h2>
+
+      <div class="hk-manifest__cols">
+        <RevealOnScroll y={40}>
+          <p>
+            Elektro und Heizung sind keine Bereiche, die man trennen sollte —
+            wer Wärme plant, plant Strom mit. Wir haben deshalb beide
+            Gewerke unter einem Dach. Eine Ansprechperson, ein Termin,
+            eine Rechnung.
+          </p>
+        </RevealOnScroll>
+        <RevealOnScroll y={40}>
+          <p>
+            Wir arbeiten ausschließlich mit Materialien, die wir auch im
+            eigenen Haus verbauen würden. Markenkomponenten, dokumentierte
+            Herkunft, Garantien, die Bestand haben. Das kostet mehr — und
+            spart in Summe, weil nichts in zehn Jahren wieder raus muss.
+          </p>
+        </RevealOnScroll>
+        <RevealOnScroll y={40}>
+          <p>
+            Familienbetrieb, dritte Generation. Werner Holtkamp hat den
+            Betrieb 1989 gegründet, sein Sohn führt heute die Geschäfte,
+            seine Enkelin ist seit 2024 Meisterin. Das heißt: Sie kennen
+            uns, und wir verschwinden nicht.
+          </p>
+        </RevealOnScroll>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ÜBER UNS TEASER ───────────────────────────────────────────── -->
+  <section class="hk-about hk-section">
+    <div class="hk-container hk-about__grid">
+      <div class="hk-about__visual" aria-hidden="true">
+        <svg viewBox="0 0 360 480" class="hk-about__circuit">
+          <defs>
+            <pattern id="hk-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+              <path d="M24 0H0V24" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.18"/>
+            </pattern>
+          </defs>
+          <rect width="360" height="480" fill="url(#hk-grid)" />
+
+          <!-- Schaltplan-Andeutung -->
+          <g fill="none" stroke="currentColor" stroke-width="1.4">
+            <path d="M40 80 L 130 80 L 130 180 L 220 180 L 220 280 L 320 280" />
+            <path d="M40 200 L 90 200 L 90 380 L 240 380" />
+            <path d="M260 40 L 260 120 L 320 120" />
+          </g>
+
+          <!-- Knoten -->
+          <g fill="currentColor">
+            <circle cx="40" cy="80" r="4" />
+            <circle cx="130" cy="180" r="4" />
+            <circle cx="220" cy="280" r="4" />
+            <circle cx="320" cy="280" r="4" />
+            <circle cx="90" cy="200" r="4" />
+            <circle cx="240" cy="380" r="4" />
+            <circle cx="260" cy="120" r="4" />
+            <circle cx="320" cy="120" r="4" />
+            <circle cx="40" cy="200" r="4" />
+            <circle cx="260" cy="40" r="4" />
+          </g>
+
+          <!-- Sicherung-Symbol -->
+          <g fill="none" stroke="currentColor" stroke-width="1.4">
+            <rect x="155" y="225" width="34" height="14" />
+            <line x1="148" y1="232" x2="155" y2="232" />
+            <line x1="189" y1="232" x2="196" y2="232" />
+          </g>
+
+          <!-- Wärme-Symbol -->
+          <g fill="none" stroke="var(--color-accent)" stroke-width="1.8">
+            <path d="M275 350 q-5 -10 0 -20 q5 -10 0 -20" />
+            <path d="M285 350 q-5 -10 0 -20 q5 -10 0 -20" />
+            <path d="M295 350 q-5 -10 0 -20 q5 -10 0 -20" />
+          </g>
+
+          <!-- Labels -->
+          <text x="44" y="74" font-family="JetBrains Mono, monospace" font-size="9" fill="currentColor" opacity="0.6">+N</text>
+          <text x="324" y="116" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--color-accent)" opacity="0.9">L1</text>
+          <text x="324" y="284" font-family="JetBrains Mono, monospace" font-size="9" fill="currentColor" opacity="0.6">PE</text>
+
+          <!-- Footer-Label -->
+          <text x="40" y="455" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="var(--color-accent)" letter-spacing="2">SCHALT­PLAN · BEISPIEL</text>
+        </svg>
+      </div>
+
+      <div class="hk-about__copy">
+        <p class="hk-eyebrow">Über Holtkamp · seit 1989</p>
+        <h2 class="hk-about__h">
+          DREI&nbsp;GENERATIONEN.<br />
+          <span class="hk-about__h-alt">EIN HANDSCHLAG.</span>
+        </h2>
+        <p class="hk-about__text">
+          Werner Holtkamp hat den Betrieb 1989 in Lüdenscheid gegründet.
+          Heute leiten sein Sohn Daniel und seine Enkelin Karla Holtkamp die
+          Firma. Wir sind ein 14-köpfiges Team aus Meistern, Gesellen und
+          Auszubildenden — und wir haben in den letzten Jahren gezielt
+          ausgebildet, weil der Beruf nur dann eine Zukunft hat, wenn man sie
+          mitbaut.
+        </p>
+        <ul class="hk-about__list">
+          <li><strong>3</strong> Meisterbriefe im Haus</li>
+          <li><strong>11</strong> Gesellen mit langjähriger Erfahrung</li>
+          <li><strong>4</strong> Auszubildende in laufender Ausbildung</li>
+        </ul>
+        <a href="/demos/elektro/ueber-uns/" class="hk-about__link">
+          <span>BETRIEB ANSEHEN</span>
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LEISTUNGEN TEASER ─────────────────────────────────────────── -->
+  <section class="hk-svc hk-section">
+    <div class="hk-container">
+      <div class="hk-bar">
+        <span class="hk-bar-n">N° 02</span>
+        <span class="hk-bar-line" aria-hidden="true"></span>
+        <span class="hk-bar-k">LEISTUNGEN / 6 GEWERKE</span>
+      </div>
+
+      <RevealOnScroll>
+        <h2 class="hk-svc__h">
+          WAS WIR<br />
+          <span class="hk-svc__h-alt">FÜR SIE TUN.</span>
+        </h2>
+      </RevealOnScroll>
+
+      <ul class="hk-svc__grid">
+        {services.map(s => (
+          <li class="hk-svc__cell">
+            <div class="hk-svc__cell-n">{s.n}</div>
+            <h3 class="hk-svc__cell-t" set:html={s.t} />
+            <p class="hk-svc__cell-sub">{s.sub}</p>
+            <p class="hk-svc__cell-text">{s.text}</p>
+            <a href="/demos/elektro/leistungen/" class="hk-svc__cell-link">
+              <span>Details</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── CASE-STUDY SHOWCASE ───────────────────────────────────────── -->
+  <section class="hk-case hk-section">
+    <div class="hk-container">
+      <div class="hk-bar">
+        <span class="hk-bar-n">N° 03</span>
+        <span class="hk-bar-line" aria-hidden="true"></span>
+        <span class="hk-bar-k">REFERENZ / AUSGEWÄHLT</span>
+      </div>
+
+      <RevealOnScroll y={40}>
+        <div class="hk-case__inner">
+          <div class="hk-case__visual">
+            <div class="hk-case__visual-frame">
+              <span class="hk-case__visual-label">REF · 0214</span>
+              <svg viewBox="0 0 480 360" class="hk-case__svg" role="img" aria-label="Schematische Darstellung Wohnhaus mit PV-Anlage und Wärmepumpe">
+                <!-- Boden -->
+                <line x1="20" y1="280" x2="460" y2="280" stroke="currentColor" stroke-width="1.4" />
+                <g stroke="currentColor" stroke-width="0.5" opacity="0.4">
+                  <line x1="40" y1="280" x2="30" y2="295" />
+                  <line x1="70" y1="280" x2="60" y2="295" />
+                  <line x1="100" y1="280" x2="90" y2="295" />
+                  <line x1="130" y1="280" x2="120" y2="295" />
+                  <line x1="160" y1="280" x2="150" y2="295" />
+                  <line x1="190" y1="280" x2="180" y2="295" />
+                  <line x1="220" y1="280" x2="210" y2="295" />
+                  <line x1="250" y1="280" x2="240" y2="295" />
+                  <line x1="280" y1="280" x2="270" y2="295" />
+                  <line x1="310" y1="280" x2="300" y2="295" />
+                  <line x1="340" y1="280" x2="330" y2="295" />
+                  <line x1="370" y1="280" x2="360" y2="295" />
+                  <line x1="400" y1="280" x2="390" y2="295" />
+                  <line x1="430" y1="280" x2="420" y2="295" />
+                </g>
+                <!-- Haus -->
+                <path d="M 120 280 L 120 160 L 220 90 L 320 160 L 320 280 Z" fill="color-mix(in srgb, var(--color-accent) 6%, transparent)" stroke="currentColor" stroke-width="1.6" />
+                <!-- Dach mit PV-Modulen -->
+                <g fill="var(--color-accent)" opacity="0.85">
+                  <polygon points="135,167 178,135 188,142 145,174" />
+                  <polygon points="155,182 198,150 208,157 165,189" />
+                  <polygon points="175,197 218,165 228,172 185,204" />
+                  <polygon points="235,135 278,167 268,174 225,142" />
+                  <polygon points="255,150 298,182 288,189 245,157" />
+                  <polygon points="275,165 318,197 308,204 265,172" />
+                </g>
+                <!-- Fenster + Tür -->
+                <rect x="145" y="210" width="35" height="40" fill="color-mix(in srgb, var(--color-text) 12%, transparent)" stroke="currentColor" stroke-width="1" />
+                <rect x="200" y="200" width="40" height="80" fill="none" stroke="currentColor" stroke-width="1" />
+                <rect x="260" y="210" width="35" height="40" fill="color-mix(in srgb, var(--color-text) 12%, transparent)" stroke="currentColor" stroke-width="1" />
+                <!-- Wärmepumpe -->
+                <rect x="350" y="240" width="55" height="40" fill="none" stroke="currentColor" stroke-width="1.4" />
+                <circle cx="378" cy="260" r="11" fill="none" stroke="currentColor" stroke-width="1" />
+                <path d="M373 260 L378 255 L383 260 L378 265 Z" fill="currentColor" />
+                <text x="350" y="305" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700" fill="var(--color-accent)" letter-spacing="1">WP · 9 KW</text>
+                <!-- Verbindung -->
+                <path d="M 320 250 L 350 250" stroke="var(--color-accent)" stroke-width="1.5" stroke-dasharray="3 3" />
+                <!-- Sonnen-Pfeil -->
+                <g stroke="var(--color-accent)" fill="none" stroke-width="1.6">
+                  <circle cx="80" cy="60" r="16" />
+                  <line x1="80" y1="60" x2="160" y2="120" />
+                  <polygon points="160,120 152,116 156,124" fill="var(--color-accent)" stroke="none" />
+                </g>
+                <text x="20" y="110" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700" fill="var(--color-accent)" letter-spacing="1">PV · 12,4 KWP</text>
+                <!-- Spec rechts -->
+                <g stroke="currentColor" stroke-width="0.6" opacity="0.6" fill="none">
+                  <line x1="430" y1="90" x2="430" y2="280" />
+                  <line x1="425" y1="90" x2="435" y2="90" />
+                  <line x1="425" y1="280" x2="435" y2="280" />
+                </g>
+                <text x="443" y="195" font-family="JetBrains Mono, monospace" font-size="9" fill="currentColor" letter-spacing="0.5" transform="rotate(90 443 195)">7,2 m</text>
+              </svg>
+            </div>
+          </div>
+
+          <div class="hk-case__copy">
+            <p class="hk-eyebrow">Referenz · Hagen · 2024</p>
+            <h2 class="hk-case__h">
+              EINFAMILIENHAUS HAGEN —<br />
+              VOM GASKESSEL ZUR<br />
+              <span class="hk-case__h-alt">VOLLEN ELEKTRIFIZIERUNG.</span>
+            </h2>
+            <p class="hk-case__text">
+              Familie M. wollte raus aus dem Gasvertrag — wir haben die
+              Bestands­heizung durch eine Luft-Wasser-Wärmepumpe ersetzt,
+              eine 12,4-kWp-Photovoltaik mit 10-kWh-Speicher aufs Dach gebaut
+              und das Haus mit einer 11-kW-Wallbox auf E-Mobilität vorbereitet.
+              Alles aus einer Hand, in sieben Wochen, mit BAFA-Antrag.
+            </p>
+
+            <dl class="hk-case__stats">
+              <div>
+                <dt>EINSPARUNG</dt>
+                <dd><NumberCounter to={2840} duration={2} /></dd>
+                <span>€ / JAHR</span>
+              </div>
+              <div>
+                <dt>AUTARKIE</dt>
+                <dd><NumberCounter to={74} duration={1.6} />%</dd>
+                <span>EIGENVERBRAUCH</span>
+              </div>
+              <div>
+                <dt>FÖRDERUNG</dt>
+                <dd><NumberCounter to={17500} duration={2.2} /></dd>
+                <span>€ BAFA + KfW</span>
+              </div>
+            </dl>
+
+            <a href="/demos/elektro/referenzen/" class="hk-case__link">
+              <span>ALLE REFERENZEN</span>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
+            </a>
+          </div>
+        </div>
+      </RevealOnScroll>
+    </div>
+  </section>
+
+  <!-- ── PROZESS (Pin-Section) ─────────────────────────────────────── -->
+  <section class="hk-proc" data-hk-proc>
+    <div class="hk-container hk-proc__inner">
+      <div class="hk-proc__head" data-hk-proc-head>
+        <div class="hk-bar">
+          <span class="hk-bar-n">N° 04</span>
+          <span class="hk-bar-line" aria-hidden="true"></span>
+          <span class="hk-bar-k">ABLAUF / 4 SCHRITTE</span>
+        </div>
+        <h2 class="hk-proc__h">
+          VOM<br />
+          ERSTANRUF<br />
+          <span class="hk-proc__h-alt">ZUR ANLAGE.</span>
+        </h2>
+        <p class="hk-proc__lead">
+          Vier Schritte, klar getrennt. Keiner davon ist überflüssig — und
+          keiner muss länger dauern als nötig.
+        </p>
+      </div>
+
+      <ol class="hk-proc__list">
+        {process.map(p => (
+          <li class="hk-proc__step">
+            <span class="hk-proc__step-n">{p.n}</span>
+            <h3>{p.label}</h3>
+            <p>{p.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ── SOCIAL PROOF ──────────────────────────────────────────────── -->
+  <section class="hk-proof hk-section">
+    <div class="hk-container">
+      <div class="hk-bar">
+        <span class="hk-bar-n">N° 05</span>
+        <span class="hk-bar-line" aria-hidden="true"></span>
+        <span class="hk-bar-k">STIMMEN / KUNDEN</span>
+      </div>
+
+      <RevealOnScroll y={40}>
+        <ul class="hk-proof__grid">
+          <li class="hk-proof__cell">
+            <p class="hk-proof__q">
+              „Eine PV-Anlage, eine Wärmepumpe und das Haus war noch bewohnt —
+              Holtkamp hat das in sieben Wochen sauber durchgezogen, mit
+              täglichem Status-Update."
+            </p>
+            <footer>
+              <strong>Anja & Tim M.</strong>
+              <span>Eigentümer · Hagen</span>
+              <span class="hk-proof__rating">★★★★★</span>
+            </footer>
+          </li>
+          <li class="hk-proof__cell">
+            <p class="hk-proof__q">
+              „Wir lassen seit fünfzehn Jahren alle E-Arbeiten in unseren
+              Produktionshallen über Holtkamp laufen. Verlässlich, ohne
+              Überraschungen — das ist im Industriebau viel wert."
+            </p>
+            <footer>
+              <strong>Markus Sänger</strong>
+              <span>Geschäftsführer · Sänger Metall GmbH</span>
+              <span class="hk-proof__rating">★★★★★</span>
+            </footer>
+          </li>
+          <li class="hk-proof__cell">
+            <p class="hk-proof__q">
+              „Notdienst Sonntagmorgen, Strom war komplett aus. Karla
+              Holtkamp war 70 Minuten später vor der Tür. Profis."
+            </p>
+            <footer>
+              <strong>Familie Reuter</strong>
+              <span>Eigentümer · Lüdenscheid</span>
+              <span class="hk-proof__rating">★★★★★</span>
+            </footer>
+          </li>
+        </ul>
+      </RevealOnScroll>
+
+      <div class="hk-proof__seals">
+        <div class="hk-proof__seal"><strong>HWK</strong><span>MK · MEISTERBRIEF</span></div>
+        <div class="hk-proof__seal"><strong>VDE</strong><span>FACHBETRIEB</span></div>
+        <div class="hk-proof__seal"><strong>E-CHECK</strong><span>ZERTIFIZIERT</span></div>
+        <div class="hk-proof__seal"><strong>EFFIZIENZ-EXPERTE</strong><span>BAFA-LISTE</span></div>
+        <div class="hk-proof__seal"><strong>4,9 / 5</strong><span>184 BEWERTUNGEN</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BLOG TEASER ───────────────────────────────────────────────── -->
+  <section class="hk-journal hk-section">
+    <div class="hk-container">
+      <div class="hk-bar">
+        <span class="hk-bar-n">N° 06</span>
+        <span class="hk-bar-line" aria-hidden="true"></span>
+        <span class="hk-bar-k">JOURNAL / NEU IM BLOG</span>
+      </div>
+
+      <h2 class="hk-journal__h">
+        WAS WIR<br />
+        <span class="hk-journal__h-alt">LERNEN, WIRD GETEILT.</span>
+      </h2>
+
+      <ul class="hk-journal__grid">
+        <li class="hk-journal__cell">
+          <span class="hk-journal__cat">FÖRDERUNG · 2026</span>
+          <h3 class="hk-journal__t">BAFA-Förderung 2026 — was sich geändert hat und was bleibt.</h3>
+          <p class="hk-journal__d">12 MAI 2026 · 6 MIN LESEZEIT</p>
+          <a href="/demos/elektro/blog/" class="hk-journal__link"><span>Lesen</span><span aria-hidden="true">→</span></a>
+        </li>
+        <li class="hk-journal__cell">
+          <span class="hk-journal__cat">PHOTOVOLTAIK</span>
+          <h3 class="hk-journal__t">Lohnt sich eine PV-Anlage ohne Speicher noch? Eine ehrliche Rechnung.</h3>
+          <p class="hk-journal__d">28 APR 2026 · 8 MIN LESEZEIT</p>
+          <a href="/demos/elektro/blog/" class="hk-journal__link"><span>Lesen</span><span aria-hidden="true">→</span></a>
+        </li>
+        <li class="hk-journal__cell">
+          <span class="hk-journal__cat">WÄRMEPUMPE</span>
+          <h3 class="hk-journal__t">Wärmepumpe im Altbau — was wirklich zählt, und was Verkäufer gern verschweigen.</h3>
+          <p class="hk-journal__d">14 APR 2026 · 11 MIN LESEZEIT</p>
+          <a href="/demos/elektro/blog/" class="hk-journal__link"><span>Lesen</span><span aria-hidden="true">→</span></a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── FINAL CTA ─────────────────────────────────────────────────── -->
+  <section class="hk-final">
+    <div class="hk-container hk-final__inner">
+      <RevealOnScroll>
+        <p class="hk-eyebrow">Erstgespräch · kostenfrei</p>
+        <h2 class="hk-final__h">
+          REDEN WIR<br />
+          ÜBER IHR<br />
+          <span class="hk-final__h-alt">PROJEKT.</span>
+        </h2>
+        <p class="hk-final__lead">
+          Eine Stunde, telefonisch oder vor Ort. Wir hören zu, prüfen
+          Machbarkeit und Förderung — und sagen ehrlich, ob wir die
+          Richtigen sind oder nicht.
+        </p>
+        <MagneticButton href="/demos/elektro/kontakt/" strength={0.45} variant="primary" class="hk-final__cta">
+          <span>ANFRAGE STARTEN</span>
+          <span aria-hidden="true">→</span>
+        </MagneticButton>
+      </RevealOnScroll>
+    </div>
+    <div class="hk-final__bg" aria-hidden="true"></div>
+  </section>
+</ElektroLayout>
+
+<style>
+  /* ── HERO ──────────────────────────────────────────────────────── */
+  .hk-hero {
+    position: relative;
+    min-height: 100svh;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--color-bg);
+  }
+
+  .hk-hero__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, var(--hk-grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--hk-grid-line) 1px, transparent 1px);
+    background-size: clamp(40px, 6vw, 72px) clamp(40px, 6vw, 72px);
+    background-position: 50% 0%;
+    mask-image: radial-gradient(ellipse 70% 80% at 50% 40%, black 30%, transparent 90%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 40%, black 30%, transparent 90%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hk-hero__spec {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem 2rem;
+    padding-block: 0.85rem;
+    border-bottom: 1px solid var(--color-rule);
+    position: relative;
+    z-index: 2;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+  }
+
+  .hk-hero__spec-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .hk-hero__spec-cell--push { margin-left: auto; }
+
+  .hk-hero__spec-k { color: var(--color-muted); font-weight: 500; }
+  .hk-hero__spec-v { color: var(--color-text); font-weight: 700; }
+
+  .hk-hero__spec-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 25%, transparent),
+                0 0 12px color-mix(in srgb, var(--color-accent) 50%, transparent);
+    animation: hk-pulse 2.4s ease-in-out infinite;
+  }
+
+  .hk-hero__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 5vw, 4rem);
+    align-items: start;
+    padding-block: clamp(2.5rem, 6vw, 5rem) clamp(3rem, 6vw, 5rem);
+  }
+
+  @media (min-width: 900px) {
+    .hk-hero__inner {
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.85fr);
+      gap: clamp(2rem, 4vw, 4rem);
+    }
+  }
+
+  .hk-hero__copy {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .hk-hero__index {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+  }
+
+  .hk-hero__index-n { color: var(--color-muted); }
+  .hk-hero__index-v {
+    color: var(--color-accent);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .hk-hero__index-line {
+    width: clamp(28px, 5vw, 56px);
+    height: 1px;
+    background: var(--color-rule-strong);
+  }
+  .hk-hero__index-k { color: var(--color-text); font-weight: 500; }
+
+  /* HERO-HEADLINE */
+  .hk-hero__h {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 16vw, 16rem);
+    line-height: 0.83;
+    letter-spacing: 0.005em;
+    font-weight: 400;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .hk-hero__line {
+    display: block;
+    overflow: hidden;
+    padding-right: 0.04em;
+  }
+
+  .hk-hero__line--y { color: var(--color-accent); }
+
+  /* Caption */
+  .hk-hero__caption {
+    display: grid;
+    grid-template-columns: 14px 1fr;
+    gap: 1rem;
+    max-width: 60ch;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .hk-hero__caption-tag {
+    width: 10px;
+    height: 10px;
+    margin-top: 6px;
+    background: var(--color-accent);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--color-accent) 50%, transparent);
+  }
+
+  .hk-hero__caption p {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.7;
+    letter-spacing: 0.05em;
+    color: var(--color-text);
+    margin: 0;
+    font-weight: 500;
+  }
+
+  /* Actions */
+  .hk-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 2rem;
+  }
+
+  .hk-hero__cta {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border-radius: 0;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    padding: 1.1rem 1.75rem;
+  }
+  .hk-hero__cta:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .hk-hero__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text);
+    text-decoration: none;
+    padding-bottom: 4px;
+    border-bottom: 1px solid currentColor;
+    transition: color 0.3s, gap 0.3s var(--ease-out-expo);
+  }
+  .hk-hero__link svg { width: 14px; height: 14px; }
+  .hk-hero__link:hover { color: var(--color-accent); gap: 0.85rem; }
+
+  /* Plate */
+  .hk-hero__plate {
+    background: var(--color-surface);
+    border: 1px solid var(--color-rule-strong);
+    color: var(--color-text);
+    position: relative;
+  }
+
+  .hk-hero__plate-head {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.6rem 0.9rem;
+    background: var(--color-text);
+    color: var(--color-bg);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    font-weight: 700;
+  }
+  .hk-hero__plate-id { color: var(--color-accent); }
+
+  .hk-hero__plate-data {
+    margin: 0;
+    padding: 0.5rem 0.9rem 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .hk-hero__plate-data > div {
+    padding: 1rem 0.5rem 1rem 0;
+    border-bottom: 1px solid var(--color-rule);
+    border-right: 1px solid var(--color-rule);
+    padding-left: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .hk-hero__plate-data > div:nth-child(2n) { border-right: none; padding-right: 0; }
+  .hk-hero__plate-data > div:nth-last-child(-n+2) { border-bottom: none; }
+
+  .hk-hero__plate-data dt {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--color-muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .hk-hero__plate-data dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1;
+    font-weight: 400;
+    color: var(--color-text);
+    letter-spacing: 0.01em;
+  }
+  .hk-hero__plate-data span {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .hk-hero__plate-num { color: var(--color-accent); }
+  .hk-hero__plate-unit {
+    font-size: 0.4em !important;
+    color: var(--color-muted) !important;
+    margin-left: 0.2em;
+    letter-spacing: 0.1em !important;
+  }
+
+  .hk-hero__plate-foot {
+    padding: 0.7rem 0.9rem;
+    border-top: 1px solid var(--color-rule);
+    background: var(--color-surface-2);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--color-accent);
+    letter-spacing: 0.18em;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  /* Strip */
+  .hk-hero__strip {
+    position: relative;
+    z-index: 2;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border-top: 1px solid var(--color-bg);
+    overflow: hidden;
+    padding-block: 0.95rem;
+  }
+
+  .hk-hero__strip-track {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    width: max-content;
+    animation: hk-strip 36s linear infinite;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  @keyframes hk-strip {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── MANIFEST ──────────────────────────────────────────────────── */
+  .hk-manifest {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .hk-manifest__h {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5.5vw, 4.6rem);
+    line-height: 1.05;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+    max-width: 28ch;
+  }
+
+  .hk-manifest__cols {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  @media (min-width: 900px) {
+    .hk-manifest__cols { grid-template-columns: repeat(3, 1fr); gap: clamp(2rem, 4vw, 3rem); }
+  }
+
+  .hk-manifest__cols p {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.65;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    padding-top: 1.25rem;
+    border-top: 2px solid var(--color-accent);
+  }
+
+  /* ── ABOUT TEASER ──────────────────────────────────────────────── */
+  .hk-about {
+    border-top: 1px solid var(--color-rule);
+    background: var(--color-surface);
+  }
+
+  .hk-about__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .hk-about__grid { grid-template-columns: 0.9fr 1.1fr; }
+  }
+
+  .hk-about__visual {
+    position: relative;
+    background: var(--color-bg);
+    border: 1px solid var(--color-rule-strong);
+    aspect-ratio: 360 / 480;
+    overflow: hidden;
+  }
+
+  .hk-about__circuit {
+    width: 100%;
+    height: 100%;
+    color: var(--color-text);
+  }
+
+  .hk-about__h {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    line-height: 0.9;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin: 1rem 0 1.5rem;
+  }
+  .hk-about__h-alt { color: var(--color-accent); }
+
+  .hk-about__text {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    max-width: 56ch;
+    margin: 0 0 1.5rem;
+  }
+
+  .hk-about__list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    border-top: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+    padding-block: 1.25rem;
+  }
+
+  .hk-about__list li {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    color: var(--color-text);
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+
+  .hk-about__list strong {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    color: var(--color-accent);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+
+  .hk-about__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.9rem 1.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-text);
+    text-decoration: none;
+    border: 1px solid var(--color-text);
+    transition: background-color 0.3s, color 0.3s, gap 0.3s var(--ease-out-expo);
+  }
+  .hk-about__link:hover {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    gap: 0.9rem;
+    border-color: var(--color-accent);
+  }
+  .hk-about__link svg { width: 14px; height: 14px; }
+
+  /* ── SERVICES TEASER ───────────────────────────────────────────── */
+  .hk-svc {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .hk-svc__h {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    line-height: 0.92;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+  }
+  .hk-svc__h-alt { color: var(--color-accent); }
+
+  .hk-svc__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    border: 1px solid var(--color-rule-strong);
+  }
+  @media (min-width: 720px) {
+    .hk-svc__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1100px) {
+    .hk-svc__grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .hk-svc__cell {
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    border-right: 1px solid var(--color-rule-strong);
+    border-bottom: 1px solid var(--color-rule-strong);
+    position: relative;
+    transition: background-color 0.4s var(--ease-out-expo), color 0.4s var(--ease-out-expo);
+  }
+
+  .hk-svc__cell:hover {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  .hk-svc__cell:last-child { border-right: none; }
+  @media (min-width: 720px) and (max-width: 1099px) {
+    .hk-svc__cell:nth-child(2n) { border-right: none; }
+    .hk-svc__cell:nth-last-child(-n+2):nth-child(2n+1) { border-bottom: none; }
+    .hk-svc__cell:last-child { border-bottom: none; }
+  }
+  @media (min-width: 1100px) {
+    .hk-svc__cell:nth-child(3n) { border-right: none; }
+    .hk-svc__cell:nth-last-child(-n+3) { border-bottom: none; }
+  }
+
+  .hk-svc__cell-n {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--color-accent);
+    transition: color 0.4s var(--ease-out-expo);
+  }
+  .hk-svc__cell:hover .hk-svc__cell-n { color: var(--color-bg); }
+
+  .hk-svc__cell-t {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3vw, 2.4rem);
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    margin: 0.3rem 0 0;
+    font-weight: 400;
+  }
+
+  .hk-svc__cell-sub {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    margin: 0;
+    transition: color 0.4s var(--ease-out-expo);
+  }
+  .hk-svc__cell:hover .hk-svc__cell-sub {
+    color: color-mix(in srgb, var(--color-bg) 75%, transparent);
+  }
+
+  .hk-svc__cell-text {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--color-text) 78%, transparent);
+    margin: 0.5rem 0 0;
+    flex: 1;
+    transition: color 0.4s var(--ease-out-expo);
+  }
+  .hk-svc__cell:hover .hk-svc__cell-text {
+    color: color-mix(in srgb, var(--color-bg) 88%, transparent);
+  }
+
+  .hk-svc__cell-link {
+    margin-top: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: inherit;
+    text-decoration: none;
+    align-self: start;
+    transition: gap 0.3s var(--ease-out-expo);
+  }
+  .hk-svc__cell:hover .hk-svc__cell-link { gap: 0.7rem; }
+
+  /* ── CASE STUDY ────────────────────────────────────────────────── */
+  .hk-case {
+    border-top: 1px solid var(--color-rule);
+    background: var(--color-surface);
+  }
+
+  .hk-case__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .hk-case__inner { grid-template-columns: 0.95fr 1.05fr; }
+  }
+
+  .hk-case__visual-frame {
+    background: var(--color-bg);
+    border: 1px solid var(--color-rule-strong);
+    padding: 1.5rem 1rem 1rem;
+    position: relative;
+  }
+  .hk-case__visual-label {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.9rem;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--color-accent);
+    letter-spacing: 0.18em;
+    font-weight: 700;
+  }
+  .hk-case__svg { width: 100%; height: auto; color: var(--color-text); }
+
+  .hk-case__h {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3.8rem);
+    line-height: 0.96;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin: 1rem 0 1.5rem;
+  }
+  .hk-case__h-alt { color: var(--color-accent); }
+
+  .hk-case__text {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    max-width: 56ch;
+    margin: 0 0 2rem;
+  }
+
+  .hk-case__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--color-rule-strong);
+    margin: 0 0 2rem;
+  }
+
+  .hk-case__stats > div {
+    padding: 1.25rem;
+    border-right: 1px solid var(--color-rule-strong);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .hk-case__stats > div:last-child { border-right: none; }
+
+  .hk-case__stats dt {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .hk-case__stats dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 3vw, 2.6rem);
+    line-height: 1;
+    font-weight: 400;
+    color: var(--color-accent);
+    letter-spacing: 0.005em;
+  }
+  .hk-case__stats span {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--color-muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .hk-case__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.95rem 1.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-bg);
+    background: var(--color-accent);
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s, gap 0.3s var(--ease-out-expo);
+  }
+  .hk-case__link:hover {
+    background: var(--color-text);
+    gap: 0.9rem;
+  }
+  .hk-case__link svg { width: 14px; height: 14px; }
+
+  /* ── PROZESS (Pin-Section) ─────────────────────────────────────── */
+  .hk-proc {
+    border-top: 1px solid var(--color-rule);
+    background: var(--color-bg);
+    position: relative;
+  }
+
+  .hk-proc__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 5vw, 4rem);
+    padding-block: clamp(4rem, 8vw, 8rem);
+  }
+
+  @media (min-width: 900px) {
+    .hk-proc__inner { grid-template-columns: 0.85fr 1.15fr; align-items: start; }
+  }
+
+  .hk-proc__head { position: relative; }
+
+  @media (min-width: 900px) {
+    .hk-proc__head {
+      position: sticky;
+      top: calc(60px + 2rem);
+      align-self: start;
+    }
+  }
+
+  .hk-proc__h {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 6rem);
+    line-height: 0.88;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    margin: 0 0 1.5rem;
+    font-weight: 400;
+  }
+  .hk-proc__h-alt { color: var(--color-accent); }
+
+  .hk-proc__lead {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.65;
+    color: color-mix(in srgb, var(--color-text) 78%, transparent);
+    max-width: 36ch;
+  }
+
+  .hk-proc__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1px;
+    background: var(--color-rule-strong);
+    border: 1px solid var(--color-rule-strong);
+  }
+
+  .hk-proc__step {
+    background: var(--color-bg);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.5rem;
+    align-items: start;
+    transition: background-color 0.4s var(--ease-out-expo);
+  }
+  .hk-proc__step:hover {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  .hk-proc__step-n {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    line-height: 1;
+    color: var(--color-accent);
+    font-weight: 400;
+    letter-spacing: 0.005em;
+    transition: color 0.4s var(--ease-out-expo);
+  }
+  .hk-proc__step:hover .hk-proc__step-n { color: var(--color-bg); }
+
+  .hk-proc__step h3 {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    line-height: 1;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    margin: 0 0 0.6rem;
+    font-weight: 400;
+  }
+
+  .hk-proc__step p {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: color-mix(in srgb, currentColor 80%, transparent);
+    margin: 0;
+    max-width: 44ch;
+  }
+
+  /* ── SOCIAL PROOF ──────────────────────────────────────────────── */
+  .hk-proof {
+    border-top: 1px solid var(--color-rule);
+    background: var(--color-surface);
+  }
+
+  .hk-proof__grid {
+    list-style: none;
+    margin: 0 0 clamp(2rem, 4vw, 4rem);
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  @media (min-width: 900px) {
+    .hk-proof__grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .hk-proof__cell {
+    padding: 1.75rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-rule);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    transition: border-color 0.4s var(--ease-out-expo);
+  }
+  .hk-proof__cell:hover { border-color: var(--color-accent); }
+
+  .hk-proof__q {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text);
+    margin: 0;
+    flex: 1;
+  }
+
+  .hk-proof__cell footer {
+    border-top: 1px solid var(--color-rule);
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+  }
+  .hk-proof__cell footer strong {
+    color: var(--color-text);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .hk-proof__cell footer span:not(.hk-proof__rating) {
+    color: var(--color-muted);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+  }
+  .hk-proof__rating {
+    color: var(--color-accent) !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.1em !important;
+  }
+
+  .hk-proof__seals {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    border-top: 1px solid var(--color-rule);
+    padding-top: 1.75rem;
+  }
+
+  .hk-proof__seal {
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--color-rule-strong);
+    background: var(--color-bg);
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .hk-proof__seal strong {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    color: var(--color-accent);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  .hk-proof__seal span {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  /* ── BLOG ─────────────────────────────────────────────────────── */
+  .hk-journal {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .hk-journal__h {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.8rem);
+    line-height: 0.95;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin: 0 0 clamp(2rem, 4vw, 3.5rem);
+  }
+  .hk-journal__h-alt { color: var(--color-accent); }
+
+  .hk-journal__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  @media (min-width: 720px) { .hk-journal__grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .hk-journal__cell {
+    padding: 1.75rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-rule);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: transform 0.5s var(--ease-out-expo), border-color 0.4s ease;
+  }
+  .hk-journal__cell:hover {
+    transform: translateY(-6px);
+    border-color: var(--color-accent);
+  }
+
+  .hk-journal__cat {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    color: var(--color-accent);
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .hk-journal__t {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    line-height: 1.05;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    font-weight: 400;
+    flex: 1;
+  }
+  .hk-journal__d {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .hk-journal__link {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-text);
+    text-decoration: none;
+    align-self: start;
+    text-transform: uppercase;
+    transition: color 0.3s, gap 0.3s var(--ease-out-expo);
+  }
+  .hk-journal__cell:hover .hk-journal__link { color: var(--color-accent); gap: 0.7rem; }
+
+  /* ── FINAL CTA ─────────────────────────────────────────────────── */
+  .hk-final {
+    position: relative;
+    padding-block: clamp(5rem, 10vw, 10rem);
+    background: var(--color-accent);
+    color: var(--color-bg);
+    text-align: center;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .hk-final__bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--color-bg) 8%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-bg) 8%, transparent) 1px, transparent 1px);
+    background-size: 56px 56px;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .hk-final__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin-inline: auto;
+    padding-inline: var(--hk-gutter);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .hk-final .hk-eyebrow { color: var(--color-bg); }
+
+  .hk-final__h {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 9vw, 8rem);
+    line-height: 0.88;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    margin: 0.5rem 0 1.5rem;
+    font-weight: 400;
+    color: var(--color-bg);
+  }
+  .hk-final__h-alt { color: var(--color-text); }
+
+  .hk-final__lead {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    color: color-mix(in srgb, var(--color-bg) 88%, transparent);
+    max-width: 48ch;
+    line-height: 1.6;
+    margin: 0 0 1rem;
+  }
+
+  .hk-final__cta {
+    background: var(--color-bg);
+    color: var(--color-text);
+    border-radius: 0;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    padding: 1.2rem 2rem;
+  }
+  .hk-final__cta:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .hk-hero__strip-track { animation: none; }
+    .hk-hero__spec-dot { animation: none; }
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  function init() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const hero = document.querySelector<HTMLElement>('[data-hk-hero]');
+    const plate = document.querySelector<HTMLElement>('[data-hk-hero-plate]');
+    if (hero && plate) {
+      gsap.to(plate, {
+        yPercent: -6,
+        ease: 'none',
+        scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.6 },
+      });
+    }
+
+    // Pin-Section für Prozess (nur Desktop, sonst überlappt es mit den Karten)
+    const proc = document.querySelector<HTMLElement>('[data-hk-proc]');
+    const procHead = document.querySelector<HTMLElement>('[data-hk-proc-head]');
+    if (proc && procHead && window.matchMedia('(min-width: 900px)').matches) {
+      // Sticky-Behaviour ist über CSS bereits gesetzt — ScrollTrigger nur für
+      // sanften Reveal der einzelnen Step-Karten.
+      const steps = proc.querySelectorAll<HTMLElement>('.hk-proc__step');
+      steps.forEach((step, i) => {
+        gsap.from(step, {
+          opacity: 0,
+          y: 40,
+          duration: 0.8,
+          ease: 'expo.out',
+          scrollTrigger: { trigger: step, start: 'top 85%', once: true },
+          delay: i * 0.05,
+        });
+      });
+    }
+  }
+
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

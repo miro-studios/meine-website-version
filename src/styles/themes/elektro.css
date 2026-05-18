@@ -1,0 +1,48 @@
+/* ==========================================================================
+   Theme: Holtkamp Elektrotechnik — Demo für das Business Multi-Page-Paket
+   --------------------------------------------------------------------------
+   Elektro- + Heizungsbau-Meisterbetrieb, NRW. 1989 gegründet.
+
+   Industrial Brutalism mit Premium-Touch. Tiefes Warm-Schwarz als Bühne,
+   warmer Cream als Schrift, elektrisches Gelb als sparsamer Akzent.
+   Display: Anton (extra condensed, all-caps). Mono: JetBrains Mono.
+
+   Kein Editorial-Serifen-Look. Keine Pastellfarben. Keine weichen Radien —
+   wir sind ein Handwerksbetrieb, nicht eine Wellness-Marke.
+   ========================================================================== */
+
+[data-theme="elektro"] {
+  /* -- Brand -------------------------------------------------------------- */
+  --color-bg: #0E0E0C;              /* tiefes Warm-Schwarz */
+  --color-surface: #161614;         /* leicht abgesetzte Surface */
+  --color-surface-2: #1F1F1C;       /* zweite Surface-Ebene */
+  --color-text: #F0EDE4;            /* warmer Cream */
+  --color-muted: #8A8780;           /* gedämpftes Warm-Grau */
+  --color-primary: #FFD60A;         /* elektrisches Gelb */
+  --color-secondary: #2B2B27;       /* dunkles Anthrazit */
+  --color-accent: #FFD60A;          /* elektrisches Gelb (Akzent = Primary) */
+
+  /* -- Hairline ---------------------------------------------------------- */
+  --color-rule: color-mix(in srgb, var(--color-text) 14%, transparent);
+  --color-rule-strong: color-mix(in srgb, var(--color-text) 32%, transparent);
+
+  /* -- Typo --------------------------------------------------------------- */
+  /* Display: Anton (condensed, all-caps, industrial)                       */
+  /* Body:    Manrope (clean, geometrisch)                                  */
+  /* Mono:    JetBrains Mono (technische Labels, IDs)                       */
+  --font-display: "Anton", "Bebas Neue", "Arial Narrow Bold", system-ui, sans-serif;
+  --font-body: "Manrope", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* -- Container --------------------------------------------------------- */
+  --hk-container: 1440px;
+  --hk-gutter: clamp(1.25rem, 3.5vw, 3rem);
+
+  /* -- Technische Tokens -------------------------------------------------- */
+  --hk-grid-line: color-mix(in srgb, var(--color-accent) 6%, transparent);
+  --hk-circuit: color-mix(in srgb, var(--color-accent) 22%, transparent);
+
+  /* Easings (theme-spezifisch falls global fehlt) */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+}

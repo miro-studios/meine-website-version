@@ -1,0 +1,194 @@
+---
+import ElektroLayout from '@layouts/ElektroLayout.astro';
+---
+
+<ElektroLayout
+  title="Holtkamp Elektrotechnik — Impressum"
+  description="Anbieterkennzeichnung der Holtkamp Elektrotechnik GmbH, Lüdenscheid."
+>
+  <section class="hk-legal hk-section">
+    <div class="hk-container hk-legal__inner">
+      <p class="hk-eyebrow">Pflichtangaben · § 5 TMG</p>
+      <h1 class="hk-legal__h">IMPRESSUM</h1>
+
+      <p class="hk-legal__demo-note">
+        <strong>Hinweis:</strong> Diese Seite ist eine Demo-Website für
+        miro-studios. Es handelt sich nicht um einen echten Betrieb.
+        Bei einer echten Implementierung würden hier die Pflichtangaben
+        des Kunden stehen.
+      </p>
+
+      <div class="hk-legal__body">
+        <section>
+          <h2>Anbieter</h2>
+          <p>
+            Holtkamp Elektrotechnik GmbH<br />
+            Volmestraße 47<br />
+            58507 Lüdenscheid<br />
+            Deutschland
+          </p>
+        </section>
+
+        <section>
+          <h2>Vertretungsberechtigt</h2>
+          <p>
+            Daniel Holtkamp, Geschäftsführer<br />
+            Karla Holtkamp, Prokuristin
+          </p>
+        </section>
+
+        <section>
+          <h2>Kontakt</h2>
+          <p>
+            Telefon: +49 2351 60 80 21<br />
+            E-Mail: <a href="mailto:hallo@holtkamp-elektro.de">hallo@holtkamp-elektro.de</a>
+          </p>
+        </section>
+
+        <section>
+          <h2>Registereintrag</h2>
+          <p>
+            Amtsgericht Iserlohn<br />
+            HRB 12 408<br />
+            USt-ID gemäß § 27a UStG: DE 312 487 920
+          </p>
+        </section>
+
+        <section>
+          <h2>Berufsrechtliche Angaben</h2>
+          <p>
+            Berufsbezeichnung: Elektrotechnikermeister (verliehen in der
+            Bundesrepublik Deutschland) sowie Installateur- und Heizungs­bauermeister.<br />
+            Zuständige Kammer: Handwerkskammer Südwestfalen,
+            Bahnhofstraße 5–7, 58095 Hagen.
+          </p>
+          <p>
+            Eingetragen in die Handwerksrolle der Handwerkskammer
+            Südwestfalen unter den Nummern 47/13 (Elektrotechniker) und
+            81/22 (Installateur- und Heizungsbauer).
+          </p>
+        </section>
+
+        <section>
+          <h2>Berufshaftpflicht</h2>
+          <p>
+            R+V Allgemeine Versicherung AG,<br />
+            Raiffeisenplatz 1, 65189 Wiesbaden.<br />
+            Geltungsbereich: Bundesrepublik Deutschland.
+          </p>
+        </section>
+
+        <section>
+          <h2>Verantwortlich nach § 18 Abs. 2 MStV</h2>
+          <p>
+            Daniel Holtkamp, Anschrift wie oben.
+          </p>
+        </section>
+
+        <section>
+          <h2>Online-Streitbeilegung</h2>
+          <p>
+            Die Europäische Kommission stellt eine Plattform zur
+            Online-Streitbeilegung bereit:
+            <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">https://ec.europa.eu/consumers/odr</a>.
+            Wir sind weder bereit noch verpflichtet, an einem Streit­beilegungs­verfahren
+            vor einer Verbraucher­schlichtungs­stelle teilzunehmen.
+          </p>
+        </section>
+
+        <section>
+          <h2>Haftung für Inhalte</h2>
+          <p>
+            Die Inhalte dieser Demo wurden mit größter Sorgfalt erstellt. Für die
+            Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir
+            jedoch keine Gewähr übernehmen.
+          </p>
+        </section>
+
+        <section>
+          <h2>Realisierung</h2>
+          <p>
+            Konzept, Design und Entwicklung dieser Demo:
+            <a href="/">miro-studios</a>, David Rost, Kierspe (NRW).
+            Diese Seite ist Teil des Showcase für das
+            <strong>Business Multi-Page</strong>-Paket (€&nbsp;2.799 einmalig,
+            zzgl. €&nbsp;34,99 / Monat Support).
+          </p>
+        </section>
+      </div>
+    </div>
+  </section>
+</ElektroLayout>
+
+<style>
+  .hk-legal { border-top: 1px solid var(--color-rule); }
+
+  .hk-legal__inner {
+    max-width: 760px;
+    margin-inline: auto;
+  }
+
+  .hk-legal__h {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin: 1rem 0 2rem;
+  }
+
+  .hk-legal__demo-note {
+    margin: 0 0 3rem;
+    padding: 1rem 1.25rem;
+    background: var(--color-surface);
+    border-left: 3px solid var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-text) 85%, transparent);
+    letter-spacing: 0.04em;
+  }
+  .hk-legal__demo-note strong {
+    color: var(--color-accent);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  .hk-legal__body section {
+    border-top: 1px solid var(--color-rule);
+    padding-block: 1.5rem;
+  }
+  .hk-legal__body section:first-child { border-top: 1px solid var(--color-rule-strong); }
+
+  .hk-legal__body h2 {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    margin: 0 0 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    color: var(--color-accent);
+    font-weight: 400;
+  }
+
+  .hk-legal__body p {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: color-mix(in srgb, var(--color-text) 85%, transparent);
+    margin: 0 0 0.75rem;
+  }
+  .hk-legal__body p:last-child { margin: 0; }
+
+  .hk-legal__body a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .hk-legal__body a:hover { color: var(--color-text); }
+
+  .hk-legal__body strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+</style>

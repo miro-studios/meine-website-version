@@ -1,0 +1,580 @@
+---
+import ElektroLayout from '@layouts/ElektroLayout.astro';
+import SplitText from '@components/shared/SplitText.astro';
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+import MagneticButton from '@components/shared/MagneticButton.astro';
+
+const categories = ['ALLE', 'FÖRDERUNG', 'PHOTOVOLTAIK', 'WÄRMEPUMPE', 'SMART HOME', 'GRUNDLAGEN'];
+
+const articles = [
+  {
+    cat: 'FÖRDERUNG',
+    date: '12 MAI 2026',
+    read: '6 MIN',
+    title: 'BAFA-Förderung 2026 — was sich geändert hat und was bleibt.',
+    excerpt: 'Die neuen Förderquoten sind raus. Wer 2026 saniert oder eine Wärme­pumpe einbaut, sollte vorher rechnen — denn die Boni gelten nicht für jedes Vorhaben gleich.',
+    featured: true,
+  },
+  {
+    cat: 'PHOTOVOLTAIK',
+    date: '28 APR 2026',
+    read: '8 MIN',
+    title: 'Lohnt sich eine PV-Anlage ohne Speicher noch? Eine ehrliche Rechnung.',
+    excerpt: 'Speicher kosten 2026 deutlich weniger als noch vor drei Jahren. Aber lohnt sich der Speicher auch dann, wenn man bisher nur den klassischen Tag-Verbrauch hat?',
+  },
+  {
+    cat: 'WÄRMEPUMPE',
+    date: '14 APR 2026',
+    read: '11 MIN',
+    title: 'Wärmepumpe im Altbau — was wirklich zählt, und was Verkäufer gern verschweigen.',
+    excerpt: 'Wir hören sie jede Woche: „Ist eine Wärme­pumpe im 70er-Bau überhaupt sinnvoll?" — die Antwort ist ein klares "Es kommt drauf an". Diese drei Faktoren entscheiden.',
+  },
+  {
+    cat: 'SMART HOME',
+    date: '02 APR 2026',
+    read: '7 MIN',
+    title: 'KNX oder Loxone? Wann welche Lösung wirklich passt.',
+    excerpt: 'Die Frage hören wir bei jeder Erstberatung. Beide Systeme sind professionell, beide haben ihre Berechtigung. Hier eine ehrliche Gegenüberstellung — ohne Marketing-Gerede.',
+  },
+  {
+    cat: 'GRUNDLAGEN',
+    date: '18 MÄR 2026',
+    read: '5 MIN',
+    title: 'E-Check für Mietshäuser — was Vermieter wissen müssen.',
+    excerpt: 'Seit 2024 verschärft sich die Pflicht zum periodischen E-Check für Vermietungs-Objekte. Welche Intervalle gelten, was kostet es, und was passiert, wenn man es ignoriert.',
+  },
+  {
+    cat: 'FÖRDERUNG',
+    date: '04 MÄR 2026',
+    read: '9 MIN',
+    title: 'KfW 458 — die wichtigste Wärmepumpen-Förderung erklärt.',
+    excerpt: 'Für Privat­personen ist KfW 458 derzeit das attraktivste Förder­programm für den Heizungs­tausch. Wer wann wie viel bekommt — Schritt für Schritt.',
+  },
+  {
+    cat: 'PHOTOVOLTAIK',
+    date: '22 FEB 2026',
+    read: '6 MIN',
+    title: 'Balkonkraftwerk vs. Dachanlage — der Unterschied in Zahlen.',
+    excerpt: 'Balkonkraftwerke sind 2026 günstiger denn je und einfach anzuschließen. Aber wann lohnt es sich wirklich gegenüber einer kleinen Dach­anlage?',
+  },
+  {
+    cat: 'SMART HOME',
+    date: '08 FEB 2026',
+    read: '10 MIN',
+    title: 'Matter ist da — Hype oder Game-Changer im Smart Home?',
+    excerpt: 'Apple, Google, Amazon und Samsung haben sich auf einen Standard geeinigt. Was Matter wirklich bedeutet — und warum es das KNX-System nicht ersetzt.',
+  },
+];
+
+const featured = articles.find(a => a.featured)!;
+const rest = articles.filter(a => !a.featured);
+---
+
+<ElektroLayout
+  title="Holtkamp Elektrotechnik — Journal · Fakten aus dem Handwerk"
+  description="Förderprogramme, Photovoltaik-Berechnungen, Wärmepumpen-Praxis, Smart-Home-Vergleiche — ehrliche Beiträge aus der Werkstatt. Alle zwei Wochen ein neuer Artikel."
+>
+  <!-- ── Page Hero ────────────────────────────────────────────────── -->
+  <section class="hk-pg-hero hk-section">
+    <div class="hk-container">
+      <div class="hk-bar">
+        <span class="hk-bar-n">N° 04</span>
+        <span class="hk-bar-line" aria-hidden="true"></span>
+        <span class="hk-bar-k">PAGE / JOURNAL</span>
+      </div>
+
+      <h1 class="hk-pg-hero__h">
+        <span class="hk-pg-hero__line"><SplitText by="words" stagger={0.05}>WAS WIR</SplitText></span>
+        <span class="hk-pg-hero__line hk-pg-hero__line--alt"><SplitText by="words" stagger={0.05} delay={0.2}>GELERNT HABEN.</SplitText></span>
+      </h1>
+
+      <p class="hk-pg-hero__lead">
+        Förderprogramme, Photovoltaik-Berechnungen, Wärmepumpen-Praxis,
+        Smart-Home-Vergleiche — ohne Marketing-Filter. Alle zwei Wochen
+        ein neuer Artikel aus der Werkstatt.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Filter ────────────────────────────────────────────────── -->
+  <section class="hk-filt">
+    <div class="hk-container hk-filt__inner" data-hk-filter>
+      <span class="hk-filt__label">FILTER →</span>
+      <ul class="hk-filt__list" role="tablist">
+        {categories.map((c, i) => (
+          <li>
+            <button
+              type="button"
+              class:list={['hk-filt__btn', { 'is-active': i === 0 }]}
+              role="tab"
+              aria-selected={i === 0 ? 'true' : 'false'}
+              data-filter={c}
+            >
+              {c}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Featured ─────────────────────────────────────────────── -->
+  <section class="hk-feat-post hk-section">
+    <div class="hk-container">
+      <div class="hk-bar">
+        <span class="hk-bar-n">FEATURED</span>
+        <span class="hk-bar-line" aria-hidden="true"></span>
+        <span class="hk-bar-k">NEU IM BLOG</span>
+      </div>
+
+      <RevealOnScroll>
+        <article class="hk-feat-post__art">
+          <div class="hk-feat-post__visual" aria-hidden="true">
+            <span class="hk-feat-post__visual-cat">{featured.cat}</span>
+            <span class="hk-feat-post__visual-bg"></span>
+            <span class="hk-feat-post__visual-num">01</span>
+          </div>
+
+          <div class="hk-feat-post__copy">
+            <header>
+              <span class="hk-feat-post__cat">{featured.cat}</span>
+              <span class="hk-feat-post__meta">{featured.date} · {featured.read} LESEZEIT</span>
+            </header>
+            <h2 class="hk-feat-post__h">{featured.title}</h2>
+            <p class="hk-feat-post__excerpt">{featured.excerpt}</p>
+            <a href="#" class="hk-feat-post__link">
+              <span>ARTIKEL LESEN</span>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
+            </a>
+          </div>
+        </article>
+      </RevealOnScroll>
+    </div>
+  </section>
+
+  <!-- ── Articles Grid ────────────────────────────────────────── -->
+  <section class="hk-art-list hk-section">
+    <div class="hk-container">
+      <div class="hk-bar">
+        <span class="hk-bar-n">N° 05</span>
+        <span class="hk-bar-line" aria-hidden="true"></span>
+        <span class="hk-bar-k">ALLE ARTIKEL / 7</span>
+      </div>
+
+      <ul class="hk-art-list__grid" data-hk-articles>
+        {rest.map((a, i) => (
+          <li class="hk-art-list__cell" data-cat={a.cat}>
+            <header>
+              <span class="hk-art-list__cat">{a.cat}</span>
+              <span class="hk-art-list__n">{String(i + 2).padStart(2, '0')}</span>
+            </header>
+            <h3 class="hk-art-list__t">{a.title}</h3>
+            <p class="hk-art-list__excerpt">{a.excerpt}</p>
+            <footer>
+              <span class="hk-art-list__meta">{a.date} · {a.read}</span>
+              <a href="#" class="hk-art-list__link">
+                <span>Lesen</span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </footer>
+          </li>
+        ))}
+      </ul>
+
+      <p class="hk-art-list__note">Mehr Artikel folgen — neue Ausgabe alle zwei Wochen, dienstags.</p>
+    </div>
+  </section>
+
+  <!-- ── Newsletter-Reminder ──────────────────────────────────── -->
+  <section class="hk-pg-cta hk-section">
+    <div class="hk-container">
+      <RevealOnScroll>
+        <h2 class="hk-pg-cta__h">
+          NICHTS<br />
+          <span class="hk-pg-cta__h-alt">VERPASSEN.</span>
+        </h2>
+        <p class="hk-pg-cta__lead">
+          Vier Mal im Jahr — die wichtigsten neuen Förderprogramme und
+          Praxis-Tipps direkt in die Inbox. Double-Opt-In, jederzeit kündbar.
+        </p>
+        <MagneticButton href="#newsletter" strength={0.4} variant="primary" class="hk-pg-cta__btn">
+          <span>JOURNAL ABONNIEREN</span>
+          <span aria-hidden="true">↓</span>
+        </MagneticButton>
+        <p class="hk-pg-cta__hint">Formular im Footer</p>
+      </RevealOnScroll>
+    </div>
+  </section>
+</ElektroLayout>
+
+<style>
+  /* ── Page Hero ────────────────────────────────────────────────── */
+  .hk-pg-hero { padding-block: clamp(3rem, 6vw, 5rem) clamp(3rem, 6vw, 5rem); }
+
+  .hk-pg-hero__h {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 11vw, 10rem);
+    line-height: 0.88;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin: 0 0 2rem;
+  }
+  .hk-pg-hero__line { display: block; overflow: hidden; }
+  .hk-pg-hero__line--alt { color: var(--color-accent); }
+
+  .hk-pg-hero__lead {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    line-height: 1.65;
+    max-width: 55ch;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    margin: 0;
+  }
+
+  /* ── Filter ───────────────────────────────────────────────────── */
+  .hk-filt {
+    border-top: 1px solid var(--color-rule);
+    background: var(--color-surface);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .hk-filt__inner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-block: 1.25rem;
+    overflow-x: auto;
+  }
+  .hk-filt__label {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    color: var(--color-accent);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .hk-filt__list {
+    list-style: none;
+    display: flex;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0;
+    flex-wrap: nowrap;
+  }
+  .hk-filt__btn {
+    padding: 0.55rem 1rem;
+    background: transparent;
+    color: var(--color-text);
+    border: 1px solid var(--color-rule-strong);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.3s, color 0.3s, border-color 0.3s;
+    white-space: nowrap;
+  }
+  .hk-filt__btn:hover {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border-color: var(--color-accent);
+  }
+  .hk-filt__btn.is-active {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border-color: var(--color-accent);
+  }
+
+  /* ── Featured Post ─────────────────────────────────────────── */
+  .hk-feat-post { border-top: 1px solid var(--color-rule); }
+
+  .hk-feat-post__art {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: stretch;
+  }
+  @media (min-width: 900px) {
+    .hk-feat-post__art { grid-template-columns: 0.9fr 1.1fr; }
+  }
+
+  .hk-feat-post__visual {
+    position: relative;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hk-feat-post__visual-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--color-bg) 12%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-bg) 12%, transparent) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+  .hk-feat-post__visual-cat {
+    position: absolute;
+    top: 1rem;
+    left: 1.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    color: var(--color-bg);
+    font-weight: 700;
+    z-index: 1;
+  }
+  .hk-feat-post__visual-num {
+    font-family: var(--font-display);
+    font-size: clamp(8rem, 22vw, 16rem);
+    line-height: 1;
+    color: var(--color-bg);
+    font-weight: 400;
+    letter-spacing: 0.005em;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hk-feat-post__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .hk-feat-post__copy header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+  }
+  .hk-feat-post__cat { color: var(--color-accent); font-weight: 700; }
+  .hk-feat-post__meta { color: var(--color-muted); }
+
+  .hk-feat-post__h {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3.4rem);
+    line-height: 1;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    margin: 0;
+    font-weight: 400;
+  }
+
+  .hk-feat-post__excerpt {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  .hk-feat-post__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-top: auto;
+    padding: 0.95rem 1.4rem;
+    align-self: start;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-bg);
+    background: var(--color-accent);
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s, gap 0.3s var(--ease-out-expo);
+  }
+  .hk-feat-post__link:hover { background: var(--color-text); gap: 0.9rem; }
+  .hk-feat-post__link svg { width: 14px; height: 14px; }
+
+  /* ── Articles Grid ─────────────────────────────────────────── */
+  .hk-art-list { border-top: 1px solid var(--color-rule); }
+
+  .hk-art-list__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--color-rule-strong);
+    border: 1px solid var(--color-rule-strong);
+  }
+  @media (min-width: 720px) { .hk-art-list__grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1100px) { .hk-art-list__grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .hk-art-list__cell {
+    background: var(--color-bg);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 320px;
+    transition: background-color 0.4s var(--ease-out-expo);
+  }
+  .hk-art-list__cell:hover { background: var(--color-surface); }
+  .hk-art-list__cell.is-hidden { display: none; }
+
+  .hk-art-list__cell header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .hk-art-list__cat {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    color: var(--color-accent);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .hk-art-list__n {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    letter-spacing: 0.14em;
+  }
+
+  .hk-art-list__t {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2vw, 1.6rem);
+    line-height: 1.05;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    margin: 0;
+    font-weight: 400;
+  }
+
+  .hk-art-list__excerpt {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+    margin: 0;
+    flex: 1;
+  }
+
+  .hk-art-list__cell footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--color-rule);
+    padding-top: 0.75rem;
+    gap: 1rem;
+  }
+
+  .hk-art-list__meta {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    color: var(--color-muted);
+    letter-spacing: 0.1em;
+  }
+
+  .hk-art-list__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-accent);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: gap 0.3s var(--ease-out-expo);
+  }
+  .hk-art-list__cell:hover .hk-art-list__link { gap: 0.6rem; }
+
+  .hk-art-list__note {
+    margin-top: 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-muted);
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
+
+  /* ── Newsletter CTA ────────────────────────────────────────── */
+  .hk-pg-cta {
+    border-top: 1px solid var(--color-rule);
+    text-align: center;
+    background: var(--color-surface);
+  }
+  .hk-pg-cta__h {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6.5vw, 5rem);
+    line-height: 0.95;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    margin: 0 0 1.25rem;
+    font-weight: 400;
+  }
+  .hk-pg-cta__h-alt { color: var(--color-accent); }
+  .hk-pg-cta__lead {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+    margin: 0 0 2rem;
+    max-width: 56ch;
+    margin-inline: auto;
+  }
+  .hk-pg-cta__btn {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border-radius: 0;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    padding: 1.2rem 2rem;
+  }
+  .hk-pg-cta__btn:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+  .hk-pg-cta__hint {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    letter-spacing: 0.14em;
+    margin: 1rem 0 0;
+  }
+</style>
+
+<script>
+  function init() {
+    const filter = document.querySelector<HTMLElement>('[data-hk-filter]');
+    const articles = document.querySelector<HTMLElement>('[data-hk-articles]');
+    if (!filter || !articles) return;
+
+    const buttons = filter.querySelectorAll<HTMLButtonElement>('.hk-filt__btn');
+    const cells = articles.querySelectorAll<HTMLElement>('.hk-art-list__cell');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cat = btn.dataset.filter ?? 'ALLE';
+        buttons.forEach(b => {
+          const active = b === btn;
+          b.classList.toggle('is-active', active);
+          b.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        cells.forEach(cell => {
+          const match = cat === 'ALLE' || cell.dataset.cat === cat;
+          cell.classList.toggle('is-hidden', !match);
+        });
+      });
+    });
+  }
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

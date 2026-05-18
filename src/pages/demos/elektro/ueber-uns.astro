@@ -1,0 +1,650 @@
+---
+import ElektroLayout from '@layouts/ElektroLayout.astro';
+import SplitText from '@components/shared/SplitText.astro';
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+import NumberCounter from '@components/shared/NumberCounter.astro';
+import MagneticButton from '@components/shared/MagneticButton.astro';
+
+const team = [
+  { initials: 'WH', name: 'Werner Holtkamp', role: 'Gründer · Senior-Berater', text: 'Hat den Betrieb 1989 gegründet. Heute beratend an Bord — gibt Kunden eine zweite Meinung, wenn es kompliziert wird.' },
+  { initials: 'DH', name: 'Daniel Holtkamp', role: 'Geschäftsführung · Elektromeister', text: 'Führt seit 2008 die Geschäfte, plant alle größeren Industrie- und Gewerbe-Projekte mit dem Kunden zusammen.' },
+  { initials: 'KH', name: 'Karla Holtkamp', role: 'Meisterin Elektrotechnik · seit 2024', text: 'Dritte Generation. Verantwortet Smart-Home, Photovoltaik und E-Mobilität. Trifft Sie als erste, wenn Sie anrufen.' },
+  { initials: 'TM', name: 'Torsten Müller', role: 'Meister Heizung & Sanitär', text: 'Seit zehn Jahren im Team. Plant Wärmepumpen, Hybrid-Heizungen und übernimmt den Förder­antrag.' },
+  { initials: 'BL', name: 'Bastian Lemke', role: 'Geselle · KNX-Spezialist', text: 'Programmiert Smart-Home-Anlagen, von der WG-Wohnung bis zur 800-m²-Villa. Liebt ETS-Datenbanken.' },
+  { initials: 'AR', name: 'Anna Rüther', role: 'Auszubildende · 3. Lehrjahr', text: 'Schließt 2026 mit Gesellenprüfung ab. Hat in 2025 den Innungs-Preis für die beste Zwischenprüfung im MK erhalten.' },
+];
+
+const milestones = [
+  { y: '1989', t: 'GRÜNDUNG', text: 'Werner Holtkamp startet allein in einer 40-m²-Werkstatt an der Volmestraße.' },
+  { y: '1996', t: 'MEISTERBETRIEB', text: 'Eintragung als Meisterbetrieb in der HWK Märkischer Kreis. Erstes Lehrling beginnt.' },
+  { y: '2003', t: 'HEIZUNG DAZU', text: 'Aufnahme des Gewerks Heizungsbau. Zwei zusätzliche Gesellen, eigene Lagerhalle.' },
+  { y: '2008', t: 'GENERATION 2', text: 'Daniel Holtkamp übernimmt die Geschäftsführung. Werner bleibt beratend.' },
+  { y: '2015', t: 'PHOTOVOLTAIK', text: 'Erste eigene PV-Abteilung. 38 Anlagen im ersten Jahr.' },
+  { y: '2020', t: 'NEUBAU', text: 'Umzug ins heutige Domizil — 1.200 m² mit eigener Lehrwerkstatt.' },
+  { y: '2024', t: 'GENERATION 3', text: 'Karla Holtkamp legt Meisterprüfung ab, übernimmt Smart-Home und Photovoltaik.' },
+  { y: '2026', t: 'HEUTE', text: '14 Mitarbeiter, 4 Auszubildende, 2.400+ realisierte Projekte. Eigentümergeführt geblieben.' },
+];
+
+const values = [
+  { n: '01', t: 'EHRLICH', text: 'Wir sagen, wenn etwas nicht geht — und wir sagen, wenn etwas billiger geht. Auftragsverlust ist uns lieber als ein Kunde, der nach drei Jahren wiederkommt mit dem gleichen Schaden.' },
+  { n: '02', t: 'DOKUMENTIERT', text: 'Jede Anlage hat ein Übergabeprotokoll, Messwerte, Schaltplan und Datenblatt der verbauten Komponenten. Wenn wir weg sind, weiß der nächste Elektriker, was passiert ist.' },
+  { n: '03', t: 'ERREICHBAR', text: 'Ein Anruf, eine Antwort innerhalb von 24 Stunden — auch im Sommer, auch in Urlaubszeiten. Notdienst rund um die Uhr im MK-Gebiet.' },
+  { n: '04', t: 'AUSGEBILDET', text: 'Wir haben aktuell vier Auszubildende. Wer eine ehrliche Lehre will, kommt zu uns. Wer ehrliche Arbeit will, kann sich darauf verlassen, dass sie hier passiert.' },
+];
+---
+
+<ElektroLayout
+  title="Holtkamp Elektrotechnik — Über uns · Drei Generationen Handwerk"
+  description="Familiengeführter Elektro- und Heizungsbau-Meisterbetrieb in Lüdenscheid. 37 Jahre Erfahrung, 14 Mitarbeitende, 2.400+ realisierte Projekte. Lernen Sie Holtkamp kennen."
+>
+  <!-- ── Page Hero ─────────────────────────────────────────────────── -->
+  <section class="hk-pg-hero hk-section">
+    <div class="hk-container">
+      <div class="hk-bar">
+        <span class="hk-bar-n">N° 01</span>
+        <span class="hk-bar-line" aria-hidden="true"></span>
+        <span class="hk-bar-k">PAGE / BETRIEB</span>
+      </div>
+
+      <h1 class="hk-pg-hero__h">
+        <span class="hk-pg-hero__line"><SplitText by="words" stagger={0.05}>VON 1989</SplitText></span>
+        <span class="hk-pg-hero__line hk-pg-hero__line--alt"><SplitText by="words" stagger={0.05} delay={0.2}>BIS HEUTE.</SplitText></span>
+      </h1>
+
+      <p class="hk-pg-hero__lead">
+        Wir sind ein Familien­betrieb in dritter Generation. 37 Jahre, drei
+        Meisterbriefe im Haus, 14 Köpfe — und ein klarer Auftrag: Anlagen
+        bauen, die ihren Zweck erfüllen, und Menschen ausbilden, die den Job
+        weiterführen.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Über-Story (Editorial-Layout) ─────────────────────────────── -->
+  <section class="hk-story hk-section">
+    <div class="hk-container hk-story__grid">
+      <RevealOnScroll>
+        <p class="hk-story__intro">
+          <strong>1989</strong> war der Märkische Kreis ein anderer Ort. Werner Holtkamp
+          hatte gerade seinen Meisterbrief in der Tasche, ein Werkbank, ein
+          Auto und eine Liste mit zwölf Kunden aus seiner Gesellenzeit. Mehr
+          braucht es nicht, sagt er heute. „Wenn du sauber arbeitest und
+          pünktlich bist, kommen die nächsten zwölf von allein."
+        </p>
+      </RevealOnScroll>
+
+      <RevealOnScroll>
+        <p>
+          Heute, 37&nbsp;Jahre später, hat sich am Grundprinzip nichts geändert. Wir
+          sind größer, wir haben mehr Gewerke, wir machen Anlagen, die 1989
+          niemand kannte — aber wir arbeiten nach denselben Regeln.
+        </p>
+      </RevealOnScroll>
+
+      <RevealOnScroll>
+        <p>
+          Das heißt: Wir verkaufen nichts, von dem wir nicht überzeugt sind. Wir
+          dokumentieren alles, was wir tun. Wir hinterlassen die Baustelle
+          sauberer, als wir sie vorgefunden haben. Wir sind erreichbar, auch
+          wenn der Auftrag schon abgeschlossen ist. Und wir bilden aus, weil
+          es sonst niemand mehr macht.
+        </p>
+      </RevealOnScroll>
+
+      <RevealOnScroll>
+        <p>
+          Wir sind nicht der billigste Betrieb im Sauerland — und nicht der
+          größte. Wir sind der Betrieb, bei dem der Geschäftsführer noch
+          selbst rangeht, wenn Sie anrufen. Wir würden gerne so bleiben.
+        </p>
+      </RevealOnScroll>
+    </div>
+  </section>
+
+  <!-- ── Stats ────────────────────────────────────────────────────── -->
+  <section class="hk-stats hk-section">
+    <div class="hk-container">
+      <div class="hk-bar">
+        <span class="hk-bar-n">N° 02</span>
+        <span class="hk-bar-line" aria-hidden="true"></span>
+        <span class="hk-bar-k">DATEN / Q2 2026</span>
+      </div>
+
+      <ul class="hk-stats__grid">
+        <li>
+          <span class="hk-stats__n"><NumberCounter to={37} duration={1.8} /></span>
+          <span class="hk-stats__l">Jahre Betrieb</span>
+        </li>
+        <li>
+          <span class="hk-stats__n"><NumberCounter to={2400} duration={2.4} />+</span>
+          <span class="hk-stats__l">Realisierte Projekte</span>
+        </li>
+        <li>
+          <span class="hk-stats__n"><NumberCounter to={14} duration={1.4} /></span>
+          <span class="hk-stats__l">Mitarbeiter:innen</span>
+        </li>
+        <li>
+          <span class="hk-stats__n"><NumberCounter to={4} duration={1.2} /></span>
+          <span class="hk-stats__l">Auszubildende</span>
+        </li>
+        <li>
+          <span class="hk-stats__n"><NumberCounter to={3} duration={1.2} /></span>
+          <span class="hk-stats__l">Meisterbriefe im Haus</span>
+        </li>
+        <li>
+          <span class="hk-stats__n">4,9<span class="hk-stats__sub">/5</span></span>
+          <span class="hk-stats__l">Bewertungs­schnitt · 184 Bewertungen</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Werte ───────────────────────────────────────────────────── -->
+  <section class="hk-values hk-section">
+    <div class="hk-container">
+      <div class="hk-bar">
+        <span class="hk-bar-n">N° 03</span>
+        <span class="hk-bar-line" aria-hidden="true"></span>
+        <span class="hk-bar-k">HALTUNG / 4 WERTE</span>
+      </div>
+
+      <h2 class="hk-values__h">
+        WIE WIR<br />
+        <span class="hk-values__h-alt">ARBEITEN.</span>
+      </h2>
+
+      <div class="hk-values__grid">
+        {values.map(v => (
+          <RevealOnScroll>
+            <article class="hk-values__cell">
+              <span class="hk-values__cell-n">{v.n}</span>
+              <h3 class="hk-values__cell-t">{v.t}</h3>
+              <p class="hk-values__cell-text">{v.text}</p>
+            </article>
+          </RevealOnScroll>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Zeitstrahl ──────────────────────────────────────────────── -->
+  <section class="hk-time hk-section">
+    <div class="hk-container">
+      <div class="hk-bar">
+        <span class="hk-bar-n">N° 04</span>
+        <span class="hk-bar-line" aria-hidden="true"></span>
+        <span class="hk-bar-k">CHRONIK / 1989–2026</span>
+      </div>
+
+      <h2 class="hk-time__h">
+        DIE LANGE<br />
+        <span class="hk-time__h-alt">LINIE.</span>
+      </h2>
+
+      <ol class="hk-time__list">
+        {milestones.map((m, i) => (
+          <li class="hk-time__step">
+            <span class="hk-time__y">{m.y}</span>
+            <div class="hk-time__body">
+              <h3>{m.t}</h3>
+              <p>{m.text}</p>
+            </div>
+            <span class="hk-time__dot" aria-hidden="true"></span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ── Team ───────────────────────────────────────────────────── -->
+  <section class="hk-team hk-section">
+    <div class="hk-container">
+      <div class="hk-bar">
+        <span class="hk-bar-n">N° 05</span>
+        <span class="hk-bar-line" aria-hidden="true"></span>
+        <span class="hk-bar-k">TEAM / WER WIR SIND</span>
+      </div>
+
+      <h2 class="hk-team__h">
+        VIERZEHN<br />
+        <span class="hk-team__h-alt">KÖPFE.</span>
+      </h2>
+
+      <ul class="hk-team__grid">
+        {team.map(member => (
+          <li class="hk-team__cell">
+            <div class="hk-team__avatar" aria-hidden="true">
+              <span>{member.initials}</span>
+              <span class="hk-team__avatar-grid"></span>
+            </div>
+            <div class="hk-team__info">
+              <h3>{member.name}</h3>
+              <span class="hk-team__role">{member.role}</span>
+              <p>{member.text}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Final CTA ──────────────────────────────────────────────── -->
+  <section class="hk-pg-cta hk-section">
+    <div class="hk-container">
+      <RevealOnScroll>
+        <h2 class="hk-pg-cta__h">
+          KLINGT NACH<br />
+          <span class="hk-pg-cta__h-alt">DEM RICHTIGEN BETRIEB?</span>
+        </h2>
+        <p class="hk-pg-cta__lead">
+          Dann reden wir. Erstgespräch ist kostenfrei.
+        </p>
+        <MagneticButton href="/demos/elektro/kontakt/" strength={0.4} variant="primary" class="hk-pg-cta__btn">
+          <span>TERMIN ANFRAGEN</span>
+          <span aria-hidden="true">→</span>
+        </MagneticButton>
+      </RevealOnScroll>
+    </div>
+  </section>
+</ElektroLayout>
+
+<style>
+  /* ── Page Hero ─────────────────────────────────────────────────── */
+  .hk-pg-hero { padding-block: clamp(3rem, 6vw, 5rem) clamp(3rem, 6vw, 5rem); }
+
+  .hk-pg-hero__h {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 11vw, 10rem);
+    line-height: 0.88;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin: 0 0 2rem;
+  }
+  .hk-pg-hero__line { display: block; overflow: hidden; }
+  .hk-pg-hero__line--alt { color: var(--color-accent); }
+
+  .hk-pg-hero__lead {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    line-height: 1.65;
+    max-width: 55ch;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    margin: 0;
+  }
+
+  /* ── Story ───────────────────────────────────────────────────── */
+  .hk-story { border-top: 1px solid var(--color-rule); background: var(--color-surface); }
+
+  .hk-story__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    max-width: 65ch;
+    margin-inline: auto;
+  }
+
+  .hk-story__grid p {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.2vw, 1.1rem);
+    line-height: 1.7;
+    color: color-mix(in srgb, var(--color-text) 85%, transparent);
+    margin: 0;
+  }
+
+  .hk-story__intro {
+    font-size: clamp(1.15rem, 1.6vw, 1.5rem) !important;
+    line-height: 1.55 !important;
+    color: var(--color-text) !important;
+    padding: 1.5rem;
+    border: 1px solid var(--color-rule-strong);
+    background: var(--color-bg);
+  }
+
+  .hk-story__grid strong {
+    color: var(--color-accent);
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Stats ───────────────────────────────────────────────────── */
+  .hk-stats { border-top: 1px solid var(--color-rule); }
+
+  .hk-stats__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid var(--color-rule-strong);
+  }
+
+  @media (min-width: 720px) { .hk-stats__grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1100px) { .hk-stats__grid { grid-template-columns: repeat(6, 1fr); } }
+
+  .hk-stats__grid li {
+    padding: clamp(1.5rem, 2.5vw, 2rem) 1.25rem;
+    border-right: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  @media (min-width: 720px) and (max-width: 1099px) {
+    .hk-stats__grid li:nth-child(3n) { border-right: none; }
+    .hk-stats__grid li:nth-last-child(-n+3) { border-bottom: none; }
+  }
+  @media (max-width: 719px) {
+    .hk-stats__grid li:nth-child(2n) { border-right: none; }
+    .hk-stats__grid li:nth-last-child(-n+2) { border-bottom: none; }
+  }
+  @media (min-width: 1100px) {
+    .hk-stats__grid li:last-child { border-right: none; border-bottom: none; }
+    .hk-stats__grid li { border-bottom: none; }
+  }
+
+  .hk-stats__n {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 4.5vw, 4rem);
+    line-height: 1;
+    color: var(--color-accent);
+    font-weight: 400;
+    letter-spacing: 0.005em;
+  }
+
+  .hk-stats__sub {
+    font-size: 0.45em;
+    color: var(--color-muted);
+    margin-left: 0.15em;
+  }
+
+  .hk-stats__l {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  /* ── Werte ───────────────────────────────────────────────────── */
+  .hk-values { border-top: 1px solid var(--color-rule); background: var(--color-surface); }
+
+  .hk-values__h {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    line-height: 0.92;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+    font-weight: 400;
+  }
+  .hk-values__h-alt { color: var(--color-accent); }
+
+  .hk-values__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 720px) { .hk-values__grid { grid-template-columns: 1fr 1fr; } }
+
+  .hk-values__cell {
+    background: var(--color-bg);
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    border: 1px solid var(--color-rule);
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    transition: border-color 0.4s ease, transform 0.5s var(--ease-out-expo);
+  }
+  .hk-values__cell:hover { border-color: var(--color-accent); transform: translateY(-4px); }
+
+  .hk-values__cell-n {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+  .hk-values__cell-t {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3.5vw, 2.6rem);
+    line-height: 1;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin: 0;
+  }
+  .hk-values__cell-text {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    margin: 0.4rem 0 0;
+  }
+
+  /* ── Zeitstrahl ─────────────────────────────────────────────── */
+  .hk-time { border-top: 1px solid var(--color-rule); }
+
+  .hk-time__h {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    line-height: 0.92;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+    font-weight: 400;
+  }
+  .hk-time__h-alt { color: var(--color-accent); }
+
+  .hk-time__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    max-width: 800px;
+  }
+
+  .hk-time__list::before {
+    content: '';
+    position: absolute;
+    left: 5rem;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--color-rule-strong);
+  }
+
+  @media (max-width: 720px) {
+    .hk-time__list::before { left: 3.5rem; }
+  }
+
+  .hk-time__step {
+    display: grid;
+    grid-template-columns: 5rem 1fr;
+    gap: 1.5rem;
+    padding-block: 1.5rem;
+    align-items: start;
+    position: relative;
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .hk-time__step:last-child { border-bottom: none; }
+  @media (max-width: 720px) {
+    .hk-time__step { grid-template-columns: 3.5rem 1fr; gap: 1rem; }
+  }
+
+  .hk-time__y {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2vw, 1.8rem);
+    color: var(--color-accent);
+    font-weight: 400;
+    letter-spacing: 0.005em;
+    line-height: 1;
+  }
+
+  .hk-time__body h3 {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 1;
+    margin: 0 0 0.5rem;
+    font-weight: 400;
+  }
+
+  .hk-time__body p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    margin: 0;
+    max-width: 56ch;
+  }
+
+  .hk-time__dot {
+    position: absolute;
+    left: 5rem;
+    top: 1.7rem;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 4px var(--color-bg);
+    transform: translateX(-50%);
+  }
+  @media (max-width: 720px) {
+    .hk-time__dot { left: 3.5rem; }
+  }
+
+  /* ── Team ───────────────────────────────────────────────────── */
+  .hk-team { border-top: 1px solid var(--color-rule); background: var(--color-surface); }
+
+  .hk-team__h {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    line-height: 0.92;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+    font-weight: 400;
+  }
+  .hk-team__h-alt { color: var(--color-accent); }
+
+  .hk-team__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--color-rule-strong);
+    border: 1px solid var(--color-rule-strong);
+  }
+  @media (min-width: 720px) { .hk-team__grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1100px) { .hk-team__grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .hk-team__cell {
+    background: var(--color-bg);
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+    transition: background-color 0.4s var(--ease-out-expo);
+  }
+  .hk-team__cell:hover { background: var(--color-surface); }
+
+  .hk-team__avatar {
+    position: relative;
+    width: 100px;
+    height: 130px;
+    background: var(--color-text);
+    color: var(--color-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hk-team__avatar span:first-child {
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    font-weight: 400;
+    z-index: 1;
+  }
+
+  .hk-team__avatar-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--color-accent) 25%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-accent) 25%, transparent) 1px, transparent 1px);
+    background-size: 14px 14px;
+    pointer-events: none;
+  }
+
+  .hk-team__cell:hover .hk-team__avatar {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  .hk-team__info h3 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    letter-spacing: 0.01em;
+    line-height: 1;
+    margin: 0 0 0.4rem;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+  .hk-team__role {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    color: var(--color-accent);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .hk-team__info p {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-text) 78%, transparent);
+    margin: 0;
+  }
+
+  /* ── CTA ──────────────────────────────────────────────────────── */
+  .hk-pg-cta { border-top: 1px solid var(--color-rule); text-align: center; }
+  .hk-pg-cta__h {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6.5vw, 5rem);
+    line-height: 0.95;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    margin: 0 0 1.25rem;
+    font-weight: 400;
+  }
+  .hk-pg-cta__h-alt { color: var(--color-accent); }
+  .hk-pg-cta__lead {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    color: color-mix(in srgb, var(--color-text) 75%, transparent);
+    margin: 0 0 2rem;
+  }
+  .hk-pg-cta__btn {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border-radius: 0;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    padding: 1.2rem 2rem;
+  }
+  .hk-pg-cta__btn:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+</style>
