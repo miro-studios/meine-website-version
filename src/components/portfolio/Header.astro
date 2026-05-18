@@ -20,7 +20,12 @@ const navItems = [
 <header class="site-header" data-site-header>
   <div class="site-header__inner">
     <a href="/" class="logo" aria-label="miro-studios Startseite">
-      <span class="logo__mark">◇</span>
+      <span class="logo__mark" aria-hidden="true">
+        <svg viewBox="0 0 100 100" width="28" height="28" fill="none">
+          <path d="M14 86 L14 14 L50 50 L86 14 L86 86" stroke="currentColor" stroke-width="10" stroke-linejoin="miter" stroke-linecap="square" />
+          <path d="M14 96 L34 96" stroke="var(--color-accent)" stroke-width="6" />
+        </svg>
+      </span>
       <span class="logo__text">miro-studios<span class="logo__dot">.</span></span>
     </a>
 
@@ -141,14 +146,20 @@ const navItems = [
   }
 
   .logo__mark {
-    display: inline-block;
-    color: var(--color-accent);
-    transform: translateY(0.05em);
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-text);
     transition: transform 0.4s var(--ease-out-expo);
   }
 
+  .logo__mark svg {
+    display: block;
+    width: 1.4em;
+    height: 1.4em;
+  }
+
   .logo:hover .logo__mark {
-    transform: rotate(180deg) translateY(-0.05em);
+    transform: rotate(-8deg);
   }
 
   .logo__dot {

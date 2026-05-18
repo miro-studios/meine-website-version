@@ -4,18 +4,70 @@ interface Props {
   description?: string;
   image?: string;
   canonical?: string;
+  /** Wenn true (auf der Startseite gesetzt), wird das Organization-JSON-LD ausgegeben */
+  includeOrganizationSchema?: boolean;
 }
 
 const {
   title,
-  description = 'Webdesign-Studio aus Kierspe — wir bauen Websites mit Awwwards-Qualität für lokale Geschäfte in NRW.',
-  image = '/og-default.jpg',
+  /**
+   * Default-Meta-Beschreibung — wird von Google in den SERPs angezeigt.
+   * Auf 155–160 Zeichen optimiert, mit Standort, Leistung und USP.
+   */
+  description = 'miro-studios — Editorial-Webdesign aus Kierspe, NRW. Individuell entworfene Websites für Gastronomie, Handwerk und Dienstleister im Sauerland. Awwwards-Qualität, ehrliche Preise ab 599 €.',
+  image = '/og-share.png',
   canonical,
+  includeOrganizationSchema = false,
 } = Astro.props;
 
 const canonicalURL = canonical
   ? new URL(canonical, Astro.site)
   : new URL(Astro.url.pathname, Astro.site);
+
+const ogImageURL = new URL(image, Astro.site);
+const siteURL = new URL('/', Astro.site).toString();
+const logoURL = new URL('/favicon-512.png', Astro.site).toString();
+
+// JSON-LD Organization Schema — wird auf der Startseite ausgegeben damit
+// Google das richtige Logo und die Studio-Daten in Rich Results / Knowledge-
+// Panel verwendet (Pflicht: min. 256×256 PNG, plus URL + Adresse).
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'miro-studios',
+  alternateName: 'miro-studios — Webdesign Kierspe',
+  url: siteURL,
+  logo: logoURL,
+  image: new URL('/og-share.png', Astro.site).toString(),
+  description:
+    'Editorial-Webdesign-Studio aus Kierspe (NRW). Individuell entworfene Websites für lokale Geschäfte in Gastronomie, Handwerk und Dienstleistung.',
+  founder: {
+    '@type': 'Person',
+    name: 'David Rost',
+  },
+  foundingDate: '2026',
+  founderLocation: 'Kierspe, NRW, Deutschland',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Am Nöcklenberg 1',
+    postalCode: '58566',
+    addressLocality: 'Kierspe',
+    addressRegion: 'NRW',
+    addressCountry: 'DE',
+  },
+  email: 'info@miro-studios.de',
+  telephone: '+49-176-83206020',
+  areaServed: ['Kierspe', 'Lüdenscheid', 'Sauerland', 'NRW', 'Deutschland'],
+  knowsAbout: [
+    'Webdesign',
+    'Webentwicklung',
+    'Astro',
+    'Responsive Design',
+    'Editorial Web Design',
+    'Local SEO',
+  ],
+  sameAs: ['https://instagram.com/mirostudio.official'],
+};
 ---
 
 <meta charset="UTF-8" />
@@ -26,21 +78,39 @@ const canonicalURL = canonical
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalURL} />
 
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<!-- Such-Crawler ausdrücklich erlauben (default, aber explizit hilft) -->
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<meta name="googlebot" content="index, follow, max-image-preview:large" />
 
+<!-- Favicon-Set (modern + Fallbacks) -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+<link rel="apple-touch-icon" sizes="192x192" href="/favicon-192.png" />
+<link rel="apple-touch-icon" sizes="512x512" href="/favicon-512.png" />
+
+<!-- Open Graph (Facebook, LinkedIn, WhatsApp, iMessage) -->
 <meta property="og:type" content="website" />
+<meta property="og:site_name" content="miro-studios" />
+<meta property="og:locale" content="de_DE" />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image, Astro.site)} />
+<meta property="og:image" content={ogImageURL} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="miro-studios — Webdesign aus Kierspe, NRW" />
 
+<!-- Twitter / X Card -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:url" content={canonicalURL} />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={new URL(image, Astro.site)} />
+<meta name="twitter:image" content={ogImageURL} />
+<meta name="twitter:image:alt" content="miro-studios — Webdesign aus Kierspe, NRW" />
 
 <meta name="theme-color" content="#13110F" />
+<meta name="author" content="David Rost · miro-studios" />
 
 <!--
   Schriftarten via Bunny Fonts (https://fonts.bunny.net).
@@ -52,3 +122,11 @@ const canonicalURL = canonical
   href="https://fonts.bunny.net/css?family=bricolage-grotesque:400,500,700,800&family=fraunces:400i,400,500,500i,600i,600,700,700i,800i,800&family=inter-tight:300,400,500,600,700&family=jetbrains-mono:400,500,700&family=space-grotesk:400,500,600,700&display=swap"
   rel="stylesheet"
 />
+
+{includeOrganizationSchema && (
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(organizationJsonLd)}
+  />
+)}
