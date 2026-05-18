@@ -287,6 +287,11 @@
     const pre = document.querySelector<HTMLElement>('[data-hk-preloader]');
     if (!pre) return;
 
+    // Idempotency-Guard — verhindert dass init() zweimal auf dem gleichen
+    // Element läuft (z.B. Script-Tag + astro:page-load auf erstem Load).
+    if (pre.dataset.hkPreInit === '1') return;
+    pre.dataset.hkPreInit = '1';
+
     // Skip wenn bereits einmal in dieser Session gezeigt
     if (sessionStorage.getItem('hk-preloader-seen') === '1') {
       pre.remove();
@@ -357,6 +362,19 @@
   }
 
   init();
-  // Preloader läuft nur beim ersten Page-Load — bei View-Transitions wird er
-  // bereits geskippt (sessionStorage)
+
+  // Astro View Transitions: bei Sub-Page-Nav wird das Preloader-Markup
+  // erneut in den DOM geswapped, aber dieser Script-Tag läuft nicht
+  // automatisch neu. Ohne diese Listener bliebe der Brand-Screen ewig.
+  //
+  // before-swap: Preloader aus dem eingehenden DOM entfernen, bevor er
+  //              gepainted wird (verhindert Flash beim Routenwechsel).
+  // page-load:   Safety-Net + init() für reguläre Fresh-Loads.
+  document.addEventListener('astro:before-swap', (e: Event) => {
+    if (sessionStorage.getItem('hk-preloader-seen') !== '1') return;
+    const newDoc = (e as Event & { newDocument?: Document }).newDocument;
+    newDoc?.querySelector('[data-hk-preloader]')?.remove();
+  });
+
+  document.addEventListener('astro:page-load', init);
 </script>
