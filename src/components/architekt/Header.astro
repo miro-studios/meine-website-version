@@ -261,9 +261,14 @@ const path = Astro.url.pathname.replace(/\/$/, '');
 
 <script>
   function init() {
+    const header = document.querySelector<HTMLElement>('[data-av-header]');
     const burger = document.querySelector<HTMLButtonElement>('[data-av-burger]');
     const drawer = document.querySelector<HTMLElement>('[data-av-drawer]');
-    if (!burger || !drawer) return;
+    if (!header || !burger || !drawer) return;
+    // Idempotent — ohne Guard würde der Listener doppelt registriert
+    // (Module-Load + astro:page-load), Click toggelt 2x = no-op.
+    if (header.dataset.initialized === 'true') return;
+    header.dataset.initialized = 'true';
 
     burger.addEventListener('click', () => {
       const open = burger.getAttribute('aria-expanded') === 'true';
@@ -272,6 +277,12 @@ const path = Astro.url.pathname.replace(/\/$/, '');
       if (open) drawer.setAttribute('hidden', '');
       else drawer.removeAttribute('hidden');
     });
+
+    document.addEventListener(
+      'astro:before-swap',
+      () => delete header.dataset.initialized,
+      { once: true },
+    );
   }
   init();
   document.addEventListener('astro:page-load', init);
