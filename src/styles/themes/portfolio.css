@@ -1,36 +1,38 @@
 /* ==========================================================================
-   Theme: Portfolio "miro-studios"
+   Theme: Portfolio "miro-studios"  ·  STUDIO DARK
    --------------------------------------------------------------------------
-   Editorial-Studio meets warmer Eleganz. Off-White Hintergrund, tiefes
-   Anthrazit als Text, gebranntes Terrakotta als ruhiger Akzent.
+   Bewusst abgesetzt vom warmen Cream-Terracotta-Look der One-Pager-Demos
+   (Café Nordlicht / Bella Notte / Atelier Vossen). Unser Portfolio ist eine
+   eigene Marke — nicht ein weiteres Demo.
 
-   Bewusst hell und ruhig: das Portfolio verkauft an Pizzerien, Friseure,
-   Handwerker — also auch an Geschäftsinhaber jeder Altersgruppe. Klarheit
-   und Lesbarkeit schlagen Tech-Bro-Aesthetic.
+   Aesthetic: Premium-Studio, "wir bauen Awwwards-Sites". Tiefes Warmschwarz
+   als Grund, cremiger Bone-Text, warmes Gold als ruhiger Akzent. Wirkt
+   selbstbewusst, ohne Tech-Bro-Aesthetic zu werden.
    ========================================================================== */
 
 [data-theme="portfolio"] {
   /* -- Farben ---------------------------------------------------------------
-     Hintergrund:  warmes Cremeweiß  (#F5F1EA) — kein steriles Weiß, atmet
-     Surface:      etwas reiner       (#FBF8F2) — für Cards / Sub-Surfaces
-     Text:         tiefes Warmschwarz (#1A1716) — angenehm zu lesen
-     Muted:        sanftes Steingrau  (#7A7670)
-     Linien:       dezent             (#E5DFD3)
-     Akzent:       Terrakotta gebrannt(#B85A2C) — warm, edel, nie aufdringlich
-     Akzent-Deep:  tiefer Burgund      (#7A2B1F) — für Hover / Press
+     BG:           tiefes Warmschwarz (#13110F) — kein steriles Schwarz
+     Surface:      subtil erhöht       (#1C1A17) — für Cards / Sub-Surfaces
+     Surface-2:    stärker erhöht      (#23201A) — für Tooltips / Overlays
+     Text:         cremiges Bone       (#EDE7DA) — kontrastreich, warm
+     Muted:        warmes Sand-Grau    (#8E8479)
+     Linien:       dezent              (rgba(237,231,218,0.14))
+     Akzent:       warmes Gold         (#E8B547) — edel, selten, nie aufdringlich
+     Akzent-Deep:  dunkler Bernstein   (#BF8E2A) — für Hover / Press
   */
-  --color-bg: #F5F1EA;
-  --color-surface: #FBF8F2;
-  --color-text: #1A1716;
-  --color-muted: #7A7670;
-  --color-rule: #E5DFD3;
-  --color-primary: #1A1716;
-  --color-accent: #B85A2C;
-  --color-accent-deep: #7A2B1F;
+  --color-bg: #13110F;
+  --color-surface: #1C1A17;
+  --color-surface-2: #23201A;
+  --color-text: #EDE7DA;
+  --color-muted: #8E8479;
+  --color-rule: rgba(237, 231, 218, 0.14);
+  --color-primary: #EDE7DA;
+  --color-accent: #E8B547;
+  --color-accent-deep: #BF8E2A;
 
   /* -- Fonts ---------------------------------------------------------------
-     Display: Editorial Serif mit Charakter (Fraunces als kostenlose Wahl,
-              fällt zurück auf System-Serifen wenn nicht geladen).
+     Display: Editorial Serif mit Charakter (Fraunces als kostenlose Wahl).
      Body:    Inter Tight — sehr gut lesbar, neutral, modern.
      Mono:    JetBrains Mono für technische Labels (Lieferzeit, Standort).
   */
@@ -48,7 +50,7 @@
 
 [data-theme="portfolio"] ::selection {
   background-color: var(--color-accent);
-  color: #FFF;
+  color: var(--color-bg);
 }
 
 [data-theme="portfolio"] :focus-visible {

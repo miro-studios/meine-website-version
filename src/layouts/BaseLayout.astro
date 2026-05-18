@@ -27,6 +27,8 @@ interface Props {
   canonical?: string;
   /** OG-Bild-Pfad */
   image?: string;
+  /** Wenn `true` (nur auf der Startseite), wird das Organization-JSON-LD ausgegeben */
+  includeOrganizationSchema?: boolean;
 }
 
 const {
@@ -37,6 +39,7 @@ const {
   bodyClass = '',
   canonical,
   image,
+  includeOrganizationSchema = false,
 } = Astro.props;
 ---
 
@@ -48,6 +51,7 @@ const {
       description={description}
       image={image}
       canonical={canonical}
+      includeOrganizationSchema={includeOrganizationSchema}
     />
     <ViewTransitions />
   </head>

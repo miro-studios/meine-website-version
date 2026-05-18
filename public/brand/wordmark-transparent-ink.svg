@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="600" viewBox="0 0 1600 600">
+  <defs>
+    
+  </defs>
+  
+  <g transform="translate(417 186) scale(2.28)">
+    <path d="M14 86 L14 14 L50 50 L86 14 L86 86" fill="none" stroke="#16140F" stroke-width="10" stroke-linejoin="miter" stroke-linecap="square"></path>
+    <path d="M14 96 L34 96" stroke="#C75D2F" stroke-width="6"></path>
+  </g>
+  <text class="miro" x="718" y="354" font-size="300" fill="#16140F">miro</text>
+  <text class="studios" x="718" y="480.12" font-size="66" fill="#C75D2F">STUDIOS</text>
+</svg>

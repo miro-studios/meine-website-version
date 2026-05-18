@@ -2,7 +2,7 @@
 import PortfolioLayout from '@layouts/PortfolioLayout.astro';
 import Footer from '@components/portfolio/Footer.astro';
 
-const lastUpdated = '11. Mai 2026';
+const lastUpdated = '18. Mai 2026';
 ---
 
 <PortfolioLayout
@@ -145,11 +145,17 @@ const lastUpdated = '11. Mai 2026';
         technisch über
         <a href="https://web3forms.com/" target="_blank" rel="noopener noreferrer">Web3Forms</a>
         (Vlasta Innovations Private Limited, Indien) abgewickelt. Die
-        Formularinhalte werden über Web3Forms an meine E-Mail-Adresse
-        zugestellt; eine dauerhafte Speicherung der Inhalte bei Web3Forms
-        findet nach Aussage des Anbieters nicht statt. Da Web3Forms seinen
-        Sitz außerhalb der EU hat, erfolgt die Übermittlung auf Basis
-        der EU-Standardvertragsklauseln; Details siehe
+        Formularinhalte werden von Web3Forms an meine E-Mail-Adresse
+        weitergeleitet; eine dauerhafte Speicherung der Formulardaten bei
+        Web3Forms findet nach Aussage des Anbieters nicht statt.
+      </p>
+      <p>
+        <strong>Drittlandtransfer:</strong> Web3Forms hat seinen Sitz
+        in Indien — einem Drittland außerhalb des Europäischen
+        Wirtschaftsraums (EWR), für das kein Angemessenheitsbeschluss
+        der EU-Kommission nach Art. 45 DSGVO vorliegt. Die Daten­übermittlung
+        erfolgt auf Grundlage von EU-Standardvertragsklauseln (SCC) gemäß
+        Art. 46 Abs. 2 lit. c DSGVO. Weitere Informationen:
         <a href="https://web3forms.com/privacy" target="_blank" rel="noopener noreferrer">web3forms.com/privacy</a>.
       </p>
       <p>
@@ -291,9 +297,42 @@ const lastUpdated = '11. Mai 2026';
       </p>
     </section>
 
-    <!-- ── 12. Aktualität ─────────────────────────────────── -->
+    <!-- ── 12. Empfänger-Übersicht ──────────────────────────── -->
     <section class="legal__section">
-      <h2>12. Aktualität und Änderung dieser Datenschutzerklärung</h2>
+      <h2>12. Übersicht externer Dienstleister (Empfänger)</h2>
+      <p>
+        Nachfolgend sind alle externen Empfänger aufgelistet, an die im
+        Rahmen des Betriebs dieser Website personenbezogene Daten
+        übermittelt werden können:
+      </p>
+      <ul class="legal__list">
+        <li>
+          <strong>Cloudflare, Inc. / Cloudflare Germany GmbH</strong> —
+          Hosting &amp; CDN · Sitz: USA &amp; Deutschland (EU) ·
+          Drittlandtransfer: EU-US Data Privacy Framework + SCCs ·
+          AVV nach Art. 28 DSGVO abgeschlossen
+        </li>
+        <li>
+          <strong>BunnyWay d.o.o. (Bunny Fonts)</strong> —
+          Webfont-CDN · Sitz: Slowenien (EU) ·
+          Kein Drittlandtransfer · Keine dauerhafte IP-Speicherung
+        </li>
+        <li>
+          <strong>Vlasta Innovations Private Limited (Web3Forms)</strong> —
+          Formularversand · Sitz: Indien (Drittland) ·
+          Drittlandtransfer: SCCs gem. Art. 46 Abs. 2 lit. c DSGVO ·
+          Übermittelte Daten: Name, E-Mail-Adresse, Nachrichteninhalt
+        </li>
+      </ul>
+      <p>
+        Darüber hinaus werden keine Daten an Social-Media-Netzwerke,
+        Werbenetzwerke oder Analytics-Dienste übertragen.
+      </p>
+    </section>
+
+    <!-- ── 13. Aktualität ─────────────────────────────────── -->
+    <section class="legal__section">
+      <h2>13. Aktualität und Änderung dieser Datenschutzerklärung</h2>
       <p>
         Diese Datenschutzerklärung hat den Stand <strong>{lastUpdated}</strong>.
         Durch die Weiterentwicklung der Website oder geänderte

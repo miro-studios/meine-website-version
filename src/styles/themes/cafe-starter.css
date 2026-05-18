@@ -2,25 +2,29 @@
    Theme: Café Nordlicht — Demo für das Starter-Onepager-Paket
    --------------------------------------------------------------------------
    Specialty Coffee + Frühstück, Lüdenscheid.
-   Aesthetic: editorial-warm, papierhaft, mit handwerklicher Note.
-   Cream-Hintergrund, tiefes Burgund als Primär, Kupfer als Akzent.
+
+   Aesthetic: kühle Nord-Café-Energie. Steingrauer Bg mit grünlichem
+   Unterton, tiefes Tannengrün als Marke, kühles Aurora-Teal als Akzent.
+   Bewusst NICHT die warme Cream-Terracotta-Familie der italienischen
+   Bella-Notte-Demo — der Name „Nordlicht" steht für kühle, klare,
+   nordische Café-Ästhetik (Scandi / Aurora Borealis).
    ========================================================================== */
 
 [data-theme="cafe-starter"] {
   /* -- Brand ---------------------------------------------------------------- */
-  --color-bg: #F2EBDD;            /* warmer Papier-Cream */
-  --color-surface: #ECE3D0;       /* leicht abgesetzte Surface */
-  --color-text: #1F1814;          /* tiefer Espresso-Anthrazit */
-  --color-muted: #6f5f52;         /* Karamell-Muted */
-  --color-primary: #6B1F25;       /* tiefes Burgund — Markenfarbe 1 */
-  --color-secondary: #2F3A2A;     /* dunkles Tannengrün — Markenfarbe 2 */
-  --color-accent: #C2683A;        /* Kupfer / gerösteter Bohnenton — Akzent */
+  --color-bg: #E4E6E0;            /* kühler Stein mit Grün-Unterton */
+  --color-surface: #D5D8D1;       /* leicht abgesetzte Surface */
+  --color-text: #141A17;          /* kühles Tannen-Schwarz */
+  --color-muted: #6F7872;         /* Sage-Grau */
+  --color-primary: #1F4434;       /* tiefes Tannengrün — Markenfarbe */
+  --color-secondary: #2E5546;     /* mittleres Forst */
+  --color-accent: #4A7C8C;        /* kühles Aurora-Teal — Akzent */
 
   /* -- Hairline / Divider --------------------------------------------------- */
   --color-rule: color-mix(in srgb, var(--color-text) 14%, transparent);
 
   /* -- Typo (verwendet die globalen, im BaseHead geladenen Fonts) ----------- */
-  /* Display: Fraunces (high-contrast Serif, perfekt editorial-warm)          */
+  /* Display: Fraunces (high-contrast Serif, weiterhin editorial-warm)        */
   /* Body:    Bricolage Grotesque (geometrisch, klar, freundlich)             */
   --font-display: "Fraunces", ui-serif, Georgia, serif;
   --font-body: "Bricolage Grotesque", system-ui, -apple-system, sans-serif;

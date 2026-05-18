@@ -61,6 +61,41 @@ import Footer from '@components/portfolio/Footer.astro';
       </p>
     </section>
 
+    {/*
+      ─────────────────────────────────────────────────────────────────────
+      TODO — NACH GEWERBEANMELDUNG:
+      Die obige "Status & Hinweis"-Sektion komplett löschen und stattdessen
+      diesen Block einfügen. Vorher die folgenden Platzhalter ersetzen:
+
+        - {STEUERNUMMER}            (z. B. 332/5678/9012) — kommt vom Finanzamt
+        - {GEWERBEANMELDE-DATUM}    (TT.MM.JJJJ) — steht auf der Gewerbeanmeldung
+        - {TÄTIGKEITSBESCHREIBUNG}  (z. B. "Webdesign und Webentwicklung")
+      ─────────────────────────────────────────────────────────────────────
+
+      <section class="legal__section">
+        <h2>Umsatzsteuer / Kleinunternehmer</h2>
+        <p>
+          Gemäß § 19 UStG wird auf Rechnungen keine Umsatzsteuer ausgewiesen
+          (Kleinunternehmerregelung). Eine Umsatzsteuer-Identifikationsnummer
+          nach § 27 a UStG wird nicht vergeben.
+        </p>
+        <p>
+          Steuernummer (vergeben durch das Finanzamt Lüdenscheid):
+          <strong>{STEUERNUMMER}</strong>
+        </p>
+      </section>
+
+      <section class="legal__section">
+        <h2>Gewerbe</h2>
+        <p>
+          Angemeldet beim Gewerbeamt Kierspe am <strong>{GEWERBEANMELDE-DATUM}</strong>.<br />
+          Tätigkeit: {TÄTIGKEITSBESCHREIBUNG}<br />
+          Berufsbezeichnung: Selbständiger Webdesigner / Webentwickler
+          (verliehene Berufsbezeichnung; nicht reglementiert nach HwO/PartGG).
+        </p>
+      </section>
+    */}
+
     <section class="legal__section">
       <h2>Verantwortlich für den Inhalt</h2>
       <p>
@@ -170,8 +205,8 @@ import Footer from '@components/portfolio/Footer.astro';
       <h2>Hinweis zu Demo-Inhalten</h2>
       <p>
         Auf dieser Website sind unter <code>/demos/…</code> Beispiel-Websites
-        veröffentlicht (z. B. „Café Nordlicht", „Bella Notte"). Diese
-        Unternehmen sind <strong>frei erfundene Demo-Beispiele</strong> und
+        veröffentlicht (z. B. „Café Nordlicht", „Bella Notte", „Atelier
+        Vossen"). Diese Unternehmen sind <strong>frei erfundene Demo-Beispiele</strong> und
         dienen ausschließlich der Veranschaulichung meiner Paket-Leistungen.
         Reservierungs-/Kontaktformulare in den Demos simulieren den Ablauf,
         senden aber keine echten Anfragen.

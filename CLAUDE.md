@@ -6,14 +6,16 @@
 
 ## 1. Kontext
 
-Wir sind ein zweiköpfiges Webdesign-Studio in Lüdenscheid, NRW. Wir bauen Websites für lokale Geschäfte — Gastronomie, Handwerk, Friseure, Dienstleister. Unsere Stärke: **wir liefern Design-Qualität, die kleine Studios in dieser Preisklasse normalerweise nicht erreichen.**
+miro-studios ist ein **Solo-Studio** in Kierspe, NRW (Inhaber: David Rost, Kleinunternehmer nach § 19 UStG). Wir bauen Websites für lokale Geschäfte — Gastronomie, Handwerk, Friseure, Dienstleister. Stärke: **Design-Qualität, die kleine Studios in dieser Preisklasse normalerweise nicht erreichen.**
 
 Dieses Repo enthält:
-- **Unsere eigene Portfolio-Seite** (verkauft uns an potenzielle Kunden)
-- **Vier Demo-Websites** (zeigen Branchen-Beispiele, jede stilistisch unverwechselbar)
+- **Die Portfolio-Seite** (verkauft das Studio an potenzielle Kunden)
+- **Drei Live-Demo-Websites** (Café Nordlicht, Bella Notte, Atelier Vossen — jede stilistisch unverwechselbar)
 - **Templates** (interne Basis-Templates für Kundenprojekte)
 
-Die Demos werden auf Subdomains von unserer Hauptdomain deployed (z. B. `demo-pizzeria.studio.de`). Sie sind unser stärkstes Verkaufsargument — wenn sie nicht beeindrucken, bekommen wir keine Aufträge.
+Die Demos liegen unter `/demos/<name>/` auf der Hauptdomain `miro-studios.de`. Sie sind unser stärkstes Verkaufsargument — wenn sie nicht beeindrucken, bekommen wir keine Aufträge.
+
+Sprachregelung im Portfolio-Text: „wir" als Studio-Pluralis ist erlaubt (passt zum Studio-Auftritt). Im Impressum und in der Datenschutzerklärung dagegen strikt „ich" — beides sind Pflichtangaben für eine konkrete natürliche Person.
 
 ---
 

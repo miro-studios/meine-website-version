@@ -13,6 +13,8 @@ interface Props {
   /** Aktuelle Route für aktive Nav-States */
   active?: 'index' | 'about' | 'kontakt' | 'impressum' | 'datenschutz' | 'faq' | 'arbeiten' | 'pakete';
   canonical?: string;
+  /** Wenn `true` (Startseite), wird JSON-LD Organization-Schema ausgegeben */
+  includeOrganizationSchema?: boolean;
 }
 
 const {
@@ -21,6 +23,7 @@ const {
   showHeader = true,
   active = 'index',
   canonical,
+  includeOrganizationSchema = false,
 }: Props = Astro.props;
 ---
 
@@ -29,6 +32,7 @@ const {
   description={description}
   theme="portfolio"
   canonical={canonical}
+  includeOrganizationSchema={includeOrganizationSchema}
 >
   <ScrollProgress color="var(--color-accent)" height="2px" />
   <PageTransition />

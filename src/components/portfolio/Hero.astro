@@ -33,7 +33,12 @@ import HeroNetwork from './HeroNetwork.astro';
   <!-- Layer 4: Top-Bar ────────────────────────────────────────────────── -->
   <header class="hero__top">
     <span class="hero__brand">
-      <span class="hero__brand-mark" aria-hidden="true">◇</span>
+      <span class="hero__brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 100 100" width="22" height="22" fill="none">
+          <path d="M14 86 L14 14 L50 50 L86 14 L86 86" stroke="currentColor" stroke-width="10" stroke-linejoin="miter" stroke-linecap="square" />
+          <path d="M14 96 L34 96" stroke="var(--color-accent)" stroke-width="6" />
+        </svg>
+      </span>
       <span class="hero__brand-text">miro-studios</span>
       <span class="hero__brand-sep" aria-hidden="true">·</span>
       <span class="hero__brand-loc">Kierspe · NRW</span>
@@ -348,9 +353,15 @@ import HeroNetwork from './HeroNetwork.astro';
   }
 
   .hero__brand-mark {
-    color: var(--color-accent);
-    font-size: 1rem;
-    transform: translateY(-1px);
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-text);
+  }
+
+  .hero__brand-mark svg {
+    display: block;
+    width: 1.4em;
+    height: 1.4em;
   }
 
   .hero__brand-text {

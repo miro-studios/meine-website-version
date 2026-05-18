@@ -33,10 +33,13 @@
       </div>
 
       <div class="stat">
-        <dt class="stat__label">Live-Demos zum Anschauen</dt>
-        <dd class="stat__value">02</dd>
+        <dt class="stat__label">
+          <span class="stat__live-dot" aria-hidden="true"></span>
+          Live-Demos zum Anschauen
+        </dt>
+        <dd class="stat__value">03</dd>
         <dd class="stat__detail">
-          Café Nordlicht und Bella Notte — fertig, online, klickbar.
+          Café Nordlicht, Bella Notte und Atelier Vossen — fertig, online, klickbar.
         </dd>
       </div>
 
@@ -176,6 +179,41 @@
     letter-spacing: 0.14em;
     color: var(--color-muted);
     margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  /* Live-Indikator — pulsierender grüner Dot mit Glow */
+  .stat__live-dot {
+    position: relative;
+    display: inline-block;
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: #2ECC71;
+    box-shadow:
+      0 0 6px rgba(46, 204, 113, 0.7),
+      0 0 12px rgba(46, 204, 113, 0.35);
+    flex-shrink: 0;
+  }
+
+  .stat__live-dot::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: rgba(46, 204, 113, 0.35);
+    animation: stat-live-pulse 2s ease-out infinite;
+  }
+
+  @keyframes stat-live-pulse {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(2.2); opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stat__live-dot::before { animation: none; }
   }
 
   .stat__value {
