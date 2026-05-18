@@ -1,0 +1,638 @@
+---
+import ElektroLayout from '@layouts/ElektroLayout.astro';
+import SplitText from '@components/shared/SplitText.astro';
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+import NumberCounter from '@components/shared/NumberCounter.astro';
+import MagneticButton from '@components/shared/MagneticButton.astro';
+
+interface Case {
+  id: string;
+  year: string;
+  cat: 'PV + WP' | 'INDUSTRIE' | 'SMART HOME' | 'SANIERUNG' | 'NOTDIENST';
+  title: string;
+  location: string;
+  problem: string;
+  solution: string;
+  result: string;
+  stats: { k: string; v: string; sub: string }[];
+  featured?: boolean;
+}
+
+const cases: Case[] = [
+  {
+    id: '0214',
+    year: '2024',
+    cat: 'PV + WP',
+    title: 'EFH HAGEN — VOLL-ELEKTRIFIZIERUNG MIT 12,4-KWP-PV',
+    location: 'Einfamilienhaus · Hagen-Hohenlimburg',
+    problem: 'Familie M. zahlte 2023 rund 3.800 € für Gas und Strom — der Vertrag lief aus, der alte Gaskessel war 22 Jahre alt. Wir wurden für eine Beratung angefragt.',
+    solution: 'Komplettpaket: Demontage Gaskessel, neue Luft-Wasser-Wärmepumpe (Stiebel Eltron HPA-O 9 kW), 12,4-kWp-PV-Anlage auf Süd-Dach mit 10-kWh-Speicher, 11-kW-Wallbox vorbereitet für E-Mobilität.',
+    result: 'Jahreskosten 2025 für Strom + Wärme: 960 €. Eigenverbrauchs­quote liegt bei 74 %. BAFA + KfW-Förderung in Summe 17.500 €.',
+    stats: [
+      { k: 'EINSPARUNG', v: '2.840 €', sub: 'pro Jahr' },
+      { k: 'AUTARKIE', v: '74 %', sub: 'Eigenverbrauch' },
+      { k: 'FÖRDERUNG', v: '17.500 €', sub: 'BAFA + KfW' },
+      { k: 'AMORTISATION', v: '8,2 J', sub: 'kalkuliert' },
+    ],
+    featured: true,
+  },
+  {
+    id: '0207',
+    year: '2024',
+    cat: 'INDUSTRIE',
+    title: 'SÄNGER METALL — ELEKTRO-INSTALLATION PRODUKTIONSHALLE',
+    location: 'Produktionserweiterung · Plettenberg',
+    problem: 'Erweiterung einer Metallverarbeitungs-Halle um 1.200 m² Produktionsfläche mit drei CNC-Zentren. Bestehende Verteilung war für die neuen Lasten unterdimensioniert.',
+    solution: 'Komplette neue Unterverteilung 800 A, Kabeltrassen über Decke, dreiphasige CEE-Anschlüsse für CNC, Hallenbeleuchtung in LED mit DALI-Steuerung, Brandmelde-Erweiterung VdS-konform.',
+    result: 'Inbetriebnahme termingerecht, Strom­last­messung 6 Monate später bestätigt sauberen Betrieb. Sänger Metall ist seitdem auf Wartungsvertrag mit uns.',
+    stats: [
+      { k: 'FLÄCHE', v: '1.200 m²', sub: 'erweitert' },
+      { k: 'LAST', v: '800 A', sub: 'neue Verteilung' },
+      { k: 'BAUZEIT', v: '11 W', sub: 'inkl. Inbetrieb' },
+    ],
+  },
+  {
+    id: '0198',
+    year: '2023',
+    cat: 'SMART HOME',
+    title: 'VILLA SAUERLAND — KNX-SMART-HOME 480 M²',
+    location: 'Neubau-Villa · Iserlohn',
+    problem: 'Neubau einer 480-m²-Villa mit Vollausstattung Smart Home — Heizung, Licht, Beschattung, Sicherheit, Multiroom — vom Bauherrn ausdrücklich keine Cloud-Abhängigkeit gewünscht.',
+    solution: 'Komplette KNX-Anlage mit 320 Aktoren, lokale Visualisierung über Gira-X1, redundante Stromversorgung, Sicherheitssensorik mit Anbindung an Wachdienst. Programmierung in 4 Wochen ETS5.',
+    result: 'Bauherr nutzt die Anlage seit zwei Jahren komplett autark, ohne Cloud-Service. Wartungsvertrag inkl. Soft-Updates läuft jährlich.',
+    stats: [
+      { k: 'AKTOREN', v: '320', sub: 'KNX' },
+      { k: 'FLÄCHE', v: '480 m²', sub: 'Vollausbau' },
+      { k: 'CLOUD', v: '0', sub: 'lokale Logik' },
+    ],
+  },
+  {
+    id: '0184',
+    year: '2023',
+    cat: 'SANIERUNG',
+    title: 'ALTBAU LÜDENSCHEID — KOMPLETT-SANIERUNG ELEKTRO',
+    location: 'Wohnhaus Bj. 1908 · Lüdenscheid',
+    problem: 'Komplette Neu-Elektrifizierung eines bewohnten Wohnhauses aus 1908, alte Leitungen mit Aluminium und ohne Schutzleiter. Bewohner sollten während der Sanierung im Haus bleiben.',
+    solution: 'Etagenweise Vorgehensweise über 6 Wochen, neuer Hausanschluss, Smart-Meter-Vorbereitung, Cat6-Verkabelung in allen Räumen, neue Sicherungs­verteilung mit FI-Schutzschaltern.',
+    result: 'Nullschaden während der Bauzeit, keine vermeidbaren Bohrungen in Erhaltenswertes. Heute lebt eine fünfköpfige Familie ohne Sicherheitsdefizite im Haus.',
+    stats: [
+      { k: 'BAUJAHR', v: '1908', sub: 'Bestand' },
+      { k: 'STECKDOSEN', v: '148', sub: 'erneuert' },
+      { k: 'BAUZEIT', v: '6 W', sub: 'bewohnt' },
+    ],
+  },
+  {
+    id: '0176',
+    year: '2023',
+    cat: 'PV + WP',
+    title: 'HOFGUT WALDHAUS — ENERGIE-AUTARKIE 92%',
+    location: 'Landwirtschaft + Wohnhaus · Halver',
+    problem: 'Großes Hofgut mit Wohnhaus, Stall, Werkstatt — bisher Heizöl + Netzstrom. Eigentümer wollte maximal mögliche Energie-Autarkie ohne Komfort­verlust.',
+    solution: '24-kWp-PV-Anlage auf Scheunendach (Süd + Ost), 30-kWh-Speicher, Erd-Sole-Wärmepumpe 16 kW mit Tiefenbohrung, 22-kW-Wallbox für Trecker und Hybrid-PKW.',
+    result: '92 % Eigenverbrauchsquote über das Jahr, im Sommer komplette Autarkie, Heizöl-Tank wurde demontiert. Investition 89.500 €, Förderung 32.000 €.',
+    stats: [
+      { k: 'PV', v: '24 kWp', sub: 'Süd + Ost' },
+      { k: 'SPEICHER', v: '30 kWh', sub: 'BYD' },
+      { k: 'AUTARKIE', v: '92 %', sub: 'p.a.' },
+    ],
+  },
+  {
+    id: '0161',
+    year: '2022',
+    cat: 'NOTDIENST',
+    title: 'KÄLTEAUSFALL — REHA-KLINIK WERDOHL',
+    location: '24h-Notdienst · Werdohl',
+    problem: 'Sonntag Nachmittag, Klinik mit 80 Betten, Kälte-Maschine für Server-Raum ausgefallen, Temperaturen kletterten auf 38 °C. Standby-Notdienst von zwei Lieferanten antwortete nicht.',
+    solution: 'Karla Holtkamp in 65 Minuten vor Ort, Schaltschrank-Diagnose, defekter Magnetschütz lokalisiert, Ersatzteil aus Werkstatt geholt, in 3 Stunden wieder im Betrieb.',
+    result: 'Server­raum erreichte nie 42 °C-Notabschaltung, keine Daten­auswirkung. Klinik hat seitdem Service-Level-Vertrag mit uns.',
+    stats: [
+      { k: 'ANFAHRT', v: '65 MIN', sub: 'Sonntag' },
+      { k: 'REPARATUR', v: '3 H', sub: 'inkl. Anfahrt' },
+      { k: 'AUSFALL', v: '0 H', sub: 'IT-Systeme' },
+    ],
+  },
+];
+
+const featured = cases.find(c => c.featured)!;
+const others = cases.filter(c => !c.featured);
+---
+
+<ElektroLayout
+  title="Holtkamp Elektrotechnik — Referenzen · Ausgewählte Projekte"
+  description="Sechs ausgewählte Projekte aus 37 Jahren Holtkamp: Photovoltaik, Wärmepumpe, Industrie-Installation, KNX-Smart-Home, Altbau-Sanierung und 24h-Notdienst — mit echten Zahlen."
+>
+  <!-- ── Page Hero ────────────────────────────────────────────────── -->
+  <section class="hk-pg-hero hk-section">
+    <div class="hk-container">
+      <div class="hk-bar">
+        <span class="hk-bar-n">N° 03</span>
+        <span class="hk-bar-line" aria-hidden="true"></span>
+        <span class="hk-bar-k">PAGE / REFERENZEN</span>
+      </div>
+
+      <h1 class="hk-pg-hero__h">
+        <span class="hk-pg-hero__line"><SplitText by="words" stagger={0.05}>WAS WIR</SplitText></span>
+        <span class="hk-pg-hero__line hk-pg-hero__line--alt"><SplitText by="words" stagger={0.05} delay={0.2}>SCHON GEMACHT HABEN.</SplitText></span>
+      </h1>
+
+      <p class="hk-pg-hero__lead">
+        Sechs ausgewählte Projekte aus den letzten Jahren — vom Einfamilien­haus
+        mit Voll-Elektrifizierung bis zum Sonntag-Nacht-Notdienst in einer
+        Reha-Klinik. Alle Zahlen sind echt, alle Kunden­zitate freigegeben.
+      </p>
+
+      <ul class="hk-pg-hero__stats">
+        <li><strong><NumberCounter to={2400} duration={2.2} />+</strong> Projekte gesamt</li>
+        <li><strong><NumberCounter to={184} duration={1.8} /></strong> Bewertungen</li>
+        <li><strong>4,9</strong> / 5 Sterne ⌀</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Featured Case ────────────────────────────────────────────── -->
+  <section class="hk-feat hk-section">
+    <div class="hk-container">
+      <div class="hk-bar">
+        <span class="hk-bar-n">FEATURED</span>
+        <span class="hk-bar-line" aria-hidden="true"></span>
+        <span class="hk-bar-k">REF · {featured.id} · {featured.year}</span>
+      </div>
+
+      <RevealOnScroll y={40}>
+        <article class="hk-feat__art">
+          <div class="hk-feat__visual" aria-hidden="true">
+            <span class="hk-feat__visual-cat">{featured.cat}</span>
+            <svg viewBox="0 0 560 360" class="hk-feat__svg">
+              <line x1="20" y1="280" x2="540" y2="280" stroke="currentColor" stroke-width="1.4" />
+              <g stroke="currentColor" stroke-width="0.5" opacity="0.4">
+                <line x1="40" y1="280" x2="30" y2="298" />
+                <line x1="80" y1="280" x2="70" y2="298" />
+                <line x1="120" y1="280" x2="110" y2="298" />
+                <line x1="160" y1="280" x2="150" y2="298" />
+                <line x1="200" y1="280" x2="190" y2="298" />
+                <line x1="240" y1="280" x2="230" y2="298" />
+                <line x1="280" y1="280" x2="270" y2="298" />
+                <line x1="320" y1="280" x2="310" y2="298" />
+                <line x1="360" y1="280" x2="350" y2="298" />
+                <line x1="400" y1="280" x2="390" y2="298" />
+                <line x1="440" y1="280" x2="430" y2="298" />
+                <line x1="480" y1="280" x2="470" y2="298" />
+                <line x1="520" y1="280" x2="510" y2="298" />
+              </g>
+              <path d="M 130 280 L 130 160 L 250 90 L 370 160 L 370 280 Z" fill="color-mix(in srgb, var(--color-accent) 6%, transparent)" stroke="currentColor" stroke-width="1.6" />
+              <g fill="var(--color-accent)" opacity="0.85">
+                <polygon points="148,170 200,135 212,142 160,177" />
+                <polygon points="170,185 222,150 234,157 182,192" />
+                <polygon points="192,200 244,165 256,172 204,207" />
+                <polygon points="262,135 314,170 302,177 250,142" />
+                <polygon points="284,150 336,185 324,192 272,157" />
+                <polygon points="306,165 358,200 346,207 294,172" />
+              </g>
+              <rect x="160" y="210" width="40" height="44" fill="color-mix(in srgb, var(--color-text) 12%, transparent)" stroke="currentColor" stroke-width="1" />
+              <rect x="230" y="200" width="40" height="80" fill="none" stroke="currentColor" stroke-width="1" />
+              <rect x="300" y="210" width="40" height="44" fill="color-mix(in srgb, var(--color-text) 12%, transparent)" stroke="currentColor" stroke-width="1" />
+              <rect x="395" y="232" width="60" height="48" fill="none" stroke="currentColor" stroke-width="1.4" />
+              <circle cx="425" cy="256" r="13" fill="none" stroke="currentColor" stroke-width="1" />
+              <path d="M419 256 L425 250 L431 256 L425 262 Z" fill="currentColor" />
+              <text x="395" y="308" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700" fill="var(--color-accent)" letter-spacing="1">WP · 9 KW</text>
+              <path d="M 370 250 L 395 250" stroke="var(--color-accent)" stroke-width="1.5" stroke-dasharray="3 3" />
+              <g stroke="var(--color-accent)" fill="none" stroke-width="1.6">
+                <circle cx="95" cy="65" r="18" />
+                <line x1="95" y1="65" x2="175" y2="125" />
+                <polygon points="175,125 167,121 171,129" fill="var(--color-accent)" stroke="none" />
+              </g>
+              <text x="20" y="115" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="var(--color-accent)" letter-spacing="1">PV · 12,4 KWP</text>
+            </svg>
+          </div>
+
+          <div class="hk-feat__copy">
+            <span class="hk-feat__cat">{featured.cat}</span>
+            <h2 class="hk-feat__h">{featured.title}</h2>
+            <p class="hk-feat__loc">{featured.location}</p>
+
+            <dl class="hk-feat__story">
+              <dt>AUSGANGSLAGE</dt>
+              <dd>{featured.problem}</dd>
+              <dt>UNSERE LÖSUNG</dt>
+              <dd>{featured.solution}</dd>
+              <dt>ERGEBNIS</dt>
+              <dd>{featured.result}</dd>
+            </dl>
+
+            <ul class="hk-feat__stats">
+              {featured.stats.map(s => (
+                <li>
+                  <span class="hk-feat__stats-k">{s.k}</span>
+                  <span class="hk-feat__stats-v">{s.v}</span>
+                  <span class="hk-feat__stats-s">{s.sub}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </article>
+      </RevealOnScroll>
+    </div>
+  </section>
+
+  <!-- ── Weitere Cases ────────────────────────────────────────────── -->
+  <section class="hk-other hk-section">
+    <div class="hk-container">
+      <div class="hk-bar">
+        <span class="hk-bar-n">N° 04</span>
+        <span class="hk-bar-line" aria-hidden="true"></span>
+        <span class="hk-bar-k">WEITERE PROJEKTE / 5</span>
+      </div>
+
+      <h2 class="hk-other__h">
+        FÜNF<br />
+        <span class="hk-other__h-alt">WEITERE PROJEKTE.</span>
+      </h2>
+
+      <ul class="hk-other__grid">
+        {others.map(c => (
+          <li class="hk-other__cell">
+            <header class="hk-other__head">
+              <span class="hk-other__cat">{c.cat}</span>
+              <span class="hk-other__year">{c.year} · REF·{c.id}</span>
+            </header>
+            <h3 class="hk-other__t">{c.title}</h3>
+            <p class="hk-other__loc">{c.location}</p>
+            <p class="hk-other__text">{c.solution}</p>
+
+            <dl class="hk-other__stats">
+              {c.stats.map(s => (
+                <div>
+                  <dt>{s.k}</dt>
+                  <dd>{s.v}</dd>
+                  <span>{s.sub}</span>
+                </div>
+              ))}
+            </dl>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── CTA ──────────────────────────────────────────────────────── -->
+  <section class="hk-pg-cta hk-section">
+    <div class="hk-container">
+      <RevealOnScroll>
+        <h2 class="hk-pg-cta__h">
+          IHRE GESCHICHTE<br />
+          <span class="hk-pg-cta__h-alt">FEHLT NOCH.</span>
+        </h2>
+        <p class="hk-pg-cta__lead">Erzählen Sie uns Ihr Projekt — und wir prüfen, ob wir die Richtigen sind.</p>
+        <MagneticButton href="/demos/elektro/kontakt/" strength={0.4} variant="primary" class="hk-pg-cta__btn">
+          <span>ANFRAGE STARTEN</span>
+          <span aria-hidden="true">→</span>
+        </MagneticButton>
+      </RevealOnScroll>
+    </div>
+  </section>
+</ElektroLayout>
+
+<style>
+  /* ── Page Hero ────────────────────────────────────────────────── */
+  .hk-pg-hero { padding-block: clamp(3rem, 6vw, 5rem) clamp(3rem, 6vw, 5rem); }
+
+  .hk-pg-hero__h {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 11vw, 10rem);
+    line-height: 0.88;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin: 0 0 2rem;
+  }
+  .hk-pg-hero__line { display: block; overflow: hidden; }
+  .hk-pg-hero__line--alt { color: var(--color-accent); }
+
+  .hk-pg-hero__lead {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    line-height: 1.65;
+    max-width: 55ch;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    margin: 0 0 2rem;
+  }
+
+  .hk-pg-hero__stats {
+    list-style: none;
+    margin: 0;
+    padding: 1.5rem 0 0;
+    border-top: 1px solid var(--color-rule);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 3rem;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--color-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .hk-pg-hero__stats strong {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    color: var(--color-accent);
+    font-weight: 400;
+    letter-spacing: 0.005em;
+    margin-right: 0.3rem;
+  }
+
+  /* ── Featured Case ────────────────────────────────────────────── */
+  .hk-feat { border-top: 1px solid var(--color-rule); background: var(--color-surface); }
+
+  .hk-feat__art {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: start;
+  }
+  @media (min-width: 900px) {
+    .hk-feat__art { grid-template-columns: 0.95fr 1.05fr; }
+  }
+
+  .hk-feat__visual {
+    background: var(--color-bg);
+    border: 1px solid var(--color-rule-strong);
+    padding: 2rem 1.25rem 1.25rem;
+    position: relative;
+    color: var(--color-text);
+  }
+
+  .hk-feat__visual-cat {
+    position: absolute;
+    top: 0.9rem;
+    left: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    color: var(--color-accent);
+    letter-spacing: 0.18em;
+    font-weight: 700;
+  }
+
+  .hk-feat__svg { width: 100%; height: auto; }
+
+  .hk-feat__cat {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-accent);
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .hk-feat__h {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3.4rem);
+    line-height: 0.95;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    margin: 1rem 0 0.5rem;
+    font-weight: 400;
+  }
+
+  .hk-feat__loc {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-muted);
+    letter-spacing: 0.08em;
+    margin: 0 0 2rem;
+  }
+
+  .hk-feat__story {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0 0 2rem;
+    border-top: 1px solid var(--color-rule);
+    padding-top: 1.5rem;
+  }
+  .hk-feat__story dt {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    color: var(--color-accent);
+    font-weight: 700;
+    margin-top: 0.8rem;
+  }
+  .hk-feat__story dd {
+    margin: 0 0 0.4rem;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: color-mix(in srgb, var(--color-text) 85%, transparent);
+  }
+
+  .hk-feat__stats {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border: 1px solid var(--color-rule-strong);
+  }
+  @media (min-width: 600px) { .hk-feat__stats { grid-template-columns: repeat(4, 1fr); } }
+
+  .hk-feat__stats li {
+    padding: 1rem;
+    border-right: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  @media (max-width: 599px) {
+    .hk-feat__stats li:nth-child(2n) { border-right: none; }
+    .hk-feat__stats li:nth-last-child(-n+2) { border-bottom: none; }
+  }
+  @media (min-width: 600px) {
+    .hk-feat__stats li:last-child { border-right: none; }
+    .hk-feat__stats li { border-bottom: none; }
+  }
+
+  .hk-feat__stats-k {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .hk-feat__stats-v {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+    color: var(--color-accent);
+    line-height: 1;
+    font-weight: 400;
+    letter-spacing: 0.005em;
+  }
+  .hk-feat__stats-s {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-muted);
+    letter-spacing: 0.12em;
+  }
+
+  /* ── Weitere Cases ────────────────────────────────────────────── */
+  .hk-other { border-top: 1px solid var(--color-rule); }
+
+  .hk-other__h {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 0.92;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    margin: 0 0 clamp(2rem, 4vw, 3.5rem);
+    font-weight: 400;
+  }
+  .hk-other__h-alt { color: var(--color-accent); }
+
+  .hk-other__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 900px) { .hk-other__grid { grid-template-columns: 1fr 1fr; } }
+
+  .hk-other__cell {
+    background: var(--color-surface);
+    padding: 1.75rem;
+    border: 1px solid var(--color-rule);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: border-color 0.4s ease, transform 0.5s var(--ease-out-expo);
+  }
+  .hk-other__cell:hover { border-color: var(--color-accent); transform: translateY(-4px); }
+
+  .hk-other__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+  }
+  .hk-other__cat {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+  .hk-other__year { color: var(--color-muted); }
+
+  .hk-other__t {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    line-height: 1.05;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    margin: 0;
+    font-weight: 400;
+  }
+  .hk-other__loc {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    letter-spacing: 0.05em;
+    margin: 0;
+  }
+  .hk-other__text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    margin: 0.5rem 0 0;
+  }
+
+  .hk-other__stats {
+    margin: auto 0 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--color-rule);
+    padding-top: 1rem;
+  }
+  .hk-other__stats > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding-right: 0.5rem;
+    border-right: 1px solid var(--color-rule);
+  }
+  .hk-other__stats > div:last-child { border-right: none; padding-right: 0; }
+  .hk-other__stats dt {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    color: var(--color-muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .hk-other__stats dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    color: var(--color-accent);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.005em;
+  }
+  .hk-other__stats span {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    color: var(--color-muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── CTA ──────────────────────────────────────────────────────── */
+  .hk-pg-cta {
+    border-top: 1px solid var(--color-rule);
+    text-align: center;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    position: relative;
+    overflow: hidden;
+  }
+  .hk-pg-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--color-bg) 8%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-bg) 8%, transparent) 1px, transparent 1px);
+    background-size: 56px 56px;
+    pointer-events: none;
+  }
+  .hk-pg-cta .hk-container { position: relative; z-index: 1; }
+
+  .hk-pg-cta__h {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6.5vw, 5rem);
+    line-height: 0.95;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    margin: 0 0 1.25rem;
+    font-weight: 400;
+    color: var(--color-bg);
+  }
+  .hk-pg-cta__h-alt { color: var(--color-text); }
+  .hk-pg-cta__lead {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    color: color-mix(in srgb, var(--color-bg) 80%, transparent);
+    margin: 0 0 2rem;
+  }
+  .hk-pg-cta__btn {
+    background: var(--color-bg);
+    color: var(--color-text);
+    border-radius: 0;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    padding: 1.2rem 2rem;
+  }
+  .hk-pg-cta__btn:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+</style>

@@ -1,0 +1,802 @@
+---
+import ElektroLayout from '@layouts/ElektroLayout.astro';
+import SplitText from '@components/shared/SplitText.astro';
+import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
+---
+
+<ElektroLayout
+  title="Holtkamp Elektrotechnik — Kontakt · Anfrage starten"
+  description="Erstgespräch kostenfrei. Schreiben Sie uns über das Formular, rufen Sie an oder kommen Sie in der Volmestraße in Lüdenscheid vorbei."
+>
+  <!-- ── Page Hero ────────────────────────────────────────────────── -->
+  <section class="hk-pg-hero hk-section">
+    <div class="hk-container">
+      <div class="hk-bar">
+        <span class="hk-bar-n">N° 05</span>
+        <span class="hk-bar-line" aria-hidden="true"></span>
+        <span class="hk-bar-k">PAGE / KONTAKT</span>
+      </div>
+
+      <h1 class="hk-pg-hero__h">
+        <span class="hk-pg-hero__line"><SplitText by="words" stagger={0.05}>SCHREIBEN</SplitText></span>
+        <span class="hk-pg-hero__line hk-pg-hero__line--alt"><SplitText by="words" stagger={0.05} delay={0.2}>SIE UNS.</SplitText></span>
+      </h1>
+
+      <p class="hk-pg-hero__lead">
+        Erstgespräch ist kostenfrei. Wir antworten innerhalb von 24 Stunden —
+        meistens schneller. Für Notfälle bitte direkt anrufen.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Kontakt-Block (Form + Info) ────────────────────────────── -->
+  <section class="hk-contact">
+    <div class="hk-container hk-contact__inner">
+      <div class="hk-contact__form-wrap">
+        <div class="hk-bar">
+          <span class="hk-bar-n">N° 01</span>
+          <span class="hk-bar-line" aria-hidden="true"></span>
+          <span class="hk-bar-k">FORMULAR</span>
+        </div>
+
+        <form
+          class="hk-form"
+          data-hk-form
+          onsubmit="event.preventDefault(); this.classList.add('is-success');"
+          novalidate
+        >
+          <!-- Honeypot -->
+          <label class="hk-form__honey" aria-hidden="true">
+            <span>Bitte freilassen</span>
+            <input type="text" name="hp_field" tabindex="-1" autocomplete="off" />
+          </label>
+
+          <fieldset>
+            <legend>1. WIE KÖNNEN WIR SIE ERREICHEN?</legend>
+            <div class="hk-form__row hk-form__row--2">
+              <label class="hk-form__field">
+                <span>Name *</span>
+                <input type="text" name="name" required autocomplete="name" placeholder="Vor- und Nachname" />
+              </label>
+              <label class="hk-form__field">
+                <span>Firma / Organisation</span>
+                <input type="text" name="firma" autocomplete="organization" placeholder="optional" />
+              </label>
+            </div>
+            <div class="hk-form__row hk-form__row--2">
+              <label class="hk-form__field">
+                <span>E-Mail *</span>
+                <input type="email" name="email" required autocomplete="email" placeholder="ihre@firma.de" />
+              </label>
+              <label class="hk-form__field">
+                <span>Telefon</span>
+                <input type="tel" name="tel" autocomplete="tel" placeholder="0 23 51 / 60 80 21" />
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>2. WORUM GEHT ES?</legend>
+            <div class="hk-form__row">
+              <label class="hk-form__field">
+                <span>Gewerk / Leistung *</span>
+                <select name="leistung" required>
+                  <option value="">Bitte wählen…</option>
+                  <option>Elektroinstallation Privat</option>
+                  <option>Elektroinstallation Gewerbe/Industrie</option>
+                  <option>Heizung / Wärmepumpe</option>
+                  <option>Photovoltaik mit Speicher</option>
+                  <option>Smart Home (KNX / Loxone)</option>
+                  <option>E-Mobilität / Wallbox</option>
+                  <option>E-Check Mehrfamilienhaus</option>
+                  <option>Sonstiges / weiß ich noch nicht</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="hk-form__row hk-form__row--2">
+              <label class="hk-form__field">
+                <span>Geplanter Start</span>
+                <select name="zeit">
+                  <option>So schnell wie möglich</option>
+                  <option>In den nächsten 3 Monaten</option>
+                  <option>In den nächsten 6 Monaten</option>
+                  <option>Im nächsten Jahr</option>
+                  <option>Erstmal nur Beratung</option>
+                </select>
+              </label>
+              <label class="hk-form__field">
+                <span>Budget-Rahmen</span>
+                <select name="budget">
+                  <option>Bis 5.000 €</option>
+                  <option>5.000 – 20.000 €</option>
+                  <option>20.000 – 50.000 €</option>
+                  <option>50.000 – 150.000 €</option>
+                  <option>über 150.000 €</option>
+                  <option>weiß ich noch nicht</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="hk-form__row">
+              <label class="hk-form__field">
+                <span>Nachricht *</span>
+                <textarea name="message" required rows="6" placeholder="Beschreiben Sie kurz, was ansteht. Adresse, Quadratmeter, Bestand, Zielvorstellung — alles, was für die Einschätzung hilft."></textarea>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>3. EINVERSTÄNDNIS</legend>
+            <label class="hk-form__consent">
+              <input type="checkbox" name="dsgvo" required />
+              <span>
+                Ja, ich habe die <a href="/demos/elektro/datenschutz/">Datenschutz­erklärung</a>
+                gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung
+                meiner Anfrage zu. *
+              </span>
+            </label>
+
+            <label class="hk-form__consent">
+              <input type="checkbox" name="newsletter" />
+              <span>
+                Optional: Ich möchte das Holtkamp-Journal abonnieren
+                (4× pro Jahr, jederzeit kündbar).
+              </span>
+            </label>
+          </fieldset>
+
+          <div class="hk-form__turnstile" aria-hidden="true">
+            <span class="hk-form__turnstile-dot"></span>
+            <span>Spam-Schutz · Cloudflare Turnstile · keine Daten an Dritte</span>
+          </div>
+
+          <button type="submit" class="hk-form__submit">
+            <span class="hk-form__submit-default">
+              <span>ANFRAGE ABSCHICKEN</span>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg>
+            </span>
+            <span class="hk-form__submit-success">
+              <span>EINGEGANGEN</span>
+              <span aria-hidden="true">✓</span>
+            </span>
+          </button>
+
+          <div class="hk-form__success" role="status">
+            <h3>VIELEN DANK.</h3>
+            <p>Ihre Anfrage ist bei uns eingegangen. Karla oder Daniel melden sich innerhalb von 24 Stunden bei Ihnen.</p>
+          </div>
+        </form>
+      </div>
+
+      <aside class="hk-contact__side">
+        <div class="hk-bar">
+          <span class="hk-bar-n">N° 02</span>
+          <span class="hk-bar-line" aria-hidden="true"></span>
+          <span class="hk-bar-k">DIREKT</span>
+        </div>
+
+        <div class="hk-contact__card hk-contact__card--phone">
+          <h2>RUF UNS AN.</h2>
+          <a href="tel:+4923516080210" class="hk-contact__phone">0 23 51 / 60 80 21</a>
+          <p>
+            Mo–Fr 7:00–17:00 · Sa 8:00–12:00<br />
+            Notdienst rund um die Uhr.
+          </p>
+        </div>
+
+        <ul class="hk-contact__list">
+          <li>
+            <span class="hk-contact__k">MAIL</span>
+            <a href="mailto:hallo@holtkamp-elektro.de">hallo@holtkamp-elektro.de</a>
+          </li>
+          <li>
+            <span class="hk-contact__k">WHATSAPP</span>
+            <a href="https://wa.me/4923516080210" rel="noopener">+49 23 51 60 80 21</a>
+          </li>
+          <li>
+            <span class="hk-contact__k">ANSCHRIFT</span>
+            <span>
+              Holtkamp Elektrotechnik GmbH<br />
+              Volmestraße 47<br />
+              58507 Lüdenscheid
+            </span>
+          </li>
+          <li>
+            <span class="hk-contact__k">EINZUG</span>
+            <span>Märkischer Kreis · Sauerland · Hagen · Iserlohn</span>
+          </li>
+        </ul>
+
+        <div class="hk-contact__card hk-contact__card--emergency">
+          <h3>NOTFALL?</h3>
+          <p>Strom-Ausfall, defekte Heizung, Wasserschaden mit Folge-Elektrik — rufen Sie sofort an. Wir sind im MK-Gebiet im Schnitt in 90 Minuten vor Ort.</p>
+          <a href="tel:+4923516080210" class="hk-contact__emergency-cta">
+            <span class="hk-contact__emergency-dot" aria-hidden="true"></span>
+            <span>NOTDIENST · 24 H</span>
+          </a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ── Maps (privacy: click-to-load) ─────────────────────────── -->
+  <section class="hk-map hk-section">
+    <div class="hk-container">
+      <div class="hk-bar">
+        <span class="hk-bar-n">N° 03</span>
+        <span class="hk-bar-line" aria-hidden="true"></span>
+        <span class="hk-bar-k">LAGE / VOLMESTRASSE 47</span>
+      </div>
+
+      <RevealOnScroll>
+        <div class="hk-map__frame" data-hk-map>
+          <div class="hk-map__placeholder">
+            <span class="hk-map__placeholder-eyebrow">DSGVO · CLICK-TO-LOAD</span>
+            <h2 class="hk-map__placeholder-h">KARTE EINBLENDEN</h2>
+            <p class="hk-map__placeholder-text">
+              Die Karte wird erst nach Klick geladen. Damit verlassen Daten Ihr
+              Gerät erst, wenn Sie zustimmen — DSGVO-konform.
+            </p>
+            <button class="hk-map__btn" type="button" data-hk-map-load>
+              <span>KARTE LADEN</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+
+          <!-- ASCII-Karten-Andeutung als visueller Platzhalter -->
+          <div class="hk-map__decor" aria-hidden="true">
+            <div class="hk-map__pin">
+              <span class="hk-map__pin-pulse"></span>
+              <span class="hk-map__pin-dot"></span>
+            </div>
+            <svg viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <pattern id="hk-map-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M40 0H0V40" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.18"/>
+                </pattern>
+              </defs>
+              <rect width="800" height="400" fill="url(#hk-map-grid)" />
+              <path d="M50 120 Q 200 80 350 180 T 700 240" stroke="currentColor" stroke-width="1.4" opacity="0.5" fill="none" />
+              <path d="M120 60 Q 280 220 400 200 T 760 320" stroke="currentColor" stroke-width="1.4" opacity="0.5" fill="none" />
+              <path d="M20 280 Q 200 240 360 320 T 680 360" stroke="currentColor" stroke-width="1.4" opacity="0.5" fill="none" />
+            </svg>
+          </div>
+        </div>
+      </RevealOnScroll>
+    </div>
+  </section>
+</ElektroLayout>
+
+<style>
+  /* ── Page Hero ────────────────────────────────────────────────── */
+  .hk-pg-hero { padding-block: clamp(3rem, 6vw, 5rem) clamp(3rem, 6vw, 5rem); }
+
+  .hk-pg-hero__h {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 11vw, 10rem);
+    line-height: 0.88;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin: 0 0 2rem;
+  }
+  .hk-pg-hero__line { display: block; overflow: hidden; }
+  .hk-pg-hero__line--alt { color: var(--color-accent); }
+
+  .hk-pg-hero__lead {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    line-height: 1.65;
+    max-width: 55ch;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    margin: 0;
+  }
+
+  /* ── Kontakt-Block ────────────────────────────────────────────── */
+  .hk-contact { border-top: 1px solid var(--color-rule); }
+
+  .hk-contact__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 5vw, 4rem);
+    padding-block: clamp(3rem, 6vw, 5rem);
+  }
+
+  @media (min-width: 900px) {
+    .hk-contact__inner { grid-template-columns: 1.4fr 0.8fr; gap: clamp(3rem, 5vw, 5rem); }
+  }
+
+  /* ── Form ─────────────────────────────────────────────────────── */
+  .hk-form {
+    background: var(--color-surface);
+    border: 1px solid var(--color-rule-strong);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+  }
+
+  .hk-form fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .hk-form legend {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    color: var(--color-accent);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--color-rule-strong);
+    width: 100%;
+    text-transform: uppercase;
+  }
+
+  .hk-form__honey {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .hk-form__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .hk-form__row--2 { grid-template-columns: 1fr; }
+  @media (min-width: 720px) { .hk-form__row--2 { grid-template-columns: 1fr 1fr; } }
+
+  .hk-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .hk-form__field span {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .hk-form__field input,
+  .hk-form__field select,
+  .hk-form__field textarea {
+    background: var(--color-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-rule-strong);
+    padding: 0.95rem 1rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: border-color 0.3s;
+  }
+  .hk-form__field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 6 L8 10 L12 6' stroke='%23F0EDE4' stroke-width='1.4' fill='none' stroke-linecap='square'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 14px;
+    padding-right: 2.5rem;
+  }
+  .hk-form__field input::placeholder,
+  .hk-form__field textarea::placeholder { color: var(--color-muted); }
+
+  .hk-form__field input:focus,
+  .hk-form__field select:focus,
+  .hk-form__field textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+
+  .hk-form__consent {
+    display: grid;
+    grid-template-columns: 1.25rem 1fr;
+    gap: 0.75rem;
+    align-items: start;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    letter-spacing: 0.02em;
+  }
+  .hk-form__consent input {
+    margin-top: 0.25rem;
+    accent-color: var(--color-accent);
+  }
+  .hk-form__consent a { color: var(--color-accent); text-decoration: underline; }
+
+  .hk-form__turnstile {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.75rem 1rem;
+    border: 1px dashed var(--color-rule-strong);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+  }
+  .hk-form__turnstile-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 20%, transparent);
+    animation: hk-pulse 2.4s ease-in-out infinite;
+  }
+
+  .hk-form__submit {
+    align-self: start;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    padding: 1.1rem 1.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    transition: background-color 0.3s, transform 0.3s var(--ease-out-expo), gap 0.3s;
+  }
+  .hk-form__submit:hover { transform: translateY(-2px); }
+  .hk-form__submit-default {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .hk-form__submit-default svg { width: 14px; height: 14px; }
+  .hk-form__submit-success {
+    display: none;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .hk-form.is-success .hk-form__submit-default { display: none; }
+  .hk-form.is-success .hk-form__submit-success { display: inline-flex; }
+  .hk-form.is-success .hk-form__submit {
+    background: var(--color-text);
+    color: var(--color-bg);
+    pointer-events: none;
+  }
+
+  .hk-form__success {
+    display: none;
+    padding: 1.5rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-accent);
+    margin-top: 0.5rem;
+  }
+  .hk-form.is-success .hk-form__success { display: block; }
+
+  .hk-form__success h3 {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    color: var(--color-accent);
+    margin: 0 0 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    font-weight: 400;
+  }
+  .hk-form__success p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--color-text) 85%, transparent);
+  }
+
+  /* ── Seite (rechts) ────────────────────────────────────────── */
+  .hk-contact__side {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .hk-contact__card {
+    padding: 1.5rem;
+    border: 1px solid var(--color-rule-strong);
+    background: var(--color-surface);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .hk-contact__card--phone {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border-color: var(--color-accent);
+  }
+  .hk-contact__card--phone h2 {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    margin: 0;
+    font-weight: 400;
+  }
+  .hk-contact__card--phone p {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-bg) 85%, transparent);
+    margin: 0;
+    letter-spacing: 0.04em;
+  }
+  .hk-contact__phone {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    color: var(--color-bg);
+    text-decoration: none;
+    border-bottom: 2px solid var(--color-bg);
+    line-height: 1;
+    padding-bottom: 0.3rem;
+    align-self: start;
+    letter-spacing: 0.005em;
+    font-weight: 400;
+  }
+
+  .hk-contact__list {
+    list-style: none;
+    margin: 0;
+    padding: 1.5rem;
+    border: 1px solid var(--color-rule);
+    display: grid;
+    gap: 1rem;
+  }
+  .hk-contact__list li {
+    display: grid;
+    gap: 0.3rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .hk-contact__list li:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .hk-contact__k {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-accent);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .hk-contact__list a {
+    color: var(--color-text);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, color 0.3s;
+    font-size: 0.95rem;
+    font-family: var(--font-body);
+  }
+  .hk-contact__list a:hover {
+    color: var(--color-accent);
+    border-bottom-color: currentColor;
+  }
+  .hk-contact__list span:not(.hk-contact__k) {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+  }
+
+  .hk-contact__card--emergency {
+    background: var(--color-bg);
+    border-color: var(--color-rule-strong);
+  }
+  .hk-contact__card--emergency h3 {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    margin: 0;
+    font-weight: 400;
+  }
+  .hk-contact__card--emergency p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+  }
+  .hk-contact__emergency-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.2rem;
+    background: var(--color-text);
+    color: var(--color-bg);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-decoration: none;
+    align-self: start;
+    margin-top: 0.5rem;
+    transition: background 0.3s, color 0.3s;
+  }
+  .hk-contact__emergency-cta:hover {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+  .hk-contact__emergency-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 30%, transparent);
+    animation: hk-pulse 1.5s ease-in-out infinite;
+  }
+  .hk-contact__emergency-cta:hover .hk-contact__emergency-dot {
+    background: var(--color-bg);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-bg) 30%, transparent);
+  }
+
+  /* ── Maps ─────────────────────────────────────────────────────── */
+  .hk-map { border-top: 1px solid var(--color-rule); background: var(--color-surface); }
+
+  .hk-map__frame {
+    position: relative;
+    aspect-ratio: 16 / 7;
+    background: var(--color-bg);
+    border: 1px solid var(--color-rule-strong);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .hk-map__placeholder {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem;
+    text-align: center;
+    background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+    backdrop-filter: blur(4px);
+  }
+
+  .hk-map__placeholder-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    color: var(--color-accent);
+    letter-spacing: 0.2em;
+    font-weight: 700;
+  }
+
+  .hk-map__placeholder-h {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    margin: 0;
+    font-weight: 400;
+  }
+
+  .hk-map__placeholder-text {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    max-width: 50ch;
+    margin: 0;
+  }
+
+  .hk-map__btn {
+    margin-top: 0.5rem;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    padding: 0.95rem 1.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    transition: background 0.3s, transform 0.3s var(--ease-out-expo);
+  }
+  .hk-map__btn:hover {
+    transform: translateY(-2px);
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .hk-map__frame.is-loaded .hk-map__placeholder { display: none; }
+  .hk-map__frame.is-loaded::after {
+    content: '0 23 51 / 60 80 21';
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    padding: 0.6rem 0.9rem;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+    z-index: 3;
+  }
+
+  .hk-map__decor {
+    position: absolute;
+    inset: 0;
+    color: var(--color-text);
+    overflow: hidden;
+  }
+  .hk-map__decor svg { width: 100%; height: 100%; }
+
+  .hk-map__pin {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    z-index: 1;
+  }
+  .hk-map__pin-pulse {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--color-accent) 30%, transparent);
+    animation: hk-map-pin 2.4s ease-in-out infinite;
+  }
+  .hk-map__pin-dot {
+    position: relative;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-bg), 0 0 12px var(--color-accent);
+  }
+  @keyframes hk-map-pin {
+    0%, 100% { transform: scale(1); opacity: 0.85; }
+    50% { transform: scale(1.6); opacity: 0.2; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hk-form__turnstile-dot,
+    .hk-contact__emergency-dot,
+    .hk-map__pin-pulse { animation: none; }
+  }
+</style>
+
+<script>
+  function init() {
+    // Pre-select Leistung aus URL-Param
+    const params = new URLSearchParams(window.location.search);
+    const leistung = params.get('leistung');
+    if (leistung) {
+      const select = document.querySelector<HTMLSelectElement>('select[name="leistung"]');
+      if (select) {
+        // Suche nach passender Option per case-insensitive includes
+        const target = leistung.toLowerCase();
+        for (const opt of Array.from(select.options)) {
+          if (opt.text.toLowerCase().includes(target)) {
+            select.value = opt.value || opt.text;
+            break;
+          }
+        }
+      }
+    }
+
+    // Click-to-load Map
+    const mapFrame = document.querySelector<HTMLElement>('[data-hk-map]');
+    const mapBtn = document.querySelector<HTMLButtonElement>('[data-hk-map-load]');
+    if (mapFrame && mapBtn) {
+      mapBtn.addEventListener('click', () => {
+        mapFrame.classList.add('is-loaded');
+      });
+    }
+  }
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

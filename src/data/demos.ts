@@ -129,9 +129,10 @@ export const demos: readonly Demo[] = [
     category: 'Elektrotechnik · Meisterbetrieb',
     headline: 'Strom. Wärme. Zukunft.',
     blurb:
-      'Industrial Brutalism mit Premium-Touch. Schwarz, scharf, technisch — mit elektrisch-gelbem Akzent.',
+      'Industrial Brutalism mit Premium-Touch. Sechs Seiten mit Hero, Story-Sections, Case-Studies, Journal und Newsletter-Lead-Funnel — schwarz, scharf, technisch.',
     theme: 'elektro',
-    status: 'in-progress',
+    status: 'live',
+    href: '/demos/elektro/',
     package: {
       format: 'multi-page',
       tier: 'featured',
