@@ -51,6 +51,9 @@ const services = [
   { n: '06', t: '24H NOTDIENST', sub: 'Strom & Wärme · MK-Gebiet', text: 'Wenn die Sicherung knallt oder die Heizung ausfällt, sind wir innerhalb von 90 Minuten beim Kunden — Tag, Nacht, Wochenende.' },
 ];
 
+type ServiceIcon = 'panel' | 'pump' | 'pv' | 'knx' | 'wallbox' | 'siren';
+const serviceIcons: ServiceIcon[] = ['panel', 'pump', 'pv', 'knx', 'wallbox', 'siren'];
+
 const process = [
   { n: '01', label: 'ANFRAGE', text: 'Sie rufen an oder schicken eine Mail. Wir reagieren innerhalb von 24 Stunden mit einem Termin-Vorschlag.' },
   { n: '02', label: 'ORTSTERMIN', text: 'Wir kommen vorbei, hören zu, messen und prüfen — kostenfrei für Privatkunden, klärt Machbarkeit und Förderfähigkeit.' },
@@ -294,8 +297,24 @@ const process = [
     </div>
   </section>
 
-  <!-- ── MANIFEST ──────────────────────────────────────────────────── -->
+  <!-- Section-Divider-Tag -->
+  <div class="hk-tag" aria-hidden="true">
+    <span class="hk-tag__inner">
+      <span class="hk-tag__dot"></span>
+      <span class="hk-tag__k">STEP</span>
+      <span class="hk-tag__v">01 · MANIFEST</span>
+    </span>
+  </div>
+
+  <!-- ── MANIFEST (Editorial-Treatment) ───────────────────────────── -->
   <section class="hk-manifest hk-section">
+    <!-- Marginalia: Rotated Side-Label links -->
+    <span class="hk-manifest__margin" aria-hidden="true">
+      <span class="hk-manifest__margin-line"></span>
+      MANIFEST · MAI 2026 · FOLIO 01
+      <span class="hk-manifest__margin-line"></span>
+    </span>
+
     <div class="hk-container">
       <div class="hk-bar">
         <span class="hk-bar-n">N° 01</span>
@@ -307,34 +326,68 @@ const process = [
         <SplitText by="words" stagger={0.05}>Wir verlegen keine Kabel — wir bauen Anlagen, die in 25&nbsp;Jahren noch sauber funktionieren.</SplitText>
       </h2>
 
+      <!-- Pull-Quote im Editorial-Stil -->
+      <RevealOnScroll y={30}>
+        <blockquote class="hk-manifest__quote">
+          <span class="hk-manifest__quote-mark" aria-hidden="true">„</span>
+          <p>
+            Wenn du sauber arbeitest und pünktlich bist, kommen die
+            nächsten zwölf Kunden von allein.
+          </p>
+          <footer>
+            <span class="hk-manifest__quote-cite">WERNER HOLTKAMP</span>
+            <span class="hk-manifest__quote-role">Gründer · 1989</span>
+          </footer>
+        </blockquote>
+      </RevealOnScroll>
+
       <div class="hk-manifest__cols">
         <RevealOnScroll y={40}>
-          <p>
-            Elektro und Heizung sind keine Bereiche, die man trennen sollte —
-            wer Wärme plant, plant Strom mit. Wir haben deshalb beide
-            Gewerke unter einem Dach. Eine Ansprechperson, ein Termin,
-            eine Rechnung.
-          </p>
+          <div class="hk-manifest__col">
+            <span class="hk-manifest__col-n">01</span>
+            <p class="hk-manifest__col-text hk-dropcap">
+              Elektro und Heizung sind keine Bereiche, die man trennen sollte —
+              wer Wärme plant, plant Strom mit. Wir haben deshalb beide
+              Gewerke unter einem Dach. Eine Ansprechperson, ein Termin,
+              eine Rechnung.
+            </p>
+          </div>
         </RevealOnScroll>
         <RevealOnScroll y={40}>
-          <p>
-            Wir arbeiten ausschließlich mit Materialien, die wir auch im
-            eigenen Haus verbauen würden. Markenkomponenten, dokumentierte
-            Herkunft, Garantien, die Bestand haben. Das kostet mehr — und
-            spart in Summe, weil nichts in zehn Jahren wieder raus muss.
-          </p>
+          <div class="hk-manifest__col">
+            <span class="hk-manifest__col-n">02</span>
+            <p class="hk-manifest__col-text">
+              Wir arbeiten ausschließlich mit Materialien, die wir auch im
+              eigenen Haus verbauen würden. Markenkomponenten, dokumentierte
+              Herkunft, Garantien, die Bestand haben. <em>Das kostet mehr —
+              und spart in Summe</em>, weil nichts in zehn Jahren wieder
+              raus muss.
+            </p>
+          </div>
         </RevealOnScroll>
         <RevealOnScroll y={40}>
-          <p>
-            Familienbetrieb, dritte Generation. Werner Holtkamp hat den
-            Betrieb 1989 gegründet, sein Sohn führt heute die Geschäfte,
-            seine Enkelin ist seit 2024 Meisterin. Das heißt: Sie kennen
-            uns, und wir verschwinden nicht.
-          </p>
+          <div class="hk-manifest__col">
+            <span class="hk-manifest__col-n">03</span>
+            <p class="hk-manifest__col-text">
+              Familienbetrieb, dritte Generation. Werner Holtkamp hat den
+              Betrieb 1989 gegründet, sein Sohn führt heute die Geschäfte,
+              seine Enkelin ist seit 2024 Meisterin. Das heißt: <em>Sie
+              kennen uns, und wir verschwinden nicht.</em>
+            </p>
+          </div>
         </RevealOnScroll>
       </div>
     </div>
   </section>
+
+  <!-- Section-Divider-Tag -->
+  <div class="hk-tag" aria-hidden="true">
+    <span class="hk-tag__inner">
+      <span class="hk-tag__dot"></span>
+      <span class="hk-tag__k">STEP</span>
+      <span class="hk-tag__v">02 · IN ZAHLEN</span>
+    </span>
+  </div>
 
   <!-- ── MEGA NUMBERS ──────────────────────────────────────────────── -->
   <section class="hk-numbers" data-hk-numbers>
@@ -466,6 +519,15 @@ const process = [
     </div>
   </section>
 
+  <!-- Section-Divider-Tag -->
+  <div class="hk-tag" aria-hidden="true">
+    <span class="hk-tag__inner">
+      <span class="hk-tag__dot"></span>
+      <span class="hk-tag__k">STEP</span>
+      <span class="hk-tag__v">04 · GEWERKE</span>
+    </span>
+  </div>
+
   <!-- ── LEISTUNGEN TEASER ─────────────────────────────────────────── -->
   <section class="hk-svc hk-section">
     <div class="hk-container">
@@ -483,27 +545,27 @@ const process = [
       </RevealOnScroll>
 
       <ul class="hk-svc__grid">
-        {services.map((s, i) => (
+        {services.map((s, i) => {
+          const icon = serviceIcons[i];
+          return (
           <li class:list={['hk-svc__cell', i === 0 && 'hk-svc__cell--feature']} data-cursor-hover>
             <div class="hk-svc__cell-head">
               <span class="hk-svc__cell-n">N° {s.n}</span>
               {i === 0 && <span class="hk-svc__cell-tag">KERN-GEWERK</span>}
             </div>
 
-            {i === 0 && (
-              <div class="hk-svc__cell-visual" aria-hidden="true">
+            <div class:list={['hk-svc__cell-visual', i !== 0 && 'hk-svc__cell-visual--mini']} aria-hidden="true">
+              {icon === 'panel' && (
                 <svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet">
                   <defs>
-                    <pattern id="svc-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                    <pattern id="svc-grid-panel" width="20" height="20" patternUnits="userSpaceOnUse">
                       <path d="M20 0H0V20" fill="none" stroke="currentColor" stroke-width="0.4" opacity="0.25"/>
                     </pattern>
                   </defs>
-                  <rect width="320" height="200" fill="url(#svc-grid)" />
-                  <!-- Stylized Sicherungskasten -->
+                  <rect width="320" height="200" fill="url(#svc-grid-panel)" />
                   <rect x="40" y="40" width="240" height="120" fill="none" stroke="currentColor" stroke-width="1.4"/>
                   <line x1="40" y1="80" x2="280" y2="80" stroke="currentColor" stroke-width="0.8" opacity="0.6"/>
                   <line x1="40" y1="120" x2="280" y2="120" stroke="currentColor" stroke-width="0.8" opacity="0.6"/>
-                  <!-- Schalter -->
                   <g stroke="currentColor" stroke-width="1" fill="none">
                     <rect x="55" y="55" width="16" height="18"/><line x1="63" y1="58" x2="63" y2="70"/>
                     <rect x="80" y="55" width="16" height="18"/><line x1="88" y1="58" x2="88" y2="70"/>
@@ -515,14 +577,158 @@ const process = [
                     <rect x="230" y="55" width="16" height="18"/><line x1="238" y1="58" x2="238" y2="70"/>
                     <rect x="255" y="55" width="16" height="18"/><line x1="263" y1="62" x2="263" y2="70"/>
                   </g>
-                  <!-- Live-LED -->
                   <circle cx="263" cy="98" r="4" fill="var(--color-accent)">
                     <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
                   </circle>
                   <text x="48" y="148" font-family="JetBrains Mono, monospace" font-size="8" font-weight="700" fill="currentColor" opacity="0.7" letter-spacing="1">SUB-VERTEILUNG · 63 A</text>
                 </svg>
-              </div>
-            )}
+              )}
+
+              {icon === 'pump' && (
+                <svg viewBox="0 0 96 64" preserveAspectRatio="xMidYMid meet">
+                  <!-- Wärmepumpen-Modul -->
+                  <rect x="6" y="14" width="46" height="42" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                  <line x1="6" y1="26" x2="52" y2="26" stroke="currentColor" stroke-width="0.6" opacity="0.6"/>
+                  <!-- Lüfterrad -->
+                  <circle cx="29" cy="38" r="11" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                  <g stroke="currentColor" stroke-width="1" fill="none" transform="translate(29 38)">
+                    <path d="M0 -8 A 4 4 0 0 1 4 0"/>
+                    <path d="M0 8 A 4 4 0 0 1 -4 0"/>
+                    <path d="M-8 0 A 4 4 0 0 1 0 -4"/>
+                    <path d="M8 0 A 4 4 0 0 1 0 4"/>
+                  </g>
+                  <circle cx="29" cy="38" r="1.5" fill="currentColor"/>
+                  <!-- Wärme-Wellen rechts -->
+                  <g stroke="var(--color-accent)" stroke-width="1.4" fill="none">
+                    <path d="M58 22 q-3 -6 0 -12 q3 -6 0 -12">
+                      <animate attributeName="opacity" values="0.4;1;0.4" dur="2.4s" repeatCount="indefinite"/>
+                    </path>
+                    <path d="M68 30 q-3 -6 0 -12 q3 -6 0 -12">
+                      <animate attributeName="opacity" values="1;0.4;1" dur="2.4s" repeatCount="indefinite"/>
+                    </path>
+                    <path d="M78 26 q-3 -6 0 -12 q3 -6 0 -12">
+                      <animate attributeName="opacity" values="0.4;1;0.4" dur="2.4s" begin="0.6s" repeatCount="indefinite"/>
+                    </path>
+                  </g>
+                  <text x="6" y="62" font-family="JetBrains Mono, monospace" font-size="6" font-weight="700" fill="currentColor" opacity="0.6" letter-spacing="1">WP · COP 4,3</text>
+                </svg>
+              )}
+
+              {icon === 'pv' && (
+                <svg viewBox="0 0 96 64" preserveAspectRatio="xMidYMid meet">
+                  <!-- Sonne -->
+                  <g stroke="var(--color-accent)" fill="none" stroke-width="1.4">
+                    <circle cx="74" cy="14" r="7"/>
+                    <line x1="74" y1="3" x2="74" y2="6"/>
+                    <line x1="74" y1="22" x2="74" y2="25"/>
+                    <line x1="63" y1="14" x2="66" y2="14"/>
+                    <line x1="82" y1="14" x2="85" y2="14"/>
+                    <line x1="66" y1="6" x2="68" y2="8"/>
+                    <line x1="80" y1="20" x2="82" y2="22"/>
+                    <line x1="68" y1="20" x2="66" y2="22"/>
+                    <line x1="82" y1="6" x2="80" y2="8"/>
+                  </g>
+                  <!-- PV-Dach (perspective) -->
+                  <polygon points="6,52 38,28 76,40 50,56" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                  <!-- Module-Grid -->
+                  <g stroke="currentColor" stroke-width="0.6" opacity="0.5">
+                    <line x1="17" y1="46" x2="56" y2="56"/>
+                    <line x1="28" y1="40" x2="62" y2="50"/>
+                    <line x1="38" y1="34" x2="68" y2="44"/>
+                    <line x1="20" y1="42" x2="32" y2="60"/>
+                    <line x1="34" y1="34" x2="46" y2="56"/>
+                    <line x1="48" y1="30" x2="58" y2="52"/>
+                  </g>
+                  <!-- Module-Highlight -->
+                  <polygon points="20,42 32,34 44,38 32,46" fill="var(--color-accent)" opacity="0.5"/>
+                  <polygon points="34,46 46,38 58,42 46,50" fill="var(--color-accent)" opacity="0.7">
+                    <animate attributeName="opacity" values="0.4;0.9;0.4" dur="2.6s" repeatCount="indefinite"/>
+                  </polygon>
+                  <text x="6" y="62" font-family="JetBrains Mono, monospace" font-size="6" font-weight="700" fill="currentColor" opacity="0.6" letter-spacing="1">12,4 KWP · 10 KWH</text>
+                </svg>
+              )}
+
+              {icon === 'knx' && (
+                <svg viewBox="0 0 96 64" preserveAspectRatio="xMidYMid meet">
+                  <!-- Central Hub mit Bus-Lines -->
+                  <rect x="36" y="22" width="24" height="20" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                  <circle cx="48" cy="32" r="2.5" fill="var(--color-accent)">
+                    <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite"/>
+                  </circle>
+                  <text x="48" y="50" font-family="JetBrains Mono, monospace" font-size="5" font-weight="700" fill="currentColor" text-anchor="middle" letter-spacing="0.5">KNX</text>
+                  <!-- Bus-Lines -->
+                  <g stroke="currentColor" stroke-width="1" fill="none">
+                    <path d="M36 28 L18 28 L18 12"/>
+                    <path d="M36 36 L18 36 L18 52"/>
+                    <path d="M60 28 L78 28 L78 12"/>
+                    <path d="M60 36 L78 36 L78 52"/>
+                  </g>
+                  <!-- Endknoten -->
+                  <g stroke="currentColor" stroke-width="1.2" fill="var(--color-bg)">
+                    <rect x="14" y="6" width="8" height="8"/>
+                    <rect x="14" y="50" width="8" height="8"/>
+                    <rect x="74" y="6" width="8" height="8"/>
+                    <rect x="74" y="50" width="8" height="8"/>
+                  </g>
+                  <!-- Indikatoren in den Knoten -->
+                  <circle cx="18" cy="10" r="1.5" fill="var(--color-accent)"/>
+                  <circle cx="78" cy="10" r="1.5" fill="currentColor" opacity="0.5"/>
+                  <circle cx="18" cy="54" r="1.5" fill="currentColor" opacity="0.5"/>
+                  <circle cx="78" cy="54" r="1.5" fill="var(--color-accent)">
+                    <animate attributeName="opacity" values="0.3;1;0.3" dur="2.2s" repeatCount="indefinite"/>
+                  </circle>
+                </svg>
+              )}
+
+              {icon === 'wallbox' && (
+                <svg viewBox="0 0 96 64" preserveAspectRatio="xMidYMid meet">
+                  <!-- Wallbox -->
+                  <rect x="14" y="14" width="24" height="36" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                  <line x1="14" y1="22" x2="38" y2="22" stroke="currentColor" stroke-width="0.6" opacity="0.6"/>
+                  <!-- Bolt-Icon -->
+                  <path d="M30 26 L20 38 L25 38 L23 46 L33 34 L28 34 Z" fill="var(--color-accent)"/>
+                  <!-- Display-LED -->
+                  <circle cx="34" cy="18" r="1.4" fill="var(--color-accent)">
+                    <animate attributeName="opacity" values="1;0.3;1" dur="1.6s" repeatCount="indefinite"/>
+                  </circle>
+                  <!-- Ladekabel (curved) -->
+                  <path d="M38 38 Q 56 38 60 46 Q 64 54 78 54" stroke="currentColor" stroke-width="1.6" fill="none"/>
+                  <!-- Auto-Schnittstelle -->
+                  <circle cx="78" cy="54" r="3.5" fill="var(--color-accent)" stroke="currentColor" stroke-width="1"/>
+                  <!-- Auto-Andeutung (Felge) -->
+                  <circle cx="84" cy="54" r="2" fill="none" stroke="currentColor" stroke-width="0.6" opacity="0.4"/>
+                  <text x="14" y="62" font-family="JetBrains Mono, monospace" font-size="6" font-weight="700" fill="currentColor" opacity="0.6" letter-spacing="1">11 KW · TYP 2</text>
+                </svg>
+              )}
+
+              {icon === 'siren' && (
+                <svg viewBox="0 0 96 64" preserveAspectRatio="xMidYMid meet">
+                  <!-- Telefon-Symbol mit Pulse-Ringen -->
+                  <g transform="translate(48 32)">
+                    <!-- Pulse rings -->
+                    <circle cx="0" cy="0" r="22" fill="none" stroke="var(--color-accent)" stroke-width="1" opacity="0">
+                      <animate attributeName="r" values="14;26" dur="2s" repeatCount="indefinite"/>
+                      <animate attributeName="opacity" values="0.6;0" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="0" cy="0" r="18" fill="none" stroke="var(--color-accent)" stroke-width="1" opacity="0">
+                      <animate attributeName="r" values="12;22" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+                      <animate attributeName="opacity" values="0.6;0" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+                    </circle>
+                    <!-- Phone-Receiver -->
+                    <g transform="rotate(-30)">
+                      <rect x="-4" y="-9" width="8" height="18" rx="2" fill="var(--color-accent)" stroke="none"/>
+                      <rect x="-2" y="-7" width="4" height="14" rx="1" fill="var(--color-bg)" stroke="none"/>
+                    </g>
+                  </g>
+                  <!-- 24H Badge oben rechts -->
+                  <g transform="translate(76 12)">
+                    <rect x="-12" y="-7" width="24" height="14" fill="var(--color-accent)"/>
+                    <text x="0" y="3" font-family="JetBrains Mono, monospace" font-size="7" font-weight="700" fill="var(--color-bg)" text-anchor="middle" letter-spacing="0.5">24H</text>
+                  </g>
+                  <text x="6" y="62" font-family="JetBrains Mono, monospace" font-size="6" font-weight="700" fill="currentColor" opacity="0.6" letter-spacing="1">⌀ 90 MIN · MK</text>
+                </svg>
+              )}
+            </div>
 
             <h3 class="hk-svc__cell-t" set:html={s.t} />
             <p class="hk-svc__cell-sub">{s.sub}</p>
@@ -532,10 +738,20 @@ const process = [
               <span aria-hidden="true">→</span>
             </a>
           </li>
-        ))}
+          );
+        })}
       </ul>
     </div>
   </section>
+
+  <!-- Section-Divider-Tag -->
+  <div class="hk-tag" aria-hidden="true">
+    <span class="hk-tag__inner">
+      <span class="hk-tag__dot"></span>
+      <span class="hk-tag__k">STEP</span>
+      <span class="hk-tag__v">05 · IM EINSATZ</span>
+    </span>
+  </div>
 
   <!-- ── CASE-STUDY SHOWCASE ───────────────────────────────────────── -->
   <section class="hk-case hk-section">
@@ -1353,9 +1569,40 @@ const process = [
     to { transform: translateX(0); }
   }
 
-  /* ── MANIFEST ──────────────────────────────────────────────────── */
+  /* ── MANIFEST (Editorial-Treatment) ───────────────────────────── */
   .hk-manifest {
     border-top: 1px solid var(--color-rule);
+    position: relative;
+  }
+
+  /* Marginalia — rotierte Side-Label nur Desktop */
+  .hk-manifest__margin {
+    display: none;
+  }
+  @media (min-width: 1280px) {
+    .hk-manifest__margin {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.85rem;
+      position: absolute;
+      left: clamp(0.5rem, 1.5vw, 1.25rem);
+      top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+      transform-origin: left center;
+      white-space: nowrap;
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      letter-spacing: 0.28em;
+      color: var(--color-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+    .hk-manifest__margin-line {
+      width: 32px;
+      height: 1px;
+      background: var(--color-accent);
+    }
   }
 
   .hk-manifest__h {
@@ -1365,10 +1612,69 @@ const process = [
     letter-spacing: 0.005em;
     text-transform: uppercase;
     font-weight: 400;
-    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+    margin: 0 0 clamp(2rem, 4vw, 3rem);
     max-width: 28ch;
   }
 
+  /* Pull-Quote */
+  .hk-manifest__quote {
+    position: relative;
+    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+    padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.5rem, 3vw, 2.5rem);
+    background: linear-gradient(180deg,
+      color-mix(in srgb, var(--color-accent) 6%, transparent),
+      transparent);
+    border-left: 2px solid var(--color-accent);
+    max-width: 60ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hk-manifest__quote-mark {
+    position: absolute;
+    top: -0.4rem;
+    left: 0.6rem;
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 8vw, 6.5rem);
+    line-height: 1;
+    color: var(--color-accent);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .hk-manifest__quote p {
+    margin: 0 0 1.25rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.5vw, 2.1rem);
+    line-height: 1.15;
+    letter-spacing: 0.005em;
+    color: var(--color-text);
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  .hk-manifest__quote footer {
+    display: flex;
+    align-items: baseline;
+    gap: 0.85rem;
+    border-top: 1px solid var(--color-rule);
+    padding-top: 0.85rem;
+  }
+  .hk-manifest__quote-cite {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+  .hk-manifest__quote-role {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    color: var(--color-muted);
+  }
+
+  /* Drei Spalten */
   .hk-manifest__cols {
     display: grid;
     grid-template-columns: 1fr;
@@ -1378,13 +1684,47 @@ const process = [
     .hk-manifest__cols { grid-template-columns: repeat(3, 1fr); gap: clamp(2rem, 4vw, 3rem); }
   }
 
-  .hk-manifest__cols p {
+  .hk-manifest__col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 1.25rem;
+    border-top: 2px solid var(--color-accent);
+    position: relative;
+  }
+
+  .hk-manifest__col-n {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .hk-manifest__col-text {
     font-family: var(--font-body);
     font-size: 1rem;
     line-height: 1.65;
-    color: color-mix(in srgb, var(--color-text) 80%, transparent);
-    padding-top: 1.25rem;
-    border-top: 2px solid var(--color-accent);
+    color: color-mix(in srgb, var(--color-text) 82%, transparent);
+    margin: 0;
+  }
+  .hk-manifest__col-text em {
+    color: var(--color-text);
+    font-style: normal;
+    background-image: linear-gradient(transparent 55%, color-mix(in srgb, var(--color-accent) 30%, transparent) 55%, color-mix(in srgb, var(--color-accent) 30%, transparent) 90%, transparent 90%);
+    padding: 0 0.05em;
+  }
+
+  /* Drop-Cap auf der ersten Spalte */
+  .hk-dropcap::first-letter {
+    font-family: var(--font-display);
+    font-size: 3.4em;
+    line-height: 0.8;
+    float: left;
+    margin: 0.06em 0.18em 0 -0.04em;
+    color: var(--color-accent);
+    font-weight: 400;
+    letter-spacing: 0.01em;
   }
 
   /* ── MEGA NUMBERS ─────────────────────────────────────────────── */
@@ -1769,6 +2109,15 @@ const process = [
     background: var(--color-bg);
     border-color: var(--color-bg);
   }
+
+  /* Mini-Variante für die kleinen Cells */
+  .hk-svc__cell-visual--mini {
+    max-width: 110px;
+    align-self: flex-start;
+    padding: 0.45rem;
+    margin-block: 0.2rem 0.2rem;
+  }
+  .hk-svc__cell-visual--mini svg { aspect-ratio: 96 / 64; }
 
   .hk-svc__cell-t {
     font-family: var(--font-display);

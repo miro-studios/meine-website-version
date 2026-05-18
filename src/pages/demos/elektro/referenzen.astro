@@ -4,6 +4,7 @@ import SplitText from '@components/shared/SplitText.astro';
 import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
 import NumberCounter from '@components/shared/NumberCounter.astro';
 import MagneticButton from '@components/shared/MagneticButton.astro';
+import BeforeAfter from '@components/elektro/BeforeAfter.astro';
 
 interface Case {
   id: string;
@@ -160,27 +161,75 @@ const others = cases.filter(c => !c.featured);
 
       <RevealOnScroll y={40}>
         <article class="hk-feat__art">
-          <div class="hk-feat__visual" aria-hidden="true">
-            <span class="hk-feat__visual-cat">{featured.cat}</span>
-            <svg viewBox="0 0 560 360" class="hk-feat__svg">
+          <BeforeAfter
+            beforeLabel="VORHER · GAS 2023"
+            afterLabel="NACHHER · WP+PV 2024"
+            caption="Drag · Klick & ziehen, um die Zustände zu vergleichen"
+            initial={50}
+          >
+            <!-- BEFORE: Haus mit Gas-Kessel-Anschluss, kein PV -->
+            <svg slot="before" viewBox="0 0 560 360" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <pattern id="hk-ba-grid-b" width="28" height="28" patternUnits="userSpaceOnUse">
+                  <path d="M28 0H0V28" fill="none" stroke="currentColor" stroke-width="0.4" opacity="0.18"/>
+                </pattern>
+              </defs>
+              <rect width="560" height="360" fill="var(--color-bg)" />
+              <rect width="560" height="360" fill="url(#hk-ba-grid-b)" />
               <line x1="20" y1="280" x2="540" y2="280" stroke="currentColor" stroke-width="1.4" />
               <g stroke="currentColor" stroke-width="0.5" opacity="0.4">
-                <line x1="40" y1="280" x2="30" y2="298" />
-                <line x1="80" y1="280" x2="70" y2="298" />
-                <line x1="120" y1="280" x2="110" y2="298" />
-                <line x1="160" y1="280" x2="150" y2="298" />
-                <line x1="200" y1="280" x2="190" y2="298" />
-                <line x1="240" y1="280" x2="230" y2="298" />
-                <line x1="280" y1="280" x2="270" y2="298" />
-                <line x1="320" y1="280" x2="310" y2="298" />
-                <line x1="360" y1="280" x2="350" y2="298" />
-                <line x1="400" y1="280" x2="390" y2="298" />
-                <line x1="440" y1="280" x2="430" y2="298" />
-                <line x1="480" y1="280" x2="470" y2="298" />
-                <line x1="520" y1="280" x2="510" y2="298" />
+                {Array.from({length: 17}).map((_, i) => (
+                  <line x1={40 + i*30} y1="280" x2={30 + i*30} y2="298" />
+                ))}
+              </g>
+              <!-- Haus (graues Dach, keine Module) -->
+              <path d="M 130 280 L 130 160 L 250 90 L 370 160 L 370 280 Z" fill="color-mix(in srgb, var(--color-text) 4%, transparent)" stroke="currentColor" stroke-width="1.6" />
+              <!-- Dachziegel-Andeutung -->
+              <g stroke="currentColor" stroke-width="0.5" opacity="0.35">
+                <line x1="140" y1="172" x2="245" y2="105" />
+                <line x1="155" y1="188" x2="255" y2="120" />
+                <line x1="170" y1="204" x2="265" y2="135" />
+                <line x1="245" y1="105" x2="355" y2="172" />
+                <line x1="255" y1="120" x2="345" y2="188" />
+                <line x1="265" y1="135" x2="335" y2="204" />
+              </g>
+              <rect x="160" y="210" width="40" height="44" fill="color-mix(in srgb, var(--color-text) 8%, transparent)" stroke="currentColor" stroke-width="1" />
+              <rect x="230" y="200" width="40" height="80" fill="none" stroke="currentColor" stroke-width="1" />
+              <rect x="300" y="210" width="40" height="44" fill="color-mix(in srgb, var(--color-text) 8%, transparent)" stroke="currentColor" stroke-width="1" />
+              <!-- Schornstein mit Rauch (Gasheizung) -->
+              <rect x="295" y="115" width="14" height="38" fill="color-mix(in srgb, var(--color-text) 20%, transparent)" stroke="currentColor" stroke-width="1" />
+              <g stroke="currentColor" stroke-width="1" fill="none" opacity="0.45">
+                <path d="M302 110 q-4 -8 0 -14 q4 -6 0 -12" />
+                <path d="M308 108 q-4 -10 0 -16 q4 -6 0 -14" />
+              </g>
+              <!-- Gas-Symbol unten rechts -->
+              <rect x="395" y="232" width="60" height="48" fill="color-mix(in srgb, var(--color-text) 8%, transparent)" stroke="currentColor" stroke-width="1.2" />
+              <text x="425" y="262" font-family="JetBrains Mono, monospace" font-size="14" font-weight="700" fill="currentColor" text-anchor="middle">GAS</text>
+              <text x="395" y="308" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700" fill="currentColor" opacity="0.6" letter-spacing="1">22-J-KESSEL · BJ 2002</text>
+              <!-- Stromkosten-Text -->
+              <text x="20" y="50" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="currentColor" opacity="0.7" letter-spacing="1.5">JAHRESKOSTEN</text>
+              <text x="20" y="80" font-family="Anton, sans-serif" font-size="38" font-weight="400" fill="currentColor" letter-spacing="0.5">3.800 €</text>
+              <text x="20" y="100" font-family="JetBrains Mono, monospace" font-size="9" font-weight="500" fill="currentColor" opacity="0.5" letter-spacing="1.5">STROM + GAS</text>
+            </svg>
+
+            <!-- AFTER: PV-Module auf Dach + Wärmepumpe + bessere Auslastung -->
+            <svg slot="after" viewBox="0 0 560 360" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <pattern id="hk-ba-grid-a" width="28" height="28" patternUnits="userSpaceOnUse">
+                  <path d="M28 0H0V28" fill="none" stroke="currentColor" stroke-width="0.4" opacity="0.18"/>
+                </pattern>
+              </defs>
+              <rect width="560" height="360" fill="var(--color-bg)" />
+              <rect width="560" height="360" fill="url(#hk-ba-grid-a)" />
+              <line x1="20" y1="280" x2="540" y2="280" stroke="currentColor" stroke-width="1.4" />
+              <g stroke="currentColor" stroke-width="0.5" opacity="0.4">
+                {Array.from({length: 17}).map((_, i) => (
+                  <line x1={40 + i*30} y1="280" x2={30 + i*30} y2="298" />
+                ))}
               </g>
               <path d="M 130 280 L 130 160 L 250 90 L 370 160 L 370 280 Z" fill="color-mix(in srgb, var(--color-accent) 6%, transparent)" stroke="currentColor" stroke-width="1.6" />
-              <g fill="var(--color-accent)" opacity="0.85">
+              <!-- PV-Module -->
+              <g fill="var(--color-accent)" opacity="0.9">
                 <polygon points="148,170 200,135 212,142 160,177" />
                 <polygon points="170,185 222,150 234,157 182,192" />
                 <polygon points="192,200 244,165 256,172 204,207" />
@@ -188,22 +237,45 @@ const others = cases.filter(c => !c.featured);
                 <polygon points="284,150 336,185 324,192 272,157" />
                 <polygon points="306,165 358,200 346,207 294,172" />
               </g>
+              <!-- Module-Rasterlinien für Detail -->
+              <g stroke="var(--color-bg)" stroke-width="0.5" opacity="0.5">
+                <line x1="170" y1="155" x2="172" y2="158" />
+              </g>
               <rect x="160" y="210" width="40" height="44" fill="color-mix(in srgb, var(--color-text) 12%, transparent)" stroke="currentColor" stroke-width="1" />
               <rect x="230" y="200" width="40" height="80" fill="none" stroke="currentColor" stroke-width="1" />
               <rect x="300" y="210" width="40" height="44" fill="color-mix(in srgb, var(--color-text) 12%, transparent)" stroke="currentColor" stroke-width="1" />
+              <!-- Wärmepumpe rechts -->
               <rect x="395" y="232" width="60" height="48" fill="none" stroke="currentColor" stroke-width="1.4" />
               <circle cx="425" cy="256" r="13" fill="none" stroke="currentColor" stroke-width="1" />
               <path d="M419 256 L425 250 L431 256 L425 262 Z" fill="currentColor" />
-              <text x="395" y="308" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700" fill="var(--color-accent)" letter-spacing="1">WP · 9 KW</text>
-              <path d="M 370 250 L 395 250" stroke="var(--color-accent)" stroke-width="1.5" stroke-dasharray="3 3" />
+              <text x="395" y="308" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700" fill="var(--color-accent)" letter-spacing="1">WP · 9 KW · COP 4,3</text>
+              <!-- Verbindung Haus → WP -->
+              <path d="M 370 250 L 395 250" stroke="var(--color-accent)" stroke-width="1.5" stroke-dasharray="3 3">
+                <animate attributeName="stroke-dashoffset" values="0;-12" dur="1.2s" repeatCount="indefinite" />
+              </path>
+              <!-- Sonne mit Pfeil -->
               <g stroke="var(--color-accent)" fill="none" stroke-width="1.6">
-                <circle cx="95" cy="65" r="18" />
-                <line x1="95" y1="65" x2="175" y2="125" />
-                <polygon points="175,125 167,121 171,129" fill="var(--color-accent)" stroke="none" />
+                <circle cx="495" cy="55" r="14" />
+                <line x1="495" y1="55" x2="495" y2="35" />
+                <line x1="495" y1="55" x2="495" y2="75" />
+                <line x1="495" y1="55" x2="475" y2="55" />
+                <line x1="495" y1="55" x2="515" y2="55" />
+                <line x1="481" y1="41" x2="471" y2="31" />
+                <line x1="509" y1="41" x2="519" y2="31" />
+                <line x1="481" y1="69" x2="471" y2="79" />
+                <line x1="509" y1="69" x2="519" y2="79" />
               </g>
-              <text x="20" y="115" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="var(--color-accent)" letter-spacing="1">PV · 12,4 KWP</text>
+              <!-- Stromkosten neu -->
+              <text x="20" y="50" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="var(--color-accent)" letter-spacing="1.5">JAHRESKOSTEN</text>
+              <text x="20" y="80" font-family="Anton, sans-serif" font-size="38" font-weight="400" fill="var(--color-accent)" letter-spacing="0.5">960 €</text>
+              <text x="20" y="100" font-family="JetBrains Mono, monospace" font-size="9" font-weight="500" fill="var(--color-accent)" opacity="0.7" letter-spacing="1.5">STROM-EIGENVERBRAUCH 74%</text>
+              <!-- Einsparung-Tag -->
+              <g transform="translate(20 130)">
+                <rect x="0" y="0" width="180" height="32" fill="var(--color-accent)" />
+                <text x="10" y="22" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="var(--color-bg)" letter-spacing="1">– 2.840 € / JAHR</text>
+              </g>
             </svg>
-          </div>
+          </BeforeAfter>
 
           <div class="hk-feat__copy">
             <span class="hk-feat__cat">{featured.cat}</span>

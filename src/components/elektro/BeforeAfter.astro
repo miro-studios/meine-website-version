@@ -1,0 +1,307 @@
+---
+/**
+ * Vorher-Nachher-Slider mit drag-to-reveal.
+ *
+ * Funktioniert mit zwei SVG-Slots (before / after) — Pointer-Drag
+ * verschiebt eine vertikale Maske. Pflicht-Element für Case-Studies
+ * im Business-Paket.
+ */
+interface Props {
+  beforeLabel?: string;
+  afterLabel?: string;
+  caption?: string;
+  initial?: number; // 0..100
+}
+
+const {
+  beforeLabel = 'VORHER',
+  afterLabel = 'NACHHER',
+  caption,
+  initial = 50,
+} = Astro.props;
+---
+
+<figure class="hk-ba" data-hk-ba style={`--ba-pos: ${initial}%`}>
+  <div class="hk-ba__frame">
+    <div class="hk-ba__layer hk-ba__layer--before" aria-hidden="true">
+      <slot name="before" />
+      <span class="hk-ba__label hk-ba__label--before">{beforeLabel}</span>
+    </div>
+
+    <div class="hk-ba__layer hk-ba__layer--after" aria-hidden="true">
+      <slot name="after" />
+      <span class="hk-ba__label hk-ba__label--after">{afterLabel}</span>
+    </div>
+
+    <button
+      class="hk-ba__handle"
+      type="button"
+      aria-label="Vorher-Nachher-Slider verschieben"
+      data-hk-ba-handle
+      data-cursor-hover
+    >
+      <span class="hk-ba__handle-line" aria-hidden="true"></span>
+      <span class="hk-ba__handle-knob" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+          <path d="M9 6L5 12L9 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter"/>
+          <path d="M15 6L19 12L15 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter"/>
+        </svg>
+      </span>
+      <span class="hk-ba__handle-line" aria-hidden="true"></span>
+    </button>
+
+    <span class="hk-ba__bracket hk-ba__bracket--tl" aria-hidden="true"></span>
+    <span class="hk-ba__bracket hk-ba__bracket--tr" aria-hidden="true"></span>
+    <span class="hk-ba__bracket hk-ba__bracket--bl" aria-hidden="true"></span>
+    <span class="hk-ba__bracket hk-ba__bracket--br" aria-hidden="true"></span>
+  </div>
+
+  {caption && <figcaption class="hk-ba__caption">
+    <span class="hk-ba__caption-bar" aria-hidden="true"></span>
+    {caption}
+  </figcaption>}
+</figure>
+
+<style>
+  .hk-ba {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .hk-ba__frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--color-bg);
+    border: 1px solid var(--color-rule-strong);
+    overflow: hidden;
+    user-select: none;
+    touch-action: none;
+    cursor: ew-resize;
+  }
+
+  .hk-ba__layer {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .hk-ba__layer :global(svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .hk-ba__layer--before { z-index: 1; }
+  .hk-ba__layer--after {
+    z-index: 2;
+    clip-path: inset(0 0 0 var(--ba-pos));
+  }
+
+  .hk-ba__label {
+    position: absolute;
+    top: 0.85rem;
+    padding: 0.35rem 0.65rem;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    color: var(--color-bg);
+    background: var(--color-text);
+    text-transform: uppercase;
+    z-index: 4;
+  }
+  .hk-ba__label--before {
+    left: 0.85rem;
+  }
+  .hk-ba__label--after {
+    right: 0.85rem;
+    background: var(--color-accent);
+  }
+
+  /* Handle / Drag-Bar */
+  .hk-ba__handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--ba-pos);
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: ew-resize;
+    z-index: 5;
+    color: var(--color-bg);
+  }
+
+  .hk-ba__handle-line {
+    flex: 1;
+    width: 2px;
+    background: var(--color-accent);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--color-accent) 60%, transparent);
+  }
+
+  .hk-ba__handle-knob {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    display: grid;
+    place-items: center;
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--color-bg) 50%, transparent),
+      0 8px 24px -6px color-mix(in srgb, var(--color-accent) 65%, transparent),
+      0 0 16px color-mix(in srgb, var(--color-accent) 50%, transparent);
+    transition: transform 0.3s var(--ease-out-expo);
+  }
+
+  .hk-ba__frame:hover .hk-ba__handle-knob,
+  .hk-ba[data-hk-ba-active] .hk-ba__handle-knob {
+    transform: scale(1.08);
+  }
+
+  .hk-ba__handle:focus-visible {
+    outline: none;
+  }
+  .hk-ba__handle:focus-visible .hk-ba__handle-knob {
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--color-bg) 50%, transparent),
+      0 0 0 7px var(--color-accent);
+  }
+
+  /* Corner-Brackets */
+  .hk-ba__bracket {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-color: var(--color-accent);
+    border-style: solid;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .hk-ba__bracket--tl { top: -1px; left: -1px; border-width: 1.5px 0 0 1.5px; }
+  .hk-ba__bracket--tr { top: -1px; right: -1px; border-width: 1.5px 1.5px 0 0; }
+  .hk-ba__bracket--bl { bottom: -1px; left: -1px; border-width: 0 0 1.5px 1.5px; }
+  .hk-ba__bracket--br { bottom: -1px; right: -1px; border-width: 0 1.5px 1.5px 0; }
+
+  /* Caption */
+  .hk-ba__caption {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    color: var(--color-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  .hk-ba__caption-bar {
+    width: 24px;
+    height: 1px;
+    background: var(--color-accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hk-ba__handle-knob { transition: none; }
+  }
+</style>
+
+<script>
+  function initOne(root: HTMLElement) {
+    if (root.dataset.haInitialized === '1') return;
+    root.dataset.haInitialized = '1';
+
+    const frame = root.querySelector<HTMLElement>('.hk-ba__frame');
+    if (!frame) return;
+
+    let active = false;
+
+    const set = (pct: number) => {
+      const v = Math.max(0, Math.min(100, pct));
+      root.style.setProperty('--ba-pos', `${v}%`);
+    };
+
+    const fromEvent = (e: PointerEvent) => {
+      const rect = frame.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      set((x / rect.width) * 100);
+    };
+
+    frame.addEventListener('pointerdown', (e) => {
+      active = true;
+      root.dataset.hkBaActive = '1';
+      (e.target as Element).setPointerCapture?.(e.pointerId);
+      fromEvent(e);
+    });
+
+    frame.addEventListener('pointermove', (e) => {
+      if (!active) return;
+      fromEvent(e);
+    });
+
+    const release = () => {
+      active = false;
+      delete root.dataset.hkBaActive;
+    };
+    frame.addEventListener('pointerup', release);
+    frame.addEventListener('pointercancel', release);
+    frame.addEventListener('pointerleave', release);
+
+    // Keyboard
+    const handle = root.querySelector<HTMLButtonElement>('[data-hk-ba-handle]');
+    if (handle) {
+      handle.addEventListener('keydown', (e) => {
+        const cur = parseFloat(
+          getComputedStyle(root).getPropertyValue('--ba-pos'),
+        ) || 50;
+        const step = e.shiftKey ? 10 : 4;
+        if (e.key === 'ArrowLeft') { e.preventDefault(); set(cur - step); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); set(cur + step); }
+        if (e.key === 'Home') { e.preventDefault(); set(0); }
+        if (e.key === 'End') { e.preventDefault(); set(100); }
+      });
+    }
+
+    // Bei erstem Sichtbarwerden kurz "demo-shake"
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          let p = 50;
+          const seq = [70, 30, 55, 45, 50];
+          let i = 0;
+          const tick = () => {
+            if (i >= seq.length) return;
+            const target = seq[i++];
+            const start = p;
+            const startTime = performance.now();
+            const dur = 420;
+            const anim = (now: number) => {
+              const t = Math.min(1, (now - startTime) / dur);
+              const eased = 1 - Math.pow(1 - t, 3);
+              p = start + (target - start) * eased;
+              set(p);
+              if (t < 1) requestAnimationFrame(anim);
+              else setTimeout(tick, 80);
+            };
+            requestAnimationFrame(anim);
+          };
+          setTimeout(tick, 400);
+          io.disconnect();
+        }
+      }, { threshold: 0.4 });
+      io.observe(root);
+    }
+  }
+
+  function init() {
+    document.querySelectorAll<HTMLElement>('[data-hk-ba]').forEach(initOne);
+  }
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

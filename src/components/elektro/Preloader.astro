@@ -1,0 +1,361 @@
+---
+/**
+ * Brand-Preloader für Holtkamp Elektrotechnik.
+ *
+ * Zeigt beim ersten Seitenaufruf (per Session) ein kurzes Intro:
+ * Counter 0→100 + Wortmarke "HOLTKAMP", dann gelbe Wipe-Mask
+ * nach oben raus. Subsequent visits werden geskipped via
+ * sessionStorage.
+ */
+---
+
+<div class="hk-preloader" data-hk-preloader aria-hidden="true">
+  <div class="hk-preloader__grid"></div>
+
+  <div class="hk-preloader__top">
+    <span class="hk-preloader__top-l">HK · 2026</span>
+    <span class="hk-preloader__top-r">
+      <span class="hk-preloader__dot"></span>
+      LOADING
+    </span>
+  </div>
+
+  <div class="hk-preloader__center">
+    <span class="hk-preloader__brand">
+      <span class="hk-preloader__brand-mark">
+        <svg viewBox="0 0 32 32" fill="none">
+          <rect x="1.5" y="1.5" width="29" height="29" stroke="currentColor" stroke-width="1.4" />
+          <path d="M18 6 L10 17 L15 17 L13 26 L22 14 L17 14 Z" fill="currentColor" />
+        </svg>
+      </span>
+      <span class="hk-preloader__brand-text">HOLTKAMP</span>
+    </span>
+    <span class="hk-preloader__sub">ELEKTROTECHNIK · MEISTERBETRIEB · SEIT 1989</span>
+  </div>
+
+  <div class="hk-preloader__bottom">
+    <div class="hk-preloader__bar-row">
+      <span class="hk-preloader__bar-track">
+        <span class="hk-preloader__bar-fill" data-hk-pre-bar></span>
+      </span>
+      <span class="hk-preloader__count" data-hk-pre-count>000</span>
+    </div>
+    <div class="hk-preloader__msg" data-hk-pre-msg>
+      <span class="hk-preloader__msg-item is-active">INITIALISIERE BETRIEBSTELEMETRIE</span>
+      <span class="hk-preloader__msg-item">VERBINDE NETZ-TRANSFORMATOREN</span>
+      <span class="hk-preloader__msg-item">PRÜFE NOTDIENST-VERFÜGBARKEIT</span>
+      <span class="hk-preloader__msg-item">SYSTEM BEREIT</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .hk-preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: var(--color-bg);
+    color: var(--color-text);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(1rem, 3vw, 2rem);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .hk-preloader.is-hidden {
+    pointer-events: none;
+  }
+
+  .hk-preloader__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--color-accent) 5%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-accent) 5%, transparent) 1px, transparent 1px);
+    background-size: 60px 60px;
+    background-position: 50% 50%;
+    mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black, transparent 80%);
+    pointer-events: none;
+  }
+
+  .hk-preloader__top,
+  .hk-preloader__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    color: var(--color-muted);
+    z-index: 1;
+  }
+
+  .hk-preloader__top { align-items: flex-start; }
+
+  .hk-preloader__top-r {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .hk-preloader__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 30%, transparent),
+                0 0 10px var(--color-accent);
+    animation: hk-pre-dot 1s ease-in-out infinite;
+  }
+
+  @keyframes hk-pre-dot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(0.5); opacity: 0.5; }
+  }
+
+  .hk-preloader__center {
+    z-index: 1;
+    align-self: center;
+    margin-block: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .hk-preloader__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(0.8rem, 2vw, 1.5rem);
+    overflow: hidden;
+  }
+
+  .hk-preloader__brand-mark {
+    width: clamp(40px, 7vw, 56px);
+    height: clamp(40px, 7vw, 56px);
+    color: var(--color-accent);
+    flex-shrink: 0;
+    transform: translateX(-120%);
+    animation: hk-pre-mark 0.9s var(--ease-out-expo) 0.1s forwards;
+  }
+
+  .hk-preloader__brand-text {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 10vw, 7rem);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    color: var(--color-text);
+    text-transform: uppercase;
+    font-weight: 400;
+    /* Mask-reveal */
+    clip-path: inset(0 100% 0 0);
+    animation: hk-pre-text 1.2s var(--ease-out-expo) 0.3s forwards;
+  }
+
+  @keyframes hk-pre-mark {
+    to { transform: translateX(0); }
+  }
+  @keyframes hk-pre-text {
+    to { clip-path: inset(0 0 0 0); }
+  }
+
+  .hk-preloader__sub {
+    font-family: var(--font-mono);
+    font-size: clamp(0.65rem, 0.9vw, 0.78rem);
+    letter-spacing: 0.22em;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    opacity: 0;
+    animation: hk-pre-fade 0.8s ease-out 1.1s forwards;
+  }
+
+  @keyframes hk-pre-fade {
+    to { opacity: 1; }
+  }
+
+  .hk-preloader__bottom {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem;
+  }
+
+  .hk-preloader__bar-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .hk-preloader__bar-track {
+    flex: 1;
+    height: 2px;
+    background: color-mix(in srgb, var(--color-text) 8%, transparent);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hk-preloader__bar-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--color-accent);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--color-accent) 60%, transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.18s linear;
+  }
+
+  .hk-preloader__count {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--color-accent);
+    line-height: 1;
+    letter-spacing: 0.01em;
+    min-width: 4ch;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hk-preloader__msg {
+    position: relative;
+    height: 1em;
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    color: var(--color-muted);
+    text-transform: uppercase;
+  }
+
+  .hk-preloader__msg-item {
+    position: absolute;
+    inset: 0;
+    transform: translateY(120%);
+    opacity: 0;
+    transition: transform 0.5s var(--ease-out-expo), opacity 0.3s linear;
+  }
+  .hk-preloader__msg-item.is-active {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .hk-preloader__msg-item.is-out {
+    transform: translateY(-120%);
+    opacity: 0;
+  }
+
+  /* Outro: yellow sweep nach oben raus */
+  .hk-preloader.is-leaving {
+    animation: hk-pre-sweep 1s var(--ease-in-out-quart) forwards;
+  }
+  .hk-preloader.is-leaving::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--color-accent);
+    z-index: 2;
+    animation: hk-pre-sweep-bg 0.9s var(--ease-in-out-quart) forwards;
+  }
+
+  @keyframes hk-pre-sweep {
+    0% { clip-path: inset(0 0 0 0); }
+    100% { clip-path: inset(100% 0 0 0); }
+  }
+  @keyframes hk-pre-sweep-bg {
+    0% { transform: translateY(100%); }
+    40%, 60% { transform: translateY(0); }
+    100% { transform: translateY(-100%); }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .hk-preloader,
+    .hk-preloader__brand-mark,
+    .hk-preloader__brand-text,
+    .hk-preloader__sub,
+    .hk-preloader__dot { animation: none !important; }
+    .hk-preloader__brand-mark { transform: none; }
+    .hk-preloader__brand-text { clip-path: inset(0); }
+    .hk-preloader__sub { opacity: 1; }
+  }
+</style>
+
+<script>
+  function init() {
+    const pre = document.querySelector<HTMLElement>('[data-hk-preloader]');
+    if (!pre) return;
+
+    // Skip wenn bereits einmal in dieser Session gezeigt
+    if (sessionStorage.getItem('hk-preloader-seen') === '1') {
+      pre.remove();
+      return;
+    }
+
+    // Reduced motion → kurz anzeigen und weg
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const preEl = pre;
+      setTimeout(() => {
+        preEl.classList.add('is-leaving');
+        setTimeout(() => preEl.remove(), 100);
+      }, 200);
+      sessionStorage.setItem('hk-preloader-seen', '1');
+      return;
+    }
+
+    // Scroll während des Preloaders blockieren
+    document.body.style.overflow = 'hidden';
+
+    const preEl = pre;
+    const bar = preEl.querySelector<HTMLElement>('[data-hk-pre-bar]');
+    const count = preEl.querySelector<HTMLElement>('[data-hk-pre-count]');
+    const msgItems = Array.from(
+      preEl.querySelectorAll<HTMLElement>('[data-hk-pre-msg] .hk-preloader__msg-item'),
+    );
+
+    const DURATION = 2400;
+    const start = performance.now();
+    let currentMsg = 0;
+    const msgSwitchAt = [25, 55, 85, 100];
+
+    function step(now: number) {
+      const t = Math.min(1, (now - start) / DURATION);
+      // ease-out
+      const eased = 1 - Math.pow(1 - t, 2.5);
+      const pct = Math.floor(eased * 100);
+
+      if (bar) bar.style.transform = `scaleX(${eased})`;
+      if (count) count.textContent = String(pct).padStart(3, '0');
+
+      // Message switch
+      const nextThreshold = msgSwitchAt[currentMsg];
+      if (pct >= nextThreshold && currentMsg < msgItems.length - 1) {
+        msgItems[currentMsg].classList.remove('is-active');
+        msgItems[currentMsg].classList.add('is-out');
+        currentMsg++;
+        msgItems[currentMsg].classList.add('is-active');
+      }
+
+      if (t < 1) {
+        requestAnimationFrame(step);
+      } else {
+        // Outro
+        setTimeout(() => {
+          preEl.classList.add('is-leaving');
+          setTimeout(() => {
+            preEl.remove();
+            document.body.style.overflow = '';
+            sessionStorage.setItem('hk-preloader-seen', '1');
+          }, 1000);
+        }, 280);
+      }
+    }
+
+    requestAnimationFrame(step);
+  }
+
+  init();
+  // Preloader läuft nur beim ersten Page-Load — bei View-Transitions wird er
+  // bereits geskippt (sessionStorage)
+</script>

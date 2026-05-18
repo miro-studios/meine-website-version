@@ -4,6 +4,8 @@ import CustomCursor from '@components/shared/CustomCursor.astro';
 import ScrollProgress from '@components/shared/ScrollProgress.astro';
 import Header from '@components/elektro/Header.astro';
 import Footer from '@components/elektro/Footer.astro';
+import Preloader from '@components/elektro/Preloader.astro';
+import CookieBanner from '@components/elektro/CookieBanner.astro';
 
 interface Props {
   title: string;
@@ -21,6 +23,9 @@ const { title, description, canonical } = Astro.props;
   theme="elektro"
   bodyClass="hk-page"
 >
+  <!-- Brand-Preloader (nur 1× pro Session) -->
+  <Preloader />
+
   <!-- Custom Cursor (Premium-Signal — yellow ring on interactive elements) -->
   <CustomCursor dotSize={5} ringSize={32} blendMode="difference" hoverScale={2.4} />
 
@@ -38,6 +43,9 @@ const { title, description, canonical } = Astro.props;
     <slot />
   </main>
   <Footer />
+
+  <!-- DSGVO-Consent-Banner (1× pro Session) -->
+  <CookieBanner />
 </BaseLayout>
 
 <script is:inline>
@@ -86,6 +94,53 @@ const { title, description, canonical } = Astro.props;
       radial-gradient(ellipse 100% 80% at 50% 50%,
         transparent 60%,
         color-mix(in srgb, #000 60%, transparent) 100%);
+  }
+
+  /* ── Astro View Transitions: Yellow-Sweep zwischen Routen ──────── */
+  /* Beim Routenwechsel zieht sich eine gelbe Fläche von unten über
+     den Bildschirm, der neue Inhalt sliced danach von oben rein.    */
+  body.hk-page::view-transition-old(root),
+  body.hk-page::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+  body.hk-page::view-transition-old(root) {
+    animation: hk-view-out 0.55s var(--ease-in-out-quart) forwards;
+  }
+  body.hk-page::view-transition-new(root) {
+    animation: hk-view-in 0.7s var(--ease-out-expo) 0.25s forwards;
+  }
+
+  @keyframes hk-view-out {
+    0%   { clip-path: inset(0 0 0 0); }
+    100% { clip-path: inset(0 0 100% 0); }
+  }
+  @keyframes hk-view-in {
+    0%   { clip-path: inset(100% 0 0 0); }
+    100% { clip-path: inset(0 0 0 0); }
+  }
+
+  /* Yellow-Sheet das während der Transition kurz aufblitzt */
+  body.hk-page::view-transition-image-pair(root)::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--color-accent);
+    z-index: 1;
+    animation: hk-view-sheet 0.95s var(--ease-in-out-quart) forwards;
+    pointer-events: none;
+  }
+  @keyframes hk-view-sheet {
+    0%, 100% { transform: translateY(105%); }
+    35%, 55% { transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body.hk-page::view-transition-old(root),
+    body.hk-page::view-transition-new(root),
+    body.hk-page::view-transition-image-pair(root)::before {
+      animation: none !important;
+    }
   }
 
   body.hk-page ::selection {
@@ -157,4 +212,40 @@ const { title, description, canonical } = Astro.props;
     0%, 100% { transform: scale(1); opacity: 1; }
     50% { transform: scale(0.7); opacity: 0.55; }
   }
+
+  /* ── Section-Divider-Tag-System ────────────────────────────────── */
+  /* Kleiner "Stempel" der zwischen zwei Sections sitzt — Awwwards-Pattern */
+  .hk-tag {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 0;
+    z-index: 5;
+  }
+  .hk-tag__inner {
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.55rem 1rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-rule-strong);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+  .hk-tag__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 25%, transparent);
+  }
+  .hk-tag__k { color: var(--color-accent); }
+  .hk-tag__v { color: var(--color-text); }
 </style>
