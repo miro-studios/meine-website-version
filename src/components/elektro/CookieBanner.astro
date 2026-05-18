@@ -349,6 +349,10 @@
     const banner = document.querySelector<HTMLElement>('[data-hk-consent]');
     if (!banner) return;
 
+    // Idempotency-Guard
+    if (banner.dataset.hkConsentInit === '1') return;
+    banner.dataset.hkConsentInit = '1';
+
     // Bereits beantwortet?
     if (sessionStorage.getItem('hk-consent') !== null) {
       banner.remove();
@@ -378,4 +382,15 @@
   }
 
   init();
+
+  // Bei Astro View Transitions wird das Banner-Markup pro Sub-Seite neu
+  // eingefügt. Wenn die Einwilligung schon erteilt wurde, entfernen wir
+  // den Banner aus dem eingehenden DOM (sonst flackert er kurz auf).
+  document.addEventListener('astro:before-swap', (e: Event) => {
+    if (sessionStorage.getItem('hk-consent') === null) return;
+    const newDoc = (e as Event & { newDocument?: Document }).newDocument;
+    newDoc?.querySelector('[data-hk-consent]')?.remove();
+  });
+
+  document.addEventListener('astro:page-load', init);
 </script>
