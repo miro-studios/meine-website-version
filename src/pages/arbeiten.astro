@@ -510,7 +510,7 @@ const totalCount = demos.length;
     border: none;
     font-family: var(--font-mono);
     color: color-mix(in srgb, var(--color-text) 60%, transparent);
-    cursor: none;
+    cursor: pointer;
     border-radius: 9999px;
     transition:
       color 0.4s var(--toggle-glide),
@@ -661,12 +661,15 @@ const totalCount = demos.length;
     border: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    cursor: none;
     transition:
       transform 0.5s var(--ease-out-expo),
       border-color 0.4s ease,
       box-shadow 0.5s var(--ease-out-expo);
   }
+
+  /* Live-Karten = anklickbar (Pointer-Cursor), Soon-Karten = default */
+  a.work-card { cursor: pointer; }
+  div.work-card { cursor: default; }
 
   /* Live-Karten (anklickbar) reagieren stärker */
   a.work-card:hover {
