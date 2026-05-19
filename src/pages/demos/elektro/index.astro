@@ -1042,7 +1042,8 @@ const process = [
   /* ── HERO ──────────────────────────────────────────────────────── */
   .hk-hero {
     position: relative;
-    min-height: 100svh;
+    min-height: 100vh;        /* Fallback für ältere Browser */
+    min-height: 100svh;        /* Mobile-Browser ohne URL-Bar */
     overflow: hidden;
     isolation: isolate;
     background: var(--color-bg);
@@ -1083,6 +1084,13 @@ const process = [
     z-index: 0;
     pointer-events: none;
     mix-blend-mode: screen;
+  }
+  /* Auf schmalen Viewports zerschneidet preserveAspectRatio="slice"
+     den 1440×900-viewBox so stark, dass der Blitz visuell verschwindet
+     und nur ein gelber Streifen bleibt. Dort ausblenden — der Hero
+     bleibt durch Grid + Sparks + Strom-Wellen trotzdem dynamisch. */
+  @media (max-width: 720px) {
+    .hk-hero__bolt { display: none; }
   }
   [data-hk-bolt] {
     stroke-dasharray: 2400;
@@ -2731,7 +2739,20 @@ const process = [
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
 
+  // Cleanup-Registry — alles was beim astro:before-swap aufgeräumt werden
+  // muss (Listener, rAF, Interval, IO) landet hier. Ohne sauberen Teardown
+  // bauen sich Listener bei jeder View-Transition auf und die Seite wird
+  // mit der Zeit zäh — auf Mobile noch schneller spürbar.
+  let cleanups: Array<() => void> = [];
   let tickerInterval: number | undefined;
+
+  // Mobile-Erkennung: Touch ohne präzisen Zeiger. Auf solchen Geräten
+  // feuert mouseenter zwar manchmal (Hybrid-Browser), mouseleave aber
+  // unzuverlässig — das hinterlässt hängende Transforms (3D-Tilt). Wir
+  // schalten die Mouse-Effekte dort komplett ab.
+  const isCoarse = () =>
+    window.matchMedia('(hover: none), (pointer: coarse)').matches;
+  const isMobile = () => window.matchMedia('(max-width: 720px)').matches;
 
   function startTicker() {
     const ticker = document.querySelector<HTMLElement>('[data-hk-ticker] .hk-hero__ticker');
@@ -2753,8 +2774,8 @@ const process = [
 
   // ── Spark-Canvas ────────────────────────────────────────────────
   // Lightweight gelbe Funken-Particles im Hero-Hintergrund. Steigen
-  // langsam auf, faden aus. ~28 Particles, läuft auf einem rAF-Loop.
-  let sparkRaf: number | undefined;
+  // langsam auf, faden aus. Pausiert wenn Hero unsichtbar (Battery-
+  // schonend auf Mobile) und räumt resize-Listener beim Teardown auf.
   function startSparks() {
     const canvas = document.querySelector<HTMLCanvasElement>('[data-hk-sparks]');
     const hero = document.querySelector<HTMLElement>('[data-hk-hero]');
@@ -2763,7 +2784,7 @@ const process = [
     if (!ctx) return;
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    function resize() {
+    const resize = () => {
       if (!canvas || !ctx || !hero) return;
       const r = hero.getBoundingClientRect();
       canvas.width = Math.max(1, Math.floor(r.width * dpr));
@@ -2771,13 +2792,13 @@ const process = [
       canvas.style.width = `${r.width}px`;
       canvas.style.height = `${r.height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
+    };
     resize();
     window.addEventListener('resize', resize, { passive: true });
 
     type Spark = { x: number; y: number; vy: number; r: number; life: number; max: number; hue: number };
     const sparks: Spark[] = [];
-    const N = window.matchMedia('(max-width: 720px)').matches ? 14 : 28;
+    const N = isMobile() ? 10 : 28;
 
     function spawn(): Spark {
       const w = canvas?.width ? canvas.width / dpr : window.innerWidth;
@@ -2799,6 +2820,8 @@ const process = [
       sparks.push(s);
     }
 
+    let raf = 0;
+    let running = false;
     function frame() {
       if (!canvas || !ctx) return;
       const w = canvas.width / dpr;
@@ -2828,14 +2851,30 @@ const process = [
         ctx.fill();
         ctx.shadowBlur = 0;
       }
-      sparkRaf = requestAnimationFrame(frame);
+      raf = requestAnimationFrame(frame);
     }
-    cancelAnimationFrame(sparkRaf!);
-    sparkRaf = requestAnimationFrame(frame);
+    const start = () => { if (!running) { running = true; raf = requestAnimationFrame(frame); } };
+    const stop = () => { if (running) { running = false; cancelAnimationFrame(raf); } };
+
+    // Sparks nur laufen lassen, solange Hero im Viewport ist — dem
+    // Akku auf Mobile zuliebe, aber auch generell für Main-Thread.
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) start(); else stop();
+    }, { threshold: 0.01 });
+    io.observe(hero);
+
+    cleanups.push(() => {
+      stop();
+      io.disconnect();
+      window.removeEventListener('resize', resize);
+    });
   }
 
   // ── Mouse-Move Parallax + 3D-Tilt im Hero ────────────────────────
+  // Touch-Geräte: skip. Auf Hybrid-Browsern feuert mouseleave nicht
+  // zuverlässig und der 3D-Tilt-Transform bleibt sonst hängen.
   function startHeroInteractions() {
+    if (isCoarse()) return;
     const hero = document.querySelector<HTMLElement>('[data-hk-hero]');
     if (!hero) return;
     const parallaxNodes = Array.from(
@@ -2843,7 +2882,7 @@ const process = [
     );
     const tiltNodes = Array.from(hero.querySelectorAll<HTMLElement>('[data-hk-tilt]'));
 
-    function onMove(e: MouseEvent) {
+    const onMove = (e: MouseEvent) => {
       if (!hero) return;
       const r = hero.getBoundingClientRect();
       const cx = (e.clientX - r.left) / r.width - 0.5;  // -0.5 .. 0.5
@@ -2867,23 +2906,32 @@ const process = [
         node.style.setProperty('--hk-tilt-x', `${lx}%`);
         node.style.setProperty('--hk-tilt-y', `${ly}%`);
       });
-    }
-    function onLeave() {
+    };
+    const onLeave = () => {
       parallaxNodes.forEach((n) => (n.style.transform = ''));
       tiltNodes.forEach((n) => (n.style.transform = ''));
-    }
+    };
     hero.addEventListener('mousemove', onMove, { passive: true });
     hero.addEventListener('mouseleave', onLeave);
+
+    cleanups.push(() => {
+      hero.removeEventListener('mousemove', onMove);
+      hero.removeEventListener('mouseleave', onLeave);
+      parallaxNodes.forEach((n) => (n.style.transform = ''));
+      tiltNodes.forEach((n) => (n.style.transform = ''));
+    });
   }
 
   // ── Hover-Glitch auf Hero-Headline-Zeilen ───────────────────────
   function startHeadlineGlitch() {
+    if (isCoarse()) return;
     const lines = Array.from(
       document.querySelectorAll<HTMLElement>('.hk-hero__h .hk-hero__line'),
     );
+    const teardowns: Array<() => void> = [];
     lines.forEach((line) => {
       let raf = 0;
-      line.addEventListener('mouseenter', () => {
+      const onEnter = () => {
         let t = 0;
         const max = 18;
         cancelAnimationFrame(raf);
@@ -2899,44 +2947,68 @@ const process = [
           raf = requestAnimationFrame(tick);
         };
         raf = requestAnimationFrame(tick);
-      });
-      line.addEventListener('mouseleave', () => {
+      };
+      const onLeave = () => {
         cancelAnimationFrame(raf);
+        line.style.transform = '';
+      };
+      line.addEventListener('mouseenter', onEnter);
+      line.addEventListener('mouseleave', onLeave);
+      teardowns.push(() => {
+        cancelAnimationFrame(raf);
+        line.removeEventListener('mouseenter', onEnter);
+        line.removeEventListener('mouseleave', onLeave);
         line.style.transform = '';
       });
     });
+    cleanups.push(() => teardowns.forEach((fn) => fn()));
   }
 
   // ── Service-Card Spotlight + Subtile Tilt ───────────────────────
+  // Auf Touch komplett deaktiviert: ein Tap kann mouseenter feuern,
+  // aber mouseleave nie — Folge wäre eine Card mit hängender
+  // perspective-Rotation. Hover-Fill kommt sowieso vom :hover-CSS,
+  // das auf Touch nicht zündet.
   function startSvcCards() {
+    if (isCoarse()) return;
     const cells = Array.from(document.querySelectorAll<HTMLElement>('.hk-svc__cell'));
+    const teardowns: Array<() => void> = [];
     cells.forEach((cell) => {
       const max = cell.classList.contains('hk-svc__cell--feature') ? 4 : 6;
-      cell.addEventListener('mouseenter', () => {
-        // Spotlight aktivieren *bevor* Hover-Gelb greift —
-        // beim eigentlichen :hover (CSS) wird der Glow wieder ausgeblendet,
-        // damit der gelbe Fill nicht durch den Glow flackert.
-        cell.classList.add('is-hot');
-      });
-      cell.addEventListener('mousemove', (e) => {
+      const onEnter = () => cell.classList.add('is-hot');
+      const onMove = (e: MouseEvent) => {
         const r = cell.getBoundingClientRect();
         const px = ((e.clientX - r.left) / r.width) * 100;
         const py = ((e.clientY - r.top) / r.height) * 100;
         cell.style.setProperty('--hk-svc-x', `${px}%`);
         cell.style.setProperty('--hk-svc-y', `${py}%`);
-        // Subtler Tilt nur solange Hover-Fill noch nicht voll aktiv
         const rx = ((py / 100) - 0.5) * -max;
         const ry = ((px / 100) - 0.5) * max;
         cell.style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
-      });
-      cell.addEventListener('mouseleave', () => {
+      };
+      const onLeave = () => {
+        cell.classList.remove('is-hot');
+        cell.style.transform = '';
+      };
+      cell.addEventListener('mouseenter', onEnter);
+      cell.addEventListener('mousemove', onMove);
+      cell.addEventListener('mouseleave', onLeave);
+      teardowns.push(() => {
+        cell.removeEventListener('mouseenter', onEnter);
+        cell.removeEventListener('mousemove', onMove);
+        cell.removeEventListener('mouseleave', onLeave);
         cell.classList.remove('is-hot');
         cell.style.transform = '';
       });
     });
+    cleanups.push(() => teardowns.forEach((fn) => fn()));
   }
 
   function init() {
+    // Vorherige Listener/rAFs abräumen (z.B. nach View-Transition).
+    cleanups.forEach((fn) => fn());
+    cleanups = [];
+
     startTicker();
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     startSparks();
@@ -2946,10 +3018,14 @@ const process = [
     const hero = document.querySelector<HTMLElement>('[data-hk-hero]');
     const plate = document.querySelector<HTMLElement>('[data-hk-hero-plate]');
     if (hero && plate) {
-      gsap.to(plate, {
+      const tween = gsap.to(plate, {
         yPercent: -6,
         ease: 'none',
         scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.6 },
+      });
+      cleanups.push(() => {
+        tween.scrollTrigger?.kill();
+        tween.kill();
       });
     }
 
@@ -2980,12 +3056,17 @@ const process = [
 
       // Safety-Net: nach 1,5 s alle Steps zwingend sichtbar machen
       // (falls IO aus irgendeinem Grund nicht feuert)
-      setTimeout(() => {
+      const safetyTimer = window.setTimeout(() => {
         steps.forEach((step) => {
           step.style.opacity = '1';
           step.style.transform = 'translateY(0)';
         });
       }, 1500);
+
+      cleanups.push(() => {
+        io.disconnect();
+        window.clearTimeout(safetyTimer);
+      });
     }
   }
 
@@ -2993,6 +3074,7 @@ const process = [
   document.addEventListener('astro:page-load', init);
   document.addEventListener('astro:before-swap', () => {
     window.clearInterval(tickerInterval);
-    if (sparkRaf) cancelAnimationFrame(sparkRaf);
+    cleanups.forEach((fn) => fn());
+    cleanups = [];
   });
 </script>

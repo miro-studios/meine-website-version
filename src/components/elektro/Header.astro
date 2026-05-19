@@ -314,6 +314,10 @@ const path = Astro.url.pathname.replace(/\/$/, '');
     border-top: 1px solid var(--color-rule);
     padding: 1.5rem var(--hk-gutter) 2.5rem;
     background: var(--color-bg);
+    max-height: calc(100vh - 60px);
+    max-height: calc(100svh - 60px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .hk-header__drawer ul {
@@ -367,17 +371,53 @@ const path = Astro.url.pathname.replace(/\/$/, '');
     if (header.dataset.initialized === 'true') return;
     header.dataset.initialized = 'true';
 
-    burger.addEventListener('click', () => {
-      const open = burger.getAttribute('aria-expanded') === 'true';
-      burger.setAttribute('aria-expanded', String(!open));
-      burger.setAttribute('aria-label', !open ? 'Menü schließen' : 'Menü öffnen');
-      if (open) drawer.setAttribute('hidden', '');
-      else drawer.removeAttribute('hidden');
+    const setOpen = (open: boolean) => {
+      burger.setAttribute('aria-expanded', String(open));
+      burger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+      if (open) drawer.removeAttribute('hidden');
+      else drawer.setAttribute('hidden', '');
+      // Body-Scroll-Lock — sonst kann man hinter dem offenen Drawer
+      // scrollen, was auf Mobile unerwartet wirkt.
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+
+    const close = () => setOpen(false);
+    const toggle = () => setOpen(burger.getAttribute('aria-expanded') !== 'true');
+
+    burger.addEventListener('click', toggle);
+
+    // Drawer schließt beim Tippen auf einen Nav-Link — auf Mobile
+    // navigiert man, ohne dass das Menü als "offen" zurückbleibt.
+    drawer.querySelectorAll<HTMLAnchorElement>('a').forEach((a) => {
+      a.addEventListener('click', close);
     });
+
+    // ESC schließt den Drawer (Standard-Erwartung bei Modal-artigen UI).
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && burger.getAttribute('aria-expanded') === 'true') {
+        close();
+        burger.focus();
+      }
+    };
+    document.addEventListener('keydown', onKey);
+
+    // Click ausserhalb von Header schließt den Drawer.
+    const onDocClick = (e: MouseEvent) => {
+      if (burger.getAttribute('aria-expanded') !== 'true') return;
+      if (!header.contains(e.target as Node)) close();
+    };
+    document.addEventListener('click', onDocClick);
 
     document.addEventListener(
       'astro:before-swap',
-      () => delete header.dataset.initialized,
+      () => {
+        // State zurücksetzen: Body-Lock + Drawer-Open würde sonst über
+        // die Navigation hinaus bestehen bleiben.
+        document.body.style.overflow = '';
+        document.removeEventListener('keydown', onKey);
+        document.removeEventListener('click', onDocClick);
+        delete header.dataset.initialized;
+      },
       { once: true },
     );
   }
