@@ -353,6 +353,10 @@
             preEl.remove();
             document.body.style.overflow = '';
             sessionStorage.setItem('hk-preloader-seen', '1');
+            // GSAP-ScrollTrigger neu berechnen — Initial-Berechnungen
+            // lagen evtl. noch unter `overflow: hidden` und sind dann
+            // off. Refresh ist günstig und behebt Mobile-Scroll-Glitches.
+            window.dispatchEvent(new Event('resize'));
           }, 500);
         }, 80);
       }
