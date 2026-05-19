@@ -167,14 +167,15 @@
     const snav = document.querySelector<HTMLElement>('[data-hk-snav]');
     if (!snav) return;
     const list = snav.querySelector<HTMLElement>('[data-hk-snav-list]');
-    const fill = snav.querySelector<HTMLElement>('[data-hk-snav-fill]');
-    const label = snav.querySelector<HTMLElement>('[data-hk-snav-label]');
-    if (!list || !fill || !label) return;
+    const fillEl = snav.querySelector<HTMLElement>('[data-hk-snav-fill]');
+    const labelEl = snav.querySelector<HTMLElement>('[data-hk-snav-label]');
+    if (!list || !fillEl || !labelEl) return;
+    const snavEl = snav;
 
     // Sections sammeln (markiert via [data-hk-section])
     const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-hk-section]'));
     if (sections.length < 2) {
-      snav.style.display = 'none';
+      snavEl.style.display = 'none';
       return;
     }
 
@@ -197,17 +198,17 @@
     const dots = Array.from(list.querySelectorAll<HTMLButtonElement>('.hk-snav__dot'));
     let activeIdx = -1;
 
-    function setActive(idx: number) {
+    const setActive = (idx: number) => {
       if (idx === activeIdx) return;
       activeIdx = idx;
       dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
       const name = sections[idx]?.dataset.hkName || '';
-      label.textContent = name || '—';
-      snav.classList.toggle('is-visible', !!name);
+      labelEl.textContent = name || '—';
+      snavEl.classList.toggle('is-visible', !!name);
       // Rail fill in % der gesamten Section-Liste
       const pct = ((idx + 1) / sections.length) * 100;
-      fill.style.height = `${Math.min(100, pct)}%`;
-    }
+      fillEl.style.height = `${Math.min(100, pct)}%`;
+    };
 
     // IntersectionObserver: aktive Section bestimmen
     const io = new IntersectionObserver(
