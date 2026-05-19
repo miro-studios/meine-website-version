@@ -964,9 +964,16 @@ const faq = [
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    position: sticky;
-    top: 5rem;
-    align-self: start;
+  }
+
+  /* Sticky nur in der 2-Spalten-Variante — auf Mobile klebt der Meta-
+     Block sonst am Header und überlagert Visual + Items + CTA. */
+  @media (min-width: 900px) {
+    .hk-svc-list__meta {
+      position: sticky;
+      top: 5rem;
+      align-self: start;
+    }
   }
 
   .hk-svc-list__n {
