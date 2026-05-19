@@ -161,6 +161,20 @@
     transform: translate(-50%, 30px);
   }
 
+  /* Kurzer Shake wenn User versucht, den Dialog wegzuklicken — visuelle
+     Erinnerung, dass eine Antwort nötig ist. */
+  .hk-consent.is-nudging {
+    animation: hk-consent-nudge 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  }
+  @keyframes hk-consent-nudge {
+    0%, 100% { transform: translate(-50%, 0); }
+    15%, 75% { transform: translate(calc(-50% - 6px), 0); }
+    35%, 55% { transform: translate(calc(-50% + 6px), 0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hk-consent.is-nudging { animation: none; }
+  }
+
   .hk-consent__inner {
     padding: clamp(1.25rem, 2.5vw, 1.75rem);
     display: flex;
@@ -391,7 +405,22 @@
     const bannerEl = banner;
     let onKey: ((e: KeyboardEvent) => void) | null = null;
     let onBackdropClick: (() => void) | null = null;
+    let onFocusTrap: ((e: FocusEvent) => void) | null = null;
     let prevFocus: HTMLElement | null = null;
+    let nudgeTimer: number | undefined;
+
+    // "Du musst antworten" — kurzes Shake-Feedback wenn User versucht,
+    // den Dialog wegzuklicken oder ESC zu drücken. Kein Schließen.
+    function nudge() {
+      bannerEl.classList.remove('is-nudging');
+      // reflow erzwingen, damit die Animation erneut startet
+      void bannerEl.offsetWidth;
+      bannerEl.classList.add('is-nudging');
+      window.clearTimeout(nudgeTimer);
+      nudgeTimer = window.setTimeout(() => bannerEl.classList.remove('is-nudging'), 500);
+      // Fokus zum primären CTA — Keyboard-User weiß sofort, wo es weitergeht
+      (bannerEl.querySelector('[data-hk-consent-all]') as HTMLButtonElement | null)?.focus();
+    }
 
     function close(choice: string) {
       sessionStorage.setItem('hk-consent', choice);
@@ -404,6 +433,8 @@
       // Listener abräumen
       if (onKey) document.removeEventListener('keydown', onKey);
       if (onBackdropClick) backdrop?.removeEventListener('click', onBackdropClick);
+      if (onFocusTrap) document.removeEventListener('focusin', onFocusTrap);
+      window.clearTimeout(nudgeTimer);
       // Fokus zurück
       prevFocus?.focus?.();
       setTimeout(() => {
@@ -431,17 +462,29 @@
       close(stat ? 'necessary+stats' : 'necessary');
     });
 
-    // ESC = "Nur notwendig" (sichere Default-Antwort).
+    // ESC schließt NICHT — eine bewusste Antwort ist Pflicht. Wir
+    // shaken den Banner stattdessen kurz als Hinweis.
     onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') close('necessary');
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        nudge();
+      }
     };
     document.addEventListener('keydown', onKey);
 
-    // Klick auf Backdrop = "Nur notwendig" (User hat aktiv geklickt,
-    // aber bewusst NICHT auf "Alle akzeptieren" — wir nehmen das
-    // konservativ als Ablehnung).
-    onBackdropClick = () => close('necessary');
+    // Klick auf Backdrop schließt NICHT — gleiches Verhalten wie ESC.
+    onBackdropClick = () => nudge();
     backdrop?.addEventListener('click', onBackdropClick);
+
+    // Focus-Trap: Tab darf den Banner nicht verlassen. Wenn der Fokus
+    // außerhalb landet (z.B. via Tab-Loop), holen wir ihn zurück.
+    onFocusTrap = (e: FocusEvent) => {
+      const target = e.target as Node | null;
+      if (!target || bannerEl.contains(target)) return;
+      e.stopPropagation();
+      (bannerEl.querySelector('[data-hk-consent-all]') as HTMLButtonElement | null)?.focus();
+    };
+    document.addEventListener('focusin', onFocusTrap);
   }
 
   init();
