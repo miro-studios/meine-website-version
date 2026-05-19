@@ -38,30 +38,132 @@ const values = [
   description="Familiengeführter Elektro- und Heizungsbau-Meisterbetrieb in Lüdenscheid. 37 Jahre Erfahrung, 14 Mitarbeitende, 2.400+ realisierte Projekte. Lernen Sie Holtkamp kennen."
 >
   <!-- ── Page Hero ─────────────────────────────────────────────────── -->
-  <section class="hk-pg-hero hk-section">
-    <div class="hk-container">
-      <div class="hk-bar">
-        <span class="hk-bar-n">N° 01</span>
-        <span class="hk-bar-line" aria-hidden="true"></span>
-        <span class="hk-bar-k">PAGE / BETRIEB</span>
+  <section class="hk-pg-hero" data-hk-section data-hk-name="Übersicht">
+    <!-- Spec-Bar oben -->
+    <div class="hk-pg-hero__spec" aria-hidden="true">
+      <span class="hk-pg-hero__spec-k">PAGE</span>
+      <span class="hk-pg-hero__spec-v">01 / BETRIEB</span>
+      <span class="hk-pg-hero__spec-dot"></span>
+      <span class="hk-pg-hero__spec-k">GEN</span>
+      <span class="hk-pg-hero__spec-v">3</span>
+      <span class="hk-pg-hero__spec-line"></span>
+      <span class="hk-pg-hero__spec-k">EST</span>
+      <span class="hk-pg-hero__spec-v">12 · MÄR · 1989</span>
+      <span class="hk-pg-hero__spec-pulse"></span>
+      <span class="hk-pg-hero__spec-v">37 J · BETRIEB AKTIV</span>
+    </div>
+
+    <div class="hk-container hk-pg-hero__grid">
+      <div class="hk-pg-hero__copy">
+        <div class="hk-bar">
+          <span class="hk-bar-n">N° 01</span>
+          <span class="hk-bar-line" aria-hidden="true"></span>
+          <span class="hk-bar-k">PAGE / BETRIEB</span>
+        </div>
+
+        <h1 class="hk-pg-hero__h">
+          <span class="hk-pg-hero__line"><SplitText by="words" stagger={0.05}>VON 1989</SplitText></span>
+          <span class="hk-pg-hero__line hk-pg-hero__line--alt"><SplitText by="words" stagger={0.05} delay={0.2}>BIS HEUTE.</SplitText></span>
+        </h1>
+
+        <p class="hk-pg-hero__lead">
+          Wir sind ein Familien­betrieb in dritter Generation. 37 Jahre, drei
+          Meisterbriefe im Haus, 14 Köpfe — und ein klarer Auftrag: Anlagen
+          bauen, die ihren Zweck erfüllen, und Menschen ausbilden, die den Job
+          weiterführen.
+        </p>
+
+        <ul class="hk-pg-hero__chips">
+          <li>FAMILIE</li>
+          <li>DRITTE GENERATION</li>
+          <li>HWK MK 47 / 13</li>
+          <li>3 MEISTERBRIEFE</li>
+        </ul>
       </div>
 
-      <h1 class="hk-pg-hero__h">
-        <span class="hk-pg-hero__line"><SplitText by="words" stagger={0.05}>VON 1989</SplitText></span>
-        <span class="hk-pg-hero__line hk-pg-hero__line--alt"><SplitText by="words" stagger={0.05} delay={0.2}>BIS HEUTE.</SplitText></span>
-      </h1>
+      <!-- Generations-Tree als Hero-Visual -->
+      <aside class="hk-tree" aria-label="Generationen-Stammbaum">
+        <span class="hk-tree__bracket hk-tree__bracket--tl"></span>
+        <span class="hk-tree__bracket hk-tree__bracket--tr"></span>
+        <span class="hk-tree__bracket hk-tree__bracket--bl"></span>
+        <span class="hk-tree__bracket hk-tree__bracket--br"></span>
 
-      <p class="hk-pg-hero__lead">
-        Wir sind ein Familien­betrieb in dritter Generation. 37 Jahre, drei
-        Meisterbriefe im Haus, 14 Köpfe — und ein klarer Auftrag: Anlagen
-        bauen, die ihren Zweck erfüllen, und Menschen ausbilden, die den Job
-        weiterführen.
-      </p>
+        <header>
+          <span class="hk-tree__dot"></span>
+          <span>STAMMBAUM · 3 GENERATIONEN</span>
+          <span class="hk-tree__rev">FAM-26</span>
+        </header>
+
+        <svg viewBox="0 0 360 460" class="hk-tree__svg">
+          <defs>
+            <pattern id="hk-tree-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M20 0H0V20" fill="none" stroke="currentColor" stroke-width="0.4" opacity="0.18"/>
+            </pattern>
+          </defs>
+          <rect width="360" height="460" fill="url(#hk-tree-grid)" opacity="0.5"/>
+
+          <!-- Generation 1 — Werner -->
+          <g class="hk-tree__node" transform="translate(180 70)">
+            <rect x="-80" y="-30" width="160" height="60" fill="var(--color-bg)" stroke="var(--color-accent)" stroke-width="1.6"/>
+            <text x="0" y="-8" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--color-accent)" letter-spacing="2" font-weight="700">GEN. 01 · 1989</text>
+            <text x="0" y="12" text-anchor="middle" font-family="Anton, sans-serif" font-size="20" fill="var(--color-text)" letter-spacing="1.5" font-weight="400">WERNER HOLTKAMP</text>
+            <text x="0" y="26" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--color-muted)" letter-spacing="1">GRÜNDER · MEISTER</text>
+          </g>
+
+          <!-- Verbindungslinie 1→2 -->
+          <line x1="180" y1="100" x2="180" y2="180" stroke="var(--color-accent)" stroke-width="1.4" stroke-dasharray="4 6">
+            <animate attributeName="stroke-dashoffset" values="0;-20" dur="2s" repeatCount="indefinite"/>
+          </line>
+          <circle cx="180" cy="180" r="3" fill="var(--color-accent)"/>
+
+          <!-- Generation 2 — Daniel -->
+          <g class="hk-tree__node" transform="translate(180 220)">
+            <rect x="-80" y="-30" width="160" height="60" fill="var(--color-bg)" stroke="currentColor" stroke-width="1.4"/>
+            <text x="0" y="-8" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--color-accent)" letter-spacing="2" font-weight="700">GEN. 02 · 2008</text>
+            <text x="0" y="12" text-anchor="middle" font-family="Anton, sans-serif" font-size="20" fill="var(--color-text)" letter-spacing="1.5" font-weight="400">DANIEL HOLTKAMP</text>
+            <text x="0" y="26" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--color-muted)" letter-spacing="1">GF · MEISTER</text>
+          </g>
+
+          <!-- Verbindungslinie 2→3 -->
+          <line x1="180" y1="250" x2="180" y2="330" stroke="var(--color-accent)" stroke-width="1.4" stroke-dasharray="4 6">
+            <animate attributeName="stroke-dashoffset" values="0;-20" dur="2s" begin="0.4s" repeatCount="indefinite"/>
+          </line>
+          <circle cx="180" cy="330" r="3" fill="var(--color-accent)"/>
+
+          <!-- Generation 3 — Karla -->
+          <g class="hk-tree__node" transform="translate(180 370)">
+            <rect x="-80" y="-30" width="160" height="60" fill="var(--color-accent)" stroke="var(--color-accent)" stroke-width="1.6"/>
+            <text x="0" y="-8" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--color-bg)" letter-spacing="2" font-weight="700">GEN. 03 · 2024</text>
+            <text x="0" y="12" text-anchor="middle" font-family="Anton, sans-serif" font-size="20" fill="var(--color-bg)" letter-spacing="1.5" font-weight="400">KARLA HOLTKAMP</text>
+            <text x="0" y="26" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--color-bg)" opacity="0.85" letter-spacing="1">PV · KNX · MEISTERIN</text>
+          </g>
+
+          <!-- Mess-Marker rechts -->
+          <g stroke="currentColor" stroke-width="0.5" opacity="0.5" fill="none">
+            <line x1="290" y1="40" x2="295" y2="40"/>
+            <line x1="295" y1="40" x2="295" y2="100"/>
+            <line x1="290" y1="100" x2="295" y2="100"/>
+            <line x1="290" y1="190" x2="295" y2="190"/>
+            <line x1="295" y1="190" x2="295" y2="250"/>
+            <line x1="290" y1="250" x2="295" y2="250"/>
+            <line x1="290" y1="340" x2="295" y2="340"/>
+            <line x1="295" y1="340" x2="295" y2="400"/>
+            <line x1="290" y1="400" x2="295" y2="400"/>
+          </g>
+          <text x="310" y="73" font-family="JetBrains Mono, monospace" font-size="8" fill="currentColor" opacity="0.6" letter-spacing="0.5">19 J</text>
+          <text x="310" y="223" font-family="JetBrains Mono, monospace" font-size="8" fill="currentColor" opacity="0.6" letter-spacing="0.5">16 J</text>
+          <text x="310" y="373" font-family="JetBrains Mono, monospace" font-size="8" fill="currentColor" opacity="0.6" letter-spacing="0.5">2 J</text>
+        </svg>
+
+        <footer>
+          <span>EIGENTÜMERGEFÜHRT · IMMER NOCH</span>
+        </footer>
+      </aside>
     </div>
   </section>
 
   <!-- ── Über-Story (Editorial-Layout) ─────────────────────────────── -->
-  <section class="hk-story hk-section">
+  <section class="hk-story hk-section" data-hk-section data-hk-name="Geschichte">
     <div class="hk-container hk-story__grid">
       <RevealOnScroll>
         <p class="hk-story__intro">
@@ -102,7 +204,7 @@ const values = [
   </section>
 
   <!-- ── Stats ────────────────────────────────────────────────────── -->
-  <section class="hk-stats hk-section">
+  <section class="hk-stats hk-section" data-hk-section data-hk-name="In Zahlen">
     <div class="hk-container">
       <div class="hk-bar">
         <span class="hk-bar-n">N° 02</span>
@@ -140,7 +242,7 @@ const values = [
   </section>
 
   <!-- ── Werte ───────────────────────────────────────────────────── -->
-  <section class="hk-values hk-section">
+  <section class="hk-values hk-section" data-hk-section data-hk-name="Haltung">
     <div class="hk-container">
       <div class="hk-bar">
         <span class="hk-bar-n">N° 03</span>
@@ -168,7 +270,7 @@ const values = [
   </section>
 
   <!-- ── Zeitstrahl ──────────────────────────────────────────────── -->
-  <section class="hk-time hk-section">
+  <section class="hk-time hk-section" data-hk-section data-hk-name="Chronik">
     <div class="hk-container">
       <div class="hk-bar">
         <span class="hk-bar-n">N° 04</span>
@@ -197,7 +299,7 @@ const values = [
   </section>
 
   <!-- ── Team ───────────────────────────────────────────────────── -->
-  <section class="hk-team hk-section">
+  <section class="hk-team hk-section" data-hk-section data-hk-name="Team">
     <div class="hk-container">
       <div class="hk-bar">
         <span class="hk-bar-n">N° 05</span>
@@ -229,7 +331,7 @@ const values = [
   </section>
 
   <!-- ── Final CTA ──────────────────────────────────────────────── -->
-  <section class="hk-pg-cta hk-section">
+  <section class="hk-pg-cta hk-section" data-hk-section data-hk-name="Kontakt">
     <div class="hk-container">
       <RevealOnScroll>
         <h2 class="hk-pg-cta__h">
@@ -250,16 +352,68 @@ const values = [
 
 <style>
   /* ── Page Hero ─────────────────────────────────────────────────── */
-  .hk-pg-hero { padding-block: clamp(3rem, 6vw, 5rem) clamp(3rem, 6vw, 5rem); }
+  .hk-pg-hero {
+    border-top: 1px solid var(--color-rule);
+    padding-block: clamp(2rem, 4vw, 3.5rem) clamp(3rem, 6vw, 5rem);
+    background:
+      radial-gradient(ellipse 50% 50% at 90% 0%,
+        color-mix(in srgb, var(--color-accent) 5%, transparent),
+        transparent 70%),
+      var(--color-bg);
+    position: relative;
+  }
+
+  .hk-pg-hero__spec {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem 1rem;
+    padding: 0.7rem var(--hk-gutter);
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+    border-bottom: 1px solid var(--color-rule);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .hk-pg-hero__spec-k { color: var(--color-muted); font-weight: 700; }
+  .hk-pg-hero__spec-v { color: var(--color-text); font-weight: 600; }
+  .hk-pg-hero__spec-dot { width: 4px; height: 4px; background: var(--color-accent); border-radius: 50%; }
+  .hk-pg-hero__spec-line { flex: 1; height: 1px; background: var(--color-rule-strong); min-width: 1rem; }
+  .hk-pg-hero__spec-pulse {
+    width: 7px;
+    height: 7px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 22%, transparent),
+                0 0 8px var(--color-accent);
+    animation: hk-pulse 1.8s ease-in-out infinite;
+  }
+
+  .hk-pg-hero__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: start;
+  }
+  @media (min-width: 1000px) {
+    .hk-pg-hero__grid { grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.85fr); }
+  }
+
+  .hk-pg-hero__copy {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+  }
 
   .hk-pg-hero__h {
     font-family: var(--font-display);
-    font-size: clamp(3rem, 11vw, 10rem);
+    font-size: clamp(3rem, 10vw, 9rem);
     line-height: 0.88;
     letter-spacing: 0.005em;
     text-transform: uppercase;
     font-weight: 400;
-    margin: 0 0 2rem;
+    margin: 0;
   }
   .hk-pg-hero__line { display: block; overflow: hidden; }
   .hk-pg-hero__line--alt { color: var(--color-accent); }
@@ -271,6 +425,101 @@ const values = [
     max-width: 55ch;
     color: color-mix(in srgb, var(--color-text) 80%, transparent);
     margin: 0;
+  }
+
+  .hk-pg-hero__chips {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .hk-pg-hero__chips li {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    color: var(--color-text);
+    padding: 0.45rem 0.8rem;
+    border: 1px solid var(--color-rule-strong);
+    background: color-mix(in srgb, var(--color-text) 4%, transparent);
+    font-weight: 700;
+  }
+  .hk-pg-hero__chips li:first-child {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border-color: var(--color-accent);
+  }
+
+  /* Stammbaum / Generations-Tree */
+  .hk-tree {
+    position: relative;
+    border: 1px solid var(--color-rule-strong);
+    background: var(--color-surface);
+  }
+  .hk-tree__bracket {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-color: var(--color-accent);
+    border-style: solid;
+    pointer-events: none;
+  }
+  .hk-tree__bracket--tl { top: -4px; left: -4px; border-width: 1.5px 0 0 1.5px; }
+  .hk-tree__bracket--tr { top: -4px; right: -4px; border-width: 1.5px 1.5px 0 0; }
+  .hk-tree__bracket--bl { bottom: -4px; left: -4px; border-width: 0 0 1.5px 1.5px; }
+  .hk-tree__bracket--br { bottom: -4px; right: -4px; border-width: 0 1.5px 1.5px 0; }
+
+  .hk-tree header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 0.9rem;
+    background: var(--color-text);
+    color: var(--color-bg);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    font-weight: 700;
+  }
+  .hk-tree header > span:nth-child(2) { flex: 1; }
+  .hk-tree__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 30%, transparent),
+                0 0 6px var(--color-accent);
+    animation: hk-pulse 2.4s ease-in-out infinite;
+  }
+  .hk-tree__rev { color: var(--color-accent); }
+
+  .hk-tree__svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  .hk-tree__node {
+    transition: filter 0.4s var(--ease-out-expo);
+  }
+  .hk-tree__node:hover {
+    filter: drop-shadow(0 0 10px color-mix(in srgb, var(--color-accent) 80%, transparent));
+  }
+
+  .hk-tree footer {
+    padding: 0.6rem 0.9rem;
+    border-top: 1px solid var(--color-rule);
+    background: var(--color-surface-2);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    color: var(--color-accent);
+    text-align: center;
+    font-weight: 700;
   }
 
   /* ── Story ───────────────────────────────────────────────────── */

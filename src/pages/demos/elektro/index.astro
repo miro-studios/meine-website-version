@@ -17,6 +17,7 @@ import SplitText from '@components/shared/SplitText.astro';
 import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
 import MagneticButton from '@components/shared/MagneticButton.astro';
 import NumberCounter from '@components/shared/NumberCounter.astro';
+import EnergyFlow from '@components/elektro/EnergyFlow.astro';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -73,11 +74,14 @@ const process = [
   />
 
   <!-- ── HERO (Premium-Upgrade) ───────────────────────────────────── -->
-  <section class="hk-hero" data-hk-hero>
-    <div class="hk-hero__grid" aria-hidden="true"></div>
+  <section class="hk-hero" data-hk-hero data-hk-section data-hk-name="Start">
+    <div class="hk-hero__grid" data-hk-hero-parallax="0.12" aria-hidden="true"></div>
+
+    <!-- Spark-Canvas (lightweight gelbe Funken die langsam aufsteigen) -->
+    <canvas class="hk-hero__sparks" data-hk-sparks aria-hidden="true"></canvas>
 
     <!-- Animated Circuit-Bolt SVG im Hintergrund -->
-    <svg class="hk-hero__bolt" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <svg class="hk-hero__bolt" data-hk-hero-parallax="0.22" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <defs>
         <linearGradient id="hk-bolt-grad" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stop-color="var(--color-accent)" stop-opacity="0.55"/>
@@ -198,7 +202,7 @@ const process = [
       </div>
 
       <!-- Premium-Stats-Panel mit Corner-Brackets + Live-Bar -->
-      <aside class="hk-hero__plate" data-hk-hero-plate>
+      <aside class="hk-hero__plate" data-hk-hero-plate data-hk-tilt="6">
         <span class="hk-hero__plate-bracket hk-hero__plate-bracket--tl" aria-hidden="true"></span>
         <span class="hk-hero__plate-bracket hk-hero__plate-bracket--tr" aria-hidden="true"></span>
         <span class="hk-hero__plate-bracket hk-hero__plate-bracket--bl" aria-hidden="true"></span>
@@ -307,7 +311,7 @@ const process = [
   </div>
 
   <!-- ── MANIFEST (Editorial-Treatment) ───────────────────────────── -->
-  <section class="hk-manifest hk-section">
+  <section class="hk-manifest hk-section" data-hk-section data-hk-name="Manifest">
     <!-- Marginalia: Rotated Side-Label links -->
     <span class="hk-manifest__margin" aria-hidden="true">
       <span class="hk-manifest__margin-line"></span>
@@ -390,7 +394,7 @@ const process = [
   </div>
 
   <!-- ── MEGA NUMBERS ──────────────────────────────────────────────── -->
-  <section class="hk-numbers" data-hk-numbers>
+  <section class="hk-numbers" data-hk-numbers data-hk-section data-hk-name="In Zahlen">
     <div class="hk-container">
       <div class="hk-bar">
         <span class="hk-bar-n">N° 02</span>
@@ -435,8 +439,20 @@ const process = [
     </div>
   </section>
 
+  <!-- Section-Divider-Tag -->
+  <div class="hk-tag" aria-hidden="true">
+    <span class="hk-tag__inner">
+      <span class="hk-tag__dot"></span>
+      <span class="hk-tag__k">STEP</span>
+      <span class="hk-tag__v">03 · ENERGIEFLUSS</span>
+    </span>
+  </div>
+
+  <!-- ── ENERGY-FLOW DIAGRAMM (Wow-Section) ───────────────────────── -->
+  <EnergyFlow />
+
   <!-- ── ÜBER UNS TEASER ───────────────────────────────────────────── -->
-  <section class="hk-about hk-section">
+  <section class="hk-about hk-section" data-hk-section data-hk-name="Betrieb">
     <div class="hk-container hk-about__grid">
       <div class="hk-about__visual" aria-hidden="true">
         <svg viewBox="0 0 360 480" class="hk-about__circuit">
@@ -529,7 +545,7 @@ const process = [
   </div>
 
   <!-- ── LEISTUNGEN TEASER ─────────────────────────────────────────── -->
-  <section class="hk-svc hk-section">
+  <section class="hk-svc hk-section" data-hk-section data-hk-name="Gewerke">
     <div class="hk-container">
       <div class="hk-bar">
         <span class="hk-bar-n">N° 04</span>
@@ -754,7 +770,7 @@ const process = [
   </div>
 
   <!-- ── CASE-STUDY SHOWCASE ───────────────────────────────────────── -->
-  <section class="hk-case hk-section">
+  <section class="hk-case hk-section" data-hk-section data-hk-name="Referenz">
     <div class="hk-container">
       <div class="hk-bar">
         <span class="hk-bar-n">N° 05</span>
@@ -870,7 +886,7 @@ const process = [
   </section>
 
   <!-- ── PROZESS (Pin-Section) ─────────────────────────────────────── -->
-  <section class="hk-proc" data-hk-proc>
+  <section class="hk-proc" data-hk-proc data-hk-section data-hk-name="Ablauf">
     <div class="hk-container hk-proc__inner">
       <div class="hk-proc__head" data-hk-proc-head>
         <div class="hk-bar">
@@ -902,7 +918,7 @@ const process = [
   </section>
 
   <!-- ── SOCIAL PROOF ──────────────────────────────────────────────── -->
-  <section class="hk-proof hk-section">
+  <section class="hk-proof hk-section" data-hk-section data-hk-name="Stimmen">
     <div class="hk-container">
       <div class="hk-bar">
         <span class="hk-bar-n">N° 07</span>
@@ -961,7 +977,7 @@ const process = [
   </section>
 
   <!-- ── BLOG TEASER ───────────────────────────────────────────────── -->
-  <section class="hk-journal hk-section">
+  <section class="hk-journal hk-section" data-hk-section data-hk-name="Journal">
     <div class="hk-container">
       <div class="hk-bar">
         <span class="hk-bar-n">N° 08</span>
@@ -998,7 +1014,7 @@ const process = [
   </section>
 
   <!-- ── FINAL CTA ─────────────────────────────────────────────────── -->
-  <section class="hk-final">
+  <section class="hk-final" data-hk-section data-hk-name="Kontakt">
     <div class="hk-container hk-final__inner">
       <RevealOnScroll>
         <p class="hk-eyebrow">Erstgespräch · kostenfrei</p>
@@ -1034,7 +1050,7 @@ const process = [
 
   .hk-hero__grid {
     position: absolute;
-    inset: 0;
+    inset: -4%;
     background-image:
       linear-gradient(to right, var(--hk-grid-line) 1px, transparent 1px),
       linear-gradient(to bottom, var(--hk-grid-line) 1px, transparent 1px);
@@ -1044,6 +1060,18 @@ const process = [
     -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 40%, black 30%, transparent 90%);
     z-index: 0;
     pointer-events: none;
+    will-change: transform;
+    transition: transform 0.7s var(--ease-out-expo);
+  }
+
+  /* Spark-Canvas — leichte gelbe Funken die im Hintergrund langsam aufsteigen */
+  .hk-hero__sparks {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.7;
   }
 
   /* Lightning-Bolt SVG im Hintergrund — die "premium" Schicht */
@@ -1310,7 +1338,27 @@ const process = [
     position: relative;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    transform-style: preserve-3d;
+    transition: transform 0.4s var(--ease-out-expo);
+    will-change: transform;
   }
+  /* Subtile Glare-Schicht beim Tilt */
+  .hk-hero__plate::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at var(--hk-tilt-x, 50%) var(--hk-tilt-y, 50%),
+      color-mix(in srgb, var(--color-accent) 14%, transparent) 0%,
+      transparent 45%
+    );
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-out-expo);
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: screen;
+  }
+  .hk-hero__plate:hover::before { opacity: 1; }
 
   /* Corner-Brackets — premium signal */
   .hk-hero__plate-bracket {
@@ -1999,10 +2047,33 @@ const process = [
     border-right: 1px solid var(--color-rule-strong);
     border-bottom: 1px solid var(--color-rule-strong);
     position: relative;
-    transition: background-color 0.4s var(--ease-out-expo), color 0.4s var(--ease-out-expo);
+    transition: background-color 0.4s var(--ease-out-expo),
+                color 0.4s var(--ease-out-expo),
+                transform 0.35s var(--ease-out-expo);
     overflow: hidden;
     isolation: isolate;
+    transform-style: preserve-3d;
+    will-change: transform;
   }
+
+  /* Spotlight-Glow der dem Cursor folgt (eingeblendet bei :hover) */
+  .hk-svc__cell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle 220px at var(--hk-svc-x, 50%) var(--hk-svc-y, 50%),
+      color-mix(in srgb, var(--color-accent) 18%, transparent),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-out-expo);
+    pointer-events: none;
+    z-index: 0;
+    mix-blend-mode: screen;
+  }
+  .hk-svc__cell:hover::before { opacity: 0; }
+  .hk-svc__cell.is-hot::before { opacity: 1; }
 
   /* Diagonal accent line that grows on hover */
   .hk-svc__cell::after {
@@ -2680,9 +2751,198 @@ const process = [
     }, 2800);
   }
 
+  // ── Spark-Canvas ────────────────────────────────────────────────
+  // Lightweight gelbe Funken-Particles im Hero-Hintergrund. Steigen
+  // langsam auf, faden aus. ~28 Particles, läuft auf einem rAF-Loop.
+  let sparkRaf: number | undefined;
+  function startSparks() {
+    const canvas = document.querySelector<HTMLCanvasElement>('[data-hk-sparks]');
+    const hero = document.querySelector<HTMLElement>('[data-hk-hero]');
+    if (!canvas || !hero) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    function resize() {
+      if (!canvas || !ctx || !hero) return;
+      const r = hero.getBoundingClientRect();
+      canvas.width = Math.max(1, Math.floor(r.width * dpr));
+      canvas.height = Math.max(1, Math.floor(r.height * dpr));
+      canvas.style.width = `${r.width}px`;
+      canvas.style.height = `${r.height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    type Spark = { x: number; y: number; vy: number; r: number; life: number; max: number; hue: number };
+    const sparks: Spark[] = [];
+    const N = window.matchMedia('(max-width: 720px)').matches ? 14 : 28;
+
+    function spawn(): Spark {
+      const w = canvas?.width ? canvas.width / dpr : window.innerWidth;
+      const h = canvas?.height ? canvas.height / dpr : window.innerHeight;
+      return {
+        x: Math.random() * w,
+        y: h + Math.random() * 40,
+        vy: 0.25 + Math.random() * 0.55,
+        r: 0.7 + Math.random() * 1.6,
+        life: 0,
+        max: 220 + Math.random() * 260,
+        hue: Math.random() < 0.25 ? 0 : 50,
+      };
+    }
+    for (let i = 0; i < N; i++) {
+      const s = spawn();
+      s.life = Math.random() * s.max;
+      s.y = Math.random() * (canvas.height / dpr);
+      sparks.push(s);
+    }
+
+    function frame() {
+      if (!canvas || !ctx) return;
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
+      ctx.clearRect(0, 0, w, h);
+      for (let i = 0; i < sparks.length; i++) {
+        const s = sparks[i];
+        s.life += 1;
+        s.y -= s.vy;
+        s.x += Math.sin(s.life * 0.04 + i) * 0.18;
+        const t = s.life / s.max;
+        const alpha = t < 0.1 ? t * 10 : 1 - Math.max(0, (t - 0.3) / 0.7);
+        if (alpha <= 0 || s.y < -20) {
+          sparks[i] = spawn();
+          continue;
+        }
+        const c = s.hue === 0
+          ? `rgba(240, 237, 228, ${alpha * 0.55})`
+          : `rgba(255, 214, 10, ${alpha * 0.75})`;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = c;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = s.hue === 0
+          ? 'rgba(240, 237, 228, 0.6)'
+          : 'rgba(255, 214, 10, 0.9)';
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+      sparkRaf = requestAnimationFrame(frame);
+    }
+    cancelAnimationFrame(sparkRaf!);
+    sparkRaf = requestAnimationFrame(frame);
+  }
+
+  // ── Mouse-Move Parallax + 3D-Tilt im Hero ────────────────────────
+  function startHeroInteractions() {
+    const hero = document.querySelector<HTMLElement>('[data-hk-hero]');
+    if (!hero) return;
+    const parallaxNodes = Array.from(
+      hero.querySelectorAll<HTMLElement>('[data-hk-hero-parallax]'),
+    );
+    const tiltNodes = Array.from(hero.querySelectorAll<HTMLElement>('[data-hk-tilt]'));
+
+    function onMove(e: MouseEvent) {
+      if (!hero) return;
+      const r = hero.getBoundingClientRect();
+      const cx = (e.clientX - r.left) / r.width - 0.5;  // -0.5 .. 0.5
+      const cy = (e.clientY - r.top) / r.height - 0.5;
+      // Parallax-Layer
+      parallaxNodes.forEach((node) => {
+        const k = parseFloat(node.dataset.hkHeroParallax || '0.15');
+        const tx = -cx * 40 * k;
+        const ty = -cy * 40 * k;
+        node.style.transform = `translate3d(${tx.toFixed(2)}px, ${ty.toFixed(2)}px, 0)`;
+      });
+      // 3D-Tilt
+      tiltNodes.forEach((node) => {
+        const max = parseFloat(node.dataset.hkTilt || '6');
+        const rx = -cy * max;
+        const ry = cx * max;
+        const r2 = node.getBoundingClientRect();
+        const lx = ((e.clientX - r2.left) / r2.width) * 100;
+        const ly = ((e.clientY - r2.top) / r2.height) * 100;
+        node.style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+        node.style.setProperty('--hk-tilt-x', `${lx}%`);
+        node.style.setProperty('--hk-tilt-y', `${ly}%`);
+      });
+    }
+    function onLeave() {
+      parallaxNodes.forEach((n) => (n.style.transform = ''));
+      tiltNodes.forEach((n) => (n.style.transform = ''));
+    }
+    hero.addEventListener('mousemove', onMove, { passive: true });
+    hero.addEventListener('mouseleave', onLeave);
+  }
+
+  // ── Hover-Glitch auf Hero-Headline-Zeilen ───────────────────────
+  function startHeadlineGlitch() {
+    const lines = Array.from(
+      document.querySelectorAll<HTMLElement>('.hk-hero__h .hk-hero__line'),
+    );
+    lines.forEach((line) => {
+      let raf = 0;
+      line.addEventListener('mouseenter', () => {
+        let t = 0;
+        const max = 18;
+        cancelAnimationFrame(raf);
+        const tick = () => {
+          t += 1;
+          if (t > max) {
+            line.style.transform = '';
+            return;
+          }
+          const x = (Math.random() - 0.5) * 6;
+          const y = (Math.random() - 0.5) * 3;
+          line.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
+          raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
+      });
+      line.addEventListener('mouseleave', () => {
+        cancelAnimationFrame(raf);
+        line.style.transform = '';
+      });
+    });
+  }
+
+  // ── Service-Card Spotlight + Subtile Tilt ───────────────────────
+  function startSvcCards() {
+    const cells = Array.from(document.querySelectorAll<HTMLElement>('.hk-svc__cell'));
+    cells.forEach((cell) => {
+      const max = cell.classList.contains('hk-svc__cell--feature') ? 4 : 6;
+      cell.addEventListener('mouseenter', () => {
+        // Spotlight aktivieren *bevor* Hover-Gelb greift —
+        // beim eigentlichen :hover (CSS) wird der Glow wieder ausgeblendet,
+        // damit der gelbe Fill nicht durch den Glow flackert.
+        cell.classList.add('is-hot');
+      });
+      cell.addEventListener('mousemove', (e) => {
+        const r = cell.getBoundingClientRect();
+        const px = ((e.clientX - r.left) / r.width) * 100;
+        const py = ((e.clientY - r.top) / r.height) * 100;
+        cell.style.setProperty('--hk-svc-x', `${px}%`);
+        cell.style.setProperty('--hk-svc-y', `${py}%`);
+        // Subtler Tilt nur solange Hover-Fill noch nicht voll aktiv
+        const rx = ((py / 100) - 0.5) * -max;
+        const ry = ((px / 100) - 0.5) * max;
+        cell.style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+      });
+      cell.addEventListener('mouseleave', () => {
+        cell.classList.remove('is-hot');
+        cell.style.transform = '';
+      });
+    });
+  }
+
   function init() {
     startTicker();
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    startSparks();
+    startHeroInteractions();
+    startHeadlineGlitch();
+    startSvcCards();
     const hero = document.querySelector<HTMLElement>('[data-hk-hero]');
     const plate = document.querySelector<HTMLElement>('[data-hk-hero-plate]');
     if (hero && plate) {
@@ -2731,5 +2991,8 @@ const process = [
 
   init();
   document.addEventListener('astro:page-load', init);
-  document.addEventListener('astro:before-swap', () => window.clearInterval(tickerInterval));
+  document.addEventListener('astro:before-swap', () => {
+    window.clearInterval(tickerInterval);
+    if (sparkRaf) cancelAnimationFrame(sparkRaf);
+  });
 </script>
