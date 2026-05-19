@@ -454,59 +454,28 @@ const process = [
   <!-- ── ÜBER UNS TEASER ───────────────────────────────────────────── -->
   <section class="hk-about hk-section" data-hk-section data-hk-name="Betrieb">
     <div class="hk-container hk-about__grid">
-      <div class="hk-about__visual" aria-hidden="true">
-        <svg viewBox="0 0 360 480" class="hk-about__circuit">
-          <defs>
-            <pattern id="hk-grid" width="24" height="24" patternUnits="userSpaceOnUse">
-              <path d="M24 0H0V24" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.18"/>
-            </pattern>
-          </defs>
-          <rect width="360" height="480" fill="url(#hk-grid)" />
-
-          <!-- Schaltplan-Andeutung -->
-          <g fill="none" stroke="currentColor" stroke-width="1.4">
-            <path d="M40 80 L 130 80 L 130 180 L 220 180 L 220 280 L 320 280" />
-            <path d="M40 200 L 90 200 L 90 380 L 240 380" />
-            <path d="M260 40 L 260 120 L 320 120" />
-          </g>
-
-          <!-- Knoten -->
-          <g fill="currentColor">
-            <circle cx="40" cy="80" r="4" />
-            <circle cx="130" cy="180" r="4" />
-            <circle cx="220" cy="280" r="4" />
-            <circle cx="320" cy="280" r="4" />
-            <circle cx="90" cy="200" r="4" />
-            <circle cx="240" cy="380" r="4" />
-            <circle cx="260" cy="120" r="4" />
-            <circle cx="320" cy="120" r="4" />
-            <circle cx="40" cy="200" r="4" />
-            <circle cx="260" cy="40" r="4" />
-          </g>
-
-          <!-- Sicherung-Symbol -->
-          <g fill="none" stroke="currentColor" stroke-width="1.4">
-            <rect x="155" y="225" width="34" height="14" />
-            <line x1="148" y1="232" x2="155" y2="232" />
-            <line x1="189" y1="232" x2="196" y2="232" />
-          </g>
-
-          <!-- Wärme-Symbol -->
-          <g fill="none" stroke="var(--color-accent)" stroke-width="1.8">
-            <path d="M275 350 q-5 -10 0 -20 q5 -10 0 -20" />
-            <path d="M285 350 q-5 -10 0 -20 q5 -10 0 -20" />
-            <path d="M295 350 q-5 -10 0 -20 q5 -10 0 -20" />
-          </g>
-
-          <!-- Labels -->
-          <text x="44" y="74" font-family="JetBrains Mono, monospace" font-size="9" fill="currentColor" opacity="0.6">+N</text>
-          <text x="324" y="116" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--color-accent)" opacity="0.9">L1</text>
-          <text x="324" y="284" font-family="JetBrains Mono, monospace" font-size="9" fill="currentColor" opacity="0.6">PE</text>
-
-          <!-- Footer-Label -->
-          <text x="40" y="455" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="var(--color-accent)" letter-spacing="2">SCHALT­PLAN · BEISPIEL</text>
-        </svg>
-      </div>
+      <figure class="hk-about__visual">
+        <img
+          src="/images/elektro/drei-generationen.avif"
+          alt="Drei Generationen Holtkamp — Werner, Daniel und Karla im Familienbetrieb"
+          class="hk-about__img"
+          width="720"
+          height="960"
+          loading="lazy"
+          decoding="async"
+        />
+        <span class="hk-about__visual-grid" aria-hidden="true"></span>
+        <span class="hk-about__visual-bracket hk-about__visual-bracket--tl" aria-hidden="true"></span>
+        <span class="hk-about__visual-bracket hk-about__visual-bracket--tr" aria-hidden="true"></span>
+        <span class="hk-about__visual-bracket hk-about__visual-bracket--bl" aria-hidden="true"></span>
+        <span class="hk-about__visual-bracket hk-about__visual-bracket--br" aria-hidden="true"></span>
+        <figcaption class="hk-about__visual-cap" aria-hidden="true">
+          <span class="hk-about__visual-cap-k">GEN</span>
+          <span class="hk-about__visual-cap-v">WERNER · DANIEL · KARLA</span>
+          <span class="hk-about__visual-cap-dot"></span>
+          <span class="hk-about__visual-cap-y">1989 → HEUTE</span>
+        </figcaption>
+      </figure>
 
       <div class="hk-about__copy">
         <p class="hk-eyebrow">Über Holtkamp · seit 1989</p>
@@ -1925,16 +1894,115 @@ const process = [
 
   .hk-about__visual {
     position: relative;
+    margin: 0;
     background: var(--color-bg);
     border: 1px solid var(--color-rule-strong);
-    aspect-ratio: 360 / 480;
+    /* Mobile: dichter am Original-16:9. Desktop: leicht hochformatiger,
+       passt zur Side-by-Side-Komposition. */
+    aspect-ratio: 4 / 3;
     overflow: hidden;
+    isolation: isolate;
+  }
+  @media (min-width: 900px) {
+    .hk-about__visual { aspect-ratio: 4 / 5; }
   }
 
-  .hk-about__circuit {
+  .hk-about__img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    display: block;
+    /* Tonale Behandlung: leicht entsättigt + warmtone shift damit das
+       Bild zum schwarz-gelb Theme passt. Bei Hover wird der Effekt
+       gelöst — wirkt wie "live" werdendes Portrait. */
+    filter: contrast(1.08) saturate(0.78) brightness(0.92);
+    transition: filter 0.7s var(--ease-out-expo), transform 0.9s var(--ease-out-expo);
+  }
+  .hk-about__visual:hover .hk-about__img {
+    filter: contrast(1.05) saturate(1) brightness(1);
+    transform: scale(1.03);
+  }
+
+  /* Subtile Grid-Overlay — verbindet das Bild mit den restlichen
+     Industrial-Visuals der Seite (Hero-Grid, EnergyFlow-Grid). */
+  .hk-about__visual-grid {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background-image:
+      linear-gradient(to right, var(--hk-grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--hk-grid-line) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mix-blend-mode: overlay;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  /* Warmtone-Vignette von unten (zieht Aufmerksamkeit auf die Caption) */
+  .hk-about__visual::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(180deg,
+        transparent 35%,
+        color-mix(in srgb, var(--color-bg) 60%, transparent) 75%,
+        var(--color-bg) 100%);
+    pointer-events: none;
+  }
+
+  /* Corner-Brackets in Gelb */
+  .hk-about__visual-bracket {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-color: var(--color-accent);
+    border-style: solid;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .hk-about__visual-bracket--tl { top: 10px;    left: 10px;   border-width: 1.5px 0 0 1.5px; }
+  .hk-about__visual-bracket--tr { top: 10px;    right: 10px;  border-width: 1.5px 1.5px 0 0; }
+  .hk-about__visual-bracket--bl { bottom: 10px; left: 10px;   border-width: 0 0 1.5px 1.5px; }
+  .hk-about__visual-bracket--br { bottom: 10px; right: 10px;  border-width: 0 1.5px 1.5px 0; }
+
+  /* Mono-Caption unten — gleicher Stil wie die Spec-Bars woanders */
+  .hk-about__visual-cap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.55rem 0.85rem;
+    padding: 0.75rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
     color: var(--color-text);
+    font-weight: 700;
+    border-top: 1px solid var(--color-rule);
+    background: color-mix(in srgb, var(--color-bg) 78%, transparent);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .hk-about__visual-cap-k { color: var(--color-accent); }
+  .hk-about__visual-cap-v { color: var(--color-text); flex: 1; }
+  .hk-about__visual-cap-y { color: var(--color-accent); }
+  .hk-about__visual-cap-dot {
+    width: 4px;
+    height: 4px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--color-accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hk-about__img { transition: none; }
+    .hk-about__visual:hover .hk-about__img { transform: none; }
   }
 
   .hk-about__h {
