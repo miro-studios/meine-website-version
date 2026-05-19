@@ -9,7 +9,19 @@ import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
   description="Erstgespräch kostenfrei. Schreiben Sie uns über das Formular, rufen Sie an oder kommen Sie in der Volmestraße in Lüdenscheid vorbei."
 >
   <!-- ── Page Hero ────────────────────────────────────────────────── -->
-  <section class="hk-pg-hero hk-section">
+  <section class="hk-pg-hero" data-hk-section data-hk-name="Übersicht">
+    <div class="hk-pg-hero__spec" aria-hidden="true">
+      <span class="hk-pg-hero__spec-k">PAGE</span>
+      <span class="hk-pg-hero__spec-v">05 / KONTAKT</span>
+      <span class="hk-pg-hero__spec-dot"></span>
+      <span class="hk-pg-hero__spec-k">REAKT</span>
+      <span class="hk-pg-hero__spec-v">≤ 24H · Ø 4H</span>
+      <span class="hk-pg-hero__spec-line"></span>
+      <span class="hk-pg-hero__spec-k">NOT</span>
+      <span class="hk-pg-hero__spec-pulse"></span>
+      <span class="hk-pg-hero__spec-v">24H AKTIV · MK</span>
+    </div>
+
     <div class="hk-container">
       <div class="hk-bar">
         <span class="hk-bar-n">N° 05</span>
@@ -26,11 +38,31 @@ import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
         Erstgespräch ist kostenfrei. Wir antworten innerhalb von 24 Stunden —
         meistens schneller. Für Notfälle bitte direkt anrufen.
       </p>
+
+      <!-- Form-Schritte-Indicator -->
+      <ol class="hk-pg-hero__steps">
+        <li class="is-active">
+          <span class="hk-pg-hero__step-n">01</span>
+          <span class="hk-pg-hero__step-l">KONTAKT</span>
+        </li>
+        <li>
+          <span class="hk-pg-hero__step-n">02</span>
+          <span class="hk-pg-hero__step-l">PROJEKT</span>
+        </li>
+        <li>
+          <span class="hk-pg-hero__step-n">03</span>
+          <span class="hk-pg-hero__step-l">ABSCHICKEN</span>
+        </li>
+        <li>
+          <span class="hk-pg-hero__step-n">04</span>
+          <span class="hk-pg-hero__step-l">ANTWORT &lt; 24H</span>
+        </li>
+      </ol>
     </div>
   </section>
 
   <!-- ── Kontakt-Block (Form + Info) ────────────────────────────── -->
-  <section class="hk-contact">
+  <section class="hk-contact" data-hk-section data-hk-name="Formular">
     <div class="hk-container hk-contact__inner">
       <div class="hk-contact__form-wrap">
         <div class="hk-bar">
@@ -221,7 +253,7 @@ import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
   </section>
 
   <!-- ── Maps (privacy: click-to-load) ─────────────────────────── -->
-  <section class="hk-map hk-section">
+  <section class="hk-map hk-section" data-hk-section data-hk-name="Standort">
     <div class="hk-container">
       <div class="hk-bar">
         <span class="hk-bar-n">N° 03</span>
@@ -270,7 +302,41 @@ import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
 
 <style>
   /* ── Page Hero ────────────────────────────────────────────────── */
-  .hk-pg-hero { padding-block: clamp(3rem, 6vw, 5rem) clamp(3rem, 6vw, 5rem); }
+  .hk-pg-hero {
+    border-top: 1px solid var(--color-rule);
+    padding-block: clamp(2rem, 4vw, 3.5rem) clamp(3rem, 6vw, 5rem);
+    background:
+      radial-gradient(ellipse 60% 50% at 100% 0%,
+        color-mix(in srgb, var(--color-accent) 5%, transparent),
+        transparent 70%),
+      var(--color-bg);
+  }
+  .hk-pg-hero__spec {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem 1rem;
+    padding: 0.7rem var(--hk-gutter);
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+    border-bottom: 1px solid var(--color-rule);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .hk-pg-hero__spec-k { color: var(--color-muted); font-weight: 700; }
+  .hk-pg-hero__spec-v { color: var(--color-text); font-weight: 600; }
+  .hk-pg-hero__spec-dot { width: 4px; height: 4px; background: var(--color-accent); border-radius: 50%; }
+  .hk-pg-hero__spec-line { flex: 1; height: 1px; background: var(--color-rule-strong); min-width: 1rem; }
+  .hk-pg-hero__spec-pulse {
+    width: 7px;
+    height: 7px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 22%, transparent),
+                0 0 8px var(--color-accent);
+    animation: hk-pulse 1.8s ease-in-out infinite;
+  }
 
   .hk-pg-hero__h {
     font-family: var(--font-display);
@@ -290,7 +356,69 @@ import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
     line-height: 1.65;
     max-width: 55ch;
     color: color-mix(in srgb, var(--color-text) 80%, transparent);
+    margin: 0 0 2rem;
+  }
+
+  /* Form-Steps */
+  .hk-pg-hero__steps {
+    list-style: none;
     margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    border: 1px solid var(--color-rule-strong);
+    counter-reset: step;
+  }
+  @media (min-width: 720px) {
+    .hk-pg-hero__steps { grid-template-columns: repeat(4, 1fr); }
+  }
+  .hk-pg-hero__steps li {
+    padding: 1rem 1.25rem;
+    border-right: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    position: relative;
+    background: var(--color-bg);
+    transition: background 0.4s var(--ease-out-expo);
+  }
+  .hk-pg-hero__steps li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 2px;
+    width: 100%;
+    background: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.7s var(--ease-out-expo);
+  }
+  .hk-pg-hero__steps li.is-active::before { transform: scaleX(1); }
+  .hk-pg-hero__steps li.is-active {
+    background: color-mix(in srgb, var(--color-accent) 6%, transparent);
+  }
+  .hk-pg-hero__steps li:nth-child(4n) { border-right: none; }
+  @media (max-width: 719px) {
+    .hk-pg-hero__steps li { border-right: none; }
+    .hk-pg-hero__steps li:last-child { border-bottom: none; }
+  }
+  @media (min-width: 720px) {
+    .hk-pg-hero__steps li:nth-last-child(-n+4) { border-bottom: none; }
+  }
+  .hk-pg-hero__step-n {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--color-accent);
+  }
+  .hk-pg-hero__step-l {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    color: var(--color-text);
   }
 
   /* ── Kontakt-Block ────────────────────────────────────────────── */
@@ -795,6 +923,33 @@ import RevealOnScroll from '@components/shared/RevealOnScroll.astro';
       mapBtn.addEventListener('click', () => {
         mapFrame.classList.add('is-loaded');
       });
+    }
+
+    // Form-Step-Indicator: aktiviert Steps basierend auf Befüllungsgrad
+    const form = document.querySelector<HTMLFormElement>('[data-hk-form]');
+    const steps = Array.from(
+      document.querySelectorAll<HTMLLIElement>('.hk-pg-hero__steps li'),
+    );
+    if (form && steps.length >= 4) {
+      const update = () => {
+        const fd = new FormData(form);
+        const hasContact = !!(fd.get('name') && fd.get('email'));
+        const hasProject = !!(fd.get('leistung') && fd.get('message'));
+        const dsgvo = fd.get('dsgvo');
+        let active = 0;
+        if (hasContact) active = 1;
+        if (hasContact && hasProject) active = 2;
+        if (hasContact && hasProject && dsgvo) active = 3;
+        steps.forEach((step, i) => {
+          step.classList.toggle('is-active', i <= active);
+        });
+      };
+      form.addEventListener('input', update);
+      form.addEventListener('change', update);
+      form.addEventListener('submit', () => {
+        steps.forEach((s) => s.classList.add('is-active'));
+      });
+      update();
     }
   }
   init();

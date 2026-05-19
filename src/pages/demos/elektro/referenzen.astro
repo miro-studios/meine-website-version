@@ -123,7 +123,20 @@ const others = cases.filter(c => !c.featured);
   description="Sechs ausgewählte Projekte aus 37 Jahren Holtkamp: Photovoltaik, Wärmepumpe, Industrie-Installation, KNX-Smart-Home, Altbau-Sanierung und 24h-Notdienst — mit echten Zahlen."
 >
   <!-- ── Page Hero ────────────────────────────────────────────────── -->
-  <section class="hk-pg-hero hk-section">
+  <section class="hk-pg-hero" data-hk-section data-hk-name="Übersicht">
+    <div class="hk-pg-hero__spec" aria-hidden="true">
+      <span class="hk-pg-hero__spec-k">PAGE</span>
+      <span class="hk-pg-hero__spec-v">03 / REFERENZEN</span>
+      <span class="hk-pg-hero__spec-dot"></span>
+      <span class="hk-pg-hero__spec-k">SEL</span>
+      <span class="hk-pg-hero__spec-v">06 / 2.400+</span>
+      <span class="hk-pg-hero__spec-line"></span>
+      <span class="hk-pg-hero__spec-k">CAT</span>
+      <span class="hk-pg-hero__spec-v">PV+WP · IND · KNX · SAN · NOT</span>
+      <span class="hk-pg-hero__spec-pulse"></span>
+      <span class="hk-pg-hero__spec-v">DRAG · KLICK · VERGLEICH</span>
+    </div>
+
     <div class="hk-container">
       <div class="hk-bar">
         <span class="hk-bar-n">N° 03</span>
@@ -151,7 +164,7 @@ const others = cases.filter(c => !c.featured);
   </section>
 
   <!-- ── Featured Case ────────────────────────────────────────────── -->
-  <section class="hk-feat hk-section">
+  <section class="hk-feat hk-section" data-hk-section data-hk-name="Featured">
     <div class="hk-container">
       <div class="hk-bar">
         <span class="hk-bar-n">FEATURED</span>
@@ -307,7 +320,7 @@ const others = cases.filter(c => !c.featured);
   </section>
 
   <!-- ── Weitere Cases ────────────────────────────────────────────── -->
-  <section class="hk-other hk-section">
+  <section class="hk-other hk-section" data-hk-section data-hk-name="Weitere">
     <div class="hk-container">
       <div class="hk-bar">
         <span class="hk-bar-n">N° 04</span>
@@ -323,6 +336,183 @@ const others = cases.filter(c => !c.featured);
       <ul class="hk-other__grid">
         {others.map(c => (
           <li class="hk-other__cell">
+            <!-- Mini-Visual oben -->
+            <div class="hk-other__visual" aria-hidden="true">
+              {c.cat === 'INDUSTRIE' && (
+                <svg viewBox="0 0 320 130" preserveAspectRatio="xMidYMid meet">
+                  <defs>
+                    <pattern id={`oi-grid-${c.id}`} width="16" height="16" patternUnits="userSpaceOnUse">
+                      <path d="M16 0H0V16" fill="none" stroke="currentColor" stroke-width="0.4" opacity="0.18"/>
+                    </pattern>
+                  </defs>
+                  <rect width="320" height="130" fill={`url(#oi-grid-${c.id})`}/>
+                  <!-- Halle -->
+                  <path d="M 20 110 L 20 50 L 90 30 L 90 110 Z M 90 30 L 160 50 L 160 110 L 90 110 M 160 50 L 230 30 L 230 110 L 160 110 M 230 30 L 300 50 L 300 110 L 230 110" fill="color-mix(in srgb, var(--color-text) 5%, transparent)" stroke="currentColor" stroke-width="1.2"/>
+                  <line x1="20" y1="110" x2="300" y2="110" stroke="currentColor" stroke-width="1.4"/>
+                  <!-- Maschinen -->
+                  <g stroke="currentColor" stroke-width="1" fill="var(--color-bg)">
+                    <rect x="35" y="78" width="22" height="32"/>
+                    <rect x="105" y="78" width="22" height="32"/>
+                    <rect x="175" y="78" width="22" height="32"/>
+                  </g>
+                  <!-- CNC-Indikatoren -->
+                  <circle cx="46" cy="86" r="2" fill="var(--color-accent)"/>
+                  <circle cx="116" cy="86" r="2" fill="var(--color-accent)"/>
+                  <circle cx="186" cy="86" r="2" fill="var(--color-accent)">
+                    <animate attributeName="opacity" values="1;0.3;1" dur="1.8s" repeatCount="indefinite"/>
+                  </circle>
+                  <!-- Hochspannungs-Trasse -->
+                  <line x1="20" y1="20" x2="300" y2="20" stroke="var(--color-accent)" stroke-width="1" stroke-dasharray="3 6">
+                    <animate attributeName="stroke-dashoffset" values="0;-18" dur="1.4s" repeatCount="indefinite"/>
+                  </line>
+                  <text x="260" y="44" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--color-accent)" letter-spacing="1" font-weight="700">800 A</text>
+                </svg>
+              )}
+              {c.cat === 'SMART HOME' && (
+                <svg viewBox="0 0 320 130" preserveAspectRatio="xMidYMid meet">
+                  <defs>
+                    <pattern id={`os-grid-${c.id}`} width="16" height="16" patternUnits="userSpaceOnUse">
+                      <path d="M16 0H0V16" fill="none" stroke="currentColor" stroke-width="0.4" opacity="0.18"/>
+                    </pattern>
+                  </defs>
+                  <rect width="320" height="130" fill={`url(#os-grid-${c.id})`}/>
+                  <!-- Hub Mitte -->
+                  <rect x="140" y="50" width="40" height="30" fill="var(--color-bg)" stroke="currentColor" stroke-width="1.4"/>
+                  <circle cx="160" cy="65" r="3" fill="var(--color-accent)">
+                    <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite"/>
+                  </circle>
+                  <text x="160" y="95" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--color-accent)" font-weight="700">KNX</text>
+                  <!-- 8 Endknoten verteilt -->
+                  <g stroke="var(--color-accent)" stroke-width="0.8" fill="none" stroke-dasharray="3 5">
+                    <line x1="140" y1="55" x2="40" y2="30"><animate attributeName="stroke-dashoffset" values="0;-16" dur="1.4s" repeatCount="indefinite"/></line>
+                    <line x1="140" y1="65" x2="40" y2="65"><animate attributeName="stroke-dashoffset" values="0;-16" dur="1.6s" repeatCount="indefinite"/></line>
+                    <line x1="140" y1="75" x2="40" y2="100"><animate attributeName="stroke-dashoffset" values="0;-16" dur="2s" repeatCount="indefinite"/></line>
+                    <line x1="180" y1="55" x2="280" y2="30"><animate attributeName="stroke-dashoffset" values="0;-16" dur="1.8s" repeatCount="indefinite"/></line>
+                    <line x1="180" y1="65" x2="280" y2="65"><animate attributeName="stroke-dashoffset" values="0;-16" dur="1.4s" repeatCount="indefinite"/></line>
+                    <line x1="180" y1="75" x2="280" y2="100"><animate attributeName="stroke-dashoffset" values="0;-16" dur="2.2s" repeatCount="indefinite"/></line>
+                  </g>
+                  <g fill="var(--color-bg)" stroke="currentColor" stroke-width="1">
+                    <circle cx="40" cy="30" r="6"/>
+                    <circle cx="40" cy="65" r="6"/>
+                    <circle cx="40" cy="100" r="6"/>
+                    <circle cx="280" cy="30" r="6"/>
+                    <circle cx="280" cy="65" r="6"/>
+                    <circle cx="280" cy="100" r="6"/>
+                  </g>
+                  <text x="20" y="124" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--color-accent)" letter-spacing="1" font-weight="700">320 AKTOREN · NO CLOUD</text>
+                </svg>
+              )}
+              {c.cat === 'SANIERUNG' && (
+                <svg viewBox="0 0 320 130" preserveAspectRatio="xMidYMid meet">
+                  <defs>
+                    <pattern id={`oa-grid-${c.id}`} width="16" height="16" patternUnits="userSpaceOnUse">
+                      <path d="M16 0H0V16" fill="none" stroke="currentColor" stroke-width="0.4" opacity="0.18"/>
+                    </pattern>
+                  </defs>
+                  <rect width="320" height="130" fill={`url(#oa-grid-${c.id})`}/>
+                  <!-- Altbau mit Stockwerken -->
+                  <rect x="80" y="20" width="160" height="100" fill="color-mix(in srgb, var(--color-text) 5%, transparent)" stroke="currentColor" stroke-width="1.4"/>
+                  <line x1="80" y1="50" x2="240" y2="50" stroke="currentColor" stroke-width="0.6"/>
+                  <line x1="80" y1="80" x2="240" y2="80" stroke="currentColor" stroke-width="0.6"/>
+                  <!-- Fenster pro Etage -->
+                  <g fill="color-mix(in srgb, var(--color-accent) 18%, transparent)" stroke="currentColor" stroke-width="0.6">
+                    <rect x="95" y="28" width="18" height="16"/>
+                    <rect x="125" y="28" width="18" height="16"/>
+                    <rect x="155" y="28" width="18" height="16"/>
+                    <rect x="185" y="28" width="18" height="16"/>
+                    <rect x="215" y="28" width="18" height="16"/>
+                    <rect x="95" y="58" width="18" height="16"/>
+                    <rect x="125" y="58" width="18" height="16"/>
+                    <rect x="155" y="58" width="18" height="16"/>
+                    <rect x="185" y="58" width="18" height="16"/>
+                    <rect x="215" y="58" width="18" height="16"/>
+                    <rect x="95" y="88" width="18" height="20" fill="color-mix(in srgb, var(--color-text) 8%, transparent)"/>
+                    <rect x="125" y="88" width="18" height="20"/>
+                    <rect x="155" y="92" width="22" height="28" fill="none"/>
+                    <rect x="195" y="88" width="18" height="20"/>
+                    <rect x="215" y="88" width="18" height="20"/>
+                  </g>
+                  <!-- BJ-Tag -->
+                  <text x="20" y="34" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--color-accent)" letter-spacing="1" font-weight="700">BJ 1908</text>
+                  <text x="20" y="124" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--color-accent)" letter-spacing="1" font-weight="700">148 STECKDOSEN · 6 W</text>
+                  <!-- Pulse-Dot -->
+                  <circle cx="280" cy="34" r="3" fill="var(--color-accent)">
+                    <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
+                  </circle>
+                  <text x="266" y="50" font-family="JetBrains Mono, monospace" font-size="6" fill="var(--color-accent)" letter-spacing="0.5" font-weight="700">LIVE</text>
+                </svg>
+              )}
+              {c.cat === 'PV + WP' && (
+                <svg viewBox="0 0 320 130" preserveAspectRatio="xMidYMid meet">
+                  <defs>
+                    <pattern id={`op-grid-${c.id}`} width="16" height="16" patternUnits="userSpaceOnUse">
+                      <path d="M16 0H0V16" fill="none" stroke="currentColor" stroke-width="0.4" opacity="0.18"/>
+                    </pattern>
+                  </defs>
+                  <rect width="320" height="130" fill={`url(#op-grid-${c.id})`}/>
+                  <line x1="20" y1="110" x2="300" y2="110" stroke="currentColor" stroke-width="1.2"/>
+                  <!-- Sonne -->
+                  <g stroke="var(--color-accent)" fill="none" stroke-width="1.2">
+                    <circle cx="50" cy="30" r="11"/>
+                    <line x1="50" y1="14" x2="50" y2="18"/>
+                    <line x1="50" y1="42" x2="50" y2="46"/>
+                    <line x1="34" y1="30" x2="38" y2="30"/>
+                    <line x1="62" y1="30" x2="66" y2="30"/>
+                  </g>
+                  <!-- Großer Hof mit Scheune + PV -->
+                  <polygon points="100,110 100,55 180,30 260,55 260,110" fill="color-mix(in srgb, var(--color-text) 5%, transparent)" stroke="currentColor" stroke-width="1.4"/>
+                  <!-- PV auf Scheune (große Anlage) -->
+                  <g fill="var(--color-accent)" opacity="0.85">
+                    <polygon points="110,98 140,80 152,86 122,104"/>
+                    <polygon points="138,86 168,68 180,74 150,92"/>
+                    <polygon points="166,74 196,56 208,62 178,80"/>
+                    <polygon points="194,62 220,46 232,52 206,68"/>
+                    <polygon points="186,84 216,66 228,72 198,90"/>
+                    <polygon points="214,72 240,56 252,62 226,78"/>
+                  </g>
+                  <!-- Wärmepumpe -->
+                  <rect x="270" y="78" width="30" height="32" fill="var(--color-bg)" stroke="currentColor" stroke-width="1.2"/>
+                  <circle cx="285" cy="94" r="7" fill="none" stroke="currentColor" stroke-width="0.8"/>
+                  <text x="20" y="124" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--color-accent)" letter-spacing="1" font-weight="700">24 kWp · 30 kWh · 92 % AUTARK</text>
+                </svg>
+              )}
+              {c.cat === 'NOTDIENST' && (
+                <svg viewBox="0 0 320 130" preserveAspectRatio="xMidYMid meet">
+                  <defs>
+                    <pattern id={`on-grid-${c.id}`} width="16" height="16" patternUnits="userSpaceOnUse">
+                      <path d="M16 0H0V16" fill="none" stroke="currentColor" stroke-width="0.4" opacity="0.18"/>
+                    </pattern>
+                  </defs>
+                  <rect width="320" height="130" fill={`url(#on-grid-${c.id})`}/>
+                  <!-- Pulse-Phone Mitte -->
+                  <g transform="translate(160 65)">
+                    <circle r="30" fill="none" stroke="var(--color-accent)" stroke-width="1" opacity="0">
+                      <animate attributeName="r" values="22;42" dur="2s" repeatCount="indefinite"/>
+                      <animate attributeName="opacity" values="0.6;0" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle r="22" fill="var(--color-accent)" opacity="0.95"/>
+                    <g transform="rotate(-30)">
+                      <rect x="-7" y="-13" width="14" height="26" rx="2" fill="var(--color-bg)"/>
+                      <rect x="-4" y="-10" width="8" height="20" rx="1" fill="var(--color-accent)"/>
+                    </g>
+                  </g>
+                  <!-- Zeit-Skala -->
+                  <line x1="20" y1="110" x2="300" y2="110" stroke="currentColor" stroke-width="0.6" opacity="0.5"/>
+                  <line x1="60" y1="105" x2="60" y2="115" stroke="currentColor" stroke-width="0.6" opacity="0.5"/>
+                  <line x1="160" y1="105" x2="160" y2="115" stroke="var(--color-accent)" stroke-width="1.2"/>
+                  <line x1="260" y1="105" x2="260" y2="115" stroke="currentColor" stroke-width="0.6" opacity="0.5"/>
+                  <text x="60" y="124" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7" fill="currentColor" opacity="0.6">0 MIN</text>
+                  <text x="160" y="124" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="var(--color-accent)" font-weight="700">65 MIN</text>
+                  <text x="260" y="124" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7" fill="currentColor" opacity="0.6">120 MIN</text>
+                  <!-- 24H Badge -->
+                  <g transform="translate(280 20)">
+                    <rect x="-16" y="-9" width="32" height="18" fill="var(--color-accent)"/>
+                    <text x="0" y="4" text-anchor="middle" font-family="Anton, sans-serif" font-size="11" fill="var(--color-bg)" font-weight="700">24H</text>
+                  </g>
+                </svg>
+              )}
+            </div>
+
             <header class="hk-other__head">
               <span class="hk-other__cat">{c.cat}</span>
               <span class="hk-other__year">{c.year} · REF·{c.id}</span>
@@ -347,7 +537,7 @@ const others = cases.filter(c => !c.featured);
   </section>
 
   <!-- ── CTA ──────────────────────────────────────────────────────── -->
-  <section class="hk-pg-cta hk-section">
+  <section class="hk-pg-cta hk-section" data-hk-section data-hk-name="Anfrage">
     <div class="hk-container">
       <RevealOnScroll>
         <h2 class="hk-pg-cta__h">
@@ -366,7 +556,41 @@ const others = cases.filter(c => !c.featured);
 
 <style>
   /* ── Page Hero ────────────────────────────────────────────────── */
-  .hk-pg-hero { padding-block: clamp(3rem, 6vw, 5rem) clamp(3rem, 6vw, 5rem); }
+  .hk-pg-hero {
+    border-top: 1px solid var(--color-rule);
+    padding-block: clamp(2rem, 4vw, 3.5rem) clamp(3rem, 6vw, 5rem);
+    background:
+      radial-gradient(ellipse 50% 50% at 0% 0%,
+        color-mix(in srgb, var(--color-accent) 5%, transparent),
+        transparent 70%),
+      var(--color-bg);
+  }
+  .hk-pg-hero__spec {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem 1rem;
+    padding: 0.7rem var(--hk-gutter);
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+    border-bottom: 1px solid var(--color-rule);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .hk-pg-hero__spec-k { color: var(--color-muted); font-weight: 700; }
+  .hk-pg-hero__spec-v { color: var(--color-text); font-weight: 600; }
+  .hk-pg-hero__spec-dot { width: 4px; height: 4px; background: var(--color-accent); border-radius: 50%; }
+  .hk-pg-hero__spec-line { flex: 1; height: 1px; background: var(--color-rule-strong); min-width: 1rem; }
+  .hk-pg-hero__spec-pulse {
+    width: 7px;
+    height: 7px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 22%, transparent),
+                0 0 8px var(--color-accent);
+    animation: hk-pulse 1.8s ease-in-out infinite;
+  }
 
   .hk-pg-hero__h {
     font-family: var(--font-display);
@@ -570,14 +794,44 @@ const others = cases.filter(c => !c.featured);
 
   .hk-other__cell {
     background: var(--color-surface);
-    padding: 1.75rem;
+    padding: 0;
     border: 1px solid var(--color-rule);
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0;
     transition: border-color 0.4s ease, transform 0.5s var(--ease-out-expo);
+    overflow: hidden;
   }
   .hk-other__cell:hover { border-color: var(--color-accent); transform: translateY(-4px); }
+  .hk-other__cell > header,
+  .hk-other__cell > h3,
+  .hk-other__cell > p,
+  .hk-other__cell > dl { padding-inline: 1.75rem; }
+  .hk-other__cell > header { padding-top: 1.5rem; padding-bottom: 0; margin-bottom: 0.6rem; }
+  .hk-other__cell > h3 { margin-top: 0; margin-bottom: 0.3rem; }
+  .hk-other__cell > .hk-other__loc { margin-top: 0; margin-bottom: 0.7rem; }
+  .hk-other__cell > .hk-other__text { margin-bottom: 1.2rem; }
+  .hk-other__cell > dl { padding-bottom: 1.5rem; }
+
+  /* Mini-Visual */
+  .hk-other__visual {
+    background:
+      radial-gradient(ellipse 60% 60% at 50% 100%,
+        color-mix(in srgb, var(--color-accent) 8%, transparent),
+        transparent 70%),
+      var(--color-bg);
+    border-bottom: 1px solid var(--color-rule);
+    padding: 0;
+    color: var(--color-text);
+    aspect-ratio: 320 / 130;
+    display: block;
+    overflow: hidden;
+  }
+  .hk-other__visual svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
 
   .hk-other__head {
     display: flex;

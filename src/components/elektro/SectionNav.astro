@@ -1,0 +1,234 @@
+---
+/**
+ * SectionNav — Awwwards-style Section-Indicator rechts.
+ *
+ * Sticky vertical Bar mit:
+ *  - Vertikalem Trace (current/total)
+ *  - Vier bis zehn Dots, einer aktiv (basiert auf data-hk-section am Section-Element)
+ *  - Mini-Label mit aktuellem Section-Namen
+ *
+ * Jede Section, die getrackt werden soll, bekommt:
+ *    <section data-hk-section data-hk-name="Hero">...</section>
+ *
+ * Auf Mobile ausgeblendet. Reduced-motion: nur snap-Update, keine Animation.
+ */
+---
+
+<aside class="hk-snav" data-hk-snav aria-hidden="true">
+  <div class="hk-snav__inner">
+    <span class="hk-snav__rail" aria-hidden="true">
+      <span class="hk-snav__rail-fill" data-hk-snav-fill></span>
+    </span>
+    <ol class="hk-snav__list" data-hk-snav-list>
+      <!-- Dots werden im Skript befüllt -->
+    </ol>
+    <span class="hk-snav__label" data-hk-snav-label>—</span>
+  </div>
+</aside>
+
+<style>
+  .hk-snav {
+    position: fixed;
+    right: clamp(0.75rem, 2vw, 1.5rem);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 40;
+    display: none;
+    pointer-events: none;
+  }
+
+  @media (min-width: 1100px) and (hover: hover) {
+    .hk-snav { display: block; }
+  }
+
+  .hk-snav__inner {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 0.85rem;
+    pointer-events: auto;
+  }
+
+  /* Rail */
+  .hk-snav__rail {
+    grid-column: 1;
+    position: relative;
+    width: 1px;
+    background: color-mix(in srgb, var(--color-text) 18%, transparent);
+    height: 100%;
+    min-height: 200px;
+    justify-self: center;
+    align-self: stretch;
+  }
+  .hk-snav__rail-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 0%;
+    background: var(--color-accent);
+    box-shadow: 0 0 6px color-mix(in srgb, var(--color-accent) 60%, transparent);
+    transition: height 0.6s var(--ease-out-expo);
+  }
+
+  /* Dots */
+  .hk-snav__list {
+    grid-column: 1;
+    grid-row: 1;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.05rem;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hk-snav__dot {
+    --d: 8px;
+    position: relative;
+    width: var(--d);
+    height: var(--d);
+    background: var(--color-bg);
+    border: 1px solid color-mix(in srgb, var(--color-text) 40%, transparent);
+    cursor: pointer;
+    padding: 0;
+    transition:
+      background 0.4s var(--ease-out-expo),
+      border-color 0.4s var(--ease-out-expo),
+      transform 0.4s var(--ease-out-expo);
+  }
+  .hk-snav__dot::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    /* hit area */
+  }
+  .hk-snav__dot:hover {
+    border-color: var(--color-accent);
+    transform: scale(1.25);
+  }
+  .hk-snav__dot.is-active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--color-accent) 18%, transparent),
+      0 0 10px color-mix(in srgb, var(--color-accent) 60%, transparent);
+  }
+
+  /* Floating Label rechts vom Dot (auf aktive Section) */
+  .hk-snav__label {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text);
+    background: color-mix(in srgb, var(--color-bg) 84%, transparent);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--color-rule-strong);
+    padding: 0.4rem 0.7rem;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(8px);
+    transition: opacity 0.4s var(--ease-out-expo), transform 0.4s var(--ease-out-expo);
+    pointer-events: none;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .hk-snav.is-visible .hk-snav__label {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .hk-snav__label::before {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--color-accent);
+    margin-left: -0.4rem;
+    margin-top: 0.45em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hk-snav__dot,
+    .hk-snav__rail-fill,
+    .hk-snav__label { transition: none !important; }
+  }
+</style>
+
+<script>
+  function initSnav() {
+    const snav = document.querySelector<HTMLElement>('[data-hk-snav]');
+    if (!snav) return;
+    const list = snav.querySelector<HTMLElement>('[data-hk-snav-list]');
+    const fillEl = snav.querySelector<HTMLElement>('[data-hk-snav-fill]');
+    const labelEl = snav.querySelector<HTMLElement>('[data-hk-snav-label]');
+    if (!list || !fillEl || !labelEl) return;
+    const snavEl = snav;
+
+    // Sections sammeln (markiert via [data-hk-section])
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-hk-section]'));
+    if (sections.length < 2) {
+      snavEl.style.display = 'none';
+      return;
+    }
+
+    // Dots rendern
+    list.innerHTML = '';
+    sections.forEach((sec, i) => {
+      const li = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'hk-snav__dot';
+      btn.dataset.idx = String(i);
+      btn.setAttribute('aria-label', sec.dataset.hkName || `Section ${i + 1}`);
+      btn.addEventListener('click', () => {
+        sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      li.appendChild(btn);
+      list.appendChild(li);
+    });
+
+    const dots = Array.from(list.querySelectorAll<HTMLButtonElement>('.hk-snav__dot'));
+    let activeIdx = -1;
+
+    const setActive = (idx: number) => {
+      if (idx === activeIdx) return;
+      activeIdx = idx;
+      dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+      const name = sections[idx]?.dataset.hkName || '';
+      labelEl.textContent = name || '—';
+      snavEl.classList.toggle('is-visible', !!name);
+      // Rail fill in % der gesamten Section-Liste
+      const pct = ((idx + 1) / sections.length) * 100;
+      fillEl.style.height = `${Math.min(100, pct)}%`;
+    };
+
+    // IntersectionObserver: aktive Section bestimmen
+    const io = new IntersectionObserver(
+      (entries) => {
+        // wähle die Section, die am meisten im Viewport ist
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+        const idx = sections.indexOf(visible.target as HTMLElement);
+        if (idx >= 0) setActive(idx);
+      },
+      { threshold: [0.2, 0.4, 0.6], rootMargin: '-30% 0px -30% 0px' },
+    );
+    sections.forEach((sec) => io.observe(sec));
+
+    // Initialen Zustand setzen
+    setActive(0);
+  }
+
+  initSnav();
+  document.addEventListener('astro:page-load', initSnav);
+</script>

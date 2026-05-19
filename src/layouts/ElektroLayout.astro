@@ -6,6 +6,8 @@ import Header from '@components/elektro/Header.astro';
 import Footer from '@components/elektro/Footer.astro';
 import Preloader from '@components/elektro/Preloader.astro';
 import CookieBanner from '@components/elektro/CookieBanner.astro';
+import SectionNav from '@components/elektro/SectionNav.astro';
+import StatusDeck from '@components/elektro/StatusDeck.astro';
 
 interface Props {
   title: string;
@@ -39,6 +41,13 @@ const { title, description, canonical } = Astro.props;
   <div class="hk-ambient" aria-hidden="true"></div>
 
   <Header />
+
+  <!-- Section-Nav (sticky rechts, Awwwards-Style) — site-weit -->
+  <SectionNav />
+
+  <!-- Status-Deck (sticky links unten) — Live-Telemetrie-Ribbon -->
+  <StatusDeck />
+
   <main>
     <slot />
   </main>

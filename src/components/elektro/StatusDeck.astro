@@ -1,0 +1,266 @@
+---
+/**
+ * StatusDeck — Sticky Live-Telemetrie-Ribbon links unten.
+ *
+ * Premium-Signal: gibt der Seite Industrial-Atmosphäre wie bei einer
+ * Schaltzentrale. Zeigt Uhrzeit (live), Spannung (animiert pseudo-real),
+ * Frequenz und Verbindungs-Status. Versteckt sich auf Mobile und auf
+ * dem Final-CTA-Block (siehe data-attribute "no-deck").
+ */
+---
+
+<aside class="hk-deck" data-hk-deck aria-hidden="true">
+  <div class="hk-deck__inner">
+    <span class="hk-deck__corner hk-deck__corner--tl" aria-hidden="true"></span>
+    <span class="hk-deck__corner hk-deck__corner--tr" aria-hidden="true"></span>
+    <span class="hk-deck__corner hk-deck__corner--bl" aria-hidden="true"></span>
+    <span class="hk-deck__corner hk-deck__corner--br" aria-hidden="true"></span>
+
+    <div class="hk-deck__head">
+      <span class="hk-deck__dot" aria-hidden="true"></span>
+      <span>HK · TELEMETRIE</span>
+      <span class="hk-deck__id" data-hk-deck-time>—</span>
+    </div>
+
+    <dl class="hk-deck__rows">
+      <div class="hk-deck__row">
+        <dt>VOLT</dt>
+        <dd><span data-hk-deck-volt>230</span><span class="hk-deck__u">V</span></dd>
+        <span class="hk-deck__bar" style="--w: 88%" aria-hidden="true"></span>
+      </div>
+      <div class="hk-deck__row">
+        <dt>HZ</dt>
+        <dd><span data-hk-deck-hz>50.0</span><span class="hk-deck__u">Hz</span></dd>
+        <span class="hk-deck__bar" style="--w: 100%" aria-hidden="true"></span>
+      </div>
+      <div class="hk-deck__row">
+        <dt>NET</dt>
+        <dd class="hk-deck__net">
+          <span class="hk-deck__net-dot" aria-hidden="true"></span>
+          STABIL
+        </dd>
+      </div>
+    </dl>
+  </div>
+</aside>
+
+<style>
+  .hk-deck {
+    position: fixed;
+    left: clamp(0.75rem, 2vw, 1.5rem);
+    bottom: clamp(0.85rem, 2vw, 1.5rem);
+    z-index: 35;
+    display: none;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+  }
+  .hk-deck.is-ready {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (min-width: 1100px) and (hover: hover) {
+    .hk-deck { display: block; }
+  }
+
+  .hk-deck__inner {
+    position: relative;
+    padding: 0.6rem 0.85rem 0.7rem;
+    background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+    border: 1px solid var(--color-rule-strong);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    min-width: 220px;
+    pointer-events: auto;
+  }
+
+  .hk-deck__corner {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-color: var(--color-accent);
+    border-style: solid;
+    pointer-events: none;
+  }
+  .hk-deck__corner--tl { top: -2px; left: -2px; border-width: 1px 0 0 1px; }
+  .hk-deck__corner--tr { top: -2px; right: -2px; border-width: 1px 1px 0 0; }
+  .hk-deck__corner--bl { bottom: -2px; left: -2px; border-width: 0 0 1px 1px; }
+  .hk-deck__corner--br { bottom: -2px; right: -2px; border-width: 0 1px 1px 0; }
+
+  .hk-deck__head {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    color: var(--color-text);
+    font-weight: 700;
+    margin-bottom: 0.55rem;
+    padding-bottom: 0.45rem;
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .hk-deck__head > span:nth-child(2) { flex: 1; }
+
+  .hk-deck__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 25%, transparent),
+                0 0 6px var(--color-accent);
+    animation: hk-pulse 2.4s ease-in-out infinite;
+  }
+
+  .hk-deck__id {
+    color: var(--color-accent);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    font-size: 0.62rem;
+    min-width: 4.5em;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hk-deck__rows {
+    margin: 0;
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .hk-deck__row {
+    display: grid;
+    grid-template-columns: 2.4em 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 0.7rem;
+    align-items: baseline;
+    position: relative;
+    padding-bottom: 0.2rem;
+  }
+
+  .hk-deck__row dt {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    letter-spacing: 0.18em;
+    color: var(--color-muted);
+    font-weight: 700;
+    align-self: center;
+  }
+
+  .hk-deck__row dd {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    line-height: 1;
+    font-weight: 400;
+    color: var(--color-text);
+    letter-spacing: 0.005em;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.15em;
+    font-variant-numeric: tabular-nums;
+  }
+  .hk-deck__u {
+    font-size: 0.5em;
+    color: var(--color-muted);
+    letter-spacing: 0.16em;
+  }
+
+  .hk-deck__bar {
+    grid-column: 2;
+    grid-row: 2;
+    height: 2px;
+    background: color-mix(in srgb, var(--color-text) 8%, transparent);
+    overflow: hidden;
+    margin-top: 0.15rem;
+    position: relative;
+  }
+  .hk-deck__bar::after {
+    content: '';
+    display: block;
+    width: var(--w);
+    height: 100%;
+    background: var(--color-accent);
+    box-shadow: 0 0 4px color-mix(in srgb, var(--color-accent) 50%, transparent);
+    transform-origin: left;
+    animation: hk-deck-bar 4s ease-in-out infinite;
+  }
+  @keyframes hk-deck-bar {
+    0%, 100% { transform: scaleX(0.85); }
+    50% { transform: scaleX(1.05); }
+  }
+
+  .hk-deck__net {
+    color: var(--color-accent) !important;
+    font-family: var(--font-mono) !important;
+    font-size: 0.7rem !important;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+  }
+  .hk-deck__net-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--color-accent);
+    margin-right: 0.4em;
+    transform: translateY(-1px);
+    box-shadow: 0 0 6px var(--color-accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hk-deck__dot,
+    .hk-deck__bar::after { animation: none !important; }
+  }
+</style>
+
+<script>
+  function pad(n: number, w = 2) {
+    return String(n).padStart(w, '0');
+  }
+
+  let deckInterval: number | undefined;
+
+  function initDeck() {
+    const deck = document.querySelector<HTMLElement>('[data-hk-deck]');
+    if (!deck) return;
+    const timeEl = deck.querySelector<HTMLElement>('[data-hk-deck-time]');
+    const voltEl = deck.querySelector<HTMLElement>('[data-hk-deck-volt]');
+    const hzEl = deck.querySelector<HTMLElement>('[data-hk-deck-hz]');
+
+    requestAnimationFrame(() => deck.classList.add('is-ready'));
+
+    window.clearInterval(deckInterval);
+    function tick() {
+      const d = new Date();
+      if (timeEl) {
+        timeEl.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+      }
+      if (voltEl) {
+        // 228-232 V Drift
+        const v = 230 + Math.round((Math.random() - 0.5) * 4);
+        voltEl.textContent = String(v);
+      }
+      if (hzEl) {
+        const h = (49.95 + Math.random() * 0.1).toFixed(2);
+        hzEl.textContent = h;
+      }
+    }
+    tick();
+    deckInterval = window.setInterval(tick, 1000);
+
+    document.addEventListener(
+      'astro:before-swap',
+      () => window.clearInterval(deckInterval),
+      { once: true },
+    );
+  }
+
+  initDeck();
+  document.addEventListener('astro:page-load', initDeck);
+</script>

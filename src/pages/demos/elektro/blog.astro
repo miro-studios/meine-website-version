@@ -75,7 +75,20 @@ const rest = articles.filter(a => !a.featured);
   description="Förderprogramme, Photovoltaik-Berechnungen, Wärmepumpen-Praxis, Smart-Home-Vergleiche — ehrliche Beiträge aus der Werkstatt. Alle zwei Wochen ein neuer Artikel."
 >
   <!-- ── Page Hero ────────────────────────────────────────────────── -->
-  <section class="hk-pg-hero hk-section">
+  <section class="hk-pg-hero" data-hk-section data-hk-name="Übersicht">
+    <div class="hk-pg-hero__spec" aria-hidden="true">
+      <span class="hk-pg-hero__spec-k">PAGE</span>
+      <span class="hk-pg-hero__spec-v">04 / JOURNAL</span>
+      <span class="hk-pg-hero__spec-dot"></span>
+      <span class="hk-pg-hero__spec-k">VOL</span>
+      <span class="hk-pg-hero__spec-v">2026 · MAY</span>
+      <span class="hk-pg-hero__spec-line"></span>
+      <span class="hk-pg-hero__spec-k">CAT</span>
+      <span class="hk-pg-hero__spec-v">FÖR · PV · WP · KNX · GRUND</span>
+      <span class="hk-pg-hero__spec-pulse"></span>
+      <span class="hk-pg-hero__spec-v">ALLE 14 TAGE · NEU</span>
+    </div>
+
     <div class="hk-container">
       <div class="hk-bar">
         <span class="hk-bar-n">N° 04</span>
@@ -97,7 +110,7 @@ const rest = articles.filter(a => !a.featured);
   </section>
 
   <!-- ── Filter ────────────────────────────────────────────────── -->
-  <section class="hk-filt">
+  <section class="hk-filt" data-hk-section data-hk-name="Filter">
     <div class="hk-container hk-filt__inner" data-hk-filter>
       <span class="hk-filt__label">FILTER →</span>
       <ul class="hk-filt__list" role="tablist">
@@ -119,7 +132,7 @@ const rest = articles.filter(a => !a.featured);
   </section>
 
   <!-- ── Featured ─────────────────────────────────────────────── -->
-  <section class="hk-feat-post hk-section">
+  <section class="hk-feat-post hk-section" data-hk-section data-hk-name="Featured">
     <div class="hk-container">
       <div class="hk-bar">
         <span class="hk-bar-n">FEATURED</span>
@@ -153,7 +166,7 @@ const rest = articles.filter(a => !a.featured);
   </section>
 
   <!-- ── Articles Grid ────────────────────────────────────────── -->
-  <section class="hk-art-list hk-section">
+  <section class="hk-art-list hk-section" data-hk-section data-hk-name="Artikel">
     <div class="hk-container">
       <div class="hk-bar">
         <span class="hk-bar-n">N° 05</span>
@@ -164,19 +177,160 @@ const rest = articles.filter(a => !a.featured);
       <ul class="hk-art-list__grid" data-hk-articles>
         {rest.map((a, i) => (
           <li class="hk-art-list__cell" data-cat={a.cat}>
-            <header>
-              <span class="hk-art-list__cat">{a.cat}</span>
-              <span class="hk-art-list__n">{String(i + 2).padStart(2, '0')}</span>
-            </header>
-            <h3 class="hk-art-list__t">{a.title}</h3>
-            <p class="hk-art-list__excerpt">{a.excerpt}</p>
-            <footer>
-              <span class="hk-art-list__meta">{a.date} · {a.read}</span>
-              <a href="#" class="hk-art-list__link">
-                <span>Lesen</span>
-                <span aria-hidden="true">→</span>
-              </a>
-            </footer>
+            <!-- Abstract Thumbnail pro Kategorie -->
+            <div class="hk-art-list__thumb" data-cat={a.cat} aria-hidden="true">
+              <span class="hk-art-list__thumb-cat">{a.cat}</span>
+              <svg viewBox="0 0 320 140" preserveAspectRatio="xMidYMid slice" class="hk-art-list__thumb-svg">
+                <defs>
+                  <pattern id={`art-grid-${i}`} width="14" height="14" patternUnits="userSpaceOnUse">
+                    <path d="M14 0H0V14" fill="none" stroke="currentColor" stroke-width="0.4" opacity="0.2"/>
+                  </pattern>
+                </defs>
+                <rect width="320" height="140" fill={`url(#art-grid-${i})`}/>
+
+                {a.cat === 'FÖRDERUNG' && (
+                  <g>
+                    <!-- Diagonale Linien als "Geld-Fluss" -->
+                    <g stroke="var(--color-accent)" stroke-width="1.4" fill="none" stroke-dasharray="6 8">
+                      <line x1="0" y1="120" x2="320" y2="40"><animate attributeName="stroke-dashoffset" values="0;-28" dur="2s" repeatCount="indefinite"/></line>
+                      <line x1="0" y1="90" x2="320" y2="10"><animate attributeName="stroke-dashoffset" values="0;-28" dur="1.6s" repeatCount="indefinite"/></line>
+                    </g>
+                    <!-- Stacked Bars -->
+                    <g fill="var(--color-accent)" opacity="0.85">
+                      <rect x="40" y="100" width="20" height="20"/>
+                      <rect x="40" y="80" width="20" height="20" opacity="0.6"/>
+                      <rect x="100" y="80" width="20" height="40"/>
+                      <rect x="100" y="50" width="20" height="30" opacity="0.6"/>
+                      <rect x="160" y="60" width="20" height="60"/>
+                      <rect x="160" y="40" width="20" height="20" opacity="0.6"/>
+                      <rect x="220" y="40" width="20" height="80"/>
+                      <rect x="220" y="20" width="20" height="20" opacity="0.6"/>
+                    </g>
+                    <text x="280" y="35" font-family="Anton, sans-serif" font-size="32" fill="var(--color-accent)" font-weight="400" letter-spacing="0.5">€</text>
+                  </g>
+                )}
+
+                {a.cat === 'PHOTOVOLTAIK' && (
+                  <g>
+                    <!-- Sonnen-Strahlen-Pattern -->
+                    <g stroke="var(--color-accent)" stroke-width="1.2" fill="none" stroke-dasharray="3 6">
+                      <line x1="40" y1="40" x2="280" y2="100"><animate attributeName="stroke-dashoffset" values="0;-18" dur="1.4s" repeatCount="indefinite"/></line>
+                      <line x1="40" y1="50" x2="280" y2="80"><animate attributeName="stroke-dashoffset" values="0;-18" dur="1.8s" repeatCount="indefinite"/></line>
+                      <line x1="40" y1="60" x2="280" y2="60"><animate attributeName="stroke-dashoffset" values="0;-18" dur="2.2s" repeatCount="indefinite"/></line>
+                      <line x1="40" y1="70" x2="280" y2="40"><animate attributeName="stroke-dashoffset" values="0;-18" dur="1.6s" repeatCount="indefinite"/></line>
+                    </g>
+                    <!-- Sonne links -->
+                    <g stroke="var(--color-accent)" fill="none" stroke-width="1.6">
+                      <circle cx="40" cy="55" r="18"/>
+                      <line x1="40" y1="25" x2="40" y2="33"/>
+                      <line x1="40" y1="77" x2="40" y2="85"/>
+                      <line x1="10" y1="55" x2="18" y2="55"/>
+                      <line x1="62" y1="55" x2="70" y2="55"/>
+                    </g>
+                    <!-- PV-Module rechts -->
+                    <g fill="var(--color-accent)" opacity="0.85">
+                      <rect x="220" y="55" width="20" height="14"/>
+                      <rect x="244" y="55" width="20" height="14"/>
+                      <rect x="268" y="55" width="20" height="14"/>
+                      <rect x="220" y="73" width="20" height="14" opacity="0.7"/>
+                      <rect x="244" y="73" width="20" height="14" opacity="0.7"/>
+                      <rect x="268" y="73" width="20" height="14" opacity="0.7"/>
+                    </g>
+                  </g>
+                )}
+
+                {a.cat === 'WÄRMEPUMPE' && (
+                  <g>
+                    <!-- Wärme-Wellen -->
+                    <g stroke="var(--color-accent)" stroke-width="1.6" fill="none">
+                      <path d="M50 100 q-10 -20 0 -40 q10 -20 0 -40">
+                        <animate attributeName="opacity" values="0.4;1;0.4" dur="2.4s" repeatCount="indefinite"/>
+                      </path>
+                      <path d="M90 100 q-10 -20 0 -40 q10 -20 0 -40">
+                        <animate attributeName="opacity" values="1;0.4;1" dur="2.4s" begin="0.4s" repeatCount="indefinite"/>
+                      </path>
+                      <path d="M130 100 q-10 -20 0 -40 q10 -20 0 -40">
+                        <animate attributeName="opacity" values="0.4;1;0.4" dur="2.4s" begin="0.8s" repeatCount="indefinite"/>
+                      </path>
+                    </g>
+                    <!-- Wärmepumpen-Modul -->
+                    <rect x="180" y="40" width="100" height="70" fill="var(--color-bg)" stroke="currentColor" stroke-width="1.6"/>
+                    <line x1="180" y1="58" x2="280" y2="58" stroke="currentColor" stroke-width="0.8" opacity="0.5"/>
+                    <circle cx="230" cy="80" r="18" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                    <g stroke="currentColor" stroke-width="1" fill="none" transform="translate(230 80)">
+                      <path d="M0 -12 A 6 6 0 0 1 6 0">
+                        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="3s" repeatCount="indefinite"/>
+                      </path>
+                    </g>
+                    <text x="186" y="50" font-family="JetBrains Mono, monospace" font-size="6" fill="currentColor" opacity="0.7" letter-spacing="1" font-weight="700">WP · COP 4,3</text>
+                  </g>
+                )}
+
+                {a.cat === 'SMART HOME' && (
+                  <g>
+                    <!-- Hub Mitte -->
+                    <rect x="140" y="55" width="40" height="30" fill="var(--color-bg)" stroke="var(--color-accent)" stroke-width="1.4"/>
+                    <circle cx="160" cy="70" r="3" fill="var(--color-accent)">
+                      <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite"/>
+                    </circle>
+                    <!-- Bus-Linien -->
+                    <g stroke="var(--color-accent)" stroke-width="0.8" fill="none" stroke-dasharray="3 5">
+                      <line x1="140" y1="65" x2="40" y2="30"><animate attributeName="stroke-dashoffset" values="0;-16" dur="1.6s" repeatCount="indefinite"/></line>
+                      <line x1="140" y1="75" x2="40" y2="110"><animate attributeName="stroke-dashoffset" values="0;-16" dur="2s" repeatCount="indefinite"/></line>
+                      <line x1="180" y1="65" x2="280" y2="30"><animate attributeName="stroke-dashoffset" values="0;-16" dur="1.4s" repeatCount="indefinite"/></line>
+                      <line x1="180" y1="75" x2="280" y2="110"><animate attributeName="stroke-dashoffset" values="0;-16" dur="2.2s" repeatCount="indefinite"/></line>
+                    </g>
+                    <g fill="var(--color-bg)" stroke="currentColor" stroke-width="1.2">
+                      <circle cx="40" cy="30" r="8"/>
+                      <circle cx="40" cy="110" r="8"/>
+                      <circle cx="280" cy="30" r="8"/>
+                      <circle cx="280" cy="110" r="8"/>
+                    </g>
+                  </g>
+                )}
+
+                {a.cat === 'GRUNDLAGEN' && (
+                  <g>
+                    <!-- Schaltkreis-Pattern -->
+                    <g stroke="var(--color-accent)" stroke-width="1.4" fill="none">
+                      <path d="M30 70 L 80 70 L 80 30 L 160 30 L 160 70 L 220 70 L 220 110 L 290 110">
+                        <animate attributeName="stroke-dasharray" values="0 600;600 0" dur="3s" repeatCount="indefinite"/>
+                      </path>
+                    </g>
+                    <g fill="var(--color-accent)">
+                      <circle cx="30" cy="70" r="3"/>
+                      <circle cx="80" cy="30" r="3"/>
+                      <circle cx="160" cy="30" r="3"/>
+                      <circle cx="160" cy="70" r="3"/>
+                      <circle cx="220" cy="70" r="3"/>
+                      <circle cx="220" cy="110" r="3"/>
+                      <circle cx="290" cy="110" r="3"/>
+                    </g>
+                    <!-- Widerstand-Symbol -->
+                    <g stroke="currentColor" stroke-width="1.2" fill="var(--color-bg)">
+                      <rect x="100" y="22" width="40" height="16"/>
+                    </g>
+                    <text x="120" y="34" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="6" fill="currentColor" font-weight="700">R</text>
+                  </g>
+                )}
+              </svg>
+            </div>
+
+            <div class="hk-art-list__body">
+              <header>
+                <span class="hk-art-list__cat">{a.cat}</span>
+                <span class="hk-art-list__n">{String(i + 2).padStart(2, '0')}</span>
+              </header>
+              <h3 class="hk-art-list__t">{a.title}</h3>
+              <p class="hk-art-list__excerpt">{a.excerpt}</p>
+              <footer>
+                <span class="hk-art-list__meta">{a.date} · {a.read}</span>
+                <a href="#" class="hk-art-list__link" data-cursor-hover>
+                  <span>Lesen</span>
+                  <span aria-hidden="true">→</span>
+                </a>
+              </footer>
+            </div>
           </li>
         ))}
       </ul>
@@ -186,7 +340,7 @@ const rest = articles.filter(a => !a.featured);
   </section>
 
   <!-- ── Newsletter-Reminder ──────────────────────────────────── -->
-  <section class="hk-pg-cta hk-section">
+  <section class="hk-pg-cta hk-section" data-hk-section data-hk-name="Newsletter">
     <div class="hk-container">
       <RevealOnScroll>
         <h2 class="hk-pg-cta__h">
@@ -209,7 +363,41 @@ const rest = articles.filter(a => !a.featured);
 
 <style>
   /* ── Page Hero ────────────────────────────────────────────────── */
-  .hk-pg-hero { padding-block: clamp(3rem, 6vw, 5rem) clamp(3rem, 6vw, 5rem); }
+  .hk-pg-hero {
+    border-top: 1px solid var(--color-rule);
+    padding-block: clamp(2rem, 4vw, 3.5rem) clamp(3rem, 6vw, 5rem);
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%,
+        color-mix(in srgb, var(--color-accent) 5%, transparent),
+        transparent 70%),
+      var(--color-bg);
+  }
+  .hk-pg-hero__spec {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem 1rem;
+    padding: 0.7rem var(--hk-gutter);
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+    border-bottom: 1px solid var(--color-rule);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .hk-pg-hero__spec-k { color: var(--color-muted); font-weight: 700; }
+  .hk-pg-hero__spec-v { color: var(--color-text); font-weight: 600; }
+  .hk-pg-hero__spec-dot { width: 4px; height: 4px; background: var(--color-accent); border-radius: 50%; }
+  .hk-pg-hero__spec-line { flex: 1; height: 1px; background: var(--color-rule-strong); min-width: 1rem; }
+  .hk-pg-hero__spec-pulse {
+    width: 7px;
+    height: 7px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 22%, transparent),
+                0 0 8px var(--color-accent);
+    animation: hk-pulse 1.8s ease-in-out infinite;
+  }
 
   .hk-pg-hero__h {
     font-family: var(--font-display);
@@ -415,15 +603,73 @@ const rest = articles.filter(a => !a.featured);
 
   .hk-art-list__cell {
     background: var(--color-bg);
-    padding: 1.75rem;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    min-height: 320px;
-    transition: background-color 0.4s var(--ease-out-expo);
+    gap: 0;
+    min-height: 380px;
+    transition: background-color 0.4s var(--ease-out-expo), opacity 0.4s, transform 0.4s;
+    position: relative;
+    overflow: hidden;
   }
   .hk-art-list__cell:hover { background: var(--color-surface); }
-  .hk-art-list__cell.is-hidden { display: none; }
+  .hk-art-list__cell.is-hidden {
+    opacity: 0;
+    transform: scale(0.96);
+    pointer-events: none;
+    grid-template-columns: 0;
+    width: 0;
+    min-height: 0;
+    padding: 0;
+    border: none;
+    display: none;
+  }
+
+  /* Thumbnail */
+  .hk-art-list__thumb {
+    position: relative;
+    aspect-ratio: 320 / 140;
+    background:
+      radial-gradient(ellipse 60% 60% at 50% 100%,
+        color-mix(in srgb, var(--color-accent) 8%, transparent),
+        transparent 70%),
+      var(--color-surface);
+    border-bottom: 1px solid var(--color-rule);
+    color: var(--color-text);
+    overflow: hidden;
+    transition: filter 0.4s var(--ease-out-expo);
+  }
+  .hk-art-list__cell:hover .hk-art-list__thumb {
+    filter: brightness(1.08);
+  }
+  .hk-art-list__thumb-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .hk-art-list__thumb-cat {
+    position: absolute;
+    top: 0.7rem;
+    left: 1rem;
+    z-index: 2;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    font-weight: 700;
+    color: var(--color-accent);
+    background: var(--color-bg);
+    padding: 0.3rem 0.5rem;
+    border: 1px solid var(--color-accent);
+    pointer-events: none;
+  }
+
+  .hk-art-list__body {
+    padding: 1.5rem 1.75rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    flex: 1;
+  }
 
   .hk-art-list__cell header {
     display: flex;
